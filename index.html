@@ -179,6 +179,11 @@ html:not([lang="es"]) .ph-en { border-top: 0; margin-top: 0; }
 html[lang="es"] .vid, html[lang="es"] .shorts a { pointer-events: none; position: relative; }
 html[lang="es"] .vid img, html[lang="es"] .shorts img { filter: grayscale(.5) brightness(.65); }
 html[lang="es"] .vid::after, html[lang="es"] .shorts a::after { content: "Próximamente"; position: absolute; top: 12px; left: 12px; background: var(--mango); color: var(--cordillera); font: 700 .78rem var(--body); letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; border-radius: 999px; }
+.es-head { margin-bottom: 20px; }
+.es-shorts { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; margin-bottom: 40px; }
+.es-shorts a { text-decoration: none; display: grid; gap: 8px; color: var(--fg); font-weight: 600; }
+.es-shorts img { width: 100%; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 12px; }
+@media (max-width: 800px) { .es-shorts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .soon-box { display: grid; gap: 14px; justify-items: start; max-width: 640px; padding: 32px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
 .soon-box .eyebrow { color: var(--arepa); }
 .soon-box h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; margin: 0; text-wrap: balance; }
@@ -222,7 +227,7 @@ footer b { color: var(--band-fg); font-family: var(--display); }
       <span>The Good Gringo™</span>
     </a>
     <nav class="links" aria-label="Sections">
-      <a data-only="es" href="#proximamente">Próximamente</a><a data-only="en" href="#videos" data-i18n="t1">Videos</a><a data-only="en" href="#guide" data-i18n="t2">Free guides</a><a data-only="en" href="#merch" data-i18n="t3">Merch</a><a href="#about" data-i18n="t4">About</a><a href="#contact" data-i18n="t5">Contact</a>
+      <a data-only="es" href="#proximamente">Videos</a><a data-only="en" href="#videos" data-i18n="t1">Videos</a><a data-only="en" href="#guide" data-i18n="t2">Free guides</a><a data-only="en" href="#merch" data-i18n="t3">Merch</a><a href="#about" data-i18n="t4">About</a><a href="#contact" data-i18n="t5">Contact</a>
     </nav>
     <div class="hact">
       <div class="lang" role="group" aria-label="Language / Idioma"><button type="button" data-lang="en">EN</button><button type="button" data-lang="es">ES</button></div>
@@ -268,10 +273,16 @@ footer b { color: var(--band-fg); font-family: var(--display); }
 
   <section class="block soon-es" id="proximamente" data-only="es">
     <div class="wrap">
+      <div class="head es-head">
+        <div><div class="eyebrow">Videos en español</div><h2>Nuevo en el canal</h2></div>
+      </div>
+      <div class="es-shorts">
+        <a href="https://youtube.com/shorts/iQUdHMrPVck" target="_blank" rel="noopener"><img src="img/s_tayrona_es.jpg" alt="Short: Tayrona cierra del 19 de octubre al 2 de noviembre" loading="lazy"><span>Tayrona cierra del 19 oct al 2 nov</span></a>
+      </div>
       <div class="soon-box">
         <div class="eyebrow">Próximamente</div>
-        <h2>Videos, guías y productos en español</h2>
-        <p>Estamos preparando videos, guías gratis y productos en español. Suscríbete en YouTube para ser de los primeros en verlos.</p>
+        <h2>Más videos, guías y productos en español</h2>
+        <p>Estamos preparando más videos, guías gratis y productos en español. Suscríbete en YouTube para ser de los primeros en verlos.</p>
         <a class="btn btn-gold" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo" target="_blank" rel="noopener">Suscríbete en YouTube</a>
       </div>
     </div>
