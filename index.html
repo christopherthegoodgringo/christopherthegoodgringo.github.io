@@ -169,7 +169,7 @@ a.claim:hover { border-color: var(--mango); background: rgba(245, 184, 46, .10);
 .c button:hover { border-color: var(--mango); }
 .contact .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 @media (max-width: 1100px) { .contact .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-#v-email { font-size: 1rem; }
+#v-email { font-size: .92rem; }
 .acts button { margin-top: 0; padding: 8px 16px; }
 .acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
 .act { display: inline-flex; align-items: center; padding: 8px 16px; border-radius: 999px; font-size: .85rem; font-weight: 700; text-decoration: none; border: 1px solid var(--line); color: var(--fg); background: transparent; }
@@ -182,6 +182,19 @@ footer a { color: var(--band-fg); }
 footer { background: var(--ridge-deep); color: var(--band-muted); }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-block: 28px; font-size: .9rem; }
 footer b { color: var(--band-fg); font-family: var(--display); }
+
+/* Language */
+.lang { display: inline-flex; border: 1px solid rgba(251, 244, 230, .25); border-radius: 999px; padding: 3px; gap: 2px; }
+.lang button { font: 700 .8rem var(--body); letter-spacing: .06em; color: var(--band-fg); background: transparent; border: 0; border-radius: 999px; padding: 6px 10px; cursor: pointer; }
+.lang button[aria-pressed="true"] { background: var(--mango); color: var(--cordillera); }
+.lang-pop { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 16px; background: rgba(5, 20, 14, .72); backdrop-filter: blur(4px); }
+.lang-pop[hidden] { display: none; }
+.lang-card { width: min(420px, 100%); background: var(--band-bg); color: var(--band-fg); border: 1px solid rgba(251, 244, 230, .14); border-radius: 18px; padding: 32px 28px; text-align: center; display: grid; justify-items: center; gap: 10px; box-shadow: 0 30px 80px rgba(0, 0, 0, .45); }
+.lang-card .eyebrow { color: var(--mango); }
+.lang-card h2 { font-family: var(--display); font-size: 1.9rem; font-weight: 800; margin: 0; }
+.lang-card p { margin: 0 0 8px; color: var(--band-muted); }
+.lang-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
+.lang-btns .btn { justify-content: center; border: 0; cursor: pointer; font-size: 1rem; padding: 14px 10px; }
 </style>
 
 <header class="top">
@@ -191,11 +204,12 @@ footer b { color: var(--band-fg); font-family: var(--display); }
       <span>The Good Gringo™</span>
     </a>
     <nav class="links" aria-label="Sections">
-      <a href="#videos">Videos</a><a href="#guide">Free guides</a><a href="#merch">Merch</a><a href="#about">About</a><a href="#contact">Contact</a>
+      <a href="#videos" data-i18n="t1">Videos</a><a href="#guide" data-i18n="t2">Free guides</a><a href="#merch" data-i18n="t3">Merch</a><a href="#about" data-i18n="t4">About</a><a href="#contact" data-i18n="t5">Contact</a>
     </nav>
     <div class="hact">
+      <div class="lang" role="group" aria-label="Language / Idioma"><button type="button" data-lang="en">EN</button><button type="button" data-lang="es">ES</button></div>
       <a class="hsoc" href="https://www.instagram.com/christopherthegoodgringo/" target="_blank" rel="noopener" aria-label="Instagram @christopherthegoodgringo" title="Instagram"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8.5 7l1.5-3h4l1.5 3"/><circle cx="12" cy="13.5" r="3.5"/></svg></a>
-      <a class="btn btn-gold" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo" target="_blank" rel="noopener">Subscribe</a>
+      <a class="btn btn-gold" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo" target="_blank" rel="noopener" data-i18n="t6">Subscribe</a>
     </div>
   </div>
 </header>
@@ -207,17 +221,17 @@ footer b { color: var(--band-fg); font-family: var(--display); }
       <div>
         <div class="eyebrow">Christopher</div>
         <h1>The Good Gringo<sup>™</sup></h1>
-        <p class="tag">Life in LATAM, done right.</p>
-        <p class="sub">An American living in Latin America. Real places, honest prices and respectful tips for travel, culture, dating and more, starting with Colombia.</p>
+        <p class="tag" data-i18n="t7">Life in LATAM, done right.</p>
+        <p class="sub" data-i18n="t8">An American living in Latin America. Real places, honest prices and respectful tips for travel, culture, dating and more, starting with Colombia.</p>
         <div class="ctas">
-          <a class="btn btn-gold" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo" target="_blank" rel="noopener">Watch on YouTube</a>
-          <a class="btn btn-ghost" href="#guide">Get the free guides</a>
+          <a class="btn btn-gold" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo" target="_blank" rel="noopener" data-i18n="t9">Watch on YouTube</a>
+          <a class="btn btn-ghost" href="#guide" data-i18n="t10">Get the free guides</a>
         </div>
-        <p class="also"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8.5 7l1.5-3h4l1.5 3"/><circle cx="12" cy="13.5" r="3.5"/></svg>Also on Instagram <a href="https://www.instagram.com/christopherthegoodgringo/" target="_blank" rel="noopener">@christopherthegoodgringo</a></p>
+        <p class="also"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8.5 7l1.5-3h4l1.5 3"/><circle cx="12" cy="13.5" r="3.5"/></svg><span data-i18n="t11">Also on Instagram</span> <a href="https://www.instagram.com/christopherthegoodgringo/" target="_blank" rel="noopener">@christopherthegoodgringo</a></p>
       </div>
       <div class="portrait">
         <div class="ring"><img src="img/head.jpg" alt="Christopher, host of The Good Gringo"></div>
-        <div class="daily">New content daily</div>
+        <div class="daily" data-i18n="t12">New content daily</div>
       </div>
     </div>
     <svg class="range" viewBox="0 0 1440 160" preserveAspectRatio="none" aria-hidden="true">
@@ -228,33 +242,33 @@ footer b { color: var(--band-fg); font-family: var(--display); }
 
   <div class="rules">
     <div class="wrap">
-      <div><h3>Good gringo, <span class="x">not</span> a passport bro</h3><p>Respect for the people and the places comes first, in every video.</p></div>
-      <div><h3>Real places, <span class="ok">checked</span></h3><p>Every hotel, beach and fact is researched, and venue photos get permission.</p></div>
-      <div><h3>Tips that actually help</h3><p>Fair prices, safety, scams to skip and the Spanish you'll need.</p></div>
+      <div><h3 data-i18n="t13">Good gringo, <span class="x">not</span> a passport bro</h3><p data-i18n="t14">Respect for the people and the places comes first, in every video.</p></div>
+      <div><h3 data-i18n="t15">Real places, <span class="ok">checked</span></h3><p data-i18n="t16">Every hotel, beach and fact is researched, and venue photos get permission.</p></div>
+      <div><h3 data-i18n="t17">Tips that actually help</h3><p data-i18n="t18">Fair prices, safety, scams to skip and the Spanish you'll need.</p></div>
     </div>
   </div>
 
   <section class="block" id="videos">
     <div class="wrap">
       <div class="head">
-        <div><div class="eyebrow">Latest videos</div><h2>Plans you can steal</h2></div>
-        <p>Full guides for the trips people actually ask about. Tap any one to watch on YouTube.</p>
+        <div><div class="eyebrow" data-i18n="t19">Latest videos</div><h2 data-i18n="t20">Plans you can steal</h2></div>
+        <p data-i18n="t21">Full guides for the trips people actually ask about. Tap any one to watch on YouTube.</p>
       </div>
       <div class="vids">
-        <a class="vid" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+Cartagena" target="_blank" rel="noopener"><img src="img/cartagena.jpg" alt="Cartagena date weekend thumbnail" loading="lazy"><span class="where">Cartagena</span><h3>The perfect date weekend in Cartagena</h3></a>
-        <a class="vid" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+Santa+Marta" target="_blank" rel="noopener"><img src="img/santamarta.jpg" alt="Santa Marta date weekend thumbnail" loading="lazy"><span class="where">Santa Marta</span><h3>The perfect date weekend in Santa Marta</h3></a>
-        <a class="vid" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+Medellin" target="_blank" rel="noopener"><img src="img/medellin.jpg" alt="Medellín first date thumbnail" loading="lazy"><span class="where">Medellín</span><h3>A first date in Medellín, done right</h3></a>
-        <a class="vid" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+emeralds" target="_blank" rel="noopener"><img src="img/emeralds.jpg" alt="Buying emeralds guide thumbnail" loading="lazy"><span class="where">Bogotá</span><h3>Buying emeralds in Colombia? Don't get scammed</h3></a>
-        <a class="vid" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+Taganga" target="_blank" rel="noopener"><img src="img/taganga.jpg" alt="Taganga fishing day thumbnail" loading="lazy"><span class="where">Taganga</span><h3>Catch your own dinner in Taganga</h3></a>
+        <a class="vid" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+Cartagena" target="_blank" rel="noopener"><img src="img/cartagena.jpg" alt="Cartagena date weekend thumbnail" loading="lazy"><span class="where">Cartagena</span><h3 data-i18n="t22">The perfect date weekend in Cartagena</h3></a>
+        <a class="vid" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+Santa+Marta" target="_blank" rel="noopener"><img src="img/santamarta.jpg" alt="Santa Marta date weekend thumbnail" loading="lazy"><span class="where">Santa Marta</span><h3 data-i18n="t23">The perfect date weekend in Santa Marta</h3></a>
+        <a class="vid" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+Medellin" target="_blank" rel="noopener"><img src="img/medellin.jpg" alt="Medellín first date thumbnail" loading="lazy"><span class="where">Medellín</span><h3 data-i18n="t24">A first date in Medellín, done right</h3></a>
+        <a class="vid" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+emeralds" target="_blank" rel="noopener"><img src="img/emeralds.jpg" alt="Buying emeralds guide thumbnail" loading="lazy"><span class="where">Bogotá</span><h3 data-i18n="t25">Buying emeralds in Colombia? Don't get scammed</h3></a>
+        <a class="vid" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+Taganga" target="_blank" rel="noopener"><img src="img/taganga.jpg" alt="Taganga fishing day thumbnail" loading="lazy"><span class="where">Taganga</span><h3 data-i18n="t26">Catch your own dinner in Taganga</h3></a>
       </div>
       <div class="shorts-row">
-        <h3>Quick Shorts</h3>
+        <h3 data-i18n="t27">Quick Shorts</h3>
         <div class="shorts">
-          <a href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+bus" target="_blank" rel="noopener"><img src="img/s_bus.jpg" alt="" loading="lazy"><span>20 hours on a bus in Colombia</span></a>
-          <a href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+Jordan" target="_blank" rel="noopener"><img src="img/s_jordan.jpg" alt="" loading="lazy"><span>Colombia's tiniest town?</span></a>
-          <a href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+history" target="_blank" rel="noopener"><img src="img/s_cocaine.jpg" alt="" loading="lazy"><span>Colombia's history in 30 seconds</span></a>
-          <a href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+emeralds" target="_blank" rel="noopener"><img src="img/s_emeralds.jpg" alt="" loading="lazy"><span>Watch this before you buy emeralds</span></a>
-          <a href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+Tayrona" target="_blank" rel="noopener"><img src="img/s_tayrona.jpg" alt="" loading="lazy"><span>Tayrona is closing: don't get stuck</span></a>
+          <a href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+bus" target="_blank" rel="noopener"><img src="img/s_bus.jpg" alt="" loading="lazy"><span data-i18n="t28">20 hours on a bus in Colombia</span></a>
+          <a href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+Jordan" target="_blank" rel="noopener"><img src="img/s_jordan.jpg" alt="" loading="lazy"><span data-i18n="t29">Colombia's tiniest town?</span></a>
+          <a href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+history" target="_blank" rel="noopener"><img src="img/s_cocaine.jpg" alt="" loading="lazy"><span data-i18n="t30">Colombia's history in 30 seconds</span></a>
+          <a href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+emeralds" target="_blank" rel="noopener"><img src="img/s_emeralds.jpg" alt="" loading="lazy"><span data-i18n="t31">Watch this before you buy emeralds</span></a>
+          <a href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+Tayrona" target="_blank" rel="noopener"><img src="img/s_tayrona.jpg" alt="" loading="lazy"><span data-i18n="t32">Tayrona is closing: don't get stuck</span></a>
         </div>
       </div>
     </div>
@@ -263,42 +277,42 @@ footer b { color: var(--band-fg); font-family: var(--display); }
   <section class="guide" id="guide">
     <div class="wrap">
       <div class="intro">
-        <div class="eyebrow">Free 69-page guides</div>
-        <h2>Two free guides, on the house</h2>
-        <p>Comment the keyword on the matching YouTube Short and Christopher replies with the link.</p>
+        <div class="eyebrow" data-i18n="t33">Free 69-page guides</div>
+        <h2 data-i18n="t34">Two free guides, on the house</h2>
+        <p data-i18n="t35">Comment the keyword on the matching YouTube Short and Christopher replies with the link.</p>
       </div>
       <div class="guides">
         <article class="gcard">
           <img src="img/guide.jpg" alt="Cover of the 69-page guide Buying Emeralds in Colombia" loading="lazy">
           <div>
-            <h3>Buying Emeralds in Colombia</h3>
+            <h3 data-i18n="t36">Buying Emeralds in Colombia</h3>
             <ul>
-              <li>Spot fakes, synthetics and heavy treatments</li>
-              <li>Read and verify a lab report in five minutes</li>
-              <li>What emeralds really cost, and how to bargain respectfully</li>
-              <li>Spanish for the emerald shop, plus the tourist tax refund</li>
+              <li data-i18n="t37">Spot fakes, synthetics and heavy treatments</li>
+              <li data-i18n="t38">Read and verify a lab report in five minutes</li>
+              <li data-i18n="t39">What emeralds really cost, and how to bargain respectfully</li>
+              <li data-i18n="t40">Spanish for the emerald shop, plus the tourist tax refund</li>
             </ul>
             <a class="claim" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+emerald+guide" target="_blank" rel="noopener">
-              <b>Comment EMERALDS</b>
-              <p>on the emerald Short. The first five people get it free.</p>
-              <span class="go">Open the Short →</span>
+              <b data-i18n="t45">Comment EMERALDS</b>
+              <p data-i18n="t46">on the emerald Short. The first five people get it free.</p>
+              <span class="go" data-i18n="t47">Open the Short →</span>
             </a>
           </div>
         </article>
         <article class="gcard">
           <img src="img/guide_fish.jpg" alt="Cover of the 69-page guide Fishing in Colombia" loading="lazy">
           <div>
-            <h3>Fishing in Colombia</h3>
+            <h3 data-i18n="t48">Fishing in Colombia</h3>
             <ul>
-              <li>Caribbean, Pacific, Amazon and Orinoco fishing</li>
-              <li>Where to go and what bites when</li>
-              <li>The current rules, and how to fish with respect</li>
-              <li>Fishing Spanish for the boat and the market</li>
+              <li data-i18n="t41">Caribbean, Pacific, Amazon and Orinoco fishing</li>
+              <li data-i18n="t42">Where to go and what bites when</li>
+              <li data-i18n="t43">The current rules, and how to fish with respect</li>
+              <li data-i18n="t44">Fishing Spanish for the boat and the market</li>
             </ul>
             <a class="claim" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo+fishing+guide" target="_blank" rel="noopener">
-              <b>Comment FISHING</b>
-              <p>on the fishing Short. Free for everyone who comments.</p>
-              <span class="go">Open the Short →</span>
+              <b data-i18n="t49">Comment FISHING</b>
+              <p data-i18n="t50">on the fishing Short. Free for everyone who comments.</p>
+              <span class="go" data-i18n="t47">Open the Short →</span>
             </a>
           </div>
         </article>
@@ -309,15 +323,15 @@ footer b { color: var(--band-fg); font-family: var(--display); }
   <section class="block" id="merch">
     <div class="wrap">
       <div class="head">
-        <div><div class="eyebrow">Merch</div><h2>Wear the good gringo way</h2></div>
-        <p>The first collection is in the works. Subscribe on YouTube to hear when it drops.</p>
+        <div><div class="eyebrow" data-i18n="t51">Merch</div><h2 data-i18n="t52">Wear the good gringo way</h2></div>
+        <p data-i18n="t53">The first collection is in the works. Subscribe on YouTube to hear when it drops.</p>
       </div>
       <div class="merch">
-        <div class="item"><div class="pic"><img src="img/m_shirt.jpg" alt="White T-shirt with The Good Gringo sun and mountains badge" loading="lazy"></div><div class="txt"><h3>Classic tee</h3><p>White, front print</p><span class="soon">Coming soon</span></div></div>
-        <div class="item"><div class="pic"><img src="img/m_tank.jpg" alt="White tank top with the badge" loading="lazy"></div><div class="txt"><h3>Caribbean tank</h3><p>White</p><span class="soon">Coming soon</span></div></div>
-        <div class="item"><div class="pic"><img src="img/m_shorts.jpg" alt="All-white shorts with leg logo" loading="lazy"></div><div class="txt"><h3>Cordillera shorts</h3><p>All white, leg logo</p><span class="soon">Coming soon</span></div></div>
-        <div class="item"><div class="pic"><img src="img/m_tumbler.jpg" alt="White 20 oz drink tumbler with the badge and wordmark" loading="lazy"></div><div class="txt"><h3>Drink tumbler</h3><p>20 oz, white</p><span class="soon">Coming soon</span></div></div>
-        <div class="item"><div class="pic"><img src="img/m_key.jpg" alt="Round acrylic keychain, front and back" loading="lazy"></div><div class="txt"><h3>Keychain</h3><p>Two-sided, white back</p><span class="soon">Coming soon</span></div></div>
+        <div class="item"><div class="pic"><img src="img/m_shirt.jpg" alt="White T-shirt with The Good Gringo sun and mountains badge" loading="lazy"></div><div class="txt"><h3 data-i18n="t54">Classic tee</h3><p data-i18n="t59">White, front print</p><span class="soon" data-i18n="t64">Coming soon</span></div></div>
+        <div class="item"><div class="pic"><img src="img/m_tank.jpg" alt="White tank top with the badge" loading="lazy"></div><div class="txt"><h3 data-i18n="t55">Caribbean tank</h3><p data-i18n="t63">White</p><span class="soon" data-i18n="t64">Coming soon</span></div></div>
+        <div class="item"><div class="pic"><img src="img/m_shorts.jpg" alt="All-white shorts with leg logo" loading="lazy"></div><div class="txt"><h3 data-i18n="t56">Cordillera shorts</h3><p data-i18n="t60">All white, leg logo</p><span class="soon" data-i18n="t64">Coming soon</span></div></div>
+        <div class="item"><div class="pic"><img src="img/m_tumbler.jpg" alt="White 20 oz drink tumbler with the badge and wordmark" loading="lazy"></div><div class="txt"><h3 data-i18n="t57">Drink tumbler</h3><p data-i18n="t61">20 oz, white</p><span class="soon" data-i18n="t64">Coming soon</span></div></div>
+        <div class="item"><div class="pic"><img src="img/m_key.jpg" alt="Round acrylic keychain, front and back" loading="lazy"></div><div class="txt"><h3 data-i18n="t58">Keychain</h3><p data-i18n="t62">Two-sided, white back</p><span class="soon" data-i18n="t64">Coming soon</span></div></div>
       </div>
     </div>
   </section>
@@ -325,18 +339,18 @@ footer b { color: var(--band-fg); font-family: var(--display); }
   <section class="block about" id="about">
     <div class="wrap">
       <div>
-        <div class="eyebrow" style="color: var(--arepa); margin-bottom: 8px;">About</div>
-        <h2 style="font-size: clamp(2rem, 4.4vw, 3rem); font-weight: 800; margin-bottom: 18px;">Hi, I'm Christopher</h2>
-        <p class="lead">I'm an American living in Latin America, and I make the guides I wish I'd had when I arrived.</p>
-        <p>The Good Gringo is about doing life here the right way: curious, respectful and not getting played. That means real places you can book, honest prices, the safety basics, and a little Spanish to go with it.</p>
-        <p>No passport-bro nonsense. Just travel, culture, dating and more, with respect for the people who make these countries what they are.</p>
+        <div class="eyebrow" style="color: var(--arepa); margin-bottom: 8px;" data-i18n="t65">About</div>
+        <h2 style="font-size: clamp(2rem, 4.4vw, 3rem); font-weight: 800; margin-bottom: 18px;" data-i18n="t66">Hi, I'm Christopher</h2>
+        <p class="lead" data-i18n="t67">I'm an American living in Latin America, and I make the guides I wish I'd had when I arrived.</p>
+        <p data-i18n="t68">The Good Gringo is about doing life here the right way: curious, respectful and not getting played. That means real places you can book, honest prices, the safety basics, and a little Spanish to go with it.</p>
+        <p data-i18n="t69">No passport-bro nonsense. Just travel, culture, dating and more, with respect for the people who make these countries what they are.</p>
       </div>
       <dl class="facts">
-        <div><dt>Based in</dt><dd>Colombia</dd></div>
-        <div><dt>Covers</dt><dd>Travel · Culture · Dating &amp; more</dd></div>
-        <div><dt>New content</dt><dd>Daily</dd></div>
-        <div><dt>Favorite ride</dt><dd>Bogotá → Santa Marta by bus, 20 hours</dd></div>
-        <div><dt>Motto</dt><dd>Life in LATAM, done right</dd></div>
+        <div><dt data-i18n="t70">Based in</dt><dd>Colombia</dd></div>
+        <div><dt data-i18n="t71">Covers</dt><dd data-i18n="t75">Travel · Culture · Dating &amp; more</dd></div>
+        <div><dt data-i18n="t72">New content</dt><dd data-i18n="t76">Daily</dd></div>
+        <div><dt data-i18n="t73">Favorite ride</dt><dd data-i18n="t77">Bogotá → Santa Marta by bus, 20 hours</dd></div>
+        <div><dt data-i18n="t74">Motto</dt><dd data-i18n="t78">Life in LATAM, done right</dd></div>
       </dl>
     </div>
   </section>
@@ -344,24 +358,38 @@ footer b { color: var(--band-fg); font-family: var(--display); }
   <section class="block contact" id="contact">
     <div class="wrap">
       <div class="head">
-        <div><div class="eyebrow">Contact</div><h2>Say hola</h2></div>
-        <p>Collaborations, sponsorships, venue features or a question about a trip.</p>
+        <div><div class="eyebrow" data-i18n="t79">Contact</div><h2 data-i18n="t80">Say hola</h2></div>
+        <p data-i18n="t81">Collaborations, sponsorships, venue features or a question about a trip.</p>
       </div>
       <div class="cards">
-        <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span class="eyebrow">Email</span><span class="val" id="v-email">christopher@christopherthegoodgringo.com</span><div class="acts"><a class="act act-gold" href="mailto:christopher@christopherthegoodgringo.com">Email me</a><button type="button" id="b-email" data-copy="v-email">Copy</button></div></div>
-        <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.6L3.5 21l1.4-4.9A8.5 8.5 0 1 1 21 12z"/><circle cx="8.5" cy="12" r=".6" fill="currentColor"/><circle cx="12.3" cy="12" r=".6" fill="currentColor"/><circle cx="16" cy="12" r=".6" fill="currentColor"/></svg></span><span class="eyebrow">WhatsApp · Text · Call</span><span class="val" id="v-wa">+1 (305) 440-5175</span><div class="acts"><a class="act act-gold" href="https://wa.me/13054405175" target="_blank" rel="noopener">WhatsApp</a><a class="act" href="sms:+13054405175">Text</a><a class="act" href="tel:+13054405175">Call</a><button type="button" id="b-wa" data-copy="v-wa">Copy</button></div></div>
-        <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5.5 3.5-5.5 3.5z" fill="currentColor"/></svg></span><span class="eyebrow">YouTube</span><span class="val">Christopher The Good Gringo™</span><a class="btn btn-gold" style="justify-self:start; margin-top:6px; padding:8px 16px; font-size:.85rem" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo" target="_blank" rel="noopener">Open YouTube</a></div>
-        <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8.5 7l1.5-3h4l1.5 3"/><circle cx="12" cy="13.5" r="3.5"/></svg></span><span class="eyebrow">Instagram</span><span class="val">@christopherthegoodgringo</span><a class="btn btn-gold" style="justify-self:start; margin-top:6px; padding:8px 16px; font-size:.85rem" href="https://www.instagram.com/christopherthegoodgringo/" target="_blank" rel="noopener">Follow on Instagram</a></div>
-        <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2c3 .2 5.5 2.2 5.5 5.3"/></svg></span><span class="eyebrow">Facebook</span><span class="val">Christopher The Good Gringo™</span><span class="soon-pill">Link coming soon</span></div>
-        <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span><span class="eyebrow">TikTok</span><span class="val">Christopher The Good Gringo™</span><span class="soon-pill">Link coming soon</span></div>
+        <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span class="eyebrow" data-i18n="t82">Email</span><span class="val" id="v-email">christopher@christopherthegoodgringo.com</span><div class="acts"><a class="act act-gold" href="mailto:christopher@christopherthegoodgringo.com" data-i18n="t83">Email me</a><button type="button" id="b-email" data-copy="v-email" data-i18n="t87">Copy</button></div></div>
+        <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.6L3.5 21l1.4-4.9A8.5 8.5 0 1 1 21 12z"/><circle cx="8.5" cy="12" r=".6" fill="currentColor"/><circle cx="12.3" cy="12" r=".6" fill="currentColor"/><circle cx="16" cy="12" r=".6" fill="currentColor"/></svg></span><span class="eyebrow" data-i18n="t84">WhatsApp · Text · Call</span><span class="val" id="v-wa">+1 (305) 440-5175</span><div class="acts"><a class="act act-gold" href="https://wa.me/13054405175" target="_blank" rel="noopener">WhatsApp</a><a class="act" href="sms:+13054405175" data-i18n="t85">Text</a><a class="act" href="tel:+13054405175" data-i18n="t86">Call</a><button type="button" id="b-wa" data-copy="v-wa" data-i18n="t88">Copy</button></div></div>
+        <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5.5 3.5-5.5 3.5z" fill="currentColor"/></svg></span><span class="eyebrow">YouTube</span><span class="val">Christopher The Good Gringo™</span><a class="btn btn-gold" style="justify-self:start; margin-top:6px; padding:8px 16px; font-size:.85rem" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo" target="_blank" rel="noopener" data-i18n="t89">Open YouTube</a></div>
+        <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8.5 7l1.5-3h4l1.5 3"/><circle cx="12" cy="13.5" r="3.5"/></svg></span><span class="eyebrow">Instagram</span><span class="val">@christopherthegoodgringo</span><a class="btn btn-gold" style="justify-self:start; margin-top:6px; padding:8px 16px; font-size:.85rem" href="https://www.instagram.com/christopherthegoodgringo/" target="_blank" rel="noopener" data-i18n="t90">Follow on Instagram</a></div>
+        <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2c3 .2 5.5 2.2 5.5 5.3"/></svg></span><span class="eyebrow">Facebook</span><span class="val">Christopher The Good Gringo™</span><span class="soon-pill" data-i18n="t91">Link coming soon</span></div>
+        <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span><span class="eyebrow">TikTok</span><span class="val">Christopher The Good Gringo™</span><span class="soon-pill" data-i18n="t91">Link coming soon</span></div>
       </div>
     </div>
   </section>
 </main>
 
+
+<div class="lang-pop" id="langPop" role="dialog" aria-modal="true" aria-labelledby="langTitle" hidden>
+  <div class="lang-card">
+    <svg viewBox="0 0 100 100" width="64" height="64" aria-hidden="true"><defs><clipPath id="c2"><circle cx="50" cy="50" r="46"/></clipPath></defs><g clip-path="url(#c2)"><rect width="100" height="100" fill="#FBF4E6"/><circle cx="50" cy="40" r="20" fill="#F5B82E"/><path d="M0 62 L22 42 L36 56 L52 34 L72 56 L86 46 L100 60 V100 H0Z" fill="#0F3D2E"/><path d="M0 78 L26 64 L44 76 L64 62 L84 76 L100 70 V100 H0Z" fill="#082519"/></g><circle cx="50" cy="50" r="46" fill="none" stroke="#F5B82E" stroke-width="6"/></svg>
+    <div class="eyebrow">Christopher The Good Gringo™</div>
+    <h2 id="langTitle">Welcome · Bienvenido</h2>
+    <p>Choose your language · Elige tu idioma</p>
+    <div class="lang-btns">
+      <button type="button" class="btn btn-gold" data-pick="en">English</button>
+      <button type="button" class="btn btn-gold" data-pick="es">Español</button>
+    </div>
+  </div>
+</div>
+
 <footer>
   <div class="wrap">
-    <span><b>Christopher The Good Gringo™</b> · Life in LATAM, done right</span>
+    <span data-i18n="t92"><b>Christopher The Good Gringo™</b> · Life in LATAM, done right</span>
     <span><a href="https://www.instagram.com/christopherthegoodgringo/" target="_blank" rel="noopener">Instagram @christopherthegoodgringo</a> · © 2026 · Colombia</span>
   </div>
 </footer>
@@ -376,11 +404,45 @@ document.querySelectorAll('button[data-copy]').forEach(function (btn) {
     function selectIt() {
       var r = document.createRange(); r.selectNodeContents(el);
       var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
-      done('Selected, press copy');
+      done(window.GG_LANG === 'es' ? 'Seleccionado, copia' : 'Selected, press copy');
     }
     try {
-      navigator.clipboard.writeText(text).then(function () { done('Copied'); }, selectIt);
+      navigator.clipboard.writeText(text).then(function () { done(window.GG_LANG === 'es' ? '¡Copiado!' : 'Copied'); }, selectIt);
     } catch (e) { selectIt(); }
   });
 });
+
+(function () {
+  var ES = {"t1": "Videos", "t2": "Guías gratis", "t3": "Tienda", "t4": "Sobre mí", "t5": "Contacto", "t6": "Suscríbete", "t7": "Vivir en LATAM, como debe ser.", "t8": "Un estadounidense que vive en Latinoamérica. Lugares reales, precios honestos y consejos respetuosos sobre viajes, cultura, citas y más, empezando por Colombia.", "t9": "Ver en YouTube", "t10": "Recibe las guías gratis", "t11": "También en Instagram", "t12": "Contenido nuevo cada día", "t13": "Buen gringo, <span class=\"x\">no</span> un “passport bro”", "t14": "El respeto por la gente y los lugares va primero, en cada video.", "t15": "Lugares reales, <span class=\"ok\">verificados</span>", "t16": "Cada hotel, playa y dato está investigado, y las fotos de los negocios se usan con permiso.", "t17": "Consejos que sí sirven", "t18": "Precios justos, seguridad, estafas que evitar y frases útiles para el viaje.", "t19": "Últimos videos", "t20": "Planes para copiar", "t21": "Guías completas de los viajes que más nos preguntan. Toca cualquiera para verlo en YouTube. Los videos están en inglés.", "t22": "El fin de semana romántico perfecto en Cartagena", "t23": "El fin de semana romántico perfecto en Santa Marta", "t24": "Una primera cita en Medellín, bien hecha", "t25": "¿Vas a comprar esmeraldas en Colombia? Que no te estafen", "t26": "Pesca tu propia cena en Taganga", "t27": "Shorts rápidos", "t28": "20 horas en bus por Colombia", "t29": "¿El pueblo más pequeño de Colombia?", "t30": "La historia de Colombia en 30 segundos", "t31": "Mira esto antes de comprar esmeraldas", "t32": "Tayrona cierra: que no te tome por sorpresa", "t33": "Guías gratis de 69 páginas", "t34": "Dos guías gratis, invita la casa", "t35": "Comenta la palabra clave en el Short de YouTube correspondiente y Christopher te responde con el enlace. Las guías están en inglés.", "t36": "Cómo comprar esmeraldas en Colombia", "t37": "Detecta falsas, sintéticas y tratamientos fuertes", "t38": "Lee y verifica un certificado de laboratorio en cinco minutos", "t39": "Cuánto cuestan de verdad las esmeraldas y cómo negociar con respeto", "t40": "Frases para la joyería y la devolución de impuestos para turistas", "t41": "Pesca en el Caribe, el Pacífico, la Amazonía y la Orinoquía", "t42": "Adónde ir y qué pica en cada temporada", "t43": "Las reglas actuales y cómo pescar con respeto", "t44": "Vocabulario de pesca para el bote y el mercado", "t45": "Comenta EMERALDS", "t46": "en el Short de las esmeraldas. Gratis para las primeras cinco personas.", "t47": "Abrir el Short →", "t48": "Pesca en Colombia", "t49": "Comenta FISHING", "t50": "en el Short de pesca. Gratis para todos los que comenten.", "t51": "Tienda", "t52": "Vístete como un buen gringo", "t53": "La primera colección está en camino. Suscríbete en YouTube para enterarte del lanzamiento.", "t54": "Camiseta clásica", "t55": "Esqueleto Caribe", "t56": "Pantaloneta Cordillera", "t57": "Vaso térmico", "t58": "Llavero", "t59": "Blanca, estampado frontal", "t60": "Toda blanca, logo en la pierna", "t61": "20 oz, blanco", "t62": "Doble cara, reverso blanco", "t63": "Blanco", "t64": "Próximamente", "t65": "Sobre mí", "t66": "Hola, soy Christopher", "t67": "Soy un estadounidense que vive en Latinoamérica, y hago las guías que me hubiera gustado tener cuando llegué.", "t68": "The Good Gringo se trata de vivir aquí de la manera correcta: con curiosidad, con respeto y sin dejarse engañar. Eso significa lugares reales que puedes reservar, precios honestos y lo básico de seguridad.", "t69": "Nada de tonterías de “passport bro”. Solo viajes, cultura, citas y más, con respeto por la gente que hace de estos países lo que son.", "t70": "Vive en", "t71": "Temas", "t72": "Contenido nuevo", "t73": "Viaje favorito", "t74": "Lema", "t75": "Viajes · Cultura · Citas y más", "t76": "Cada día", "t77": "Bogotá → Santa Marta en bus, 20 horas", "t78": "Vivir en LATAM, como debe ser", "t79": "Contacto", "t80": "Escríbeme", "t81": "Colaboraciones, patrocinios, reseñas de negocios o una pregunta sobre un viaje.", "t82": "Correo", "t83": "Escríbeme", "t84": "WhatsApp · Mensaje · Llamada", "t85": "Mensaje", "t86": "Llamar", "t87": "Copiar", "t88": "Copiar", "t89": "Abrir YouTube", "t90": "Seguir en Instagram", "t91": "Enlace próximamente", "t92": "<b>Christopher The Good Gringo™</b> · Vivir en LATAM, como debe ser"};
+  var EN = {};
+  var nodes = document.querySelectorAll('[data-i18n]');
+  nodes.forEach(function (el) { EN[el.getAttribute('data-i18n')] = el.innerHTML; });
+  var KEY = 'gg-lang';
+  function save(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+  function load() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+  function apply(lang) {
+    nodes.forEach(function (el) {
+      var k = el.getAttribute('data-i18n');
+      el.innerHTML = lang === 'es' ? ES[k] : EN[k];
+    });
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang button').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-lang') === lang ? 'true' : 'false');
+    });
+    window.GG_LANG = lang;
+  }
+  var pop = document.getElementById('langPop');
+  function choose(lang) { save(lang); apply(lang); pop.hidden = true; }
+  document.querySelectorAll('[data-pick]').forEach(function (b) {
+    b.addEventListener('click', function () { choose(b.getAttribute('data-pick')); });
+  });
+  document.querySelectorAll('.lang button').forEach(function (b) {
+    b.addEventListener('click', function () { choose(b.getAttribute('data-lang')); });
+  });
+  var q = (location.search.match(/[?&]lang=(en|es)/) || [])[1];
+  var saved = load();
+  var start = q || saved;
+  if (start) { apply(start); if (q) save(q); }
+  else { apply('en'); pop.hidden = false; var first = pop.querySelector('[data-pick]'); if (first) first.focus(); }
+})();
 </script>
