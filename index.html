@@ -179,6 +179,10 @@ html:not([lang="es"]) .ph-en { border-top: 0; margin-top: 0; }
 html[lang="es"] .vid, html[lang="es"] .shorts a { pointer-events: none; position: relative; }
 html[lang="es"] .vid img, html[lang="es"] .shorts img { filter: grayscale(.5) brightness(.65); }
 html[lang="es"] .vid::after, html[lang="es"] .shorts a::after { content: "Próximamente"; position: absolute; top: 12px; left: 12px; background: var(--mango); color: var(--cordillera); font: 700 .78rem var(--body); letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; border-radius: 999px; }
+.soon-box { display: grid; gap: 14px; justify-items: start; max-width: 640px; padding: 32px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
+.soon-box .eyebrow { color: var(--arepa); }
+.soon-box h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; margin: 0; text-wrap: balance; }
+.soon-box p { margin: 0; color: var(--muted); }
 .ph .lang-tag { display: none; }
 .about-copy { display: grid; gap: 14px; }
 .about .facts { align-self: start; align-content: start; }
@@ -218,7 +222,7 @@ footer b { color: var(--band-fg); font-family: var(--display); }
       <span>The Good Gringo™</span>
     </a>
     <nav class="links" aria-label="Sections">
-      <a href="#videos" data-i18n="t1">Videos</a><a href="#guide" data-i18n="t2">Free guides</a><a href="#merch" data-i18n="t3">Merch</a><a href="#about" data-i18n="t4">About</a><a href="#contact" data-i18n="t5">Contact</a>
+      <a data-only="es" href="#proximamente">Próximamente</a><a data-only="en" href="#videos" data-i18n="t1">Videos</a><a data-only="en" href="#guide" data-i18n="t2">Free guides</a><a data-only="en" href="#merch" data-i18n="t3">Merch</a><a href="#about" data-i18n="t4">About</a><a href="#contact" data-i18n="t5">Contact</a>
     </nav>
     <div class="hact">
       <div class="lang" role="group" aria-label="Language / Idioma"><button type="button" data-lang="en">EN</button><button type="button" data-lang="es">ES</button></div>
@@ -239,7 +243,7 @@ footer b { color: var(--band-fg); font-family: var(--display); }
         <p class="sub" data-i18n="t8">An American living in Latin America. Real places, honest prices and respectful tips for travel, culture, dating and more, starting with Colombia.</p>
         <div class="ctas">
           <a class="btn btn-gold" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo" target="_blank" rel="noopener" data-i18n="t9">Watch on YouTube</a>
-          <a class="btn btn-ghost" href="#guide" data-i18n="t10">Get the free guides</a>
+          <a class="btn btn-ghost" data-only="en" href="#guide" data-i18n="t10">Get the free guides</a>
         </div>
         <p class="also"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8.5 7l1.5-3h4l1.5 3"/><circle cx="12" cy="13.5" r="3.5"/></svg><span data-i18n="t11">Also on Instagram</span> <a href="https://www.instagram.com/christopherthegoodgringo/" target="_blank" rel="noopener">@christopherthegoodgringo</a></p>
       </div>
@@ -262,7 +266,18 @@ footer b { color: var(--band-fg); font-family: var(--display); }
     </div>
   </div>
 
-  <section class="block" id="videos">
+  <section class="block soon-es" id="proximamente" data-only="es">
+    <div class="wrap">
+      <div class="soon-box">
+        <div class="eyebrow">Próximamente</div>
+        <h2>Videos, guías y productos en español</h2>
+        <p>Estamos preparando videos, guías gratis y productos en español. Suscríbete en YouTube para ser de los primeros en verlos.</p>
+        <a class="btn btn-gold" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo" target="_blank" rel="noopener">Suscríbete en YouTube</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="videos" data-only="en">
     <div class="wrap">
       <div class="head">
         <div><div class="eyebrow" data-i18n="t19">Latest videos</div><h2 data-i18n="t20">Plans you can steal</h2></div>
@@ -288,7 +303,7 @@ footer b { color: var(--band-fg); font-family: var(--display); }
     </div>
   </section>
 
-  <section class="guide" id="guide">
+  <section class="guide" id="guide" data-only="en">
     <div class="wrap">
       <div class="intro">
         <div class="eyebrow" data-i18n="t33">Free 69-page guides</div>
@@ -336,7 +351,7 @@ footer b { color: var(--band-fg); font-family: var(--display); }
     </div>
   </section>
 
-  <section class="block" id="merch">
+  <section class="block" id="merch" data-only="en">
     <div class="wrap">
       <div class="head">
         <div><div class="eyebrow" data-i18n="t51">Merch</div><h2 data-i18n="t52">Wear the good gringo way</h2></div>
