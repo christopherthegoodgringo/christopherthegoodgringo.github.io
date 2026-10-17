@@ -177,6 +177,9 @@ html[lang="es"] .ph-en, html[lang="es"] [data-only="en"] { display: none; }
 html:not([lang="es"]) .ph-es, html:not([lang="es"]) [data-only="es"] { display: none; }
 html:not([lang="es"]) .ph-en { border-top: 0; margin-top: 0; }
 .ph .lang-tag { display: none; }
+.about-copy { display: grid; gap: 14px; }
+.about .facts { align-self: start; align-content: start; }
+.about-copy h2, .about-copy p { margin: 0; }
 .lang-tag { justify-self: start; font: 700 .72rem var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--cordillera); background: var(--mango); border-radius: 6px; padding: 2px 8px; }
 .acts button { margin-top: 0; padding: 8px 16px; }
 .acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
@@ -348,17 +351,33 @@ footer b { color: var(--band-fg); font-family: var(--display); }
     <div class="wrap">
       <div>
         <div class="eyebrow" style="color: var(--arepa); margin-bottom: 8px;" data-i18n="t65">About</div>
-        <h2 style="font-size: clamp(2rem, 4.4vw, 3rem); font-weight: 800; margin-bottom: 18px;" data-i18n="t66">Hi, I'm Christopher</h2>
-        <p class="lead" data-i18n="t67">I'm an American living in Latin America, and I make the guides I wish I'd had when I arrived.</p>
-        <p data-i18n="t68">The Good Gringo is about doing life here the right way: curious, respectful and not getting played. That means real places you can book, honest prices, the safety basics, and a little Spanish to go with it.</p>
-        <p data-i18n="t69">Just travel, culture, dating and more, with respect for the people who make these countries what they are.</p>
+        <div class="about-copy" data-only="en">
+          <h2 style="font-size: clamp(2rem, 4.4vw, 3rem); font-weight: 800; margin-bottom: 18px;">Hi, I'm Christopher</h2>
+          <p class="lead">I grew up in Arkansas, spent 25 years helping families protect their money, and now I live in Santa Marta, Colombia, with my wife, Mabys.</p>
+          <p>Before the camera, I was a financial advisor for 15 years and a life insurance agent for 10. Along the way I lived in Illinois, Indiana, Arizona and, most recently, Texas. That work taught me to do my homework, look out for people, and tell it straight.</p>
+          <p>In February 2022 I moved to Colombia for the people: the warmth, the kindness, and the way strangers treat you like family. I picked Santa Marta for the heat. Yes, I actually love the heat. Ask me again at 2 p.m. in August.</p>
+          <p>About three and a half years ago, I met Mabys on Colombian Cupid. She's a lawyer who spent most of her career in family law and now works in immigration law, so she knows how things really work here, in Spanish and on paper.</p>
+          <p>I started Christopher The Good Gringo for one reason: to help people. Whether you're thinking about moving, traveling, dating or just curious, I want you to walk away with the knowledge to truly enjoy Latin America: real places, honest prices, the safety basics and respectful tips.</p>
+        </div>
+        <div class="about-copy" data-only="es">
+          <h2 style="font-size: clamp(2rem, 4.4vw, 3rem); font-weight: 800; margin-bottom: 18px;">Hola, soy Mabys</h2>
+          <p class="lead">Soy Mabys Sequea-Quintana y me uno a The Good Gringo para compartir la aventura en español.</p>
+          <p>The Good Gringo se trata de vivir aquí de la manera correcta: con curiosidad, con respeto y sin dejarse engañar. Eso significa lugares reales que puedes reservar, precios honestos y lo básico de seguridad.</p>
+          <p>¿Tienes una pregunta, una colaboración o quieres que visitemos tu negocio? Escríbeme por WhatsApp o por correo, con gusto te atiendo en español.</p>
+        </div>
       </div>
-      <dl class="facts">
-        <div data-only="en"><dt data-i18n="t70">Based in</dt><dd>Colombia</dd></div><div data-only="es"><dt data-i18n="lng">Language</dt><dd data-i18n="lngv">Spanish</dd></div>
-        <div><dt data-i18n="t71">Covers</dt><dd data-i18n="t75">Travel · Culture · Dating &amp; more</dd></div>
-        <div><dt data-i18n="t72">New content</dt><dd data-i18n="t76">Daily</dd></div>
-        <div data-only="en"><dt data-i18n="t73">Favorite ride</dt><dd data-i18n="t77">Bogotá → Santa Marta by bus, 20 hours</dd></div>
-        <div><dt data-i18n="t74">Motto</dt><dd data-i18n="t78">Life in LATAM, done right</dd></div>
+      <dl class="facts" data-only="en">
+        <div><dt>Grew up</dt><dd>Arkansas</dd></div>
+        <div><dt>Lives in</dt><dd>Santa Marta, Colombia</dd></div>
+        <div><dt>Before this</dt><dd>15 years financial advisor · 10 years life insurance</dd></div>
+        <div><dt>Favorite ride</dt><dd>Bogotá → Santa Marta by bus, 20 hours</dd></div>
+        <div><dt>Motto</dt><dd>Life in LATAM, done right</dd></div>
+      </dl>
+      <dl class="facts" data-only="es">
+        <div><dt>Idioma</dt><dd>Español</dd></div>
+        <div><dt>Temas</dt><dd>Viajes · Cultura · Citas y más</dd></div>
+        <div><dt>Contenido nuevo</dt><dd>Cada día</dd></div>
+        <div><dt>Lema</dt><dd>Vivir en LATAM, como debe ser</dd></div>
       </dl>
     </div>
   </section>
