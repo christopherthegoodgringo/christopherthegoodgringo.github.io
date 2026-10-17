@@ -199,6 +199,17 @@ html[lang="es"] .vid::after, html[lang="es"] .shorts a::after { content: "Próxi
 .act-gold { background: var(--mango); color: var(--cordillera); border-color: var(--mango); }
 .act:hover { border-color: var(--mango); }
 .soon-pill { justify-self: start; margin-top: 6px; padding: 8px 16px; font-size: .85rem; font-weight: 700; border-radius: 999px; border: 1px dashed var(--line); color: var(--muted); }
+.nequi .pay { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); gap: 16px; align-items: start; }
+.nequi .num { border: 1px solid var(--line); border-radius: var(--r); padding: 22px; display: grid; gap: 8px; }
+.nequi .num .val { font-size: 1.9rem; font-weight: 800; letter-spacing: .02em; }
+.nequi .num p { margin: 0; opacity: .85; }
+.nequi .num button { justify-self: start; font: 700 .9rem var(--body); background: var(--mango); color: var(--cordillera); border: 0; border-radius: 999px; padding: 10px 20px; cursor: pointer; }
+.nequi .why { display: grid; gap: 16px; }
+.nequi .why > div { border: 1px solid var(--line); border-radius: var(--r); padding: 20px; }
+.nequi .why h3 { margin: 6px 0 6px; font-size: 1.15rem; }
+.nequi .why p { margin: 0; opacity: .85; }
+.nequi .why .eyebrow { color: var(--arepa); }
+@media (max-width: 800px) { .nequi .pay { grid-template-columns: 1fr; } }
 @media (max-width: 800px) { .cards, .contact .cards { grid-template-columns: 1fr; } }
 footer a { color: var(--band-fg); }
 
@@ -227,7 +238,7 @@ footer b { color: var(--band-fg); font-family: var(--display); }
       <span>The Good Gringo™</span>
     </a>
     <nav class="links" aria-label="Sections">
-      <a data-only="es" href="#proximamente">Videos</a><a data-only="en" href="#videos" data-i18n="t1">Videos</a><a data-only="en" href="#guide" data-i18n="t2">Free guides</a><a data-only="en" href="#merch" data-i18n="t3">Merch</a><a href="#about" data-i18n="t4">About</a><a href="#contact" data-i18n="t5">Contact</a>
+      <a data-only="es" href="#proximamente">Videos</a><a data-only="es" href="#nequi">Nequi</a><a data-only="en" href="#videos" data-i18n="t1">Videos</a><a data-only="en" href="#guide" data-i18n="t2">Free guides</a><a data-only="en" href="#merch" data-i18n="t3">Merch</a><a href="#about" data-i18n="t4">About</a><a href="#contact" data-i18n="t5">Contact</a>
     </nav>
     <div class="hact">
       <div class="lang" role="group" aria-label="Language / Idioma"><button type="button" data-lang="en">EN</button><button type="button" data-lang="es">ES</button></div>
@@ -378,6 +389,26 @@ footer b { color: var(--band-fg); font-family: var(--display); }
     </div>
   </section>
 
+  <section class="block nequi" id="nequi" data-only="es">
+    <div class="wrap">
+      <div class="head">
+        <div><div class="eyebrow">Pagos · Nequi</div><h2>Paga o apoya con Nequi</h2></div>
+      </div>
+      <div class="pay">
+        <div class="num">
+          <span class="eyebrow" style="color:var(--arepa)">Número Nequi</span>
+          <span class="val" id="v-nequi">300 383 1359</span>
+          <p>A nombre de <strong>Mabys Sequea-Quintana</strong>. Abre tu app Nequi, toca “Envía” y escribe este número.</p>
+          <button type="button" data-copy="v-nequi">Copiar número</button>
+        </div>
+        <div class="why">
+          <div><span class="eyebrow">Servicios</span><h3>¿Vas a pagar una factura?</h3><p>Si tienes Nequi y vas a pagar una factura por un servicio, envía el pago a este número y escribe tu nombre o el número de la factura en el mensaje.</p></div>
+          <div><span class="eyebrow">Apoya el canal</span><h3>¿Quieres apoyar el canal?</h3><p>Si solo quieres hacer una donación a Christopher The Good Gringo™, también puedes usar este número. ¡Agradecemos cada peso!</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="block about" id="about">
     <div class="wrap">
       <div>
@@ -424,7 +455,6 @@ footer b { color: var(--band-fg); font-family: var(--display); }
       <div class="cards">
         <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span class="eyebrow" data-i18n="t82">Email</span><div class="ph ph-en"><span class="lang-tag" data-i18n="pen">English</span><span class="val" id="v-email">christopher@christopherthegoodgringo.com</span><div class="acts"><a class="act act-gold" href="mailto:christopher@christopherthegoodgringo.com" data-i18n="pem">Send email</a><button type="button" data-copy="v-email" data-i18n="pcp">Copy</button></div></div><div class="ph ph-es"><span class="lang-tag" data-i18n="pes">Español</span><span class="val" id="v-email2">mabys@christopherthegoodgringo.com</span><div class="acts"><a class="act act-gold" href="mailto:mabys@christopherthegoodgringo.com" data-i18n="pem">Send email</a><button type="button" data-copy="v-email2" data-i18n="pcp">Copy</button></div></div></div>
         <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.6L3.5 21l1.4-4.9A8.5 8.5 0 1 1 21 12z"/><circle cx="8.5" cy="12" r=".6" fill="currentColor"/><circle cx="12.3" cy="12" r=".6" fill="currentColor"/><circle cx="16" cy="12" r=".6" fill="currentColor"/></svg></span><span class="eyebrow" data-i18n="t84">WhatsApp · Text · Call</span><div class="ph ph-en"><span class="lang-tag" data-i18n="pen">English</span><span class="val" id="v-wa">+1 (305) 440-5175</span><div class="acts"><a class="act act-gold" href="https://wa.me/13054405175" target="_blank" rel="noopener">WhatsApp</a><a class="act" href="sms:+13054405175" data-i18n="ptx">Text</a><a class="act" href="tel:+13054405175" data-i18n="pca">Call</a><button type="button" data-copy="v-wa" data-i18n="pcp">Copy</button></div></div><div class="ph ph-es"><span class="lang-tag" data-i18n="pes">Español</span><span class="val" id="v-wa2">+57 300 383 1359</span><div class="acts"><a class="act act-gold" href="https://wa.me/573003831359" target="_blank" rel="noopener">WhatsApp</a><a class="act" href="sms:+573003831359" data-i18n="ptx">Text</a><a class="act" href="tel:+573003831359" data-i18n="pca">Call</a><button type="button" data-copy="v-wa2" data-i18n="pcp">Copy</button></div></div></div>
-        <div class="c" data-only="es"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10 18.5h4"/><path d="M12 7v6M9.5 9.5L12 7l2.5 2.5"/></svg></span><span class="eyebrow">Pagos · Nequi</span><span class="val" id="v-nequi">300 383 1359</span><span style="font-size:.86rem;opacity:.8">A nombre de Mabys Sequea-Quintana. Abre tu app Nequi, elige “Envía” y escribe este número.</span><div class="acts"><button type="button" class="act act-gold" data-copy="v-nequi">Copiar número</button></div></div>
         <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5.5 3.5-5.5 3.5z" fill="currentColor"/></svg></span><span class="eyebrow">YouTube</span><span class="val">Christopher The Good Gringo™</span><a class="btn btn-gold" style="justify-self:start; margin-top:6px; padding:8px 16px; font-size:.85rem" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo" target="_blank" rel="noopener" data-i18n="t89">Open YouTube</a></div>
         <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8.5 7l1.5-3h4l1.5 3"/><circle cx="12" cy="13.5" r="3.5"/></svg></span><span class="eyebrow">Instagram</span><span class="val">@christopherthegoodgringo</span><a class="btn btn-gold" style="justify-self:start; margin-top:6px; padding:8px 16px; font-size:.85rem" href="https://www.instagram.com/christopherthegoodgringo/" target="_blank" rel="noopener" data-i18n="t90">Follow on Instagram</a></div>
         <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2c3 .2 5.5 2.2 5.5 5.3"/></svg></span><span class="eyebrow">Facebook</span><span class="val">@christopherthegoodgringo</span><span class="soon-pill" data-i18n="t91">Link coming soon</span></div>
