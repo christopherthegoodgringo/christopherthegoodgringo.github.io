@@ -93,8 +93,8 @@ header .btn { padding: 9px 16px; font-size: .9rem; }
 
 /* Sections */
 section.block { padding-block: 72px; }
-#nequi-en, #paypal-es { padding-top: 8px; }
-#paypal, #nequi { padding-bottom: 32px; }
+
+
 .hsoc { width: 38px; height: 38px; border-radius: 10px; background: var(--cordillera); color: var(--mango); border: 1px solid rgba(245, 184, 46, .45); }
 .hsoc:hover { background: var(--mango); color: var(--cordillera); }
 .hsoc svg { width: 20px; height: 20px; }
@@ -204,11 +204,11 @@ a.claim:hover { border-color: var(--mango); background: rgba(245, 184, 46, .10);
 .c button:hover { border-color: var(--mango); }
 .contact .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 @media (max-width: 1100px) { .contact .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-#v-email, #v-email2 { font-size: .86rem; }
+#v-email { font-size: .86rem; }
 .ph { display: grid; gap: 4px; padding-top: 8px; }
 .ph + .ph { border-top: 1px dashed var(--line); margin-top: 6px; padding-top: 12px; }
 html[lang="es"] .ph-es { order: 1; border-top: 0; margin-top: 0; padding-top: 8px; }
-html[lang="es"] .ph-en, html[lang="es"] [data-only="en"] { display: none; }
+html[lang="es"] [data-only="en"] { display: none; }
 html:not([lang="es"]) .ph-es, html:not([lang="es"]) [data-only="es"] { display: none; }
 html:not([lang="es"]) .ph-en { border-top: 0; margin-top: 0; }
 html[lang="es"] .vid, html[lang="es"] .shorts a { pointer-events: none; position: relative; }
@@ -234,18 +234,18 @@ html[lang="es"] .vid::after, html[lang="es"] .shorts a::after { content: "Próxi
 .act-gold { background: var(--mango); color: var(--cordillera); border-color: var(--mango); }
 .act:hover { border-color: var(--mango); }
 .soon-pill { justify-self: start; margin-top: 6px; padding: 8px 16px; font-size: .85rem; font-weight: 700; border-radius: 999px; border: 1px dashed var(--line); color: var(--muted); }
-.nequi .pay { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); gap: 16px; align-items: start; }
-.nequi .num { border: 1px solid var(--line); border-radius: var(--r); padding: 22px; display: grid; gap: 8px; }
-.nequi .num .val { font-size: 1.9rem; font-weight: 800; letter-spacing: .02em; }
-.nequi .num p { margin: 0; opacity: .85; }
-.nequi .num button { justify-self: start; font: 700 .9rem var(--body); background: var(--mango); color: var(--cordillera); border: 0; border-radius: 999px; padding: 10px 20px; cursor: pointer; }
-.nequi .acts button { background: transparent; color: var(--fg); border: 1px solid var(--line); font-size: .85rem; padding: 8px 16px; }
-.nequi .why { display: grid; gap: 16px; }
-.nequi .why > div { border: 1px solid var(--line); border-radius: var(--r); padding: 20px; }
-.nequi .why h3 { margin: 6px 0 6px; font-size: 1.15rem; }
-.nequi .why p { margin: 0; opacity: .85; }
-.nequi .why .eyebrow { color: var(--arepa); }
-@media (max-width: 800px) { .nequi .pay { grid-template-columns: 1fr; } }
+.pay-sec .pay { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); gap: 16px; align-items: start; }
+.pay-sec .num { border: 1px solid var(--line); border-radius: var(--r); padding: 22px; display: grid; gap: 8px; }
+.pay-sec .num .val { font-size: 1.9rem; font-weight: 800; letter-spacing: .02em; }
+.pay-sec .num p { margin: 0; opacity: .85; }
+.pay-sec .num button { justify-self: start; font: 700 .9rem var(--body); background: var(--mango); color: var(--cordillera); border: 0; border-radius: 999px; padding: 10px 20px; cursor: pointer; }
+.pay-sec .acts button { background: transparent; color: var(--fg); border: 1px solid var(--line); font-size: .85rem; padding: 8px 16px; }
+.pay-sec .why { display: grid; gap: 16px; }
+.pay-sec .why > div { border: 1px solid var(--line); border-radius: var(--r); padding: 20px; }
+.pay-sec .why h3 { margin: 6px 0 6px; font-size: 1.15rem; }
+.pay-sec .why p { margin: 0; opacity: .85; }
+.pay-sec .why .eyebrow { color: var(--arepa); }
+@media (max-width: 800px) { .pay-sec .pay { grid-template-columns: 1fr; } }
 @media (max-width: 800px) { .cards, .contact .cards { grid-template-columns: 1fr; } }
 footer a { color: var(--band-fg); }
 
@@ -274,7 +274,7 @@ footer b { color: var(--band-fg); font-family: var(--display); }
       <span>The Good Gringo™</span>
     </a>
     <nav class="links" aria-label="Sections">
-      <a data-only="es" href="#proximamente">Videos</a><a data-only="es" href="#nequi">Pagos</a><a data-only="en" href="#videos" data-i18n="t1">Videos</a><a data-only="en" href="#guide" data-i18n="t2">Guides</a><a data-only="en" href="#merch" data-i18n="t3">Merch</a><a data-only="en" href="#paypal">Payments</a><a href="#about" data-i18n="t4">About</a><a data-only="en" href="/team/">Team</a><a data-only="es" href="/team/">Equipo</a><a href="#contact" data-i18n="t5">Contact</a>
+      <a data-only="es" href="#proximamente">Videos</a><a data-only="es" href="#paypal-es">Pagos</a><a data-only="en" href="#videos" data-i18n="t1">Videos</a><a data-only="en" href="#guide" data-i18n="t2">Guides</a><a data-only="en" href="#merch" data-i18n="t3">Merch</a><a data-only="en" href="#paypal">Payments</a><a href="#about" data-i18n="t4">About</a><a data-only="en" href="/team/">Team</a><a data-only="es" href="/team/">Equipo</a><a href="#contact" data-i18n="t5">Contact</a>
     </nav>
     <div class="hact">
       <div class="lang" role="group" aria-label="Language / Idioma"><button type="button" data-lang="en">EN</button><button type="button" data-lang="es">ES</button></div>
@@ -442,7 +442,7 @@ footer b { color: var(--band-fg); font-family: var(--display); }
     </div>
   </section>
 
-  <section class="block nequi" id="paypal" data-only="en">
+  <section class="block pay-sec" id="paypal" data-only="en">
     <div class="wrap">
       <div class="head">
         <div><div class="eyebrow">Payments · PayPal</div><h2>Pay or support with PayPal</h2></div>
@@ -462,58 +462,18 @@ footer b { color: var(--band-fg); font-family: var(--display); }
     </div>
   </section>
 
-  <section class="block nequi" id="nequi-en" data-only="en" lang="es">
-    <div class="wrap">
-      <div class="head">
-        <div><div class="eyebrow">Pagos · Llave Bre-B</div><h2>Paga o apoya con Nequi o tu banco</h2></div>
-      </div>
-      <div class="pay">
-        <div class="num">
-          <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/><path d="M14 8.2c-.5-.7-1.2-1-2-1-1.1 0-2 .6-2 1.5 0 2 4 1.2 4 3.2 0 .9-.9 1.6-2 1.6-.9 0-1.7-.4-2.1-1.1M12 6v1.2M12 13.5v1.2"/></svg></span>
-          <span class="eyebrow" style="color:var(--arepa)">Llave Bre-B · Nu</span>
-          <span class="val" id="v-nequi-en">52382417</span>
-          <p>A nombre de <strong>Mabys Sequea-Quintana</strong>. Desde Nequi, Nu o tu banco, elige enviar con <strong>llave Bre-B</strong> y escribe esta llave. El botón abre Nequi.</p>
-          <div class="acts"><a class="act act-gold" href="https://www.nequi.com.co/" target="_blank" rel="noopener">Pagar con Nequi</a><button type="button" class="act" data-copy="v-nequi-en">Copiar llave</button></div>
-        </div>
-        <div class="why">
-          <div><span class="eyebrow">Servicios</span><h3>¿Vas a pagar una factura?</h3><p>Si vas a pagar una factura por un servicio, envía el pago a esta llave y escribe tu nombre o el número de la factura en el mensaje.</p></div>
-          <div><h3 style="margin-top:0">¿Quieres apoyar el canal?</h3><p>Si solo quieres hacer una donación a Christopher The Good Gringo™, también puedes usar esta llave. ¡Agradecemos cada peso!</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <section class="block nequi" id="nequi" data-only="es">
-    <div class="wrap">
-      <div class="head">
-        <div><div class="eyebrow">Pagos · Llave Bre-B</div><h2>Paga o apoya con Nequi o tu banco</h2></div>
-      </div>
-      <div class="pay">
-        <div class="num">
-          <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/><path d="M14 8.2c-.5-.7-1.2-1-2-1-1.1 0-2 .6-2 1.5 0 2 4 1.2 4 3.2 0 .9-.9 1.6-2 1.6-.9 0-1.7-.4-2.1-1.1M12 6v1.2M12 13.5v1.2"/></svg></span>
-          <span class="eyebrow" style="color:var(--arepa)">Llave Bre-B · Nu</span>
-          <span class="val" id="v-nequi">52382417</span>
-          <p>A nombre de <strong>Mabys Sequea-Quintana</strong>. Desde Nequi, Nu o tu banco, elige enviar con <strong>llave Bre-B</strong> y escribe esta llave. El botón abre Nequi.</p>
-          <div class="acts"><a class="act act-gold" href="https://www.nequi.com.co/" target="_blank" rel="noopener">Pagar con Nequi</a><button type="button" class="act" data-copy="v-nequi">Copiar llave</button></div>
-        </div>
-        <div class="why">
-          <div><span class="eyebrow">Servicios</span><h3>¿Vas a pagar una factura?</h3><p>Si vas a pagar una factura por un servicio, envía el pago a esta llave y escribe tu nombre o el número de la factura en el mensaje.</p></div>
-          <div><h3 style="margin-top:0">¿Quieres apoyar el canal?</h3><p>Si solo quieres hacer una donación a Christopher The Good Gringo™, también puedes usar esta llave. ¡Agradecemos cada peso!</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <section class="block nequi" id="paypal-es" data-only="es">
+  <section class="block pay-sec" id="paypal-es" data-only="es">
     <div class="wrap">
       <div class="head">
-        <div><div class="eyebrow">Desde cualquier país · PayPal</div><h2>Paga o apoya con PayPal</h2></div>
+        <div><div class="eyebrow">Pagos · PayPal</div><h2>Paga o apoya con PayPal</h2></div>
       </div>
       <div class="pay">
         <div class="num">
           <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/><path d="M14 8.2c-.5-.7-1.2-1-2-1-1.1 0-2 .6-2 1.5 0 2 4 1.2 4 3.2 0 .9-.9 1.6-2 1.6-.9 0-1.7-.4-2.1-1.1M12 6v1.2M12 13.5v1.2"/></svg></span>
           <span class="eyebrow" style="color:var(--arepa)">Enlace de PayPal</span>
-          <p>Si estás en otro país o no tienes Nequi, usa PayPal. Toca el botón, escribe el monto y envía.</p>
+          <p>Toca el botón para abrir PayPal, escribe el monto y envía.</p>
           <div class="acts"><a class="act act-gold" href="https://paypal.me/JamesKesl" target="_blank" rel="noopener">Pagar con PayPal</a></div>
         </div>
         <div class="why">
@@ -530,18 +490,18 @@ footer b { color: var(--band-fg); font-family: var(--display); }
         <div class="eyebrow" style="color: var(--arepa); margin-bottom: 8px;" data-i18n="t65">About</div>
         <div class="about-copy" data-only="en">
           <h2 style="font-size: clamp(2rem, 4.4vw, 3rem); font-weight: 800; margin-bottom: 18px;">Hi, I'm Christopher</h2>
-          <p class="lead">I grew up in Arkansas, spent 25 years helping families protect their money, and now I live in Santa Marta, Colombia, with my wife, Mabys.</p>
+          <p class="lead">I grew up in Arkansas, spent 25 years helping families protect their money, and now I live in Santa Marta, Colombia.</p>
           <p>Before the camera, I was a financial advisor for 15 years and a life insurance agent for 10. Along the way I lived in Illinois, Indiana, Arizona and, most recently, Texas. That work taught me to do my homework, look out for people, and tell it straight.</p>
           <p>In February 2022 I moved to Colombia for the people: the warmth, the kindness, and the way strangers treat you like family. I picked Santa Marta for the heat. Yes, I actually love the heat. Ask me again at 2 p.m. in August.</p>
-          <p>About three and a half years ago, I met Mabys on Colombian Cupid. She's a lawyer who spent most of her career in family law and now works in immigration law, so she knows how things really work here, in Spanish and on paper.</p>
           <p>I started Christopher The Good Gringo™ for one reason: to help people. Whether you're thinking about moving, traveling, dating or just curious, I want you to walk away with the knowledge to truly enjoy Latin America: real places, honest prices, the safety basics and respectful tips.</p>
         </div>
         <div class="about-copy" data-only="es">
-          <h2 style="font-size: clamp(2rem, 4.4vw, 3rem); font-weight: 800; margin-bottom: 18px;">Hola, soy Mabys</h2>
-          <p class="lead">Soy samaria de segunda generación, abogada con 25 años de experiencia y esposa de Christopher.</p>
-          <p>Durante la mayor parte de mi carrera he trabajado en derecho de familia, y hoy me dedico al derecho migratorio: visas, residencia, trámites de matrimonio para extranjeros y mucho más. Lo que más me motiva es ayudar a las personas a defender sus derechos cuando han sido vulnerados. Fuera del trabajo, soy muy activa en mi iglesia.</p>
-          <p>Me uno a Christopher The Good Gringo™ porque creo en construir un puente entre culturas y en ayudar a las personas a moverse en temas complejos con confianza y claridad. Quiero que quienes nos ven tengan una perspectiva real y honesta de cómo funcionan las cosas, y que se sientan con la seguridad de que sus derechos y su tranquilidad van primero.</p>
-          <p>¿Tienes una pregunta, una colaboración o necesitas orientación? Escríbeme por WhatsApp o por correo; con gusto te atiendo en español.</p>
+          <h2 style="font-size: clamp(2rem, 4.4vw, 3rem); font-weight: 800; margin-bottom: 18px;">Hola, soy Christopher</h2>
+          <p class="lead">Crecí en Arkansas, pasé 25 años ayudando a familias a proteger su dinero y hoy vivo en Santa Marta, Colombia.</p>
+          <p>Antes de la cámara fui asesor financiero durante 15 años y agente de seguros de vida durante 10. En el camino viví en Illinois, Indiana, Arizona y, más recientemente, Texas. Ese trabajo me enseñó a investigar bien, a cuidar a la gente y a hablar claro.</p>
+          <p>En febrero de 2022 me mudé a Colombia por su gente: la calidez, la amabilidad y la forma en que te tratan como familia. Elegí Santa Marta por el calor. Sí, de verdad me encanta el calor.</p>
+          <p>Creé Christopher The Good Gringo™ por una sola razón: ayudar a las personas. Lugares reales, precios honestos, lo básico de seguridad y consejos respetuosos para disfrutar de verdad Latinoamérica.</p>
+          <p>¿Tienes una pregunta o una colaboración? Escríbeme por WhatsApp o por correo.</p>
         </div>
       </div>
       <dl class="facts" data-only="en">
@@ -552,10 +512,10 @@ footer b { color: var(--band-fg); font-family: var(--display); }
         <div><dt>Motto</dt><dd>Life in LATAM, done right</dd></div>
       </dl>
       <dl class="facts" data-only="es">
-        <div><dt>De</dt><dd>Santa Marta (segunda generación)</dd></div>
-        <div><dt>Profesión</dt><dd>Abogada · 25 años</dd></div>
-        <div><dt>Hoy</dt><dd>Derecho migratorio</dd></div>
-        <div><dt>Idioma</dt><dd>Español</dd></div>
+        <div><dt>Creció en</dt><dd>Arkansas</dd></div>
+        <div><dt>Vive en</dt><dd>Santa Marta, Colombia</dd></div>
+        <div><dt>Antes de esto</dt><dd>15 años asesor financiero · 10 años seguros de vida</dd></div>
+        <div><dt>Viaje favorito</dt><dd>Bogotá → Santa Marta en bus, 20 horas</dd></div>
         <div><dt>Lema</dt><dd>Vivir en LATAM, como debe ser</dd></div>
       </dl>
     </div>
@@ -568,8 +528,8 @@ footer b { color: var(--band-fg); font-family: var(--display); }
         <p data-i18n="t81">Collaborations, sponsorships, venue features or a question about a trip.</p>
       </div>
       <div class="cards">
-        <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span class="eyebrow" data-i18n="t82">Email</span><div class="ph ph-en"><span class="lang-tag" data-i18n="pen">English</span><span class="val" id="v-email">christopher@christopherthegoodgringo.com</span><div class="acts"><a class="act act-gold" href="mailto:christopher@christopherthegoodgringo.com" data-i18n="pem">Send email</a><button type="button" data-copy="v-email" data-i18n="pcp">Copy</button></div></div><div class="ph ph-es"><span class="lang-tag" data-i18n="pes">Español</span><span class="val" id="v-email2">mabys@christopherthegoodgringo.com</span><div class="acts"><a class="act act-gold" href="mailto:mabys@christopherthegoodgringo.com" data-i18n="pem">Send email</a><button type="button" data-copy="v-email2" data-i18n="pcp">Copy</button></div></div></div>
-        <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.6L3.5 21l1.4-4.9A8.5 8.5 0 1 1 21 12z"/><circle cx="8.5" cy="12" r=".6" fill="currentColor"/><circle cx="12.3" cy="12" r=".6" fill="currentColor"/><circle cx="16" cy="12" r=".6" fill="currentColor"/></svg></span><span class="eyebrow" data-i18n="t84">WhatsApp · Text · Call</span><div class="ph ph-en"><span class="lang-tag" data-i18n="pen">English</span><span class="val" id="v-wa">+1 (305) 440-5175</span><div class="acts"><a class="act act-gold" href="https://wa.me/13054405175" target="_blank" rel="noopener">WhatsApp</a><a class="act" href="sms:+13054405175" data-i18n="ptx">Text</a><a class="act" href="tel:+13054405175" data-i18n="pca">Call</a><button type="button" data-copy="v-wa" data-i18n="pcp">Copy</button></div></div><div class="ph ph-es"><span class="lang-tag" data-i18n="pes">Español</span><span class="val" id="v-wa2">+57 300 383 1359</span><div class="acts"><a class="act act-gold" href="https://wa.me/573003831359" target="_blank" rel="noopener">WhatsApp</a><a class="act" href="sms:+573003831359" data-i18n="ptx">Text</a><a class="act" href="tel:+573003831359" data-i18n="pca">Call</a><button type="button" data-copy="v-wa2" data-i18n="pcp">Copy</button></div></div></div>
+        <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span class="eyebrow" data-i18n="t82">Email</span><div class="ph ph-en"><span class="lang-tag" data-i18n="pen">English</span><span class="val" id="v-email">christopher@christopherthegoodgringo.com</span><div class="acts"><a class="act act-gold" href="mailto:christopher@christopherthegoodgringo.com" data-i18n="pem">Send email</a><button type="button" data-copy="v-email" data-i18n="pcp">Copy</button></div></div></div>
+        <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.6L3.5 21l1.4-4.9A8.5 8.5 0 1 1 21 12z"/><circle cx="8.5" cy="12" r=".6" fill="currentColor"/><circle cx="12.3" cy="12" r=".6" fill="currentColor"/><circle cx="16" cy="12" r=".6" fill="currentColor"/></svg></span><span class="eyebrow" data-i18n="t84">WhatsApp · Text · Call</span><div class="ph ph-en"><span class="lang-tag" data-i18n="pen">English</span><span class="val" id="v-wa">+1 (305) 440-5175</span><div class="acts"><a class="act act-gold" href="https://wa.me/13054405175" target="_blank" rel="noopener">WhatsApp</a><a class="act" href="sms:+13054405175" data-i18n="ptx">Text</a><a class="act" href="tel:+13054405175" data-i18n="pca">Call</a><button type="button" data-copy="v-wa" data-i18n="pcp">Copy</button></div></div></div>
         <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5.5 3.5-5.5 3.5z" fill="currentColor"/></svg></span><span class="eyebrow">YouTube</span><span class="val">Christopher The Good Gringo™</span><a class="btn btn-gold" style="justify-self:start; margin-top:6px; padding:8px 16px; font-size:.85rem" href="https://www.youtube.com/results?search_query=Christopher+The+Good+Gringo" target="_blank" rel="noopener" data-i18n="t89">Open YouTube</a></div>
         <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8.5 7l1.5-3h4l1.5 3"/><circle cx="12" cy="13.5" r="3.5"/></svg></span><span class="eyebrow">Instagram</span><span class="val">@christopherthegoodgringo</span><a class="btn btn-gold" style="justify-self:start; margin-top:6px; padding:8px 16px; font-size:.85rem" href="https://www.instagram.com/christopherthegoodgringo/" target="_blank" rel="noopener" data-i18n="t90">Follow on Instagram</a></div>
         <div class="c"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2c3 .2 5.5 2.2 5.5 5.3"/></svg></span><span class="eyebrow">Facebook</span><span class="val">@christopherthegoodgringo</span><span class="soon-pill" data-i18n="t91">Link coming soon</span></div>
@@ -619,7 +579,7 @@ document.querySelectorAll('button[data-copy]').forEach(function (btn) {
 });
 
 (function () {
-  var ES = {"pem": "Enviar correo", "pen": "English", "pes": "Español", "ptx": "Mensaje", "pca": "Llamar", "pcp": "Copiar", "t1": "Videos", "t2": "Guías", "t3": "Tienda", "t4": "Sobre mí", "t5": "Contacto", "t6": "Suscríbete", "t7": "Vivir en LATAM, como debe ser.", "t8": "Mabys comparte lugares reales, precios honestos y consejos respetuosos sobre viajes, cultura y más en Latinoamérica.", "t9": "Ver en YouTube", "t10": "Recibe las guías gratis", "t11": "También en Instagram, Facebook y TikTok", "t12": "Contenido nuevo cada día", "t13": "El respeto <span class=\"ok\">primero</span>", "t14": "Tratamos a la gente y los lugares que visitamos como nos gustaría que nos trataran, en cada video.", "t15": "Lugares reales, <span class=\"ok\">verificados</span>", "t16": "Cada hotel, playa y dato está investigado, y las fotos de los negocios se usan con permiso.", "t17": "Consejos que sí sirven", "t18": "Precios justos, seguridad, estafas que evitar y frases útiles para el viaje.", "t19": "Últimos videos", "t20": "Planes para copiar", "t21": "Pronto publicaremos estos videos en español. Suscríbete para no perdértelos.", "t22": "El fin de semana romántico perfecto en Cartagena", "t23": "El fin de semana romántico perfecto en Santa Marta", "t24": "Una primera cita en Medellín, bien hecha", "t25": "¿Vas a comprar esmeraldas en Colombia? Que no te estafen", "t26": "Pesca tu propia cena en Taganga", "t27": "Shorts rápidos", "t28": "20 horas en bus por Colombia", "t29": "¿El pueblo más pequeño de Colombia?", "t30": "La historia de Colombia en 30 segundos", "t31": "Mira esto antes de comprar esmeraldas", "t32": "Tayrona cierra: que no te tome por sorpresa", "t33": "Guías gratis de 69 páginas", "t34": "Dos guías gratis, invita la casa", "t35": "Pronto tendremos estas guías gratis en español. Mientras tanto, están disponibles en inglés en el sitio en inglés.", "t36": "Cómo comprar esmeraldas en Colombia", "t37": "Detecta falsas, sintéticas y tratamientos fuertes", "t38": "Lee y verifica un certificado de laboratorio en cinco minutos", "t39": "Cuánto cuestan de verdad las esmeraldas y cómo negociar con respeto", "t40": "Frases para la joyería y la devolución de impuestos para turistas", "t41": "Pesca en el Caribe, el Pacífico, la Amazonía y la Orinoquía", "t42": "Adónde ir y qué pica en cada temporada", "t43": "Las reglas actuales y cómo pescar con respeto", "t44": "Vocabulario de pesca para el bote y el mercado", "t45": "Comenta EMERALDS", "t46": "en el Short de las esmeraldas. Gratis para las primeras cinco personas.", "t47": "Abrir el Short →", "t48": "Pesca en Colombia", "t49": "Comenta FISHING", "t50": "en el Short de pesca. Gratis para todos los que comenten.", "t51": "Tienda", "t52": "Vístete como un buen gringo", "t53": "La primera colección está en camino. Suscríbete en YouTube para enterarte del lanzamiento.", "t54": "Camiseta clásica", "t55": "Esqueleto Caribe", "t56": "Pantaloneta Cordillera", "t57": "Vaso térmico", "t58": "Llavero", "t59": "Blanca, estampado frontal", "t60": "Toda blanca, logo en la pierna", "t61": "20 oz, blanco", "t62": "Doble cara, reverso blanco", "t63": "Blanco", "t64": "Próximamente", "t65": "Sobre mí", "t66": "Hola, soy Mabys", "t67": "Soy Mabys Sequea-Quintana y me uno a The Good Gringo para compartir la aventura en español.", "t68": "The Good Gringo se trata de vivir aquí de la manera correcta: con curiosidad, con respeto y sin dejarse engañar. Eso significa lugares reales que puedes reservar, precios honestos y lo básico de seguridad.", "t69": "¿Tienes una pregunta, una colaboración o quieres que visitemos tu negocio? Escríbeme por WhatsApp o por correo, con gusto te atiendo en español.", "t70": "Vive en", "t71": "Temas", "t72": "Contenido nuevo", "t73": "Viaje favorito", "t74": "Lema", "t75": "Viajes · Cultura · Citas y más", "t76": "Cada día", "t77": "Bogotá → Santa Marta en bus, 20 horas", "t78": "Vivir en LATAM, como debe ser", "t79": "Contacto", "t80": "Escríbeme", "t81": "Colaboraciones, patrocinios, reseñas de negocios o una pregunta sobre un viaje.", "t82": "Correo", "t83": "Escríbeme", "t84": "WhatsApp · Mensaje · Llamada", "t85": "Mensaje", "t86": "Llamar", "t87": "Copiar", "t88": "Copiar", "t89": "Abrir YouTube", "t90": "Seguir en Instagram", "t91": "Enlace próximamente", "t92": "<b>Christopher The Good Gringo™</b> · Vivir en LATAM, como debe ser", "hey": "Mabys", "lng": "Idioma", "lngv": "Español"};
+  var ES = {"pem": "Enviar correo", "pen": "English", "pes": "Español", "ptx": "Mensaje", "pca": "Llamar", "pcp": "Copiar", "t1": "Videos", "t2": "Guías", "t3": "Tienda", "t4": "Sobre mí", "t5": "Contacto", "t6": "Suscríbete", "t7": "Vivir en LATAM, como debe ser.", "t8": "Un estadounidense que vive en Latinoamérica. Lugares reales, precios honestos y consejos respetuosos sobre viajes, cultura, citas y más, empezando por Colombia.", "t9": "Ver en YouTube", "t10": "Recibe las guías gratis", "t11": "También en Instagram, Facebook y TikTok", "t12": "Contenido nuevo cada día", "t13": "El respeto <span class=\"ok\">primero</span>", "t14": "Tratamos a la gente y los lugares que visitamos como nos gustaría que nos trataran, en cada video.", "t15": "Lugares reales, <span class=\"ok\">verificados</span>", "t16": "Cada hotel, playa y dato está investigado, y las fotos de los negocios se usan con permiso.", "t17": "Consejos que sí sirven", "t18": "Precios justos, seguridad, estafas que evitar y frases útiles para el viaje.", "t19": "Últimos videos", "t20": "Planes para copiar", "t21": "Pronto publicaremos estos videos en español. Suscríbete para no perdértelos.", "t22": "El fin de semana romántico perfecto en Cartagena", "t23": "El fin de semana romántico perfecto en Santa Marta", "t24": "Una primera cita en Medellín, bien hecha", "t25": "¿Vas a comprar esmeraldas en Colombia? Que no te estafen", "t26": "Pesca tu propia cena en Taganga", "t27": "Shorts rápidos", "t28": "20 horas en bus por Colombia", "t29": "¿El pueblo más pequeño de Colombia?", "t30": "La historia de Colombia en 30 segundos", "t31": "Mira esto antes de comprar esmeraldas", "t32": "Tayrona cierra: que no te tome por sorpresa", "t33": "Guías gratis de 69 páginas", "t34": "Dos guías gratis, invita la casa", "t35": "Pronto tendremos estas guías gratis en español. Mientras tanto, están disponibles en inglés en el sitio en inglés.", "t36": "Cómo comprar esmeraldas en Colombia", "t37": "Detecta falsas, sintéticas y tratamientos fuertes", "t38": "Lee y verifica un certificado de laboratorio en cinco minutos", "t39": "Cuánto cuestan de verdad las esmeraldas y cómo negociar con respeto", "t40": "Frases para la joyería y la devolución de impuestos para turistas", "t41": "Pesca en el Caribe, el Pacífico, la Amazonía y la Orinoquía", "t42": "Adónde ir y qué pica en cada temporada", "t43": "Las reglas actuales y cómo pescar con respeto", "t44": "Vocabulario de pesca para el bote y el mercado", "t45": "Comenta EMERALDS", "t46": "en el Short de las esmeraldas. Gratis para las primeras cinco personas.", "t47": "Abrir el Short →", "t48": "Pesca en Colombia", "t49": "Comenta FISHING", "t50": "en el Short de pesca. Gratis para todos los que comenten.", "t51": "Tienda", "t52": "Vístete como un buen gringo", "t53": "La primera colección está en camino. Suscríbete en YouTube para enterarte del lanzamiento.", "t54": "Camiseta clásica", "t55": "Esqueleto Caribe", "t56": "Pantaloneta Cordillera", "t57": "Vaso térmico", "t58": "Llavero", "t59": "Blanca, estampado frontal", "t60": "Toda blanca, logo en la pierna", "t61": "20 oz, blanco", "t62": "Doble cara, reverso blanco", "t63": "Blanco", "t64": "Próximamente", "t65": "Sobre mí", "t66": "Hola, soy Christopher", "t67": "Soy Christopher, de Arkansas, y vivo en Santa Marta, Colombia.", "t68": "The Good Gringo se trata de vivir aquí de la manera correcta: con curiosidad, con respeto y sin dejarse engañar. Eso significa lugares reales que puedes reservar, precios honestos y lo básico de seguridad.", "t69": "¿Tienes una pregunta, una colaboración o quieres que visitemos tu negocio? Escríbeme por WhatsApp o por correo, con gusto te atiendo en español.", "t70": "Vive en", "t71": "Temas", "t72": "Contenido nuevo", "t73": "Viaje favorito", "t74": "Lema", "t75": "Viajes · Cultura · Citas y más", "t76": "Cada día", "t77": "Bogotá → Santa Marta en bus, 20 horas", "t78": "Vivir en LATAM, como debe ser", "t79": "Contacto", "t80": "Escríbeme", "t81": "Colaboraciones, patrocinios, reseñas de negocios o una pregunta sobre un viaje.", "t82": "Correo", "t83": "Escríbeme", "t84": "WhatsApp · Mensaje · Llamada", "t85": "Mensaje", "t86": "Llamar", "t87": "Copiar", "t88": "Copiar", "t89": "Abrir YouTube", "t90": "Seguir en Instagram", "t91": "Enlace próximamente", "t92": "<b>Christopher The Good Gringo™</b> · Vivir en LATAM, como debe ser", "hey": "Christopher", "lng": "Idioma", "lngv": "Español"};
   var EN = {};
   var nodes = document.querySelectorAll('[data-i18n]');
   nodes.forEach(function (el) { EN[el.getAttribute('data-i18n')] = el.innerHTML; });
@@ -636,11 +596,6 @@ document.querySelectorAll('button[data-copy]').forEach(function (btn) {
       if (!im.getAttribute('data-en-src')) im.setAttribute('data-en-src', im.getAttribute('src'));
       im.src = lang === 'es' ? im.getAttribute('data-es-src') : im.getAttribute('data-en-src');
     });
-    var pic = document.querySelector('.portrait img');
-    if (pic) {
-      pic.src = lang === 'es' ? 'img/head_mabys.jpg' : 'img/head.jpg';
-      pic.alt = lang === 'es' ? 'Mabys Sequea-Quintana, The Good Gringo' : 'Christopher, host of The Good Gringo';
-    }
     document.querySelectorAll('.lang button').forEach(function (b) {
       b.setAttribute('aria-pressed', b.getAttribute('data-lang') === lang ? 'true' : 'false');
     });
