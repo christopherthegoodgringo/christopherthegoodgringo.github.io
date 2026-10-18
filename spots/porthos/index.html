@@ -1,0 +1,201 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Porthos Steakhouse &amp; Pub</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<style>
+/* Layout: a one-page sales sheet in the Good Gringo field-guide style. Green band hero, cream sections, gold for every action. */
+:root {
+  --cordillera: #0F3D2E; --ridge: #0B2F23; --ridge-deep: #082519;
+  --mango: #F5B82E; --arepa: #E85D3F; --mint: #CFE3D8;
+  --bg: #FBF4E6; --surface: #FFFDF8; --fg: #14261E; --muted: #4F6259; --line: #E4DAC4; --accent-ink: #B07A0C;
+  --band-bg: #0F3D2E; --band-fg: #FBF4E6; --band-muted: #CFE3D8;
+  --display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r: 14px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0A2219; --surface: #0F2E23; --fg: #F3EDE0; --muted: #A9BFB4; --line: #1E4636; --accent-ink: #F5B82E; --band-bg: #082519; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #0A2219; --surface: #0F2E23; --fg: #F3EDE0; --muted: #A9BFB4; --line: #1E4636; --accent-ink: #F5B82E; --band-bg: #082519; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 17px; line-height: 1.6; margin: 0; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--band-bg); }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.05; letter-spacing: -0.01em; }
+a { color: inherit; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font-size: .76rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; }
+.btn { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1rem; text-decoration: none; border-radius: 999px; padding: 13px 22px; border: 2px solid transparent; cursor: pointer; font-family: var(--body); }
+.btn:focus-visible, a:focus-visible, button:focus-visible { outline: 3px solid var(--mango); outline-offset: 3px; }
+.btn-gold { background: var(--mango); color: var(--cordillera); }
+.btn-ghost { border-color: currentColor; color: var(--band-fg); background: transparent; }
+.sample-bar { background: var(--mango); color: var(--cordillera); font-weight: 700; font-size: .85rem; text-align: center; padding-block: 8px; }
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--band-bg); color: var(--band-fg); border-bottom: 1px solid rgba(251,244,230,.08); }
+header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px; }
+.mark { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 800; font-size: 1.02rem; }
+.mark svg { width: 32px; height: 32px; flex: none; }
+.lang { display: inline-flex; border: 1px solid rgba(251,244,230,.25); border-radius: 999px; padding: 3px; }
+.lang button { font: 700 .8rem var(--body); color: var(--band-fg); background: transparent; border: 0; border-radius: 999px; padding: 6px 11px; cursor: pointer; }
+.lang button[aria-pressed="true"] { background: var(--mango); color: var(--cordillera); }
+.hero { background: var(--band-bg); color: var(--band-fg); position: relative; overflow: hidden; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); gap: 32px; align-items: center; padding-block: 56px 96px; position: relative; z-index: 1; }
+.hero .eyebrow { color: var(--mango); margin-bottom: 14px; }
+.hero h1 { font-size: clamp(2.2rem, 5.4vw, 3.9rem); font-weight: 800; }
+.hero p.lead { color: var(--band-muted); font-size: 1.12rem; max-width: 34em; margin: 18px 0 26px; }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+.badge-wrap { display: grid; justify-items: center; gap: 12px; }
+.badge { width: min(240px, 60vw); aspect-ratio: 1; max-width: 100%; border-radius: 50%; background: var(--ridge); border: 10px solid var(--mango); display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: clamp(3rem, 8vw, 5rem); color: var(--band-fg); }
+.badge-name { text-align: center; }
+.badge-name b { display: block; font-family: var(--display); font-size: 1.3rem; }
+.badge-name span { color: var(--band-muted); font-size: .9rem; }
+.chip { display: inline-block; background: var(--arepa); color: #fff; font-weight: 700; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; border-radius: 6px; padding: 4px 10px; }
+.hero svg.mtn { position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; height: 70px; }
+section.block { padding-block: 68px; }
+.head { display: grid; gap: 8px; margin-bottom: 28px; max-width: 42em; }
+.head .eyebrow { color: var(--arepa); }
+.head h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); font-weight: 800; }
+.head p { color: var(--muted); margin: 0; }
+.offers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.offer { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 22px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.ico { width: 46px; height: 46px; border-radius: 12px; background: var(--cordillera); color: var(--mango); display: grid; place-items: center; }
+.offer h3 { font-size: 1.3rem; font-weight: 700; margin-top: 4px; }
+.offer p { margin: 0; color: var(--muted); }
+.offer small { color: var(--accent-ink); font-weight: 700; font-size: .82rem; }
+.two-lang { background: var(--band-bg); color: var(--band-fg); }
+.two-lang .head .eyebrow { color: var(--mango); }
+.two-lang .head p { color: var(--band-muted); }
+.langs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.langcard { border: 1px solid rgba(251,244,230,.18); border-radius: var(--r); padding: 22px; display: grid; gap: 6px; min-width: 0; }
+.langcard .eyebrow { color: var(--mango); }
+.langcard h3 { font-size: 1.4rem; }
+.langcard p { margin: 0; color: var(--band-muted); }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; counter-reset: s; }
+.steps li { counter-increment: s; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 20px; min-width: 0; }
+.steps li::before { content: counter(s); display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--mango); color: var(--cordillera); font-weight: 800; font-family: var(--display); margin-bottom: 10px; }
+.steps b { display: block; font-size: 1.05rem; margin-bottom: 4px; }
+.steps span { color: var(--muted); font-size: .95rem; }
+.about { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 32px; align-items: start; }
+.about p { margin: 0 0 14px; max-width: 36em; }
+.facts { margin: 0; border-top: 2px solid var(--fg); }
+.facts div { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.facts dt { font-weight: 700; }
+.facts dd { margin: 0; color: var(--muted); text-align: right; }
+.contact .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.c { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 22px; display: grid; gap: 8px; min-width: 0; }
+.c .eyebrow { color: var(--arepa); }
+.c .val { font-weight: 700; font-size: 1.1rem; overflow-wrap: anywhere; }
+.acts { display: flex; gap: 8px; flex-wrap: wrap; }
+.act { display: inline-flex; align-items: center; padding: 9px 16px; border-radius: 999px; font: 700 .88rem var(--body); text-decoration: none; border: 1px solid var(--line); color: var(--fg); background: transparent; cursor: pointer; }
+.act-gold { background: var(--mango); border-color: var(--mango); color: var(--cordillera); }
+.ph { font-size: .78rem; color: var(--arepa); font-weight: 700; }
+footer { background: var(--ridge-deep); color: var(--band-muted); font-size: .9rem; }
+footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-block: 24px; }
+footer b { color: var(--band-fg); }
+footer a { color: var(--mango); text-decoration: none; }
+html[lang="es"] [data-l="en"], html:not([lang="es"]) [data-l="es"] { display: none !important; }
+@media (max-width: 820px) {
+  .hero .wrap, .about { grid-template-columns: 1fr; }
+  .hero .wrap { padding-block: 36px 84px; }
+  .badge-wrap { order: -1; }
+  .badge { width: 150px; font-size: 2.8rem; border-width: 7px; }
+  .offers, .langs, .contact .cards { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 460px) { .steps { grid-template-columns: 1fr; } .mark span { font-size: .92rem; } }
+</style>
+<style>
+.spot-hero { background: var(--band-bg); color: var(--band-fg); position: relative; overflow: hidden; }
+.spot-hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; padding-block: 44px 92px; position: relative; z-index: 1; }
+.spot-hero .eyebrow { color: var(--mango); margin-bottom: 12px; }
+.spot-hero h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 800; }
+.spot-hero .where { color: var(--band-muted); font-size: 1.1rem; margin: 10px 0 22px; }
+.photo { aspect-ratio: 4 / 3; max-width: 100%; border-radius: 18px; border: 6px solid var(--mango); background: radial-gradient(circle at 70% 30%, #6b3a1f 0, #3b1f12 45%, #1c0f09 100%); display: grid; place-items: center; text-align: center; color: #f3e2c8; padding: 16px; }
+.photo b { display: block; font-family: var(--display); font-size: 1.4rem; }
+.photo span { font-size: .9rem; opacity: .85; }
+.spot-hero svg.mtn { position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; height: 70px; }
+.partner { display: inline-flex; gap: 6px; align-items: center; background: rgba(245,184,46,.15); color: var(--mango); border: 1px solid rgba(245,184,46,.5); border-radius: 999px; padding: 4px 12px; font-weight: 700; font-size: .78rem; margin-bottom: 12px; }
+.grid2 { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); gap: 32px; align-items: start; }
+.grid2 p { margin: 0 0 14px; max-width: 36em; }
+.tip { background: var(--surface); border: 1px solid var(--line); border-left: 6px solid var(--mango); border-radius: var(--r); padding: 18px 20px; margin-top: 8px; }
+.tip b { color: var(--accent-ink); }
+.confirm { color: var(--arepa); font-weight: 700; }
+.preview-card { max-width: 340px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+.preview-card .ph-img { aspect-ratio: 16 / 9; background: radial-gradient(circle at 70% 30%, #6b3a1f 0, #3b1f12 50%, #1c0f09 100%); }
+.preview-card .in { padding: 16px; display: grid; gap: 6px; }
+.preview-card .in small { color: var(--arepa); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; font-size: .72rem; }
+.preview-card .in b { font-family: var(--display); font-size: 1.25rem; }
+.preview-card .in span { color: var(--muted); font-size: .95rem; }
+.how { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 32px; align-items: start; }
+.how ol { margin: 0; padding-left: 1.2em; display: grid; gap: 10px; }
+@media (max-width: 820px) { .spot-hero .wrap, .grid2, .how { grid-template-columns: 1fr; } }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="https://christopherthegoodgringo.com" aria-label="Christopher The Good Gringo™ home">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><defs><clipPath id="c1"><circle cx="50" cy="50" r="46"/></clipPath></defs><g clip-path="url(#c1)"><rect width="100" height="100" fill="#FBF4E6"/><circle cx="50" cy="40" r="20" fill="#F5B82E"/><path d="M0 78 L28 50 L46 66 L64 44 L100 76 L100 100 L0 100Z" fill="#0F3D2E"/><path d="M0 90 L34 72 L60 86 L100 70 L100 100 L0 100Z" fill="#0B2F23"/></g><circle cx="50" cy="50" r="46" fill="none" stroke="#F5B82E" stroke-width="6"/></svg>
+      <span>The Good Gringo™</span>
+    </a>
+    <div class="lang" role="group" aria-label="Language / Idioma"><button type="button" id="l-en" data-lang="en">EN</button><button type="button" id="l-es" data-lang="es">ES</button></div>
+  </div>
+</header>
+
+<section class="spot-hero">
+  <div class="wrap">
+    <div>
+      <div class="partner">★ <span data-l="en">On our list · Review coming soon</span><span data-l="es">En nuestra lista · Reseña pronto</span></div>
+      <div class="eyebrow"><span data-l="en">Santa Marta · Steakhouse &amp; pub</span><span data-l="es">Santa Marta · Asadero y pub</span></div>
+      <h1>Porthos Steakhouse &amp; Pub</h1>
+      <p class="where"><span data-l="en">Grilled steaks, drinks and a night out in Santa Marta.</span><span data-l="es">Carnes a la parrilla, bebidas y una buena noche en Santa Marta.</span></p>
+      <div class="ctas">
+        <a class="btn btn-gold" href="https://www.google.com/maps/search/?api=1&query=Porthos+Steakhouse+Santa+Marta" target="_blank" rel="noopener"><span data-l="en">Get directions</span><span data-l="es">Cómo llegar</span></a>
+        <a class="btn btn-ghost" href="#details"><span data-l="en">Details</span><span data-l="es">Datos</span></a>
+      </div>
+    </div>
+    <div class="photo"><div><b><span data-l="en">Photos coming soon</span><span data-l="es">Fotos muy pronto</span></b><span><span data-l="en">From our visit</span><span data-l="es">De nuestra visita</span></span></div></div>
+  </div>
+  <svg class="mtn" viewBox="0 0 1200 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40 L120 14 L260 38 L420 6 L580 34 L760 10 L940 36 L1080 16 L1200 30 L1200 70 L0 70Z" fill="#0B2F23"/><path d="M0 58 L200 40 L420 56 L640 36 L880 56 L1200 42 L1200 70 L0 70Z" fill="var(--bg)"/></svg>
+</section>
+
+<section class="block" id="details">
+  <div class="wrap grid2">
+    <div>
+      <div class="head" style="margin-bottom:14px">
+        <div class="eyebrow"><span data-l="en">Our review</span><span data-l="es">Nuestra reseña</span></div>
+        <h2><span data-l="en">Review coming soon</span><span data-l="es">Reseña muy pronto</span></h2>
+      </div>
+      <p><span data-l="en">We're planning a visit to Porthos. We'll share what we ordered, what it cost and how the service was, with no sugarcoating.</span><span data-l="es">Estamos planeando una visita a Porthos. Contaremos qué pedimos, cuánto costó y cómo fue el servicio, sin adornos.</span></p>
+      <div class="tip"><b><span data-l="en">Good Gringo tip:</span><span data-l="es">Consejo Good Gringo:</span></b> <span data-l="en">Ask for the price of the cut before you order, and check if service is included on the bill.</span><span data-l="es">Pregunte el precio del corte antes de pedir y revise si el servicio está incluido en la cuenta.</span></div>
+    </div>
+    <dl class="facts">
+      <div><dt><span data-l="en">Type</span><span data-l="es">Tipo</span></dt><dd><span data-l="en">Steakhouse &amp; pub</span><span data-l="es">Asadero y pub</span></dd></div>
+      <div><dt><span data-l="en">City</span><span data-l="es">Ciudad</span></dt><dd>Santa Marta</dd></div>
+    </dl>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span><b>Christopher The Good Gringo™</b> · <span data-l="en">Life in LATAM, done right</span><span data-l="es">Vivir en LATAM, como debe ser</span></span>
+    <a href="https://christopherthegoodgringo.com"><span data-l="en">Back to the main site</span><span data-l="es">Volver al sitio principal</span></a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var lang = "en";
+  try { lang = localStorage.getItem("gg-lang") === "es" ? "es" : "en"; } catch (e) {}
+  function apply() { document.documentElement.lang = lang;
+    document.getElementById("l-en").setAttribute("aria-pressed", lang === "en"); document.getElementById("l-es").setAttribute("aria-pressed", lang === "es"); }
+  document.querySelectorAll("[data-lang]").forEach(function (b) { b.addEventListener("click", function () {
+    lang = b.getAttribute("data-lang"); try { localStorage.setItem("gg-lang", lang); } catch (e) {} apply(); }); });
+  apply();
+  document.querySelectorAll("[data-copy]").forEach(function (b) { b.addEventListener("click", function () {
+    var el = document.getElementById(b.getAttribute("data-copy")), label = b.innerHTML;
+    function done() { b.textContent = lang === "es" ? "¡Copiado!" : "Copied"; setTimeout(function () { b.innerHTML = label; }, 1600); }
+    function sel() { var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+    try { navigator.clipboard.writeText(el.textContent.trim()).then(done, sel); } catch (e) { sel(); } }); });
+})();
+</script>

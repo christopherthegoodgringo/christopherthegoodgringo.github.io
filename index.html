@@ -101,6 +101,15 @@ section.block { padding-block: 72px; }
 .hsoc-row { display: none; }
 @media (max-width: 1100px) { .hact .hsoc { display: none; } .hsoc-row { display: flex; justify-content: center; gap: 10px; padding: 0 0 10px; } .hsoc-row .hsoc { display: grid !important; } }
 nav a { white-space: nowrap; }
+.spot-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: 16px; }
+.spot-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; text-decoration: none; color: var(--fg); display: grid; min-width: 0; }
+.spot-card:hover { border-color: var(--mango); }
+.spot-img { aspect-ratio: 16 / 9; background: radial-gradient(circle at 70% 30%, #6b3a1f 0, #3b1f12 50%, #1c0f09 100%); }
+.spot-in { padding: 14px 16px 16px; display: grid; gap: 4px; }
+.spot-in small { color: var(--arepa); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .72rem; }
+.spot-in b { font-family: var(--display); font-size: 1.25rem; }
+.spot-in > span { color: var(--muted); font-size: .95rem; }
+@media (max-width: 820px) { .spot-grid { grid-template-columns: 1fr; } }
 .spot-cta { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 16px; align-items: center; background: var(--surface); border: 2px dashed var(--line); border-radius: var(--r); padding: 20px 22px; text-decoration: none; color: var(--fg); }
 .spot-cta:hover { border-color: var(--mango); }
 .spot-ico { width: 52px; height: 52px; border-radius: 14px; background: var(--cordillera); color: var(--mango); display: grid; place-items: center; }
@@ -309,6 +318,24 @@ footer b { color: var(--band-fg); font-family: var(--display); }
     </div>
   </div>
 
+  <section class="block spots" id="spots">
+    <div class="wrap">
+      <div class="head"><div><div class="eyebrow"><span data-only="en">Featured spots</span><span data-only="es">Lugares destacados</span></div><h2><span data-only="en">Places we've checked</span><span data-only="es">Lugares que verificamos</span></h2></div>
+        <p><span data-only="en">Hotels, restaurants and tours we visit and recommend, with honest reviews.</span><span data-only="es">Hoteles, restaurantes y tours que visitamos y recomendamos, con reseñas honestas.</span></p></div>
+      <div class="spot-grid">
+        <a class="spot-card" href="/spots/porthos/">
+          <span class="spot-img" aria-hidden="true"></span>
+          <span class="spot-in"><small><span data-only="en">Santa Marta · Steakhouse &amp; pub</span><span data-only="es">Santa Marta · Asadero y pub</span></small><b>Porthos Steakhouse &amp; Pub</b><span><span data-only="en">Review coming soon</span><span data-only="es">Reseña muy pronto</span></span></span>
+        </a>
+      </div>
+      <a class="spot-cta" href="/daniel/">
+        <span class="spot-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
+        <span class="spot-txt"><b><span data-only="en">Want your place here?</span><span data-only="es">¿Quiere su lugar aquí?</span></b><span><span data-only="en">Own a hotel, restaurant or tour? Ask Daniel about getting featured.</span><span data-only="es">¿Tiene un hotel, restaurante o tour? Pregúntele a Daniel cómo aparecer aquí.</span></span></span>
+        <span class="spot-go"><span data-only="en">Get featured →</span><span data-only="es">Quiero aparecer →</span></span>
+      </a>
+    </div>
+  </section>
+
   <section class="block soon-es" id="proximamente" data-only="es">
     <div class="wrap">
       <div class="head es-head">
@@ -413,18 +440,6 @@ footer b { color: var(--band-fg); font-family: var(--display); }
         <div class="item"><div class="pic"><img src="img/m_tumbler.jpg" alt="White 20 oz drink tumbler with the badge and wordmark" loading="lazy"></div><div class="txt"><h3 data-i18n="t57">Drink tumbler</h3><p data-i18n="t61">20 oz, white</p><span class="soon" data-i18n="t64">Coming soon</span></div></div>
         <div class="item"><div class="pic"><img src="img/m_key.jpg" alt="Round acrylic keychain, front and back" loading="lazy"></div><div class="txt"><h3 data-i18n="t58">Keychain</h3><p data-i18n="t62">Two-sided, white back</p><span class="soon" data-i18n="t64">Coming soon</span></div></div>
       </div>
-    </div>
-  </section>
-
-  <section class="block spots" id="spots">
-    <div class="wrap">
-      <div class="head"><div><div class="eyebrow"><span data-only="en">Featured spots</span><span data-only="es">Lugares destacados</span></div><h2><span data-only="en">Places we've checked</span><span data-only="es">Lugares que verificamos</span></h2></div>
-        <p><span data-only="en">Hotels, restaurants and tours we visit and recommend, with honest reviews.</span><span data-only="es">Hoteles, restaurantes y tours que visitamos y recomendamos, con reseñas honestas.</span></p></div>
-      <a class="spot-cta" href="/daniel/">
-        <span class="spot-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
-        <span class="spot-txt"><b><span data-only="en">First featured spots coming soon</span><span data-only="es">Los primeros lugares destacados, muy pronto</span></b><span><span data-only="en">Own a hotel, restaurant or tour? Ask Daniel about getting featured.</span><span data-only="es">¿Tiene un hotel, restaurante o tour? Pregúntele a Daniel cómo aparecer aquí.</span></span></span>
-        <span class="spot-go"><span data-only="en">Get featured →</span><span data-only="es">Quiero aparecer →</span></span>
-      </a>
     </div>
   </section>
 
