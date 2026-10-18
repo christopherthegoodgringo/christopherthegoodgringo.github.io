@@ -125,6 +125,11 @@ html[lang="es"] [data-l="en"], html:not([lang="es"]) [data-l="es"] { display: no
 .person .acts { justify-content: center; margin-top: 6px; }
 .person .sample { font-size: .72rem; font-weight: 700; color: var(--muted); border: 1px dashed var(--line); border-radius: 999px; padding: 2px 9px; }
 @media (max-width: 900px) { .people { grid-template-columns: 1fr; max-width: 460px; margin: 0 auto; } }
+
+html[lang="mix"] [data-l="es"] { display: none !important; }
+html[lang="mix"] .es-first [data-l="en"] { display: none !important; }
+html[lang="mix"] .es-first [data-l="es"] { display: inline !important; }
+
 </style>
 
 <header class="top">
@@ -156,22 +161,22 @@ html[lang="es"] [data-l="en"], html:not([lang="es"]) [data-l="es"] { display: no
       <p><span data-l="en">From Arkansas, 25 years in finance and insurance, now living in Santa Marta. Hosts the English videos.</span><span data-l="es">De Arkansas, 25 años en finanzas y seguros, ahora vive en Santa Marta. Presenta los videos en inglés.</span></p>
       <div class="acts"><a class="act act-gold" href="https://wa.me/13054405175" target="_blank" rel="noopener">WhatsApp</a><a class="act" href="mailto:christopher@christopherthegoodgringo.com">Email</a></div>
     </div>
-    <div class="person">
+    <div class="person es-first">
       <img src="../img/head_mabys.jpg" alt="Mabys Sequea-Quintana">
       <h2>Mabys</h2>
-      <div class="role">Copresentadora · Abogada</div>
+      <div class="role"><span data-l="en">Co-host · Lawyer</span><span data-l="es">Copresentadora · Abogada</span></div>
       <div class="langs"><span>Español</span></div>
-      <p>Samaria de segunda generación y abogada por 25 años en derecho de familia y migración. Presenta los videos en español.</p>
-      <div class="acts"><a class="act act-gold" href="https://wa.me/573003831359" target="_blank" rel="noopener">WhatsApp</a><a class="act" href="mailto:mabys@christopherthegoodgringo.com">Correo</a></div>
+      <p><span data-l="en">Second-generation samaria and a lawyer for 25 years in family and immigration law. Hosts the Spanish videos.</span><span data-l="es">Samaria de segunda generación y abogada por 25 años en derecho de familia y migración. Presenta los videos en español.</span></p>
+      <div class="acts"><a class="act act-gold" href="https://wa.me/573003831359" target="_blank" rel="noopener">WhatsApp</a><a class="act" href="mailto:mabys@christopherthegoodgringo.com"><span data-l="en">Email</span><span data-l="es">Correo</span></a></div>
     </div>
-    <div class="person">
+    <div class="person es-first">
       <div class="ini" role="img" aria-label="Daniel Felipe">DF</div>
       <h2>Daniel Felipe</h2>
-      <div class="role">Patrocinios</div>
+      <div class="role"><span data-l="en">Sponsorships</span><span data-l="es">Patrocinios</span></div>
       <div class="langs"><span>English</span><span>Español</span></div>
-      <p>Ayuda a hoteles, restaurantes, tours y marcas locales a aparecer en el canal.</p>
-      <span class="sample">Perfil de ejemplo</span>
-      <div class="acts"><a class="act act-gold" href="../daniel/">Ver patrocinios</a></div>
+      <p><span data-l="en">Helps hotels, restaurants, tours and local brands get featured on the channel.</span><span data-l="es">Ayuda a hoteles, restaurantes, tours y marcas locales a aparecer en el canal.</span></p>
+      <span class="sample"><span data-l="en">Sample profile</span><span data-l="es">Perfil de ejemplo</span></span>
+      <div class="acts"><a class="act act-gold" href="../daniel/"><span data-l="en">See sponsorships</span><span data-l="es">Ver patrocinios</span></a></div>
     </div>
   </div>
 </section>
@@ -185,12 +190,12 @@ html[lang="es"] [data-l="en"], html:not([lang="es"]) [data-l="es"] { display: no
 
 <script>
 (function () {
-  var lang = "en";
-  try { lang = localStorage.getItem("gg-lang") === "es" ? "es" : "en"; } catch (e) {}
+  var lang = "mix";
+  try { var t = sessionStorage.getItem("gg-team-lang"); if (t === "en" || t === "es") lang = t; } catch (e) {}
   function apply() { document.documentElement.lang = lang;
     document.getElementById("l-en").setAttribute("aria-pressed", lang === "en"); document.getElementById("l-es").setAttribute("aria-pressed", lang === "es"); }
   document.querySelectorAll("[data-lang]").forEach(function (b) { b.addEventListener("click", function () {
-    lang = b.getAttribute("data-lang"); try { localStorage.setItem("gg-lang", lang); } catch (e) {} apply(); }); });
+    lang = b.getAttribute("data-lang"); try { localStorage.setItem("gg-lang", lang); sessionStorage.setItem("gg-team-lang", lang); } catch (e) {} apply(); }); });
   apply();
   document.querySelectorAll("[data-copy]").forEach(function (b) { b.addEventListener("click", function () {
     var el = document.getElementById(b.getAttribute("data-copy")), label = b.innerHTML;
