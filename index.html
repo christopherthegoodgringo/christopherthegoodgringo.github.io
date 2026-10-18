@@ -101,6 +101,16 @@ section.block { padding-block: 72px; }
 .hsoc-row { display: none; }
 @media (max-width: 1100px) { .hact .hsoc { display: none; } .hsoc-row { display: flex; justify-content: center; gap: 10px; padding: 0 0 10px; } .hsoc-row .hsoc { display: grid !important; } }
 nav a { white-space: nowrap; }
+.spot-cta { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 16px; align-items: center; background: var(--surface); border: 2px dashed var(--line); border-radius: var(--r); padding: 20px 22px; text-decoration: none; color: var(--fg); }
+.spot-cta:hover { border-color: var(--mango); }
+.spot-ico { width: 52px; height: 52px; border-radius: 14px; background: var(--cordillera); color: var(--mango); display: grid; place-items: center; }
+.spot-txt { display: grid; gap: 2px; min-width: 0; }
+.spot-txt b { font-family: var(--display); font-size: 1.25rem; }
+.spot-txt > span { color: var(--muted); }
+.spot-go { background: var(--mango); color: var(--cordillera); font-weight: 700; border-radius: 999px; padding: 10px 18px; white-space: nowrap; }
+#spots { padding-bottom: 8px; }
+@media (max-width: 640px) { .spot-cta { grid-template-columns: auto minmax(0, 1fr); } .spot-go { grid-column: 1 / -1; justify-self: start; } }
+
 footer .team-link { color: inherit; opacity: .75; text-decoration: none; }
 footer .team-link:hover { opacity: 1; text-decoration: underline; }
 @media (min-width: 701px) { .mark span { white-space: nowrap; } }
@@ -403,6 +413,18 @@ footer b { color: var(--band-fg); font-family: var(--display); }
         <div class="item"><div class="pic"><img src="img/m_tumbler.jpg" alt="White 20 oz drink tumbler with the badge and wordmark" loading="lazy"></div><div class="txt"><h3 data-i18n="t57">Drink tumbler</h3><p data-i18n="t61">20 oz, white</p><span class="soon" data-i18n="t64">Coming soon</span></div></div>
         <div class="item"><div class="pic"><img src="img/m_key.jpg" alt="Round acrylic keychain, front and back" loading="lazy"></div><div class="txt"><h3 data-i18n="t58">Keychain</h3><p data-i18n="t62">Two-sided, white back</p><span class="soon" data-i18n="t64">Coming soon</span></div></div>
       </div>
+    </div>
+  </section>
+
+  <section class="block spots" id="spots">
+    <div class="wrap">
+      <div class="head"><div><div class="eyebrow"><span data-only="en">Featured spots</span><span data-only="es">Lugares destacados</span></div><h2><span data-only="en">Places we've checked</span><span data-only="es">Lugares que verificamos</span></h2></div>
+        <p><span data-only="en">Hotels, restaurants and tours we visit and recommend, with honest reviews.</span><span data-only="es">Hoteles, restaurantes y tours que visitamos y recomendamos, con reseñas honestas.</span></p></div>
+      <a class="spot-cta" href="/daniel/">
+        <span class="spot-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
+        <span class="spot-txt"><b><span data-only="en">First featured spots coming soon</span><span data-only="es">Los primeros lugares destacados, muy pronto</span></b><span><span data-only="en">Own a hotel, restaurant or tour? Ask Daniel about getting featured.</span><span data-only="es">¿Tiene un hotel, restaurante o tour? Pregúntele a Daniel cómo aparecer aquí.</span></span></span>
+        <span class="spot-go"><span data-only="en">Get featured →</span><span data-only="es">Quiero aparecer →</span></span>
+      </a>
     </div>
   </section>
 
