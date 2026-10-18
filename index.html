@@ -204,6 +204,7 @@ html[lang="es"] .vid::after, html[lang="es"] .shorts a::after { content: "Próxi
 .nequi .num .val { font-size: 1.9rem; font-weight: 800; letter-spacing: .02em; }
 .nequi .num p { margin: 0; opacity: .85; }
 .nequi .num button { justify-self: start; font: 700 .9rem var(--body); background: var(--mango); color: var(--cordillera); border: 0; border-radius: 999px; padding: 10px 20px; cursor: pointer; }
+.nequi .acts button { background: transparent; color: var(--fg); border: 1px solid var(--line); font-size: .85rem; padding: 8px 16px; }
 .nequi .why { display: grid; gap: 16px; }
 .nequi .why > div { border: 1px solid var(--line); border-radius: var(--r); padding: 20px; }
 .nequi .why h3 { margin: 6px 0 6px; font-size: 1.15rem; }
@@ -238,7 +239,7 @@ footer b { color: var(--band-fg); font-family: var(--display); }
       <span>The Good Gringo™</span>
     </a>
     <nav class="links" aria-label="Sections">
-      <a data-only="es" href="#proximamente">Videos</a><a data-only="es" href="#nequi">Pagos</a><a data-only="en" href="#videos" data-i18n="t1">Videos</a><a data-only="en" href="#guide" data-i18n="t2">Free guides</a><a data-only="en" href="#merch" data-i18n="t3">Merch</a><a href="#about" data-i18n="t4">About</a><a href="#contact" data-i18n="t5">Contact</a>
+      <a data-only="es" href="#proximamente">Videos</a><a data-only="es" href="#nequi">Pagos</a><a data-only="en" href="#videos" data-i18n="t1">Videos</a><a data-only="en" href="#guide" data-i18n="t2">Free guides</a><a data-only="en" href="#merch" data-i18n="t3">Merch</a><a data-only="en" href="#paypal">Payments</a><a href="#about" data-i18n="t4">About</a><a href="#contact" data-i18n="t5">Contact</a>
     </nav>
     <div class="hact">
       <div class="lang" role="group" aria-label="Language / Idioma"><button type="button" data-lang="en">EN</button><button type="button" data-lang="es">ES</button></div>
@@ -385,6 +386,27 @@ footer b { color: var(--band-fg); font-family: var(--display); }
         <div class="item"><div class="pic"><img src="img/m_shorts.jpg" alt="All-white shorts with leg logo" loading="lazy"></div><div class="txt"><h3 data-i18n="t56">Cordillera shorts</h3><p data-i18n="t60">All white, leg logo</p><span class="soon" data-i18n="t64">Coming soon</span></div></div>
         <div class="item"><div class="pic"><img src="img/m_tumbler.jpg" alt="White 20 oz drink tumbler with the badge and wordmark" loading="lazy"></div><div class="txt"><h3 data-i18n="t57">Drink tumbler</h3><p data-i18n="t61">20 oz, white</p><span class="soon" data-i18n="t64">Coming soon</span></div></div>
         <div class="item"><div class="pic"><img src="img/m_key.jpg" alt="Round acrylic keychain, front and back" loading="lazy"></div><div class="txt"><h3 data-i18n="t58">Keychain</h3><p data-i18n="t62">Two-sided, white back</p><span class="soon" data-i18n="t64">Coming soon</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block nequi" id="paypal" data-only="en">
+    <div class="wrap">
+      <div class="head">
+        <div><div class="eyebrow">Payments · PayPal</div><h2>Pay or support with PayPal</h2></div>
+      </div>
+      <div class="pay">
+        <div class="num">
+          <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/><path d="M14 8.2c-.5-.7-1.2-1-2-1-1.1 0-2 .6-2 1.5 0 2 4 1.2 4 3.2 0 .9-.9 1.6-2 1.6-.9 0-1.7-.4-2.1-1.1M12 6v1.2M12 13.5v1.2"/></svg></span>
+          <span class="eyebrow" style="color:var(--arepa)">PayPal link</span>
+          <span class="val" id="v-paypal" style="font-size:1.5rem;overflow-wrap:anywhere">paypal.me/JamesKesl</span>
+          <p>Tap the button to open PayPal, enter the amount and send. You can also copy the link and paste it into the PayPal app.</p>
+          <div class="acts"><a class="act act-gold" href="https://paypal.me/JamesKesl" target="_blank" rel="noopener">Pay with PayPal</a><button type="button" data-copy="v-paypal">Copy link</button></div>
+        </div>
+        <div class="why">
+          <div><span class="eyebrow">Services</span><h3>Paying an invoice?</h3><p>If you're paying an invoice for a service, send the payment through this link and put your name or the invoice number in the note.</p></div>
+          <div><h3 style="margin-top:0">Want to support the channel?</h3><p>If you'd just like to donate to Christopher The Good Gringo™, you can use this link too. We appreciate every dollar!</p></div>
+        </div>
       </div>
     </div>
   </section>
