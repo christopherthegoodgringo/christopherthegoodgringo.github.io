@@ -29,12 +29,15 @@
 <script>
 const countries = [
 ["MX","Mexico"],["BZ","Belize"],["CR","Costa Rica"],["SV","El Salvador"],["GT","Guatemala"],["HN","Honduras"],["NI","Nicaragua"],["PA","Panama"],
-["AR","Argentina"],["BO","Bolivia"],["CL","Chile"],["CO","Colombia"],["EC","Ecuador"],["PY","Paraguay"],["PE","Peru"],["UY","Uruguay"],
-["CU","Cuba"],["DO","Dominican Republic"]
+["AR","Argentina"],["BO","Bolivia"],["BR","Brazil"],["CL","Chile"],["CO","Colombia"],["EC","Ecuador"],["GF","French Guiana"],["GY","Guyana"],["PY","Paraguay"],["PE","Peru"],["SR","Suriname"],["UY","Uruguay"],["VE","Venezuela"],
+["CU","Cuba"],["DO","Dominican Republic"],["HT","Haiti"],["JM","Jamaica"],["BS","Bahamas"],["BB","Barbados"],["TT","Trinidad and Tobago"],["AG","Antigua and Barbuda"],["DM","Dominica"],["GD","Grenada"],["KN","Saint Kitts and Nevis"],["LC","Saint Lucia"],["VC","Saint Vincent and the Grenadines"]
 ];
 const country=document.querySelector('#country'), destination=document.querySelector('#destination'), search=document.querySelector('#search'), load=document.querySelector('#load'), status=document.querySelector('#status'), results=document.querySelector('#results'), count=document.querySelector('#count'), title=document.querySelector('#resultsTitle');
 countries.sort((a,b)=>a[1].localeCompare(b[1])).forEach(([code,name])=>{const o=document.createElement('option');o.value=code;o.textContent=name;country.append(o)});
 let listings=[];
+let cachedHostelsPromise=null;
+function getCachedHostels(){if(!cachedHostelsPromise)cachedHostelsPromise=fetch('/data/hostels.json?v=weekly').then(r=>{if(!r.ok)throw new Error('Cached hostel data not available');return r.json();}).then(d=>d.hostels||[]).catch(()=>[]);return cachedHostelsPromise;}
+function distanceKm(a,b,c,d){const rad=x=>x*Math.PI/180;const p= Math.sin(rad(c-a)/2)**2+Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(rad(d-b)/2)**2;return 6371*2*Math.atan2(Math.sqrt(p),Math.sqrt(1-p));}
 const citySuggestions=document.querySelector('#citySuggestions');
 let suggestionTimer=null,suggestionController=null,chosenPlace=null;
 function closeSuggestions(){citySuggestions.hidden=true;destination.setAttribute('aria-expanded','false');}
@@ -107,6 +110,19 @@ async function loadHostels(){
    target=geo.find(x=>x.lat&&x.lon)||geo[0];
   }
   if(!target.lat||!target.lon)throw new Error('Found the destination but could not determine its map location. Try a nearby city name.');
+  // Prefer the weekly static database so visitor searches do not wait on Overpass.
+  const cached=await getCachedHostels();
+  if(cached.length){
+   const nearby=cached.filter(x=>x.countryCode===code&&distanceKm(Number(target.lat),Number(target.lon),Number(x.lat),Number(x.lon))<=10);
+   if(nearby.length){
+    listings=nearby;
+    listings.sort((a,b)=>a.name.localeCompare(b.name));
+    title.textContent='Hostels near '+(target.display_name.split(',')[0]||place);
+    status.textContent='Showing saved OpenStreetMap hostel data within about 10 km of '+place+'. Database refreshed weekly; details may change.';
+    count.textContent=listings.length+' listings';
+    search.disabled=false;search.value='';render();return;
+   }
+  }
   // Search around the destination's coordinates instead of relying on an Overpass area ID.
   // This is simpler and more reliable across city, town, and region geocoder results.
   const query='[out:json][timeout:15];(nwr(around:10000,'+target.lat+','+target.lon+')["tourism"="hostel"];);out center tags;';
