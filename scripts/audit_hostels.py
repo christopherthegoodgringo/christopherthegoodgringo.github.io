@@ -224,6 +224,28 @@ def main():
             h, city_name, detail, km, confidence, second_km, gap_km = item
             writer.writerow([h.get("id") or h.get("osm") or "", h.get("name") or "", h.get("countryCode") or "", city_name, km, second_km, gap_km, "PROPOSED - NOT APPLIED"])
 
+    DUPLICATE_REVIEW = ROOT/"reports"/"hostel-duplicate-review.csv"
+    with DUPLICATE_REVIEW.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow([
+            "review_priority", "hostel_name", "normalized_name", "country_code",
+            "distance_meters", "hostel_a_id", "hostel_a_city", "hostel_a_lat", "hostel_a_lon",
+            "hostel_b_id", "hostel_b_city", "hostel_b_lat", "hostel_b_lon", "review_status"
+        ])
+        for meters, a, b in near_name_pairs:
+            name = str(a.get("name") or "")
+            generic = norm(name) in ("", "unnamed hostel", "hostel", "hostal", "alojamiento", "hospedaje")
+            priority = "HIGH - same name within 10 m" if meters <= 10 else "REVIEW - same name within 100 m"
+            if generic:
+                priority += "; generic name"
+            writer.writerow([
+                priority, name, norm(name), a.get("countryCode") or "",
+                round(meters, 2), a.get("id") or a.get("osm") or "",
+                a.get("city") or "", a.get("lat") or "", a.get("lon") or "",
+                b.get("id") or b.get("osm") or "", b.get("city") or "",
+                b.get("lat") or "", b.get("lon") or "",
+                "REVIEW ONLY - DO NOT AUTO-DELETE"
+            ])
     print("Audit complete. Hostels:",len(hs),"Cities:",len(cs),"same-name groups:",len(dupnames),"duplicate ID groups:",len(dupids),"city suggestions within 50 km:",suggestion_counts["within 50 km"])
 
 if __name__=="__main__": main()
