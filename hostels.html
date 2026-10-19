@@ -65,6 +65,15 @@ let suggestionTimer=null,suggestionController=null,chosenPlace=null;
 function closeSuggestions(){citySuggestions.hidden=true;destination.setAttribute('aria-expanded','false');}
 function showSuggestions(items){
  citySuggestions.replaceChildren();
+ // OpenStreetMap can return multiple map objects for the same named city.
+ // Collapse duplicate names in this country's suggestions.
+ const seenNames=new Set();
+ items=items.filter(item=>{
+  const normalized=item.name.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase().trim();
+  if(seenNames.has(normalized))return false;
+  seenNames.add(normalized);
+  return true;
+ });
  if(!items.length){closeSuggestions();return;}
  items.forEach(item=>{
   const button=document.createElement('button');button.type='button';button.className='suggestion';button.setAttribute('role','option');
