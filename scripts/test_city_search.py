@@ -14,7 +14,7 @@ APPROVED = {"MX","BZ","GT","HN","SV","NI","CR","PA","AR","BO","CL","CO","EC","PY
 def norm(value):
     value = unicodedata.normalize("NFKD", str(value or ""))
     value = "".join(c for c in value if not unicodedata.combining(c)).casefold()
-    return re.sub(r"\\s+", " ", re.sub(r"[.,]", " ", value)).strip()
+    return re.sub(r"\s+", " ", re.sub(r"[.,]", " ", value)).strip()
 
 def valid(lat, lon):
     try:
