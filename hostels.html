@@ -315,7 +315,7 @@ function render(){
   if(x.email){const p=document.createElement('p');p.textContent=(document.documentElement.lang==='es'?'Correo: ':'Email: ')+x.email;card.append(p);}
   if(Number.isFinite(x.lat)&&Number.isFinite(x.lon)){const a=document.createElement('a');a.href='https://www.openstreetmap.org/?mlat='+x.lat+'&mlon='+x.lon+'#map=17/'+x.lat+'/'+x.lon;a.target='_blank';a.rel='noopener';a.textContent=document.documentElement.lang==='es'?'Ver ubicación ↗':'View location ↗';links.append(a);}
   const claim=document.createElement('a');
-  const claimParams=new URLSearchParams({name:x.name||'',city:x.city||'',country:country.selectedOptions[0]?.text||'',osm:x.osm||'',website:x.website||''});
+  const claimParams=new URLSearchParams({name:x.name||'',city:x.city||'',country:country.selectedOptions[0]?.text||'',osm:x.osm||'',website:x.website||'',type:'Claim an existing listing'});
   claim.href='/claim-hostel.html?'+claimParams.toString();
   claim.textContent=document.documentElement.lang==='es'?'¿Eres el propietario? Reclama este hostal':'Own this hostel? Claim this listing';
   claim.style.cssText='display:inline-flex;margin-top:12px;padding:9px 12px;border-radius:999px;background:#f5bd3e;color:#103629;font-weight:800;text-decoration:none;font-size:.86rem';
