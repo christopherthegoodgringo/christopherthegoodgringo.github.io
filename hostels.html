@@ -7,18 +7,19 @@
 <meta name="description" content="Explore hostels across Latin America by country and search real-world hostel listings mapped by OpenStreetMap contributors.">
 <style>
 :root{--green:#174b3b;--deep:#103629;--cream:#fbf7ed;--gold:#d6a84f;--ink:#20332b;--muted:#63756d;--line:#e4e0d5;--white:#fff}
-*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.55}a{color:inherit}.top{background:var(--deep);color:#fff;padding:16px max(20px,calc((100% - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-weight:850;letter-spacing:.02em;text-decoration:none}.top a:last-child{color:#f4d58e}.wrap{max-width:1120px;margin:auto;padding:42px 22px 64px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-weight:800;font-size:.76rem;color:#98712d}.hero h1{font-size:clamp(2.3rem,6vw,4.4rem);line-height:1.02;letter-spacing:-.04em;max-width:780px;margin:10px 0 16px;color:var(--green)}.hero p{max-width:720px;font-size:1.1rem;color:var(--muted)}.panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;margin:28px 0;box-shadow:0 8px 30px #20332b0b}.controls{display:grid;grid-template-columns: minmax(220px,1fr) minmax(220px,2fr) auto;gap:12px;align-items:end}label{display:block;font-size:.85rem;font-weight:750;margin-bottom:6px}select,input,button{width:100%;font:inherit;border-radius:10px;padding:13px 14px;border:1px solid #cbd4cd;background:white;color:var(--ink)}button{background:var(--green);color:white;font-weight:800;border:0;cursor:pointer}button:disabled{opacity:.55;cursor:wait}.meta{color:var(--muted);font-size:.9rem;margin:16px 0 0}.results-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}.results-head h2{margin:0;color:var(--green)}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-top:18px}.hostel{border:1px solid var(--line);border-radius:15px;padding:17px;background:#fff;min-width:0}.hostel h3{margin:0 0 7px;color:var(--green);font-size:1.05rem;overflow-wrap:anywhere}.hostel p{margin:5px 0;color:var(--muted);font-size:.9rem;overflow-wrap:anywhere}.hostel .links{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-weight:750;font-size:.9rem;color:#176348}.tag{display:inline-block;background:#f3eddd;border-radius:99px;padding:4px 9px;font-size:.75rem;font-weight:750;color:#70521f}.empty{padding:32px;text-align:center;color:var(--muted);border:1px dashed #cbd4cd;border-radius:15px;margin-top:18px}.foot{border-top:1px solid var(--line);padding-top:18px;margin-top:38px;font-size:.82rem;color:var(--muted)}.foot a{color:var(--green)}@media(max-width:760px){.controls{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.wrap{padding-top:30px}.top{padding:14px 18px}}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.55}a{color:inherit}.top{background:var(--deep);color:#fff;padding:16px max(20px,calc((100% - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-weight:850;letter-spacing:.02em;text-decoration:none}.top a:last-child{color:#f4d58e}.wrap{max-width:1120px;margin:auto;padding:42px 22px 64px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-weight:800;font-size:.76rem;color:#98712d}.hero h1{font-size:clamp(2.3rem,6vw,4.4rem);line-height:1.02;letter-spacing:-.04em;max-width:780px;margin:10px 0 16px;color:var(--green)}.hero p{max-width:720px;font-size:1.1rem;color:var(--muted)}.panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;margin:28px 0;box-shadow:0 8px 30px #20332b0b}.controls{display:grid;grid-template-columns:minmax(170px,1fr) minmax(180px,1fr) minmax(180px,1.4fr) auto;gap:12px;align-items:end}label{display:block;font-size:.85rem;font-weight:750;margin-bottom:6px}select,input,button{width:100%;font:inherit;border-radius:10px;padding:13px 14px;border:1px solid #cbd4cd;background:white;color:var(--ink)}button{background:var(--green);color:white;font-weight:800;border:0;cursor:pointer}button:disabled{opacity:.55;cursor:wait}.meta{color:var(--muted);font-size:.9rem;margin:16px 0 0}.results-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}.results-head h2{margin:0;color:var(--green)}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-top:18px}.hostel{border:1px solid var(--line);border-radius:15px;padding:17px;background:#fff;min-width:0}.hostel h3{margin:0 0 7px;color:var(--green);font-size:1.05rem;overflow-wrap:anywhere}.hostel p{margin:5px 0;color:var(--muted);font-size:.9rem;overflow-wrap:anywhere}.hostel .links{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-weight:750;font-size:.9rem;color:#176348}.tag{display:inline-block;background:#f3eddd;border-radius:99px;padding:4px 9px;font-size:.75rem;font-weight:750;color:#70521f}.empty{padding:32px;text-align:center;color:var(--muted);border:1px dashed #cbd4cd;border-radius:15px;margin-top:18px}.foot{border-top:1px solid var(--line);padding-top:18px;margin-top:38px;font-size:.82rem;color:var(--muted)}.foot a{color:var(--green)}@media(max-width:900px){.controls{grid-template-columns:1fr 1fr}}@media(max-width:760px){.controls{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.wrap{padding-top:30px}.top{padding:14px 18px}}
 </style>
 </head>
 <body>
 <header class="top"><a class="brand" href="/">CHRISTOPHER THE GOOD GRINGO</a><a href="/">← Back to the guide</a></header>
 <main class="wrap">
-<section class="hero"><div class="eyebrow">Stay somewhere memorable</div><h1>Find hostels across Latin America.</h1><p>Explore Spanish-speaking Latin American countries, from Mexico and Central America to the Andes, the Southern Cone, Cuba, and the Dominican Republic. Choose a country to load its current open-map listings, then search by hostel name or city.</p></section>
+<section class="hero"><div class="eyebrow">Stay somewhere memorable</div><h1>Find hostels across Latin America.</h1><p>Explore Spanish-speaking Latin American countries, from Mexico and Central America to the Andes, the Southern Cone, Cuba, and the Dominican Republic. Choose a country and city or region to load a focused set of nearby hostel listings, then search by hostel name.</p></section>
 <section class="panel" aria-label="Hostel search">
 <div class="controls">
 <div><label for="country">Country or destination</label><select id="country"><option value="">Choose a country…</option></select></div>
-<div><label for="search">Search hostel or city</label><input id="search" type="search" placeholder="e.g. Oaxaca, Medellín, Cusco" disabled></div>
-<div><button id="load" disabled>Load hostels</button></div>
+<div><label for="destination">City or region</label><input id="destination" type="text" placeholder="e.g. Oaxaca, Medellín, Cusco" disabled></div>
+<div><label for="search">Filter loaded hostels</label><input id="search" type="search" placeholder="Search names or addresses" disabled></div>
+<div><button id="load" disabled>Find hostels</button></div>
 </div>
 <p class="meta" id="status" role="status">Select a country to search its OpenStreetMap hostel listings. Results depend on what has been mapped and may not include every hostel.</p>
 </section>
@@ -31,34 +32,57 @@ const countries = [
 ["AR","Argentina"],["BO","Bolivia"],["CL","Chile"],["CO","Colombia"],["EC","Ecuador"],["PY","Paraguay"],["PE","Peru"],["UY","Uruguay"],
 ["CU","Cuba"],["DO","Dominican Republic"]
 ];
-const country=document.querySelector('#country'), search=document.querySelector('#search'), load=document.querySelector('#load'), status=document.querySelector('#status'), results=document.querySelector('#results'), count=document.querySelector('#count'), title=document.querySelector('#resultsTitle');
+const country=document.querySelector('#country'), destination=document.querySelector('#destination'), search=document.querySelector('#search'), load=document.querySelector('#load'), status=document.querySelector('#status'), results=document.querySelector('#results'), count=document.querySelector('#count'), title=document.querySelector('#resultsTitle');
 countries.sort((a,b)=>a[1].localeCompare(b[1])).forEach(([code,name])=>{const o=document.createElement('option');o.value=code;o.textContent=name;country.append(o)});
 let listings=[];
-country.addEventListener('change',()=>{load.disabled=!country.value;search.disabled=!country.value;if(country.value)status.textContent='Ready to load mapped hostels in '+country.selectedOptions[0].text+'.'});
+country.addEventListener('change',()=>{destination.disabled=!country.value;load.disabled=!country.value||!destination.value.trim();search.disabled=true;listings=[];results.className='empty';results.textContent='Enter a city or region to search nearby hostels.';count.textContent='No results loaded';if(country.value)status.textContent='Enter a city or region in '+country.selectedOptions[0].text+' to search a smaller area.';});
+destination.addEventListener('input',()=>{load.disabled=!country.value||!destination.value.trim();});
 load.addEventListener('click',loadHostels);
 search.addEventListener('input',render);
 async function loadHostels(){
- const code=country.value;if(!code)return;
- load.disabled=true;load.textContent='Loading…';status.textContent='Checking available map servers. Large countries may take longer because listings come from community-maintained map data.';results.className='empty';results.textContent='Loading listings…';listings=[];
- const query='[out:json][timeout:35];area["ISO3166-1"="'+code+'"]["admin_level"="2"]->.country;(nwr["tourism"="hostel"](area.country););out center tags;';
+ const code=country.value, place=destination.value.trim();if(!code||!place)return;
+ load.disabled=true;load.textContent='Searching…';search.disabled=true;status.textContent='Finding the city or region, then searching nearby mapped hostels…';results.className='empty';results.textContent='Finding your destination…';listings=[];
  try{
+  const countryName=country.selectedOptions[0].text;
+  const geocodeUrl='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&country='+encodeURIComponent(countryName)+'&city='+encodeURIComponent(place);
+  let geoResponse=await fetch(geocodeUrl,{headers:{'Accept':'application/json'}});
+  if(!geoResponse.ok)throw new Error('The destination search service is busy. Please try again.');
+  let geo=await geoResponse.json();
+  if(!geo.length){
+   geoResponse=await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&country='+encodeURIComponent(countryName)+'&q='+encodeURIComponent(place),{headers:{'Accept':'application/json'}});
+   if(!geoResponse.ok)throw new Error('The destination search service is busy. Please try again.');
+   geo=await geoResponse.json();
+  }
+  if(!geo.length)throw new Error('Could not find that city or region in '+countryName+'. Check the spelling and try again.');
+  const target=geo.find(x=>x.osm_type==='relation'||x.osm_type==='way')||geo[0];
+  let query;
+  if(target.osm_type==='relation'||target.osm_type==='way'){
+   const areaId=Number(target.osm_id)+(target.osm_type==='relation'?3600000000:2400000000);
+   query='[out:json][timeout:25];area('+areaId+')->.dest;(nwr["tourism"="hostel"](area.dest););out center tags;';
+  }else{
+   const bb=target.boundingbox;
+   if(!bb)throw new Error('Found the destination but could not determine its search area.');
+   query='[out:json][timeout:25];(nwr["tourism"="hostel"]('+bb[0]+','+bb[2]+','+bb[1]+','+bb[3]+'););out center tags;';
+  }
+  results.textContent='Loading hostels near '+(target.display_name.split(',')[0]||place)+'…';
   const endpoints=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter'];
-  const requests=endpoints.map(async endpoint=>{
-   const controller=new AbortController();
-   const timeout=setTimeout(()=>controller.abort(),20000);
+  const data=await Promise.any(endpoints.map(async endpoint=>{
+   const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),16000);
    try{
     const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:'data='+encodeURIComponent(query),signal:controller.signal});
     if(!response.ok)throw new Error('Map server returned '+response.status);
     return await response.json();
    }finally{clearTimeout(timeout);}
-  });
-  const data=await Promise.any(requests);
+  }));
   listings=data.elements.map(e=>{const t=e.tags||{};return {id:e.type+'/'+e.id,name:t.name||t['name:en']||'Unnamed hostel',city:t['addr:city']||t['addr:town']||t['addr:village']||t['is_in:city']||'',address:[t['addr:street'],t['addr:housenumber']].filter(Boolean).join(' '),website:t.website||t['contact:website']||'',phone:t.phone||t['contact:phone']||'',email:t.email||t['contact:email']||'',lat:e.lat??e.center?.lat,lon:e.lon??e.center?.lon,operator:t.operator||'',osm:'https://www.openstreetmap.org/'+e.type+'/'+e.id}});
   listings.sort((a,b)=>a.name.localeCompare(b.name));
-  status.textContent='Source: OpenStreetMap. Listings can be incomplete, duplicated, or out of date; please verify before relying on them.';
-  title.textContent='Hostels in '+country.selectedOptions[0].text;render();
- }catch(err){results.className='empty';results.textContent='The map services are busy or timed out. Try again shortly, or choose a smaller country.';status.textContent='Could not load listings this time. Please try again; no saved data was changed.';count.textContent='Unavailable';}
- finally{load.disabled=!country.value;load.textContent='Load hostels';}
+  title.textContent='Hostels near '+(target.display_name.split(',')[0]||place);
+  status.textContent='Showing OpenStreetMap hostels mapped in or near '+place+'. Listings may be incomplete or outdated; verify details before booking.';
+  search.disabled=false;search.value='';render();
+ }catch(err){
+  results.className='empty';results.textContent=err.message||'Could not load listings. Please try again.';
+  status.textContent='The search could not be completed. Please try again in a moment.';count.textContent='Search unavailable';
+ }finally{load.disabled=!country.value||!destination.value.trim();load.textContent='Find hostels';}
 }
 function render(){
  const term=search.value.trim().toLowerCase();
