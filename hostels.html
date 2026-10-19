@@ -109,8 +109,8 @@ async function loadHostels(){
   if(!target.lat||!target.lon)throw new Error('Found the destination but could not determine its map location. Try a nearby city name.');
   // Search around the destination's coordinates instead of relying on an Overpass area ID.
   // This is simpler and more reliable across city, town, and region geocoder results.
-  const query='[out:json][timeout:25];(nwr(around:20000,'+target.lat+','+target.lon+')["tourism"="hostel"];);out center tags;';
-  results.textContent='Searching within about 20 km of '+(target.display_name.split(',')[0]||place)+'…';
+  const query='[out:json][timeout:15];(nwr(around:10000,'+target.lat+','+target.lon+')["tourism"="hostel"];);out center tags;';
+  results.textContent='Searching within about 10 km of '+(target.display_name.split(',')[0]||place)+'…';
   const endpoints=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter'];
   // Try POST first, then GET: some public Overpass mirrors handle one method more reliably than the other.
   const data=await Promise.any(endpoints.map(async endpoint=>{
