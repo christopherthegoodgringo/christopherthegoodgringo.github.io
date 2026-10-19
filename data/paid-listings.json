@@ -1,0 +1,19 @@
+{
+  "updatedAt": "2026-10-19",
+  "hostels": [
+    {
+      "id": "paid-spotty-hostel-bogota",
+      "name": "Spotty Hostel",
+      "city": "Bogotá",
+      "countryCode": "CO",
+      "address": "Calle 21 #5-31, Santa Fe, Bogotá, Colombia",
+      "lat": 4.60603,
+      "lon": -74.06971,
+      "osm": "https://www.openstreetmap.org/node/9558320117",
+      "website": "https://spotty.yurbban.com/",
+      "description": "Modern hostel in central Bogotá with a rooftop pool, terrace, bar, games area and spaces to connect with fellow travelers.",
+      "listingPlan": "featured",
+      "paidListing": true
+    }
+  ]
+}
