@@ -15,6 +15,7 @@ DATA=ROOT/"data"/"hostels.json"
 CITY_DATA=ROOT/"data"/"cities.json"
 REPORT=ROOT/"reports"/"hostel-database-audit.md"
 CITY_SUGGESTIONS=ROOT/"reports"/"hostel-city-suggestions.csv"
+HIGH_CONFIDENCE=ROOT/"reports"/"hostel-city-proposals-high-confidence.csv"
 
 def norm(v):
     v=unicodedata.normalize("NFKD",str(v or ""))
@@ -163,6 +164,7 @@ def main():
         "- Missing or generic hostel name: **"+str(len(missing_name))+"**",
         "- Hostel with blank city field: **"+str(len(missing_city))+"**",
         "- Blank-city listings with nearest same-country city within 5 km: **"+str(suggestion_counts["within 5 km"])+"**",
+        "- High-confidence city proposals in separate review file: **"+str(sum(1 for x in city_suggestions if len(x) > 4 and x[4] == "high (<=5 km; clear nearest)"))+"**",
         "- Blank-city listings within 5 km with an unambiguous nearest city (at least 2 km closer than second-nearest): **"+str(sum(1 for x in city_suggestions if x[3] and float(x[3]) <= 5 and x[4] == "high (<=5 km; clear nearest)"))+"**",
         "- Blank-city listings within 5 km with competing nearby city candidates: **"+str(sum(1 for x in city_suggestions if x[4].startswith("ambiguous")))+"**",
         "- Blank-city listings with nearest same-country city within 10 km: **"+str(suggestion_counts["within 10 km"])+"**",
@@ -212,6 +214,16 @@ def main():
             h, city_name, detail, km, confidence = item[:5]
             second_km, gap_km = item[5:7] if len(item) > 5 else ("", "")
             writer.writerow([h.get("id") or h.get("osm") or "", h.get("name") or "", h.get("countryCode") or "", h.get("lat") or "", h.get("lon") or "", city_name, detail, km, confidence, second_km, gap_km])
+    HIGH_CONFIDENCE.parent.mkdir(parents=True, exist_ok=True)
+    with HIGH_CONFIDENCE.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["hostel_id", "hostel_name", "country_code", "suggested_city", "distance_km", "second_nearest_distance_km", "distance_gap_km", "status"])
+        for item in city_suggestions:
+            if len(item) < 7 or item[4] != "high (<=5 km; clear nearest)":
+                continue
+            h, city_name, detail, km, confidence, second_km, gap_km = item
+            writer.writerow([h.get("id") or h.get("osm") or "", h.get("name") or "", h.get("countryCode") or "", city_name, km, second_km, gap_km, "PROPOSED - NOT APPLIED"])
+
     print("Audit complete. Hostels:",len(hs),"Cities:",len(cs),"same-name groups:",len(dupnames),"duplicate ID groups:",len(dupids),"city suggestions within 50 km:",suggestion_counts["within 50 km"])
 
 if __name__=="__main__": main()
