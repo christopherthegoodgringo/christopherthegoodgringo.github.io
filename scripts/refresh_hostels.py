@@ -4,7 +4,7 @@
 This is the canonical refresh script; it preserves both hostel listings and
 the city index consumed by the live destination search.
 """
-import json, os, sys, time
+import json, os, sys, time, re, unicodedata
 from datetime import datetime, timezone
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
@@ -89,7 +89,9 @@ def main():
                     # OSM may represent one city with multiple map objects.
                     # Keep one destination per normalized name and prefer the
                     # highest-level place record (city > town > village).
-                    key = (code, name.casefold().strip())
+                    # Collapse equivalent spellings (case, accents, and repeated whitespace)
+                    normalized_name = re.sub(r"\\s+", " ", unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode("ascii").casefold()).strip()
+                    key = (code, normalized_name)
                     rank = {"city": 3, "town": 2, "village": 1}.get(tags.get("place"), 0)
                     existing = cities.get(key)
                     if existing is None or rank > existing["_rank"]:
@@ -111,7 +113,19 @@ def main():
     with open("data/hostels.json", "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, separators=(",", ":"))
         f.write("\n")
+    # Report likely duplicate hostel names for review, but never auto-delete by name:
+    # two real properties can share a name, and separate OSM records may carry useful tags.
+    def norm_name(value):
+        value = unicodedata.normalize("NFKD", str(value or "")).encode("ascii", "ignore").decode("ascii").casefold()
+        return re.sub(r"\\s+", " ", value).strip()
+
+    hostel_name_groups = {}
+    for hostel in payload["hostels"]:
+        key = (hostel["countryCode"], norm_name(hostel["name"]), norm_name(hostel.get("city", "")))
+        hostel_name_groups.setdefault(key, []).append(hostel)
+    likely_dupes = [group for group in hostel_name_groups.values() if len(group) > 1]
     print(f'Wrote {len(payload["hostels"])} hostels and {len(payload["cities"])} destinations.', flush=True)
+    print(f'Exact OSM record IDs are deduplicated; {len(likely_dupes)} same-name hostel groups need review (not auto-deleted).', flush=True)
 
 if __name__ == "__main__":
     main()
