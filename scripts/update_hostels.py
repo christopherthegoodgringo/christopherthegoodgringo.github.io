@@ -23,10 +23,10 @@ ENDPOINTS = [
 # Fail the weekly audit if the website country selector drifts from this locked list.
 def validate_country_list():
     page = Path("hostels.html").read_text(encoding="utf-8")
-    match = re.search(r"const countries = \\[(.*?)\\];", page, re.S)
+    match = re.search(r"const countries = \[(.*?)\];", page, re.S)
     if not match:
         raise SystemExit("ERROR: Could not find the hostel finder country list.")
-    website_codes = re.findall(r'\\["([A-Z]{2})","[^"]+"\\]', match.group(1))
+    website_codes = re.findall(r'\["([A-Z]{2})","[^"]+"\]', match.group(1))
     if website_codes != COUNTRIES:
         raise SystemExit(
             "ERROR: Locked country list changed or is out of sync. "
