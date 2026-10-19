@@ -90,7 +90,7 @@ def main():
                     # Keep one destination per normalized name and prefer the
                     # highest-level place record (city > town > village).
                     # Collapse equivalent spellings (case, accents, and repeated whitespace)
-                    normalized_name = re.sub(r"\\s+", " ", unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode("ascii").casefold()).strip()
+                    normalized_name = re.sub(r"\s+", " ", unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode("ascii").casefold()).strip()
                     key = (code, normalized_name)
                     rank = {"city": 3, "town": 2, "village": 1}.get(tags.get("place"), 0)
                     existing = cities.get(key)
@@ -117,7 +117,7 @@ def main():
     # two real properties can share a name, and separate OSM records may carry useful tags.
     def norm_name(value):
         value = unicodedata.normalize("NFKD", str(value or "")).encode("ascii", "ignore").decode("ascii").casefold()
-        return re.sub(r"\\s+", " ", value).strip()
+        return re.sub(r"\s+", " ", value).strip()
 
     hostel_name_groups = {}
     for hostel in payload["hostels"]:
