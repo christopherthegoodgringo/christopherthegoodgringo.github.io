@@ -74,7 +74,7 @@ function getLocalData(){
   // Add a separate, unmistakably fictional demo record for testing directory and claim-listing workflows.
   // It is isolated from the production hostel dataset and labeled on the listing card.
   try{
-   const demoResponse=await fetch('/data/test-hostels.json?v=1');
+   const demoResponse=await fetch('/data/test-hostels.json?v=2');
    if(demoResponse.ok){
     const demoData=await demoResponse.json();
     if(Array.isArray(demoData.hostels)){
@@ -197,7 +197,7 @@ async function loadHostels(){
   }
   const all=data.hostels||[];
   listings=all.filter(x=>x.countryCode===code&&Number.isFinite(Number(x.lat))&&Number.isFinite(Number(x.lon))&&distanceKm(Number(target.lat),Number(target.lon),Number(x.lat),Number(x.lon))<=25);
-  listings.sort((a,b)=>a.name.localeCompare(b.name));
+  listings.sort((a,b)=>{const rank=x=>x.isTest&&x.listingPlan==='premium'?0:x.isTest&&x.listingPlan==='featured'?1:2;return rank(a)-rank(b)||a.name.localeCompare(b.name);});
   title.textContent=(document.documentElement.lang==='es'?'Hostales cerca de ':'Hostels near ')+(target.name||target.detail||place);
   const updated=data.updatedAt?new Date(data.updatedAt).toLocaleDateString(document.documentElement.lang==='es'?'es':'en-US'):'';
   if(!listings.length){
