@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">\n<meta name="hostel-finder-build" content="2026-10-19-overpass-fallback-2">
 <title>Hostel Finder | Christopher the Good Gringo</title>
 <meta name="description" content="Explore hostels across Latin America by country and search real-world hostel listings mapped by OpenStreetMap contributors.">
 <style>
@@ -61,11 +61,19 @@ async function loadHostels(){
   const query='[out:json][timeout:25];(nwr(around:20000,'+target.lat+','+target.lon+')["tourism"="hostel"];);out center tags;';
   results.textContent='Searching within about 20 km of '+(target.display_name.split(',')[0]||place)+'…';
   const endpoints=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter'];
+  // Try POST first, then GET: some public Overpass mirrors handle one method more reliably than the other.
   const data=await Promise.any(endpoints.map(async endpoint=>{
    const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),30000);
    try{
-    const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:'data='+encodeURIComponent(query),signal:controller.signal});
-    if(!response.ok)throw new Error('Map server returned HTTP '+response.status);
+    let response;
+    try{
+     response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8','Accept':'application/json'},body:'data='+encodeURIComponent(query),signal:controller.signal});
+     if(!response.ok)throw new Error('POST HTTP '+response.status);
+    }catch(postError){
+     if(controller.signal.aborted)throw postError;
+     response=await fetch(endpoint+'?data='+encodeURIComponent(query),{headers:{'Accept':'application/json'},signal:controller.signal});
+     if(!response.ok)throw new Error('GET HTTP '+response.status);
+    }
     const payload=await response.json();
     if(!Array.isArray(payload.elements))throw new Error(payload.remark||'Map server returned an invalid response');
     return payload;
