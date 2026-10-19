@@ -92,6 +92,8 @@
 <script>
 (function(){
  const overlay=document.getElementById('languageOverlay');
+ const switcher=document.querySelector('.lang');
+ if(switcher){switcher.setAttribute('href','#languageOverlay');switcher.setAttribute('data-language-switch','');switcher.addEventListener('click',e=>{e.preventDefault();overlay.hidden=false;const active=document.documentElement.lang==='es'?'es':'en';const choice=overlay.querySelector('[data-language="'+active+'"]');if(choice)choice.focus();});}
  const stored=localStorage.getItem('ctgg-language');
  const translations={
   'GOOD PLACES. GOOD PEOPLE. GOOD STORIES.':'BUENOS LUGARES. BUENA GENTE. GRANDES HISTORIAS.',
