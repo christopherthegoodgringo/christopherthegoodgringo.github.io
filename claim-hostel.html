@@ -113,7 +113,7 @@ footer .wrap a { color: #f5bd3e !important; font-weight: 400 !important; text-de
 
 <script>
 const params=new URLSearchParams(location.search);
-for(const [key,id] of [['name','hostel'],['city','city'],['country','country'],['osm','listing'],['website','website']]){const value=params.get(key);if(value){const el=document.getElementById(id);if(el)el.value=value;}}
+for(const [key,id] of [['name','hostel'],['city','city'],['country','country'],['osm','listing'],['website','website'],['type','requestType']]){const value=params.get(key);if(value){const el=document.getElementById(id);if(el)el.value=value;}}
 let lang=params.get('lang');if(lang!=='en'&&lang!=='es'){try{lang=localStorage.getItem('gg-lang')}catch(e){}}if(lang!=='es')lang='en';document.documentElement.lang=lang;
 const toggle=document.getElementById('languageToggle');function applyLanguage(){document.documentElement.lang=lang;document.querySelectorAll('#interest option[data-en][data-es]').forEach(option=>{option.textContent=option.dataset[lang]||option.dataset.en;});if(toggle){toggle.classList.toggle('is-spanish',lang==='es');toggle.setAttribute('aria-pressed',lang==='es'?'true':'false');toggle.setAttribute('aria-label',lang==='en'?'Switch to Spanish':'Cambiar a inglés');}}if(toggle)toggle.addEventListener('click',()=>{lang=lang==='en'?'es':'en';try{localStorage.setItem('gg-lang',lang)}catch(e){}applyLanguage();});applyLanguage();
 document.querySelectorAll('.preview-select').forEach(button=>button.addEventListener('click',()=>{const interest=document.getElementById('interest');interest.value=button.dataset.plan;document.getElementById('claimForm').scrollIntoView({behavior:'smooth',block:'start'});interest.focus({preventScroll:true});}));
