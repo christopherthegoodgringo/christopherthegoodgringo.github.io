@@ -26,6 +26,16 @@ def valid(lat,lon):
         return math.isfinite(lat) and math.isfinite(lon) and -90<=lat<=90 and -180<=lon<=180
     except (TypeError,ValueError): return False
 
+def distance_m(a,b):
+    try:
+        lat1,lon1=float(a.get("lat")),float(a.get("lon"))
+        lat2,lon2=float(b.get("lat")),float(b.get("lon"))
+        p1,p2=math.radians(lat1),math.radians(lat2)
+        dp=math.radians(lat2-lat1); dl=math.radians(lon2-lon1)
+        q=math.sin(dp/2)**2+math.cos(p1)*math.cos(p2)*math.sin(dl/2)**2
+        return 6371000*2*math.atan2(math.sqrt(q),math.sqrt(max(0,1-q)))
+    except (TypeError,ValueError): return float("inf")
+
 def mdtable(headers,rows):
     out=["| "+" | ".join(headers)+" |","|"+"|".join("---" for _ in headers)+"|"]
     for row in rows:
@@ -51,7 +61,7 @@ def main():
         if not valid(h.get("lat"),h.get("lon")): bad_h.append((i,cc,name))
         ident=str(h.get("id") or h.get("osm") or "")
         if ident: ids[ident].append(h)
-        if name: namedup[(cc,norm(name),norm(city))].append(h)
+        if name: namedup[(cc,norm(name))].append(h)
     for c in cs:
         cc=str(c.get("countryCode") or "")
         countrycity[cc]+=1
@@ -59,6 +69,13 @@ def main():
             citydup[(cc,norm(c.get("name")))].append(c)
     dupids=[v for v in ids.values() if len(v)>1]
     dupnames=[v for v in namedup.values() if len(v)>1]
+    near_name_pairs=[]
+    for group in dupnames:
+        for i,a in enumerate(group):
+            for b in group[i+1:]:
+                meters=distance_m(a,b)
+                if meters<=100: near_name_pairs.append((meters,a,b))
+    near_name_pairs.sort(key=lambda x:x[0])
     dupcities=[v for v in citydup.values() if len(v)>1]
     bad_c=[c for c in cs if not valid(c.get("lat"),c.get("lon"))]
     unknown_c=[c for c in cs if str(c.get("countryCode") or "") not in APPROVED]
@@ -84,7 +101,8 @@ def main():
         "- Hostel with invalid/missing coordinates: **"+str(len(bad_h))+"**",
         "- Hostel outside approved countries: **"+str(len(unknown_h))+"**",
         "- Duplicate exact ID groups: **"+str(len(dupids))+"**",
-        "- Same normalized name + city + country groups (review only): **"+str(len(dupnames))+"**",
+        "- Repeated normalized name + country groups (not necessarily duplicates): **"+str(len(dupnames))+"**",
+        "- Same-name pairs within 100 metres (priority review candidates): **"+str(len(near_name_pairs))+"**",
         "- Duplicate normalized city name + country groups: **"+str(len(dupcities))+"**",
         "- City records with invalid/missing coordinates: **"+str(len(bad_c))+"**",
         "- City records outside approved countries: **"+str(len(unknown_c))+"**",
@@ -96,12 +114,11 @@ def main():
         "- Santa Marta city index records in Colombia: **"+str(len(santa))+"**",
         "- Hostel records whose city field explicitly says Santa Marta: **"+str(len(santah))+"**",
         mdtable(["City name","Country","Lat","Lon"],[(c.get("name"),c.get("countryCode"),c.get("lat"),c.get("lon")) for c in santa]) if santa else "No Santa Marta record found.",
-        "","## Same-name hostel review candidates",""
+        "","## Same-name hostel pairs within 100 metres","","These are review candidates, not automatic deletions. Different properties can be close together and share generic names."
     ]
-    for group in sorted(dupnames,key=lambda g:(-len(g),norm(g[0].get("name"))))[:100]:
-        h=group[0]
-        lines.append("- **"+str(h.get("name",""))+"** — "+str(h.get("city") or "(city missing)")+", "+str(h.get("countryCode",""))+": "+str(len(group))+" records; IDs: "+", ".join(str(x.get("id") or x.get("osm") or "?") for x in group[:10]))
-    if not dupnames: lines.append("- None found.")
+    for meters,a,b in near_name_pairs[:250]:
+        lines.append("- **"+str(a.get("name",""))+"** — "+str(a.get("countryCode",""))+"; "+str(round(meters))+" m apart; "+str(a.get("id") or a.get("osm") or "?")+" ("+str(a.get("lat"))+","+str(a.get("lon"))+") and "+str(b.get("id") or b.get("osm") or "?")+" ("+str(b.get("lat"))+","+str(b.get("lon"))+")")
+    if not near_name_pairs: lines.append("- None found.")
     lines.extend(["","## Duplicate city-index review candidates",""])
     for group in sorted(dupcities,key=lambda g:(-len(g),norm(g[0].get("name"))))[:100]:
         c=group[0]
