@@ -71,6 +71,18 @@ function getLocalData(){
   return r.json();
  }).then(async d=>{
   if(!d||!Array.isArray(d.hostels))return {hostels:[],cities:[]};
+  // Add a separate, unmistakably fictional demo record for testing directory and claim-listing workflows.
+  // It is isolated from the production hostel dataset and labeled on the listing card.
+  try{
+   const demoResponse=await fetch('/data/test-hostels.json?v=1');
+   if(demoResponse.ok){
+    const demoData=await demoResponse.json();
+    if(Array.isArray(demoData.hostels)){
+     const existingIds=new Set(d.hostels.map(x=>String(x.id||'')));
+     d.hostels.push(...demoData.hostels.filter(x=>!existingIds.has(String(x.id||''))));
+    }
+   }
+  }catch(_demoError){}
   // Prefer the persistent city index. Fall back to the legacy embedded list only during migration.
   try{
    const response=await fetch('/data/cities.json?v=1');
@@ -216,6 +228,11 @@ function render(){
  filtered.forEach(x=>{
   const card=document.createElement('article');card.className='hostel';
   const h=document.createElement('h3');h.textContent=x.name;card.append(h);
+  if(x.isTest){
+   const flag=document.createElement('p');flag.textContent=document.documentElement.lang==='es'?'REGISTRO DE PRUEBA — FICTICIO, NO ES UN HOSTAL REAL':'TEST RECORD — FICTIONAL, NOT A REAL HOSTEL';
+   flag.style.cssText='display:inline-block;margin:0 0 8px;padding:5px 9px;border-radius:6px;background:#ffe2df;color:#8b1e16;font-weight:900;font-size:.78rem;letter-spacing:.02em';
+   card.append(flag);
+  }
   const place=document.createElement('p');place.textContent=[x.city,x.address].filter(Boolean).join(' · ')||(document.documentElement.lang==='es'?'Ubicación no indicada':'Location not listed');card.append(place);
   if(x.operator){const p=document.createElement('p');p.textContent=(document.documentElement.lang==='es'?'Operador: ':'Operator: ')+x.operator;card.append(p);}
   const links=document.createElement('div');links.className='links';
