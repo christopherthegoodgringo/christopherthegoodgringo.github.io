@@ -13,7 +13,7 @@
 <body>
 <header class="top"><a class="brand" href="/">CHRISTOPHER THE GOOD GRINGO</a><a href="/">← Back to the guide</a></header>
 <main class="wrap">
-<section class="hero"><div class="eyebrow">Stay somewhere memorable</div><h1>Find hostels across Latin America.</h1><p>From Mexico and the Caribbean to the southern tip of South America, explore hostel listings mapped by local contributors. Choose a country to load its current open-map listings, then search by hostel name or city.</p></section>
+<section class="hero"><div class="eyebrow">Stay somewhere memorable</div><h1>Find hostels across Latin America.</h1><p>Explore Spanish-speaking Latin American countries, from Mexico and Central America to the Andes, the Southern Cone, Cuba, and the Dominican Republic. Choose a country to load its current open-map listings, then search by hostel name or city.</p></section>
 <section class="panel" aria-label="Hostel search">
 <div class="controls">
 <div><label for="country">Country or destination</label><select id="country"><option value="">Choose a country…</option></select></div>
@@ -27,9 +27,9 @@
 </main>
 <script>
 const countries = [
-["MX","Mexico"],["BZ","Belize"],["CR","Costa Rica"],["SV","El Salvador"],["GT","Guatemala"],["HN","Honduras"],["NI","Nicaragua"],["PA","Panama"],
-["AR","Argentina"],["BO","Bolivia"],["BR","Brazil"],["CL","Chile"],["CO","Colombia"],["EC","Ecuador"],["GY","Guyana"],["PY","Paraguay"],["PE","Peru"],["SR","Suriname"],["UY","Uruguay"],["VE","Venezuela"],
-["CU","Cuba"],["DO","Dominican Republic"],["HT","Haiti"],["JM","Jamaica"],["TT","Trinidad and Tobago"],["PR","Puerto Rico"],["AW","Aruba"],["CW","Curaçao"],["BQ","Caribbean Netherlands"],["GF","French Guiana"],["GP","Guadeloupe"],["MQ","Martinique"],["MF","Saint Martin"],["LC","Saint Lucia"],["VC","Saint Vincent and the Grenadines"],["GD","Grenada"],["AG","Antigua and Barbuda"],["KN","Saint Kitts and Nevis"],["DM","Dominica"],["BS","Bahamas"],["BB","Barbados"],["KY","Cayman Islands"],["VI","U.S. Virgin Islands"]
+["MX","Mexico"],["CR","Costa Rica"],["SV","El Salvador"],["GT","Guatemala"],["HN","Honduras"],["NI","Nicaragua"],["PA","Panama"],
+["AR","Argentina"],["BO","Bolivia"],["CL","Chile"],["CO","Colombia"],["EC","Ecuador"],["PY","Paraguay"],["PE","Peru"],["UY","Uruguay"],["VE","Venezuela"],
+["CU","Cuba"],["DO","Dominican Republic"]
 ];
 const country=document.querySelector('#country'), search=document.querySelector('#search'), load=document.querySelector('#load'), status=document.querySelector('#status'), results=document.querySelector('#results'), count=document.querySelector('#count'), title=document.querySelector('#resultsTitle');
 countries.sort((a,b)=>a[1].localeCompare(b[1])).forEach(([code,name])=>{const o=document.createElement('option');o.value=code;o.textContent=name;country.append(o)});
