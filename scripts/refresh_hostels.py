@@ -82,11 +82,17 @@ def main():
             if tags.get("place") in ("city", "town", "village"):
                 name = tags.get("name") or tags.get("name:es") or tags.get("name:en")
                 if name:
-                    key = (code, name.casefold(), round(float(lat), 3), round(float(lon), 3))
-                    cities[key] = {
-                        "countryCode": code, "name": name, "lat": lat, "lon": lon,
-                        "detail": f"{name}, {country_name}",
-                    }
+                    # OSM may represent one city with multiple map objects.
+                    # Keep one destination per normalized name and prefer the
+                    # highest-level place record (city > town > village).
+                    key = (code, name.casefold().strip())
+                    rank = {"city": 3, "town": 2, "village": 1}.get(tags.get("place"), 0)
+                    existing = cities.get(key)
+                    if existing is None or rank > existing["_rank"]:
+                        cities[key] = {
+                            "countryCode": code, "name": name, "lat": lat, "lon": lon,
+                            "detail": f"{name}, {country_name}", "_rank": rank,
+                        }
         print(f"  {len(hostels)} total hostels; {len(cities)} destinations indexed.", flush=True)
         time.sleep(2)
     payload = {
@@ -95,7 +101,7 @@ def main():
         "updatedAt": datetime.now(timezone.utc).isoformat(),
         "countryCodes": [code for code, _ in COUNTRIES],
         "hostels": sorted(hostels.values(), key=lambda x: (x["countryCode"], x["name"].casefold())),
-        "cities": sorted(cities.values(), key=lambda x: (x["countryCode"], x["name"].casefold())),
+        "cities": sorted(({k: v for k, v in city.items() if k != "_rank"} for city in cities.values()), key=lambda x: (x["countryCode"], x["name"].casefold())),
     }
     os.makedirs("data", exist_ok=True)
     with open("data/hostels.json", "w", encoding="utf-8") as f:
