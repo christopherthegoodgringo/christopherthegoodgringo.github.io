@@ -321,13 +321,20 @@ function render(){
   claim.textContent=document.documentElement.lang==='es'?'¿Eres el propietario? Reclama este hostal':'Own this hostel? Claim this listing';
   claim.style.cssText='display:inline-flex;margin-top:12px;padding:9px 12px;border-radius:999px;background:#f5bd3e;color:#103629;font-weight:800;text-decoration:none;font-size:.86rem';
   links.append(claim);
-  // Only show a Hostelworld booking CTA when an official, property-specific affiliate URL is supplied after approval. No URL is guessed or generated here.
+  // Show the booking button design on real listings now. Until approval and a property-specific official URL are available, it links to the disclosure rather than pretending to book.
   const affiliateUrl=typeof x.hostelworldAffiliateUrl==='string'?x.hostelworldAffiliateUrl.trim():'';
-  if(!x.isTest&&/^https:\/\//i.test(affiliateUrl)){
+  if(!x.isTest){
    const booking=document.createElement('a');
-   booking.href=affiliateUrl;booking.target='_blank';booking.rel='sponsored nofollow noopener';
    booking.className='affiliate-booking-link';
-   booking.textContent=document.documentElement.lang==='es'?'Consultar disponibilidad en Hostelworld ↗':'Check availability on Hostelworld ↗';
+   if(/^https:\/\//i.test(affiliateUrl)){
+    booking.href=affiliateUrl;booking.target='_blank';booking.rel='sponsored nofollow noopener';
+    booking.textContent=document.documentElement.lang==='es'?'Consultar disponibilidad en Hostelworld ↗':'Check availability on Hostelworld ↗';
+   }else{
+    booking.href='#affiliateDisclosure';
+    booking.textContent=document.documentElement.lang==='es'?'Reservas en Hostelworld próximamente':'Hostelworld booking coming soon';
+    booking.setAttribute('aria-label',document.documentElement.lang==='es'?'Los enlaces de reserva estarán disponibles después de la aprobación del programa de afiliados':'Booking links will be available after affiliate programme approval');
+    booking.title=document.documentElement.lang==='es'?'Enlaces de reserva próximamente':'Booking links coming soon';
+   }
    links.append(booking);
   }
   card.append(links);results.append(card);
