@@ -72,18 +72,8 @@ function getLocalData(){
   return r.json();
  }).then(async d=>{
   if(!d||!Array.isArray(d.hostels))return {hostels:[],cities:[]};
-  // Add a separate, unmistakably fictional demo record for testing directory and claim-listing workflows.
-  // It is isolated from the production hostel dataset and labeled on the listing card.
-  try{
-   const demoResponse=await fetch('/data/test-hostels.json?v=3');
-   if(demoResponse.ok){
-    const demoData=await demoResponse.json();
-    if(Array.isArray(demoData.hostels)){
-     const existingIds=new Set(d.hostels.map(x=>String(x.id||'')));
-     d.hostels.push(...demoData.hostels.filter(x=>!existingIds.has(String(x.id||''))));
-    }
-   }
-  }catch(_demoError){}
+  // Fictional TEST-* demo records are intentionally excluded from the public directory.
+  // Keep data/test-hostels.json separate for internal workflow testing only.
   // Apply administrator-approved edits from Supabase without rewriting the large source JSON.
   // Only an exact, unique match by directory id or OSM URL is eligible; test listings are excluded.
   try{
