@@ -58,6 +58,8 @@
 - Missing or generic hostel name: **895**
 - Hostel with blank city field: **9239**
 - Blank-city listings with nearest same-country city within 5 km: **7985**
+- Blank-city listings within 5 km with an unambiguous nearest city (at least 2 km closer than second-nearest): **5947**
+- Blank-city listings within 5 km with competing nearby city candidates: **2036**
 - Blank-city listings with nearest same-country city within 10 km: **8840**
 - Blank-city listings with nearest same-country city within 25 km: **9151**
 - Blank-city listings with nearest same-country city within 50 km: **9214**
@@ -83,7 +85,7 @@ Nearest same-country city suggestions use the existing city index and hostel coo
 | within 50 km | 9214 |
 | no city within 50 km / no valid coordinates | 25 |
 
-A detailed proposal file is generated at reports/hostel-city-suggestions.csv. It includes the hostel ID/name/country/coordinates, nearest city suggestion, distance, and a review confidence label. Listings without a city within 50 km are left without a suggestion.
+A detailed proposal file is generated at reports/hostel-city-suggestions.csv. It includes the hostel ID/name/country/coordinates, nearest city suggestion, distance, second-nearest city distance, and distance gap. A match within 5 km is only marked high confidence when it is at least 2 km closer than the second-nearest city. Ambiguous matches are flagged for review. Listings without a city within 50 km are left without a suggestion.
 
 
 ## Mexico City diagnosis
