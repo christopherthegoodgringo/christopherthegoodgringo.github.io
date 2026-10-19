@@ -197,7 +197,7 @@ async function loadHostels(){
   }
   const all=data.hostels||[];
   listings=all.filter(x=>x.countryCode===code&&Number.isFinite(Number(x.lat))&&Number.isFinite(Number(x.lon))&&distanceKm(Number(target.lat),Number(target.lon),Number(x.lat),Number(x.lon))<=25);
-  listings.sort((a,b)=>listingPriority(a)-listingPriority(b)||String(a.name||'').localeCompare(String(b.name||''));
+  listings.sort((a,b)=>(Boolean(b.isTest)-Boolean(a.isTest))||listingPriority(a)-listingPriority(b)||String(a.name||'').localeCompare(String(b.name||'')));
   title.textContent=(document.documentElement.lang==='es'?'Hostales cerca de ':'Hostels near ')+(target.name||target.detail||place);
   const updated=data.updatedAt?new Date(data.updatedAt).toLocaleDateString(document.documentElement.lang==='es'?'es':'en-US'):'';
   if(!listings.length){
@@ -228,7 +228,7 @@ function listingPriority(x){
 }
 function render(){
  const term=search.value.trim().toLowerCase();
- const filtered=listings.filter(x=>(x.name+' '+x.city+' '+x.address+' '+x.operator).toLowerCase().includes(term)).sort((a,b)=>listingPriority(a)-listingPriority(b)||String(a.name||'').localeCompare(String(b.name||''));
+ const filtered=listings.filter(x=>(x.name+' '+x.city+' '+x.address+' '+x.operator).toLowerCase().includes(term)).sort((a,b)=>(Boolean(b.isTest)-Boolean(a.isTest))||listingPriority(a)-listingPriority(b)||String(a.name||'').localeCompare(String(b.name||'')));
  count.textContent=document.documentElement.lang==='es'?filtered.length+' alojamientos'+(term?' encontrados':''):filtered.length+' listing'+(filtered.length===1?'':'s')+(term?' found':'');
  if(!listings.length){results.className='empty';results.textContent=document.documentElement.lang==='es'?'Todavía no se han cargado listados.':'No listings loaded yet.';return;}
  if(!filtered.length){results.className='empty';results.textContent=document.documentElement.lang==='es'?'No hay coincidencias. Prueba otra forma de escribirlo o borra la búsqueda.':'No matches. Try another spelling or clear your search.';return;}
@@ -236,11 +236,26 @@ function render(){
  filtered.forEach(x=>{
   const card=document.createElement('article');card.className='hostel'+(x.listingPlan==='featured'?' plan-featured':x.listingPlan==='premium'?' plan-premium':'');
   const h=document.createElement('h3');h.textContent=x.name;card.append(h);
-  if(x.listingPlan==='featured'||x.listingPlan==='premium'){
+  if(x.isTest){
    const ribbon=document.createElement('p');ribbon.className='plan-ribbon';
-   if(x.listingPlan==='featured'){ribbon.textContent=document.documentElement.lang==='es'?'VISTA DE DEMOSTRACIÓN DESTACADA · $19/mes':'FEATURED PLAN DEMO · $19/month';}
-   else{ribbon.textContent=document.documentElement.lang==='es'?'VISTA DE DEMOSTRACIÓN PREMIUM · $39/mes':'PREMIUM PLAN DEMO · $39/month';}
-   card.append(ribbon);
+   const plan=x.listingPlan||'free';
+   const labels={
+    free:{en:'FREE PLAN DEMO · $0',es:'DEMOSTRACIÓN DEL PLAN GRATIS · $0'},
+    featured:{en:'FEATURED PLAN DEMO · $19/month',es:'DEMOSTRACIÓN DESTACADA · $19/mes'},
+    premium:{en:'PREMIUM PLAN DEMO · $39/month',es:'DEMOSTRACIÓN PREMIUM · $39/mes'}
+   };
+   ribbon.textContent=(labels[plan]||labels.free)[document.documentElement.lang==='es'?'es':'en'];card.append(ribbon);
+   const heading=document.createElement('p');heading.style.cssText='font-weight:850;color:#174b3b;margin-top:8px';
+   heading.textContent=document.documentElement.lang==='es'?'Qué incluye este plan (vista previa):':'What this plan includes (preview):';card.append(heading);
+   const benefits={
+    free:{en:['Basic directory listing','Hostel name and location','Owner can request corrections or updates'],es:['Ficha básica en el directorio','Nombre y ubicación del hostal','El propietario puede solicitar correcciones o actualizaciones']},
+    featured:{en:['Everything in Free','Enhanced hostel profile','Photo gallery','Website and booking links','Featured placement in search results'],es:['Todo lo del plan Gratis','Perfil mejorado del hostal','Galería de fotos','Enlaces al sitio web y reservas','Posición destacada en los resultados']},
+    premium:{en:['Everything in Featured','Priority placement above Featured and Free listings','Promotional spotlight for the hostel'],es:['Todo lo del plan Destacado','Prioridad por encima de las fichas Destacadas y Gratis','Promoción especial para el hostal']}
+   };
+   const ul=document.createElement('ul');ul.style.cssText='margin:0 0 12px;padding-left:20px;color:#20332b;font-size:.88rem';
+   ((benefits[plan]||benefits.free)[document.documentElement.lang==='es'?'es':'en']).forEach(item=>{const li=document.createElement('li');li.textContent=item;ul.append(li);});card.append(ul);
+   const note=document.createElement('p');note.style.cssText='font-size:.78rem;font-weight:750;color:#8b1e16;background:#fff0ee;border-radius:7px;padding:7px 9px';
+   note.textContent=document.documentElement.lang==='es'?'EJEMPLO FICTICIO: no es un hostal real; el plan no está activado.':'FICTIONAL EXAMPLE: not a real hostel; plan is not activated.';card.append(note);
   }
   if(x.isTest){
    const flag=document.createElement('p');flag.textContent=document.documentElement.lang==='es'?'REGISTRO DE PRUEBA — FICTICIO, NO ES UN HOSTAL REAL':'TEST RECORD — FICTIONAL, NOT A REAL HOSTEL';
