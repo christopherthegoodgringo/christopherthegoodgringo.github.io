@@ -92,15 +92,15 @@ countries.sort((a,b)=>a[1].localeCompare(b[1])).forEach(([code,name])=>{const o=
 let listings=[];
 let cachedDataPromise=null;
 function getLocalData(){
- if(!cachedDataPromise)cachedDataPromise=fetch('/data/hostels.json?v=local').then(r=>{
-  if(!r.ok)throw new Error('The local hostel database is not available yet.');
+ if(!cachedDataPromise)cachedDataPromise=fetch('/data/hostels.json?v='+Date.now(),{cache:'no-store'}).then(r=>{
+  if(!r.ok)throw new Error('The local hostel database is not available yet (HTTP '+r.status+').');
   return r.json();
  }).then(async d=>{
   if(!d||!Array.isArray(d.hostels))return {hostels:[],cities:[]};
   // Apply administrator-approved paid placements separately so the large community
   // directory stays intact and weekly data refreshes do not remove paid status.
   try{
-   const paidResponse=await fetch('/data/paid-listings.json?v=1');
+   const paidResponse=await fetch('/data/paid-listings.json?v='+Date.now(),{cache:'no-store'});
    if(paidResponse.ok){
     const paidData=await paidResponse.json();
     if(Array.isArray(paidData.hostels)){
@@ -131,13 +131,17 @@ function getLocalData(){
   // Owner submissions are reviewed by email; they never change published data automatically.
   // Prefer the persistent city index. Fall back to the legacy embedded list only during migration.
   try{
-   const response=await fetch('/data/cities.json?v=1');
+   const response=await fetch('/data/cities.json?v='+Date.now(),{cache:'no-store'});
    if(response.ok){
     const registry=await response.json();
     if(Array.isArray(registry.cities)&&registry.cities.length)return {...d,cities:registry.cities};
    }
   }catch(_error){}
   return {...d,cities:Array.isArray(d.cities)?d.cities:[]};
+ }).catch(error=>{
+  // Do not keep a rejected promise cached; a temporary network failure must be retryable.
+  cachedDataPromise=null;
+  throw error;
  });
  return cachedDataPromise;
 }
