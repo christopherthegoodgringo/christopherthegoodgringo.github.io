@@ -26,7 +26,23 @@ jobs:
           git add data/hostels.json
           if ! git diff --cached --quiet; then
             git commit -m "Refresh weekly Latin America hostel database"
-            git push
+            # Website edits can land while the audit is running. Rebase onto the latest
+            # main branch and retry the push rather than failing on a non-fast-forward.
+            for attempt in 1 2 3; do
+              git fetch origin main
+              if ! git rebase origin/main; then
+                git rebase --abort || true
+                echo "Could not rebase the database update onto main." >&2
+                exit 1
+              fi
+              if git push origin HEAD:main; then
+                exit 0
+              fi
+              echo "Push attempt $attempt failed; retrying after fetching latest main."
+              sleep 2
+            done
+            echo "Could not push the refreshed hostel database after 3 attempts." >&2
+            exit 1
           else
             echo "Hostel database unchanged."
           fi
