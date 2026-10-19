@@ -47,7 +47,7 @@ function showSuggestions(items){
  items.forEach(item=>{
   const button=document.createElement('button');button.type='button';button.className='suggestion';button.setAttribute('role','option');
   const name=document.createElement('span');name.textContent=item.name;button.append(name);
-  const detail=document.createElement('small');detail.textContent=item.detail;button.append(detail);
+  button.setAttribute('aria-label',item.name);
   button.addEventListener('click',()=>{destination.value=item.name;chosenPlace=item;closeSuggestions();load.disabled=!country.value||!destination.value.trim();status.textContent='Destination selected: '+item.name+'. Click Find hostels to search nearby.';});
   citySuggestions.append(button);
  });
@@ -69,11 +69,22 @@ destination.addEventListener('input',()=>{
    const response=await fetch(url,{headers:{'Accept':'application/json'},signal:suggestionController.signal});
    if(!response.ok)throw new Error('Suggestions unavailable');
    const data=await response.json();
-   const items=data.map(item=>{
-    const a=item.address||{};
-    const name=a.city||a.town||a.village||a.municipality||a.county||item.name||item.display_name.split(',')[0];
-    return {name,detail:item.display_name,lat:item.lat,lon:item.lon};
-   });
+   // Only suggest actual populated places. Do not show counties, roads, businesses,
+   // administrative areas, or the long Nominatim address as dropdown entries.
+   const seenNames=new Set();
+   const items=data
+    .filter(item=>item.class==='place'&&['city','town','village'].includes(item.type))
+    .map(item=>{
+     const a=item.address||{};
+     const name=a.city||a.town||a.village||item.name;
+     return {name,lat:item.lat,lon:item.lon,detail:name};
+    })
+    .filter(item=>{
+     const key=item.name.trim().toLocaleLowerCase();
+     if(!key||seenNames.has(key))return false;
+     seenNames.add(key);
+     return true;
+    });
    showSuggestions(items);
   }catch(error){if(error.name!=='AbortError')closeSuggestions();}
  },450);
