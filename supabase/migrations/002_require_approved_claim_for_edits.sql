@@ -7,7 +7,6 @@ create policy "Users can submit own hostel edit requests"
     user_id = (select auth.uid())
     and status = 'pending'
     and reviewed_by is null
-    and reviewed_at is null
     and admin_notes is null
     and exists (
       select 1
