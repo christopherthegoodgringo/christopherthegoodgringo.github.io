@@ -94,6 +94,23 @@ def main():
             print(f"WARNING: {code}: {exc}")
         if index < len(COUNTRIES) - 1:
             time.sleep(3)
+    # Keep the previous records for countries that failed this run. Otherwise a temporary
+    # Overpass outage would silently erase those countries from the public database.
+    if failures and OUT.exists():
+        try:
+            previous = json.loads(OUT.read_text(encoding="utf-8"))
+            failed_codes = {entry["country"] for entry in failures}
+            preserved = 0
+            for old_item in previous.get("hostels", []):
+                if old_item.get("countryCode") in failed_codes:
+                    item_id = old_item.get("id")
+                    if item_id and item_id not in all_items:
+                        all_items[item_id] = old_item
+                        preserved += 1
+            print(f"Preserved {preserved} existing listings for countries whose refresh failed.")
+        except (OSError, ValueError, TypeError) as exc:
+            print(f"WARNING: Could not read previous database for failed-country preservation: {exc}")
+
     # Never replace a healthy database with an empty or nearly empty result after API trouble.
     if not all_items:
         raise SystemExit("No hostel records were retrieved; preserving existing database.")
