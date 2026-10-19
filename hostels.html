@@ -69,7 +69,7 @@ function showSuggestions(items){
  // Collapse duplicate names in this country's suggestions.
  const seenNames=new Set();
  items=items.filter(item=>{
-  const normalized=item.name.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase().trim();
+  const normalized=item.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase().trim();
   if(seenNames.has(normalized))return false;
   seenNames.add(normalized);
   return true;
@@ -94,15 +94,15 @@ destination.addEventListener('input',()=>{
   try{
    const data=await getLocalData();
    const code=country.value;
-   const normalized=query.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase().trim();
+   const normalized=query.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase().trim();
    // Accept common English names for destinations stored under their local names.
    const cityAliases={'mexico city':'ciudad de mexico','cdmx':'ciudad de mexico'};
    const normalizedQuery=cityAliases[normalized]||normalized;
    const cities=(data.cities||[]).filter(c=>c.countryCode===code&&c.name)
-    .filter(c=>c.name.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase().includes(normalizedQuery))
+    .filter(c=>c.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase().includes(normalizedQuery))
     .sort((a,b)=>{
-      const an=a.name.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase();
-      const bn=b.name.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase();
+      const an=a.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase();
+      const bn=b.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase();
       return (an===normalizedQuery?-1:bn===normalizedQuery?1:an.localeCompare(bn));
     }).slice(0,12).map(c=>({name:c.name,lat:c.lat,lon:c.lon,detail:c.detail||c.name,countryCode:c.countryCode}));
    if(!cities.length){
