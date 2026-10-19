@@ -97,11 +97,38 @@ function getLocalData(){
   return r.json();
  }).then(async d=>{
   if(!d||!Array.isArray(d.hostels))return {hostels:[],cities:[]};
+  // Apply administrator-approved paid placements separately so the large community
+  // directory stays intact and weekly data refreshes do not remove paid status.
+  try{
+   const paidResponse=await fetch('/data/paid-listings.json?v=1');
+   if(paidResponse.ok){
+    const paidData=await paidResponse.json();
+    if(Array.isArray(paidData.hostels)){
+     const normalize=value=>String(value||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+     const distance=(a,b,c,e)=>{const rad=x=>x*Math.PI/180;const p=Math.sin(rad(c-a)/2)**2+Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(rad(e-b)/2)**2;return 6371*2*Math.atan2(Math.sqrt(p),Math.sqrt(1-p));};
+     paidData.hostels.forEach(paid=>{
+      const matchIndex=d.hostels.findIndex(existing=>{
+       if(existing.isTest||existing.countryCode!==paid.countryCode)return false;
+       const sameOsm=String(existing.osm||'').includes('9558320117')||String(paid.osm||'').includes('9558320117')&&String(existing.osm||'').includes('9558320117');
+       if(sameOsm)return true;
+       const name=normalize(existing.name);
+       const sameSpotty=name.includes('spotty')&&name.includes('hostel');
+       return sameSpotty&&Number.isFinite(Number(existing.lat))&&Number.isFinite(Number(existing.lon))&&distance(Number(existing.lat),Number(existing.lon),Number(paid.lat),Number(paid.lon))<=0.5;
+      });
+      if(matchIndex>=0){
+       const existing=d.hostels[matchIndex];
+       d.hostels[matchIndex]={...existing,...paid,id:existing.id||paid.id,osm:existing.osm||paid.osm,lat:Number.isFinite(Number(existing.lat))?existing.lat:paid.lat,lon:Number.isFinite(Number(existing.lon))?existing.lon:paid.lon,listingPlan:'featured',paidListing:true};
+      }else{
+       d.hostels.push({...paid,listingPlan:'featured',paidListing:true});
+      }
+     });
+    }
+   }
+  }catch(_error){}
   // Fictional TEST-* demo records are intentionally excluded from the public directory.
   // Keep data/test-hostels.json separate for internal workflow testing only.
   // The public directory is managed by the site administrator in data/hostels.json.
   // Owner submissions are reviewed by email; they never change published data automatically.
-  // Fictional TEST-* demo records remain separate from the live directory.
   // Prefer the persistent city index. Fall back to the legacy embedded list only during migration.
   try{
    const response=await fetch('/data/cities.json?v=1');
