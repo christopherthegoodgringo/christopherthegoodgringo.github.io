@@ -1,0 +1,44 @@
+name: City search quality checks
+
+on:
+  push:
+    paths:
+      - "hostels.html"
+      - "data/cities.json"
+      - "data/hostels.json"
+      - "scripts/test_city_search.py"
+      - ".github/workflows/city-search-quality.yml"
+  pull_request:
+    paths:
+      - "hostels.html"
+      - "data/cities.json"
+      - "data/hostels.json"
+      - "scripts/test_city_search.py"
+      - ".github/workflows/city-search-quality.yml"
+  schedule:
+    - cron: "23 8 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  city-search-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Run exhaustive city-index and search-code checks
+        run: python scripts/test_city_search.py
+      - name: Save test report
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/city-search-test-report.md
+          if git diff --cached --quiet; then
+            echo "Test report unchanged."
+          else
+            git commit -m "Update automated city search quality report"
+            git push
+          fi
