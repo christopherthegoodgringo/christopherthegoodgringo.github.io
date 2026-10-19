@@ -1,63 +1,16 @@
-name: Refresh local hostel directory
+name: Legacy hostel refresh (paused)
 
 on:
-  push:
-    paths:
-      - ".github/workflows/refresh-hostels.yml"
-      - "scripts/refresh_hostels.py"
-      - "data/hostels.json"
-  schedule:
-    - cron: "23 7 * * 1"
   workflow_dispatch:
 
 permissions:
-  contents: write
-
-concurrency:
-  group: refresh-local-hostel-directory
-  cancel-in-progress: false
+  contents: read
 
 jobs:
-  refresh:
+  paused:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
     steps:
-      - name: Check out website
-        uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Refresh local OpenStreetMap data
-        run: python scripts/refresh_hostels.py
-      - name: Commit refreshed data safely
+      - name: Explain pause
         run: |
-          set -e
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          # Preserve the freshly generated database while syncing with website edits.
-          cp data/hostels.json /tmp/refreshed-hostels.json
-
-          for attempt in 1 2 3; do
-            git fetch origin main
-            git reset --hard origin/main
-            cp /tmp/refreshed-hostels.json data/hostels.json
-            git add data/hostels.json
-
-            if git diff --cached --quiet; then
-              echo "Hostel database unchanged."
-              exit 0
-            fi
-
-            git commit -m "Refresh weekly Latin America hostel database"
-            if git push origin HEAD:main; then
-              echo "Refreshed hostel database committed successfully."
-              exit 0
-            fi
-
-            echo "Push attempt $attempt failed; retrying against latest main."
-          done
-
-          echo "Could not push the refreshed hostel database after 3 attempts." >&2
-          exit 1
+          echo "This legacy refresh is paused. It previously replaced the complete database with an OpenStreetMap snapshot."
+          echo "Use only after a merge-safe import and review process has been implemented."
