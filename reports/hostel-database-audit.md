@@ -57,6 +57,11 @@
 
 - Missing or generic hostel name: **895**
 - Hostel with blank city field: **9239**
+- Blank-city listings with nearest same-country city within 5 km: **7985**
+- Blank-city listings with nearest same-country city within 10 km: **8840**
+- Blank-city listings with nearest same-country city within 25 km: **9151**
+- Blank-city listings with nearest same-country city within 50 km: **9214**
+- Blank-city listings with no city within 50 km or invalid coordinates: **25**
 - Hostel with invalid/missing coordinates: **0**
 - Hostel outside approved countries: **0**
 - Duplicate exact ID groups: **0**
@@ -65,6 +70,21 @@
 - Duplicate normalized city name + country groups: **0**
 - City records with invalid/missing coordinates: **0**
 - City records outside approved countries: **0**
+
+## Proposed city-field enrichment (read-only)
+
+Nearest same-country city suggestions use the existing city index and hostel coordinates. These are proposals only: the audit does not write city values into hostel records. A nearby city-index point may not represent the correct municipality, especially for rural properties.
+
+| Distance band | Blank-city listings |
+|---|---|
+| within 5 km | 7985 |
+| within 10 km | 8840 |
+| within 25 km | 9151 |
+| within 50 km | 9214 |
+| no city within 50 km / no valid coordinates | 25 |
+
+A detailed proposal file is generated at reports/hostel-city-suggestions.csv. It includes the hostel ID/name/country/coordinates, nearest city suggestion, distance, and a review confidence label. Listings without a city within 50 km are left without a suggestion.
+
 
 ## Mexico City diagnosis
 
