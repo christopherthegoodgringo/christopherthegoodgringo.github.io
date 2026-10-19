@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">\n<meta name="hostel-finder-build" content="2026-10-19-city-autocomplete-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">\n<meta name="hostel-finder-build" content="2026-10-19-local-directory-1">
 <title>Hostel Finder | Christopher the Good Gringo</title>
 <meta name="description" content="Explore hostels across Latin America by country and search real-world hostel listings mapped by OpenStreetMap contributors.">
 <style>
@@ -50,8 +50,15 @@ const countries = [
 const country=document.querySelector('#country'), destination=document.querySelector('#destination'), search=document.querySelector('#search'), load=document.querySelector('#load'), status=document.querySelector('#status'), results=document.querySelector('#results'), count=document.querySelector('#count'), title=document.querySelector('#resultsTitle');
 countries.sort((a,b)=>a[1].localeCompare(b[1])).forEach(([code,name])=>{const o=document.createElement('option');o.value=code;o.textContent=name;country.append(o)});
 let listings=[];
-let cachedHostelsPromise=null;
-function getCachedHostels(){if(!cachedHostelsPromise)cachedHostelsPromise=fetch('/data/hostels.json?v=weekly').then(r=>{if(!r.ok)throw new Error('Cached hostel data not available');return r.json();}).then(d=>d.hostels||[]).catch(()=>[]);return cachedHostelsPromise;}
+let cachedDataPromise=null;
+function getLocalData(){
+ if(!cachedDataPromise)cachedDataPromise=fetch('/data/hostels.json?v=local').then(r=>{
+  if(!r.ok)throw new Error('The local hostel database is not available yet.');
+  return r.json();
+ }).then(d=>d&&Array.isArray(d.hostels)?d:{hostels:[],cities:[]});
+ return cachedDataPromise;
+}
+function getCachedHostels(){return getLocalData().then(d=>d.hostels||[]);}
 function distanceKm(a,b,c,d){const rad=x=>x*Math.PI/180;const p= Math.sin(rad(c-a)/2)**2+Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(rad(d-b)/2)**2;return 6371*2*Math.atan2(Math.sqrt(p),Math.sqrt(1-p));}
 const citySuggestions=document.querySelector('#citySuggestions');
 let suggestionTimer=null,suggestionController=null,chosenPlace=null;
@@ -71,71 +78,35 @@ function showSuggestions(items){
 destination.addEventListener('input',()=>{
  chosenPlace=null;
  clearTimeout(suggestionTimer);
- if(suggestionController)suggestionController.abort();
  const query=destination.value.trim();
  load.disabled=!country.value||query.length<2;
  if(query.length<2){closeSuggestions();return;}
  suggestionTimer=setTimeout(async()=>{
-  const selected=countries.find(([code])=>code===country.value);
-  if(!selected)return;
-  suggestionController=new AbortController();
-  const signal=suggestionController.signal;
-  function cityItems(data){
-   const seenNames=new Set();
-   return data.filter(item=>{
-    const a=item.address||{};
-    const placeType=['city','town','village','municipality','borough','suburb'].includes(item.type);
-    return Boolean(a.city||a.town||a.village) || (item.class==='place'&&placeType);
-   }).map(item=>{
-    const a=item.address||{};
-    const name=a.city||a.town||a.village||item.name||item.namedetails?.name||item.display_name?.split(',')[0];
-    return {name,lat:item.lat,lon:item.lon,detail:item.display_name||name};
-   }).filter(item=>{
-    const key=(item.name||'').trim().toLocaleLowerCase();
-    if(!key||!item.lat||!item.lon||seenNames.has(key))return false;
-    seenNames.add(key);
-    return true;
-   });
-  }
   try{
-   // Try the structured city search first, then fall back to a country-scoped
-   // text search because some OpenStreetMap records are not indexed by city.
-   const urls=[
-    'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&namedetails=1&limit=10&countrycodes='+encodeURIComponent(selected[0].toLowerCase())+'&city='+encodeURIComponent(query),
-    'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&namedetails=1&limit=10&countrycodes='+encodeURIComponent(selected[0].toLowerCase())+'&q='+encodeURIComponent(query+' '+selected[1])
-   ];
-   let items=[];
-   for(const url of urls){
-    const response=await fetch(url,{headers:{'Accept':'application/json'},signal});
-    if(!response.ok)throw new Error('OpenStreetMap returned HTTP '+response.status);
-    const data=await response.json();
-    items=cityItems(data);
-    if(items.length)break;
-   }
-   if(signal.aborted)return;
-   showSuggestions(items);
-   if(!items.length){
+   const data=await getLocalData();
+   const code=country.value;
+   const normalized=query.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase();
+   const cities=(data.cities||[]).filter(c=>c.countryCode===code&&c.name)
+    .filter(c=>c.name.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase().includes(normalized))
+    .sort((a,b)=>{
+      const an=a.name.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase();
+      const bn=b.name.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase();
+      return (an===normalized?-1:bn===normalized?1:an.localeCompare(bn));
+    }).slice(0,12).map(c=>({name:c.name,lat:c.lat,lon:c.lon,detail:c.detail||c.name,countryCode:c.countryCode}));
+   if(!cities.length){
     citySuggestions.replaceChildren();
-    const note=document.createElement('div');
-    note.className='suggestion';
-    note.textContent=document.documentElement.lang==='es'?'No se encontraron coincidencias para esa ciudad. Prueba otra forma de escribirla.':'No city matches found. Try another spelling.';
-    citySuggestions.append(note);
-    citySuggestions.hidden=false;
-    destination.setAttribute('aria-expanded','true');
-   }
+    const note=document.createElement('div');note.className='suggestion';
+    note.textContent=document.documentElement.lang==='es'?'No encontramos esa ciudad en el índice local. Prueba otra ciudad o espera a la próxima actualización de datos.':'That city is not in the local index. Try another city or check after the next data refresh.';
+    citySuggestions.append(note);citySuggestions.hidden=false;destination.setAttribute('aria-expanded','true');
+   }else showSuggestions(cities);
   }catch(error){
-   if(error.name!=='AbortError'){
-    citySuggestions.replaceChildren();
-    const note=document.createElement('div');
-    note.className='suggestion';
-    note.textContent=document.documentElement.lang==='es'?'Las sugerencias de ciudades no están disponibles temporalmente. Inténtalo de nuevo en un momento.':'City suggestions are temporarily unavailable. Please try again in a moment.';
-    citySuggestions.append(note);
-    citySuggestions.hidden=false;
-    destination.setAttribute('aria-expanded','true');
-    status.textContent=document.documentElement.lang==='es'?'No se pudieron cargar sugerencias de ciudades de OpenStreetMap. Inténtalo de nuevo pronto.':'Could not load city suggestions from OpenStreetMap. Please try again shortly.';
-   }
+   citySuggestions.replaceChildren();
+   const note=document.createElement('div');note.className='suggestion';
+   note.textContent=document.documentElement.lang==='es'?'La base de datos local aún no está disponible.':'The local directory database is not available yet.';
+   citySuggestions.append(note);citySuggestions.hidden=false;destination.setAttribute('aria-expanded','true');
+   status.textContent=error.message||note.textContent;
   }
- },450);
+ },120);
 });
 destination.addEventListener('keydown',e=>{
  if(e.key==='Escape')closeSuggestions();
@@ -148,95 +119,46 @@ destination.addEventListener('input',()=>{load.disabled=!country.value||!destina
 load.addEventListener('click',loadHostels);
 search.addEventListener('input',render);
 async function loadHostels(){
- const code=country.value, place=destination.value.trim();if(!code||!place)return;closeSuggestions();
- load.disabled=true;load.textContent=document.documentElement.lang==='es'?'Buscando…':'Searching…';search.disabled=true;status.textContent=document.documentElement.lang==='es'?'Buscando la ciudad o región y luego los hostales cercanos en el mapa…':'Finding the city or region, then searching nearby mapped hostels…';results.className='empty';results.textContent=document.documentElement.lang==='es'?'Buscando tu destino…':'Finding your destination…';listings=[];
- const countryName=country.selectedOptions[0].text;
+ const code=country.value, place=destination.value.trim();
+ if(!code||!place)return;
+ closeSuggestions();
+ load.disabled=true;load.textContent=document.documentElement.lang==='es'?'Buscando…':'Searching…';
+ search.disabled=true;
+ status.textContent=document.documentElement.lang==='es'?'Buscando en la base de datos local del sitio…':'Searching the website’s local directory database…';
+ results.className='empty';results.textContent=document.documentElement.lang==='es'?'Cargando datos locales…':'Loading local directory data…';listings=[];
  try{
-  let target;
-  if(chosenPlace&&chosenPlace.lat&&chosenPlace.lon){
-   target={lat:chosenPlace.lat,lon:chosenPlace.lon,display_name:chosenPlace.detail||chosenPlace.name};
-  }else{
-   // Scope geocoding by ISO country code, matching the city-suggestion flow.
-   // Nominatim's countrycodes parameter is more reliable than a free-text country name,
-   // especially for countries with alternate/local names.
-   const countryScope='countrycodes='+encodeURIComponent(code.toLowerCase());
-   const geoUrls=[
-    'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&namedetails=1&limit=8&'+countryScope+'&city='+encodeURIComponent(place),
-    'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&namedetails=1&limit=8&'+countryScope+'&q='+encodeURIComponent(place+' '+countryName)
-   ];
-   let geo=[];
-   let lookupErrors=[];
-   for(const geocodeUrl of geoUrls){
-    try{
-     const geoResponse=await fetch(geocodeUrl,{headers:{'Accept':'application/json'}});
-     if(!geoResponse.ok)throw new Error('HTTP '+geoResponse.status);
-     const candidates=await geoResponse.json();
-     if(Array.isArray(candidates)&&candidates.length){geo=candidates;break;}
-    }catch(lookupError){lookupErrors.push(lookupError);}
-   }
-   if(!geo.length){
-    if(lookupErrors.length===geoUrls.length)throw new Error('The city lookup service is temporarily busy. Please select a city from the suggestions or try again shortly.');
-    throw new Error('Could not find that city or region in '+countryName+'. Check the spelling or choose a suggestion from the list.');
-   }
-   target=geo.find(x=>x.lat&&x.lon)||geo[0];
+  const data=await getLocalData();
+  let target=chosenPlace;
+  if(!target||!target.lat||!target.lon){
+   const normalized=place.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase();
+   const match=(data.cities||[]).find(c=>c.countryCode===code&&c.name&&c.name.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase()===normalized);
+   if(match)target={...match,detail:match.detail||match.name};
   }
-  if(!target.lat||!target.lon)throw new Error('Found the destination but could not determine its map location. Try a nearby city name.');
-  // Prefer the weekly static database so visitor searches do not wait on Overpass.
-  const cached=await getCachedHostels();
-  if(cached.length){
-   const nearby=cached.filter(x=>x.countryCode===code&&distanceKm(Number(target.lat),Number(target.lon),Number(x.lat),Number(x.lon))<=10);
-   if(nearby.length){
-    listings=nearby;
-    listings.sort((a,b)=>a.name.localeCompare(b.name));
-    title.textContent=(document.documentElement.lang==='es'?'Hostales cerca de ':'Hostels near ')+(target.display_name.split(',')[0]||place);
-    status.textContent=(document.documentElement.lang==='es'?'Mostrando datos guardados de hostales de OpenStreetMap a unos 10 km de ':'Showing saved OpenStreetMap hostel data within about 10 km of ')+place+(document.documentElement.lang==='es'?'. Base de datos actualizada semanalmente; los detalles pueden cambiar.':'. Database refreshed weekly; details may change.');
-    count.textContent=listings.length+' listings';
-    search.disabled=false;search.value='';render();return;
-   }
+  if(!target||!target.lat||!target.lon){
+   throw new Error(document.documentElement.lang==='es'?'Elige una ciudad de las sugerencias del índice local.':'Choose a city from the local-index suggestions.');
   }
-  // Search around the destination's coordinates instead of relying on an Overpass area ID.
-  // This is simpler and more reliable across city, town, and region geocoder results.
-  const query='[out:json][timeout:15];(nwr(around:10000,'+target.lat+','+target.lon+')["tourism"="hostel"];);out center tags;';
-  results.textContent='Searching within about 10 km of '+(target.display_name.split(',')[0]||place)+'…';
-  const endpoints=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter'];
-  // Try POST first, then GET: some public Overpass mirrors handle one method more reliably than the other.
-  const data=await Promise.any(endpoints.map(async endpoint=>{
-   const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),12000);
-   try{
-    let response;
-    try{
-     response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8','Accept':'application/json'},body:'data='+encodeURIComponent(query),signal:controller.signal});
-     if(!response.ok)throw new Error('POST HTTP '+response.status);
-    }catch(postError){
-     if(controller.signal.aborted)throw postError;
-     response=await fetch(endpoint+'?data='+encodeURIComponent(query),{headers:{'Accept':'application/json'},signal:controller.signal});
-     if(!response.ok)throw new Error('GET HTTP '+response.status);
-    }
-    const payload=await response.json();
-    if(!Array.isArray(payload.elements))throw new Error(payload.remark||'Map server returned an invalid response');
-    return payload;
-   }finally{clearTimeout(timeout);}
-  }));
-  listings=data.elements.map(e=>{const t=e.tags||{};return {id:e.type+'/'+e.id,name:t.name||t['name:en']||'Unnamed hostel',city:t['addr:city']||t['addr:town']||t['addr:village']||t['is_in:city']||'',address:[t['addr:street'],t['addr:housenumber']].filter(Boolean).join(' '),website:t.website||t['contact:website']||'',phone:t.phone||t['contact:phone']||'',email:t.email||t['contact:email']||'',lat:e.lat??e.center?.lat,lon:e.lon??e.center?.lon,operator:t.operator||'',osm:'https://www.openstreetmap.org/'+e.type+'/'+e.id}});
+  const all=data.hostels||[];
+  listings=all.filter(x=>x.countryCode===code&&Number.isFinite(Number(x.lat))&&Number.isFinite(Number(x.lon))&&distanceKm(Number(target.lat),Number(target.lon),Number(x.lat),Number(x.lon))<=25);
   listings.sort((a,b)=>a.name.localeCompare(b.name));
-  title.textContent=(document.documentElement.lang==='es'?'Hostales cerca de ':'Hostels near ')+(target.display_name.split(',')[0]||place);
-  status.textContent=(document.documentElement.lang==='es'?'Mostrando hostales de OpenStreetMap a unos 20 km de ':'Showing OpenStreetMap hostels within about 20 km of ')+place+(document.documentElement.lang==='es'?'. Los listados pueden estar incompletos o desactualizados; verifica los detalles antes de reservar.':'. Listings may be incomplete or outdated; verify details before booking.');
-  if(!listings.length){results.className='empty';results.textContent=(document.documentElement.lang==='es'?'No hay hostales registrados en el mapa a unos 20 km de ':'No hostels are currently mapped within about 20 km of ')+place+(document.documentElement.lang==='es'?'. Prueba con una ciudad cercana o un nombre de destino más corto.':'. Try a nearby city or a shorter destination name.');count.textContent=document.documentElement.lang==='es'?'0 alojamientos':'0 listings';return;}
+  title.textContent=(document.documentElement.lang==='es'?'Hostales cerca de ':'Hostels near ')+(target.name||target.detail||place);
+  const updated=data.updatedAt?new Date(data.updatedAt).toLocaleDateString(document.documentElement.lang==='es'?'es':'en-US'):'';
+  if(!listings.length){
+   results.className='empty';
+   results.textContent=(document.documentElement.lang==='es'?'No hay hostales en la base de datos local a unos 25 km de ':'No hostels in the local website database are listed within about 25 km of ')+(target.name||place)+'. '+(document.documentElement.lang==='es'?'La base se actualiza semanalmente.':'The local database refreshes weekly.');
+   count.textContent=document.documentElement.lang==='es'?'0 alojamientos':'0 listings';
+   status.textContent=(document.documentElement.lang==='es'?'Búsqueda realizada únicamente en datos guardados en este sitio. Última actualización: ':'Searched only data stored on this website. Last database update: ')+(updated||'not yet available')+'.';
+   return;
+  }
   search.disabled=false;search.value='';render();
+  status.textContent=(document.documentElement.lang==='es'?'Mostrando datos guardados en este sitio. Última actualización: ':'Showing data stored on this website. Last database update: ')+(updated||'not yet available')+'. '+(document.documentElement.lang==='es'?'Los datos provienen de OpenStreetMap y pueden estar incompletos.':'Data is sourced from OpenStreetMap and may be incomplete.');
  }catch(err){
-  results.className='empty';
-  const reason=err instanceof AggregateError?'The live map-data servers did not respond in time.':(err.message||'Could not load listings.');
-  results.replaceChildren();
-  const message=document.createElement('p');message.textContent=reason+' Rather than leave you waiting, you can open a live hostel search for this destination.';results.append(message);
-  const fallback=document.createElement('a');
-  fallback.href='https://www.google.com/maps/search/'+encodeURIComponent('hostels in '+place+', '+countryName);
-  fallback.target='_blank';fallback.rel='noopener';fallback.textContent='Search hostels in '+place+' on Google Maps ↗';
-  fallback.style.cssText='display:inline-block;margin-top:12px;padding:12px 16px;border-radius:10px;background:#174b3b;color:white;font-weight:800;text-decoration:none';
-  results.append(fallback);
-  const osmFallback=document.createElement('p');osmFallback.style.marginTop='14px';
-  const osmLink=document.createElement('a');osmLink.href='https://www.openstreetmap.org/search?query='+encodeURIComponent('hostel '+place+' '+countryName);osmLink.target='_blank';osmLink.rel='noopener';osmLink.textContent='Try OpenStreetMap search ↗';osmFallback.append(osmLink);results.append(osmFallback);
-  status.textContent='The in-page listings service is currently unavailable. Use one of the live map searches below instead.';count.textContent='External search available';
- }finally{load.disabled=!country.value||!destination.value.trim();load.textContent=document.documentElement.lang==='es'?'Buscar hostales':'Find hostels';}
+  results.className='empty';results.textContent=err.message||'Could not load the local directory database.';
+  count.textContent=document.documentElement.lang==='es'?'Datos no disponibles':'Data unavailable';
+  status.textContent=err.message||'The local directory database could not be loaded.';
+ }finally{
+  load.disabled=!country.value||!destination.value.trim();
+  load.textContent=document.documentElement.lang==='es'?'Buscar hostales':'Find hostels';
+ }
 }
 function render(){
  const term=search.value.trim().toLowerCase();
