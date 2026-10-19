@@ -13,6 +13,32 @@
       "osm": "https://www.openstreetmap.org/?mlat=11.2408&mlon=-74.1990#map=16/11.2408/-74.1990",
       "isTest": true,
       "listingPlan": "free"
+    },
+    {
+      "id": "TEST-SANTA-MARTA-FEATURED-001",
+      "name": "TEST LISTING — Santa Marta Featured Hostel (NOT REAL)",
+      "city": "Santa Marta",
+      "countryCode": "CO",
+      "address": "TEST DATA ONLY — fictional property for Featured plan preview",
+      "operator": "DEMO RECORD — fictional; do not contact or book",
+      "lat": 11.242,
+      "lon": -74.201,
+      "osm": "https://www.openstreetmap.org/?mlat=11.2420&mlon=-74.2010#map=16/11.2420/-74.2010",
+      "isTest": true,
+      "listingPlan": "featured"
+    },
+    {
+      "id": "TEST-SANTA-MARTA-PREMIUM-001",
+      "name": "TEST LISTING — Santa Marta Premium Hostel (NOT REAL)",
+      "city": "Santa Marta",
+      "countryCode": "CO",
+      "address": "TEST DATA ONLY — fictional property for Premium plan preview",
+      "operator": "DEMO RECORD — fictional; do not contact or book",
+      "lat": 11.2396,
+      "lon": -74.197,
+      "osm": "https://www.openstreetmap.org/?mlat=11.2396&mlon=-74.1970#map=16/11.2396/-74.1970",
+      "isTest": true,
+      "listingPlan": "premium"
     }
   ]
 }
