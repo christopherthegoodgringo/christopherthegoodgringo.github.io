@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hostel Owner Portal | Christopher the Good Gringo</title>
+<meta name="description" content="Sign in to claim and manage your hostel listing with Christopher the Good Gringo.">
+<style>
+:root{--green:#103e2f;--deep:#09291e;--gold:#f5bd3e;--cream:#fbf5e8;--ink:#17271f;--muted:#657268;--line:#e6ddca;--white:#fffdf8}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}header{background:var(--green);color:var(--cream);padding:15px max(18px,calc((100% - 1080px)/2));display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}header a{color:var(--gold);font-weight:700}main{width:min(760px,calc(100% - 32px));margin:36px auto}.panel{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:clamp(20px,4vw,34px);box-shadow:0 12px 34px #17271f0b}h1{font-size:clamp(2rem,5vw,3rem);line-height:1.05;letter-spacing:-.04em;color:var(--green);margin:0 0 8px}p{color:var(--muted)}label{display:block;font-weight:750;font-size:.9rem;margin:14px 0 5px}input{width:100%;font:inherit;padding:12px 13px;border:1px solid #cbd4cd;border-radius:10px;background:#fff;color:var(--ink)}button{font:inherit;font-weight:800;padding:12px 16px;border:0;border-radius:10px;background:var(--green);color:white;cursor:pointer}button.secondary{background:#e8efe9;color:var(--green)}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.status{margin-top:14px;padding:12px;border-radius:10px;background:#edf3ed;white-space:pre-wrap}.status.error{background:#fff0e9;color:#7a2917}.small{font-size:.85rem}.lang{background:transparent;border:1px solid #ffffff77;padding:6px 10px}.hidden{display:none!important}
+</style>
+</head>
+<body>
+<header><strong>Christopher the Good Gringo · Owner Portal</strong><nav><a href="../hostels.html">Hostel Finder</a>　<button id="language" class="lang" type="button">Español</button></nav></header>
+<main><section class="panel">
+<p class="eyebrow" id="eyebrow">HOSTEL OWNER ACCESS</p><h1 id="heading">Claim and manage your hostel</h1>
+<p id="intro">Create an account or sign in to request ownership of an existing listing. Claims stay pending until the site administrator reviews them.</p>
+<form id="auth-form">
+<label for="email" id="email-label">Email address</label><input id="email" type="email" autocomplete="email" required>
+<label for="password" id="password-label">Password</label><input id="password" type="password" autocomplete="current-password" minlength="8" required>
+<div class="actions"><button type="submit" id="signin">Sign in</button><button type="button" class="secondary" id="signup">Create account</button></div>
+</form>
+<div class="actions"><button type="button" class="secondary" id="reset">Send password reset email</button></div>
+<p class="small" id="notice">New accounts may need to verify their email before signing in. Never share your password.</p>
+<div id="status" class="status hidden" role="status" aria-live="polite"></div>
+</section></main>
+<script src="./config.js"></script>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+const sb = createClient(window.CGG_SUPABASE_URL, window.CGG_SUPABASE_PUBLISHABLE_KEY);
+let spanish=false;
+const copy={
+en:{eyebrow:'HOSTEL OWNER ACCESS',heading:'Claim and manage your hostel',intro:'Create an account or sign in to request ownership of an existing listing. Claims stay pending until the site administrator reviews them.',email:'Email address',password:'Password',signin:'Sign in',signup:'Create account',reset:'Send password reset email',notice:'New accounts may need to verify their email before signing in. Never share your password.',lang:'Español',signinOk:'Signed in. Opening your portal…',signupOk:'Account created. Check your email for a verification link if email confirmation is enabled.',resetOk:'If an account exists for that email, a password reset message has been requested.',signedOut:'Please sign in to continue.'},
+es:{eyebrow:'ACCESO PARA PROPIETARIOS',heading:'Reclama y administra tu hostal',intro:'Crea una cuenta o inicia sesión para solicitar la propiedad de un anuncio existente. Las solicitudes quedan pendientes hasta que el administrador las revise.',email:'Correo electrónico',password:'Contraseña',signin:'Iniciar sesión',signup:'Crear cuenta',reset:'Enviar correo para restablecer contraseña',notice:'Es posible que las cuentas nuevas deban verificar el correo. Nunca compartas tu contraseña.',lang:'English',signinOk:'Sesión iniciada. Abriendo tu portal…',signupOk:'Cuenta creada. Revisa tu correo para verificarla si la confirmación está activada.',resetOk:'Si existe una cuenta con ese correo, se ha solicitado un mensaje para restablecer la contraseña.',signedOut:'Inicia sesión para continuar.'}
+};
+const $=id=>document.getElementById(id);
+function say(msg,error=false){$('status').textContent=msg;$('status').classList.remove('hidden');$('status').classList.toggle('error',error)}
+function render(){const c=copy[spanish?'es':'en'];document.documentElement.lang=spanish?'es':'en';for(const id of ['eyebrow','heading','intro'])$(id).textContent=c[id];$('email-label').textContent=c.email;$('password-label').textContent=c.password;$('signin').textContent=c.signin;$('signup').textContent=c.signup;$('reset').textContent=c.reset;$('notice').textContent=c.notice;$('language').textContent=c.lang}
+$('language').addEventListener('click',()=>{spanish=!spanish;render()});render();
+$('auth-form').addEventListener('submit',async e=>{e.preventDefault();const {data,error}=await sb.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error)return say(error.message,true);say(copy[spanish?'es':'en'].signinOk);location.href='./dashboard.html'});
+$('signup').addEventListener('click',async()=>{const email=$('email').value.trim(),password=$('password').value;if(!email||password.length<8)return say(spanish?'Introduce tu correo y una contraseña de al menos 8 caracteres.':'Enter your email and a password of at least 8 characters.',true);const {error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname.replace(/index\.html$/,'dashboard.html')}});if(error)return say(error.message,true);say(copy[spanish?'es':'en'].signupOk)});
+$('reset').addEventListener('click',async()=>{const email=$('email').value.trim();if(!email)return say(spanish?'Escribe primero tu correo.':'Enter your email address first.',true);const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.href});if(error)return say(error.message,true);say(copy[spanish?'es':'en'].resetOk)});
+const {data:{session}}=await sb.auth.getSession();if(session)location.href='./dashboard.html';
+</script>
+</body></html>
