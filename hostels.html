@@ -257,8 +257,7 @@ function listingPriority(x){
 }
 function render(){
  const term=search.value.trim().toLowerCase();
- const normalizedDestination=destination.value.trim().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase();
- const showBogotaSamples=country.value==='CO'&&normalizedDestination.includes('bogota');
+ const showBogotaSamples=country.value==='CO'&&/bogot/i.test(destination.value);
  const filtered=listings.filter(x=>(x.name+' '+x.city+' '+x.address+' '+x.operator).toLowerCase().includes(term)).sort((a,b)=>(Boolean(b.isTest)-Boolean(a.isTest))||listingPriority(a)-listingPriority(b)||String(a.name||'').localeCompare(String(b.name||'')));
  const displayCount=filtered.length+(showBogotaSamples?3:0);
  count.textContent=document.documentElement.lang==='es'?displayCount+' alojamientos'+(term?' encontrados':''):displayCount+' listing'+(displayCount===1?'':'s')+(term?' found':'');
