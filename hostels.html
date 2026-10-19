@@ -99,10 +99,10 @@ function getLocalData(){
       if(matches.length!==1)continue;
       const listing=matches[0],changes=override.changes;
       if(typeof changes.hostel_name==='string'&&changes.hostel_name.trim())listing.name=changes.hostel_name.trim();
-      if(typeof changes.contact_email==='string')listing.email=changes.contact_email.trim();
-      if(typeof changes.website==='string')listing.website=changes.website.trim();
-      if(Array.isArray(changes.photo_urls))listing.photoUrls=changes.photo_urls.filter(v=>typeof v==='string'&&/^https?:\/\//i.test(v));
-      if(typeof changes.description==='string')listing.description=changes.description;
+      if(typeof changes.contact_email==='string'&&changes.contact_email.trim())listing.email=changes.contact_email.trim();
+      if(typeof changes.website==='string'&&changes.website.trim())listing.website=changes.website.trim();
+      if(Array.isArray(changes.photo_urls)&&changes.photo_urls.length)listing.photoUrls=changes.photo_urls.filter(v=>typeof v==='string'&&/^https?:\/\//i.test(v));
+      if(typeof changes.description==='string'&&changes.description.trim())listing.description=changes.description;
      }
     }
    }
