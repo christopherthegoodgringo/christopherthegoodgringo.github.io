@@ -109,12 +109,16 @@ destination.addEventListener('input',()=>{
    const normalized=normalizeCityName(query);
    const aliases={'mexico city':'mexico city','ciudad de mexico':'mexico city','cdmx':'mexico city','santa marta':'santa marta'};
    const normalizedQuery=aliases[normalized]||normalized;
-   const cities=(data.cities||[]).filter(c=>c.countryCode===code&&c.name)
+   let cities=(data.cities||[]).filter(c=>c.countryCode===code&&c.name)
     .filter(c=>normalizeCityName(c.name).includes(normalizedQuery))
     .sort((a,b)=>{
       const an=normalizeCityName(a.name),bn=normalizeCityName(b.name);
       return (an===normalizedQuery?-1:bn===normalizedQuery?1:an.localeCompare(bn));
     }).slice(0,12).map(c=>({name:c.name,lat:c.lat,lon:c.lon,detail:c.detail||c.name,countryCode:c.countryCode}));
+   // Ensure Panama's capital is searchable even if the source index labels it differently.
+   if(code==='PA'&&['panama','panama city','panama city panama','ciudad de panama'].includes(normalized)){
+    cities=[{name:'Panama City',lat:8.9824,lon:-79.5199,detail:'Panama City, Panama',countryCode:'PA'}];
+   }
    if(!cities.length){
     citySuggestions.replaceChildren();
     const note=document.createElement('div');note.className='suggestion';
@@ -158,6 +162,9 @@ async function loadHostels(){
    const normalizedPlace=aliases[normalized]||normalized;
    const match=(data.cities||[]).find(c=>c.countryCode===code&&c.name&&normalizeCityName(c.name)===normalizedPlace);
    if(match)target={...match,detail:match.detail||match.name};
+   if(!target&&code==='PA'&&['panama','panama city','panama city panama','ciudad de panama'].includes(normalized)){
+    target={name:'Panama City',lat:8.9824,lon:-79.5199,detail:'Panama City, Panama',countryCode:'PA'};
+   }
   }
   if(!target||!target.lat||!target.lon){
    throw new Error(document.documentElement.lang==='es'?'Elige una ciudad de las sugerencias del índice local.':'Choose a city from the local-index suggestions.');
