@@ -1,6 +1,10 @@
 name: Refresh local hostel directory
 
 on:
+  push:
+    paths:
+      - ".github/workflows/refresh-hostels.yml"
+      - "scripts/refresh_hostels.py"
   schedule:
     - cron: "23 7 * * 1"
   workflow_dispatch:
