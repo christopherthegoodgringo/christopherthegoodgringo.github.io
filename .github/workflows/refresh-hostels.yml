@@ -5,6 +5,7 @@ on:
     paths:
       - ".github/workflows/refresh-hostels.yml"
       - "scripts/refresh_hostels.py"
+      - "data/hostels.json"
   schedule:
     - cron: "23 7 * * 1"
   workflow_dispatch:
