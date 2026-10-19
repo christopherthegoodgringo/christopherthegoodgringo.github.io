@@ -59,20 +59,37 @@ def nearest_city_suggestions(hostels, cities, missing_indexes, max_km=50):
         lat_bin, lon_bin = math.floor((lat + 90) / cell), math.floor((lon + 180) / cell)
         lat_span = int(math.ceil(max_km / (111.0 * cell))) + 1
         lon_span = int(math.ceil(max_km / (111.0 * cell * max(0.05, math.cos(math.radians(lat))))) ) + 1
-        nearest = None
+        nearest = []
+        seen_cities = set()
         for bi in range(lat_bin - lat_span, lat_bin + lat_span + 1):
             for bj in range(lon_bin - lon_span, lon_bin + lon_span + 1):
                 for city_lat, city_lon, city_name, detail in grid.get((cc, bi, bj), []):
+                    city_key = (city_name.casefold(), round(city_lat, 5), round(city_lon, 5))
+                    if city_key in seen_cities:
+                        continue
+                    seen_cities.add(city_key)
                     d = distance_m(h, {"lat": city_lat, "lon": city_lon})
-                    if d <= max_m and (nearest is None or d < nearest[0]):
-                        nearest = (d, city_name, detail)
+                    if d <= max_m:
+                        nearest.append((d, city_name, detail))
+        nearest.sort(key=lambda x: x[0])
         if nearest:
-            d, city_name, detail = nearest
+            d, city_name, detail = nearest[0]
             km = d / 1000
-            confidence = "high (<=5 km)" if km <= 5 else "medium (5-25 km)" if km <= 25 else "review (25-50 km)"
-            suggestions.append((h, city_name, detail, f"{km:.2f}", confidence))
+            second_km = nearest[1][0] / 1000 if len(nearest) > 1 else ""
+            gap_km = (nearest[1][0] - d) / 1000 if len(nearest) > 1 else ""
+            if km <= 5 and (second_km == "" or gap_km >= 2):
+                confidence = "high (<=5 km; clear nearest)"
+            elif km <= 5:
+                confidence = "ambiguous (another city within 2 km distance gap)"
+            elif km <= 25:
+                confidence = "medium (5-25 km)"
+            else:
+                confidence = "review (25-50 km)"
+            suggestions.append((h, city_name, detail, f"{km:.2f}", confidence,
+                                f"{second_km:.2f}" if second_km != "" else "",
+                                f"{gap_km:.2f}" if gap_km != "" else ""))
         else:
-            suggestions.append((h, "", "", "", "no city within 50 km"))
+            suggestions.append((h, "", "", "", "no city within 50 km", "", ""))
     return suggestions
 
 def mdtable(headers,rows):
@@ -146,6 +163,8 @@ def main():
         "- Missing or generic hostel name: **"+str(len(missing_name))+"**",
         "- Hostel with blank city field: **"+str(len(missing_city))+"**",
         "- Blank-city listings with nearest same-country city within 5 km: **"+str(suggestion_counts["within 5 km"])+"**",
+        "- Blank-city listings within 5 km with an unambiguous nearest city (at least 2 km closer than second-nearest): **"+str(sum(1 for x in city_suggestions if x[3] and float(x[3]) <= 5 and x[4] == "high (<=5 km; clear nearest)"))+"**",
+        "- Blank-city listings within 5 km with competing nearby city candidates: **"+str(sum(1 for x in city_suggestions if x[4].startswith("ambiguous")))+"**",
         "- Blank-city listings with nearest same-country city within 10 km: **"+str(suggestion_counts["within 10 km"])+"**",
         "- Blank-city listings with nearest same-country city within 25 km: **"+str(suggestion_counts["within 25 km"])+"**",
         "- Blank-city listings with nearest same-country city within 50 km: **"+str(suggestion_counts["within 50 km"])+"**",
@@ -163,7 +182,7 @@ def main():
         "",
         mdtable(["Distance band","Blank-city listings"], list(suggestion_counts.items())),
         "",
-        "A detailed proposal file is generated at reports/hostel-city-suggestions.csv. It includes the hostel ID/name/country/coordinates, nearest city suggestion, distance, and a review confidence label. Listings without a city within 50 km are left without a suggestion.",
+        "A detailed proposal file is generated at reports/hostel-city-suggestions.csv. It includes the hostel ID/name/country/coordinates, nearest city suggestion, distance, second-nearest city distance, and distance gap. A match within 5 km is only marked high confidence when it is at least 2 km closer than the second-nearest city. Ambiguous matches are flagged for review. Listings without a city within 50 km are left without a suggestion.",
         "",
         "","## Mexico City diagnosis","",
         "- Mexico City-like city index records: **"+str(len(mex))+"**",
@@ -188,9 +207,11 @@ def main():
     CITY_SUGGESTIONS.parent.mkdir(parents=True, exist_ok=True)
     with CITY_SUGGESTIONS.open("w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["hostel_id", "hostel_name", "country_code", "hostel_lat", "hostel_lon", "suggested_city", "city_detail", "distance_km", "review_confidence"])
-        for h, city_name, detail, km, confidence in city_suggestions:
-            writer.writerow([h.get("id") or h.get("osm") or "", h.get("name") or "", h.get("countryCode") or "", h.get("lat") or "", h.get("lon") or "", city_name, detail, km, confidence])
+        writer.writerow(["hostel_id", "hostel_name", "country_code", "hostel_lat", "hostel_lon", "suggested_city", "city_detail", "nearest_distance_km", "review_confidence", "second_nearest_distance_km", "distance_gap_km"])
+        for item in city_suggestions:
+            h, city_name, detail, km, confidence = item[:5]
+            second_km, gap_km = item[5:7] if len(item) > 5 else ("", "")
+            writer.writerow([h.get("id") or h.get("osm") or "", h.get("name") or "", h.get("countryCode") or "", h.get("lat") or "", h.get("lon") or "", city_name, detail, km, confidence, second_km, gap_km])
     print("Audit complete. Hostels:",len(hs),"Cities:",len(cs),"same-name groups:",len(dupnames),"duplicate ID groups:",len(dupids),"city suggestions within 50 km:",suggestion_counts["within 50 km"])
 
 if __name__=="__main__": main()
