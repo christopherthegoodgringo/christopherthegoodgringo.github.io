@@ -55,6 +55,7 @@
 </section>
 <footer class="foot"><strong>Data & attribution:</strong> Hostel listings are retrieved from <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap</a> contributors and are provided under the <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">Open Database License (ODbL)</a>. Data is community-maintained, can be incomplete or outdated, and is not an endorsement. Confirm details with the property before booking. Map data © OpenStreetMap contributors. This page does not copy a commercial booking site's database.<div class="legal-footer" style="margin-top:10px;padding-top:10px;border-top:1px solid currentColor;opacity:.92;font-size:.82rem;display:flex;gap:6px 16px;justify-content:center;align-items:center;flex-wrap:wrap;width:100%;text-align:center"><span><span class="en">© 2026 Christopher The Good Gringo™. All rights reserved.</span><span class="es">© 2026 Christopher The Good Gringo™. Todos los derechos reservados.</span></span><span><span class="en"><a href="/" style="color:inherit;text-decoration:underline">Home</a> · <a href="/team/" style="color:inherit;text-decoration:underline">Meet the Team</a> · <a href="/privacy-policy.html" style="color:inherit;text-decoration:underline">Privacy Policy</a> · <a href="/terms-of-use.html" style="color:inherit;text-decoration:underline">Terms of Use</a></span><span class="es"><a href="/" style="color:inherit;text-decoration:underline">Inicio</a> · <a href="/team/" style="color:inherit;text-decoration:underline">Conoce al equipo</a> · <a href="/privacy-policy.html" style="color:inherit;text-decoration:underline">Política de privacidad</a> · <a href="/terms-of-use.html" style="color:inherit;text-decoration:underline">Términos de uso</a></span></span></div></footer>
 </main>
+<script src="/owner-portal/config.js"></script>
 <script>
 const countries = [
 ["MX","Mexico"],["BZ","Belize"],["GT","Guatemala"],["HN","Honduras"],["SV","El Salvador"],["NI","Nicaragua"],["CR","Costa Rica"],["PA","Panama"],
@@ -83,6 +84,29 @@ function getLocalData(){
     }
    }
   }catch(_demoError){}
+  // Apply administrator-approved edits from Supabase without rewriting the large source JSON.
+  // Only an exact, unique match by directory id or OSM URL is eligible; test listings are excluded.
+  try{
+   const cfgUrl=window.CGG_SUPABASE_URL,publicKey=window.CGG_SUPABASE_PUBLISHABLE_KEY;
+   if(cfgUrl&&publicKey){
+    const response=await fetch(cfgUrl+'/rest/v1/published_hostel_overrides?select=hostel_id,changes',{headers:{apikey:publicKey,Authorization:'Bearer '+publicKey}});
+    if(response.ok){
+     const overrides=await response.json();
+     for(const override of overrides){
+      const key=String(override.hostel_id||'');
+      if(!key||key.startsWith('TEST-')||!override.changes||typeof override.changes!=='object')continue;
+      const matches=d.hostels.filter(x=>!x.isTest&&!String(x.id||'').startsWith('TEST-')&&(String(x.id||'')===key||String(x.osm||'')===key));
+      if(matches.length!==1)continue;
+      const listing=matches[0],changes=override.changes;
+      if(typeof changes.hostel_name==='string'&&changes.hostel_name.trim())listing.name=changes.hostel_name.trim();
+      if(typeof changes.contact_email==='string')listing.email=changes.contact_email.trim();
+      if(typeof changes.website==='string')listing.website=changes.website.trim();
+      if(Array.isArray(changes.photo_urls))listing.photoUrls=changes.photo_urls.filter(v=>typeof v==='string'&&/^https?:\\/\\//i.test(v));
+      if(typeof changes.description==='string')listing.description=changes.description;
+     }
+    }
+   }
+  }catch(_overrideError){/* Directory remains usable if Supabase is unavailable. */}
   // Prefer the persistent city index. Fall back to the legacy embedded list only during migration.
   try{
    const response=await fetch('/data/cities.json?v=1');
@@ -279,6 +303,10 @@ function render(){
   }
   const place=document.createElement('p');place.textContent=[x.city,x.address].filter(Boolean).join(' · ')||(document.documentElement.lang==='es'?'Ubicación no indicada':'Location not listed');card.append(place);
   if(x.operator){const p=document.createElement('p');p.textContent=(document.documentElement.lang==='es'?'Operador: ':'Operator: ')+x.operator;card.append(p);}
+  if(x.description&&!x.isTest){const p=document.createElement('p');p.textContent=x.description;card.append(p);}
+  if(Array.isArray(x.photoUrls)&&!x.isTest){
+   x.photoUrls.filter(url=>typeof url==='string'&&/^https?:\\/\\//i.test(url)).slice(0,6).forEach(url=>{const img=document.createElement('img');img.src=url;img.alt=(document.documentElement.lang==='es'?'Foto de ':'Photo of ')+x.name;img.loading='lazy';img.referrerPolicy='no-referrer';img.style.cssText='display:block;width:100%;max-height:220px;object-fit:cover;border-radius:9px;margin:8px 0';card.append(img);});
+  }
   const links=document.createElement('div');links.className='links';
   const osm=document.createElement('a');osm.href=x.osm;osm.target='_blank';osm.rel='noopener';osm.textContent=document.documentElement.lang==='es'?'Abrir ficha del mapa ↗':'Open map record ↗';links.append(osm);
   if(x.website){const a=document.createElement('a');a.href=/^https?:\/\//i.test(x.website)?x.website:'https://'+x.website;a.target='_blank';a.rel='noopener';a.textContent=document.documentElement.lang==='es'?'Sitio web ↗':'Website ↗';links.append(a);}
