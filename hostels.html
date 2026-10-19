@@ -84,15 +84,15 @@ destination.addEventListener('input',()=>{
    const seenNames=new Set();
    return data.filter(item=>{
     const a=item.address||{};
-    return Boolean(a.city||a.town||a.village) ||
-      (item.class==='place'&&['city','town','village'].includes(item.type));
+    const placeType=['city','town','village','municipality','borough','suburb'].includes(item.type);
+    return Boolean(a.city||a.town||a.village) || (item.class==='place'&&placeType);
    }).map(item=>{
     const a=item.address||{};
-    const name=a.city||a.town||a.village||item.name;
-    return {name,lat:item.lat,lon:item.lon,detail:name};
+    const name=a.city||a.town||a.village||item.name||item.namedetails?.name||item.display_name?.split(',')[0];
+    return {name,lat:item.lat,lon:item.lon,detail:item.display_name||name};
    }).filter(item=>{
     const key=(item.name||'').trim().toLocaleLowerCase();
-    if(!key||seenNames.has(key))return false;
+    if(!key||!item.lat||!item.lon||seenNames.has(key))return false;
     seenNames.add(key);
     return true;
    });
@@ -101,8 +101,8 @@ destination.addEventListener('input',()=>{
    // Try the structured city search first, then fall back to a country-scoped
    // text search because some OpenStreetMap records are not indexed by city.
    const urls=[
-    'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=10&countrycodes='+encodeURIComponent(selected[0].toLowerCase())+'&city='+encodeURIComponent(query),
-    'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=10&countrycodes='+encodeURIComponent(selected[0].toLowerCase())+'&q='+encodeURIComponent(query+' '+selected[1])
+    'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&namedetails=1&limit=10&countrycodes='+encodeURIComponent(selected[0].toLowerCase())+'&city='+encodeURIComponent(query),
+    'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&namedetails=1&limit=10&countrycodes='+encodeURIComponent(selected[0].toLowerCase())+'&q='+encodeURIComponent(query+' '+selected[1])
    ];
    let items=[];
    for(const url of urls){
@@ -161,8 +161,8 @@ async function loadHostels(){
    // especially for countries with alternate/local names.
    const countryScope='countrycodes='+encodeURIComponent(code.toLowerCase());
    const geoUrls=[
-    'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=8&'+countryScope+'&city='+encodeURIComponent(place),
-    'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=8&'+countryScope+'&q='+encodeURIComponent(place+' '+countryName)
+    'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&namedetails=1&limit=8&'+countryScope+'&city='+encodeURIComponent(place),
+    'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&namedetails=1&limit=8&'+countryScope+'&q='+encodeURIComponent(place+' '+countryName)
    ];
    let geo=[];
    let lookupErrors=[];
