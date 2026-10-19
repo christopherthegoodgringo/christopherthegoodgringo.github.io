@@ -236,8 +236,14 @@ function render(){
 // Accept destination details passed from the homepage search form.
 (function initFromHome(){
  const params=new URLSearchParams(location.search);
- const lang=params.get('lang');
- if(lang==='en'||lang==='es'){document.documentElement.lang=lang;try{localStorage.setItem('gg-lang',lang);}catch(e){}}
+ let lang=params.get('lang');
+ if(lang!=='en'&&lang!=='es'){try{lang=localStorage.getItem('gg-lang')}catch(e){}}
+ if(lang!=='en'&&lang!=='es')lang='en';
+ const toggle=document.getElementById('languageToggle');
+ function applyLanguage(){document.documentElement.lang=lang;if(toggle){toggle.textContent=lang==='en'?'ES':'EN';toggle.setAttribute('aria-label',lang==='en'?'Switch to Spanish':'Cambiar a inglés');}const first=country.options[0];if(first)first.textContent=lang==='en'?'Choose a country…':'Elige un país…';destination.placeholder=lang==='en'?'Start typing a city…':'Empieza a escribir una ciudad…';search.placeholder=lang==='en'?'Search names or addresses':'Buscar nombres o direcciones';}
+ if(toggle)toggle.addEventListener('click',()=>{lang=lang==='en'?'es':'en';try{localStorage.setItem('gg-lang',lang)}catch(e){}applyLanguage();});
+ try{localStorage.setItem('gg-lang',lang)}catch(e){}
+ applyLanguage();
  const code=params.get('country'), place=params.get('destination');
  if(code&&countries.some(([c])=>c===code)&&place){
   country.value=code;destination.disabled=false;destination.value=place;chosenPlace=null;load.disabled=false;
