@@ -1,48 +1,16 @@
-name: Weekly hostel database audit
+name: Hostel database refresh (paused)
 
 on:
-  schedule:
-    - cron: "23 7 * * 0"
   workflow_dispatch:
 
 permissions:
-  contents: write
-
-concurrency:
-  group: refresh-local-hostel-directory
-  cancel-in-progress: false
+  contents: read
 
 jobs:
-  refresh-hostels:
+  paused:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Refresh complete hostel and destination index
-        run: python scripts/refresh_hostels.py
-      - name: Commit refreshed database when changed
+      - name: Explain pause
         run: |
-          set -e
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          cp data/hostels.json /tmp/refreshed-hostels.json
-          for attempt in 1 2 3; do
-            git fetch origin main
-            git reset --hard origin/main
-            cp /tmp/refreshed-hostels.json data/hostels.json
-            git add data/hostels.json
-            if git diff --cached --quiet; then
-              echo "Hostel database unchanged."
-              exit 0
-            fi
-            git commit -m "Refresh weekly Latin America hostel database"
-            if git push origin HEAD:main; then
-              exit 0
-            fi
-            echo "Push attempt $attempt failed; retrying against latest main."
-          done
-          echo "Could not push the refreshed database after 3 attempts." >&2
-          exit 1
+          echo "Automatic refresh is paused while the hostel directory is redesigned around a persistent master list."
+          echo "Do not run the old full-rebuild script until merge-safe import and review workflows are in place."
