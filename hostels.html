@@ -220,7 +220,8 @@ async function loadHostels(){
 }
 function render(){
  const term=search.value.trim().toLowerCase();
- const filtered=listings.filter(x=>(x.name+' '+x.city+' '+x.address+' '+x.operator).toLowerCase().includes(term));
+ const planRank=x=>x.listingPlan==='premium'?0:x.listingPlan==='featured'?1:2;
+ const filtered=listings.filter(x=>(x.name+' '+x.city+' '+x.address+' '+x.operator).toLowerCase().includes(term)).sort((a,b)=>planRank(a)-planRank(b)||a.name.localeCompare(b.name));
  count.textContent=document.documentElement.lang==='es'?filtered.length+' alojamientos'+(term?' encontrados':''):filtered.length+' listing'+(filtered.length===1?'':'s')+(term?' found':'');
  if(!listings.length){results.className='empty';results.textContent=document.documentElement.lang==='es'?'Todavía no se han cargado listados.':'No listings loaded yet.';return;}
  if(!filtered.length){results.className='empty';results.textContent=document.documentElement.lang==='es'?'No hay coincidencias. Prueba otra forma de escribirlo o borra la búsqueda.':'No matches. Try another spelling or clear your search.';return;}
