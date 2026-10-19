@@ -156,16 +156,28 @@ async function loadHostels(){
   if(chosenPlace&&chosenPlace.lat&&chosenPlace.lon){
    target={lat:chosenPlace.lat,lon:chosenPlace.lon,display_name:chosenPlace.detail||chosenPlace.name};
   }else{
-   const geocodeUrl='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&country='+encodeURIComponent(countryName)+'&city='+encodeURIComponent(place);
-   let geoResponse=await fetch(geocodeUrl,{headers:{'Accept':'application/json'}});
-   if(!geoResponse.ok)throw new Error('The city lookup service is temporarily busy. Please select a city from the suggestions or try again shortly.');
-   let geo=await geoResponse.json();
-   if(!geo.length){
-    geoResponse=await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&country='+encodeURIComponent(countryName)+'&q='+encodeURIComponent(place),{headers:{'Accept':'application/json'}});
-    if(!geoResponse.ok)throw new Error('The city lookup service is temporarily busy. Please select a city from the suggestions or try again shortly.');
-    geo=await geoResponse.json();
+   // Scope geocoding by ISO country code, matching the city-suggestion flow.
+   // Nominatim's countrycodes parameter is more reliable than a free-text country name,
+   // especially for countries with alternate/local names.
+   const countryScope='countrycodes='+encodeURIComponent(code.toLowerCase());
+   const geoUrls=[
+    'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=8&'+countryScope+'&city='+encodeURIComponent(place),
+    'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=8&'+countryScope+'&q='+encodeURIComponent(place+' '+countryName)
+   ];
+   let geo=[];
+   let lookupErrors=[];
+   for(const geocodeUrl of geoUrls){
+    try{
+     const geoResponse=await fetch(geocodeUrl,{headers:{'Accept':'application/json'}});
+     if(!geoResponse.ok)throw new Error('HTTP '+geoResponse.status);
+     const candidates=await geoResponse.json();
+     if(Array.isArray(candidates)&&candidates.length){geo=candidates;break;}
+    }catch(lookupError){lookupErrors.push(lookupError);}
    }
-   if(!geo.length)throw new Error('Could not find that city or region in '+countryName+'. Check the spelling and try again.');
+   if(!geo.length){
+    if(lookupErrors.length===geoUrls.length)throw new Error('The city lookup service is temporarily busy. Please select a city from the suggestions or try again shortly.');
+    throw new Error('Could not find that city or region in '+countryName+'. Check the spelling or choose a suggestion from the list.');
+   }
    target=geo.find(x=>x.lat&&x.lon)||geo[0];
   }
   if(!target.lat||!target.lon)throw new Error('Found the destination but could not determine its map location. Try a nearby city name.');
