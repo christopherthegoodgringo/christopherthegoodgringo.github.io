@@ -250,7 +250,7 @@ function render(){
    const benefits={
     free:{en:['Basic directory listing','Hostel name and location','Owner can request corrections or updates'],es:['Ficha básica en el directorio','Nombre y ubicación del hostal','El propietario puede solicitar correcciones o actualizaciones']},
     featured:{en:['Everything in Free','Enhanced hostel profile','Photo gallery','Website and booking links','Featured placement in search results'],es:['Todo lo del plan Gratis','Perfil mejorado del hostal','Galería de fotos','Enlaces al sitio web y reservas','Posición destacada en los resultados']},
-    premium:{en:['Everything in Featured','Priority placement above Featured and Free listings','Promotional spotlight for the hostel'],es:['Todo lo del plan Destacado','Prioridad por encima de las fichas Destacadas y Gratis','Promoción especial para el hostal']}
+    premium:{en:['Basic directory listing and enhanced hostel profile','Photo gallery','Website and booking links','Featured placement in search results','Highest priority placement above Featured and Free listings','Promotional spotlight for the hostel'],es:['Ficha básica en el directorio y perfil mejorado','Galería de fotos','Enlaces al sitio web y reservas','Posición destacada en los resultados','Máxima prioridad por encima de las fichas Destacadas y Gratis','Promoción especial para el hostal']}
    };
    const ul=document.createElement('ul');ul.style.cssText='margin:0 0 12px;padding-left:20px;color:#20332b;font-size:.88rem';
    ((benefits[plan]||benefits.free)[document.documentElement.lang==='es'?'es':'en']).forEach(item=>{const li=document.createElement('li');li.textContent=item;ul.append(li);});card.append(ul);
