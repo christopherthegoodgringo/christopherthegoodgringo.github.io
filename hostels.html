@@ -336,17 +336,22 @@ function render(){
    x.photoUrls.filter(url=>typeof url==='string'&&/^https?:\/\//i.test(url)).slice(0,6).forEach(url=>{const img=document.createElement('img');img.src=url;img.alt=(document.documentElement.lang==='es'?'Foto de ':'Photo of ')+x.name;img.loading='lazy';img.referrerPolicy='no-referrer';img.style.cssText='display:block;width:100%;max-height:220px;object-fit:cover;border-radius:9px;margin:8px 0';card.append(img);});
   }
   const links=document.createElement('div');links.className='links';
-  const osm=document.createElement('a');osm.href=x.osm;osm.target='_blank';osm.rel='noopener';osm.textContent=document.documentElement.lang==='es'?'Abrir ficha del mapa ↗':'Open map record ↗';links.append(osm);
+  const plan=String(x.listingPlan||x.plan||'').toLowerCase().trim();
+  const claimStatus=String(x.claimStatus||x.claim_status||'').toLowerCase().trim();
+  const isClaimedOrFeatured=['featured','paid-featured','featured-paid'].includes(plan)||x.isClaimed===true||x.claimed===true||x.claimApproved===true||x.ownerVerified===true||['approved','verified','claimed','active'].includes(claimStatus);
+  if(!isClaimedOrFeatured){const osm=document.createElement('a');osm.href=x.osm;osm.target='_blank';osm.rel='noopener';osm.textContent=document.documentElement.lang==='es'?'Abrir ficha del mapa ↗':'Open map record ↗';links.append(osm);}
   if(x.website){const a=document.createElement('a');a.href=/^https?:\/\//i.test(x.website)?x.website:'https://'+x.website;a.target='_blank';a.rel='noopener';a.textContent=document.documentElement.lang==='es'?'Sitio web ↗':'Website ↗';links.append(a);}
   if(x.phone){const p=document.createElement('p');p.textContent=(document.documentElement.lang==='es'?'Teléfono: ':'Phone: ')+x.phone;card.append(p);}
   if(x.email){const p=document.createElement('p');p.textContent=(document.documentElement.lang==='es'?'Correo: ':'Email: ')+x.email;card.append(p);}
-  if(Number.isFinite(x.lat)&&Number.isFinite(x.lon)){const a=document.createElement('a');a.href='https://www.openstreetmap.org/?mlat='+x.lat+'&mlon='+x.lon+'#map=17/'+x.lat+'/'+x.lon;a.target='_blank';a.rel='noopener';a.textContent=document.documentElement.lang==='es'?'Ver ubicación ↗':'View location ↗';links.append(a);}
+  if(!isClaimedOrFeatured&&Number.isFinite(x.lat)&&Number.isFinite(x.lon)){const a=document.createElement('a');a.href='https://www.openstreetmap.org/?mlat='+x.lat+'&mlon='+x.lon+'#map=17/'+x.lat+'/'+x.lon;a.target='_blank';a.rel='noopener';a.textContent=document.documentElement.lang==='es'?'Ver ubicación ↗':'View location ↗';links.append(a);}
+  if(!isClaimedOrFeatured){
   const claim=document.createElement('a');
   const claimParams=new URLSearchParams({name:x.name||'',city:x.city||'',country:country.selectedOptions[0]?.text||'',osm:x.osm||'',website:x.website||'',type:'Claim an existing listing'});
   claim.href='/claim-hostel.html?'+claimParams.toString();
   claim.textContent=document.documentElement.lang==='es'?'¿Eres el propietario? Reclama este hostal':'Own this hostel? Claim this listing';
   claim.style.cssText='display:inline-flex;margin-top:12px;padding:9px 12px;border-radius:999px;background:#f5bd3e;color:#103629;font-weight:800;text-decoration:none;font-size:.86rem';
   links.append(claim);
+  }
   card.append(links);results.append(card);
  });
 
