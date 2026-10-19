@@ -65,18 +65,18 @@ destination.addEventListener('input',()=>{
   if(!selected)return;
   suggestionController=new AbortController();
   try{
-   const url='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=6&countrycodes='+encodeURIComponent(selected[0].toLowerCase())+'&q='+encodeURIComponent(query+', '+selected[1]);
+   // Use Nominatim's structured city field rather than a free-text search.
+   // This avoids matching districts, neighbourhoods, suburbs, and other admin areas.
+   const url='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=10&featuretype=city&countrycodes='+encodeURIComponent(selected[0].toLowerCase())+'&city='+encodeURIComponent(query)+'&country='+encodeURIComponent(selected[1]);
    const response=await fetch(url,{headers:{'Accept':'application/json'},signal:suggestionController.signal});
    if(!response.ok)throw new Error('Suggestions unavailable');
    const data=await response.json();
-   // Only suggest actual populated places. Do not show counties, roads, businesses,
-   // administrative areas, or the long Nominatim address as dropdown entries.
    const seenNames=new Set();
    const items=data
     .filter(item=>item.class==='place'&&['city','town','village'].includes(item.type))
     .map(item=>{
      const a=item.address||{};
-     const name=a.city||a.town||a.village||item.name;
+     const name=item.type==='city'? (a.city||item.name) : item.type==='town' ? (a.town||item.name) : (a.village||item.name);
      return {name,lat:item.lat,lon:item.lon,detail:name};
     })
     .filter(item=>{
