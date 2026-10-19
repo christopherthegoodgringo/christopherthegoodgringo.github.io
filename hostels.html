@@ -142,8 +142,10 @@ async function loadHostels(){
   const data=await getLocalData();
   let target=chosenPlace;
   if(!target||!target.lat||!target.lon){
-   const normalized=place.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase();
-   const match=(data.cities||[]).find(c=>c.countryCode===code&&c.name&&c.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase()===normalized);
+   const normalized=place.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase().trim();
+   const cityAliases={'mexico city':'ciudad de mexico','cdmx':'ciudad de mexico','ciudad de mexico':'ciudad de mexico'};
+   const normalizedPlace=cityAliases[normalized]||normalized;
+   const match=(data.cities||[]).find(c=>c.countryCode===code&&c.name&&c.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase().trim()===normalizedPlace);
    if(match)target={...match,detail:match.detail||match.name};
   }
   if(!target||!target.lat||!target.lon){
