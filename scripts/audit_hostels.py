@@ -12,6 +12,7 @@ APPROVED = {
 }
 ROOT=Path(__file__).resolve().parents[1]
 DATA=ROOT/"data"/"hostels.json"
+CITY_DATA=ROOT/"data"/"cities.json"
 REPORT=ROOT/"reports"/"hostel-database-audit.md"
 
 def norm(v):
@@ -34,7 +35,9 @@ def mdtable(headers,rows):
 def main():
     if not DATA.exists(): raise SystemExit("Missing data/hostels.json")
     d=json.loads(DATA.read_text(encoding="utf-8"))
-    hs,cs=d.get("hostels",[]),d.get("cities",[])
+    hs=d.get("hostels",[])
+    city_source=json.loads(CITY_DATA.read_text(encoding="utf-8")) if CITY_DATA.exists() else d
+    cs=city_source.get("cities",[])
     if not isinstance(hs,list) or not isinstance(cs,list): raise SystemExit("Expected hostels and cities arrays")
     hcountry,countrycity=Counter(),Counter()
     missing_name,missing_city,bad_h,unknown_h=[],[],[],[]
@@ -52,14 +55,15 @@ def main():
     for c in cs:
         cc=str(c.get("countryCode") or "")
         countrycity[cc]+=1
-        citydup[(cc,norm(c.get("name")))].append(c)
+        if norm(c.get("name")):
+            citydup[(cc,norm(c.get("name")))].append(c)
     dupids=[v for v in ids.values() if len(v)>1]
     dupnames=[v for v in namedup.values() if len(v)>1]
     dupcities=[v for v in citydup.values() if len(v)>1]
     bad_c=[c for c in cs if not valid(c.get("lat"),c.get("lon"))]
     unknown_c=[c for c in cs if str(c.get("countryCode") or "") not in APPROVED]
-    mex=[c for c in cs if c.get("countryCode")=="MX" and any(x in norm(c.get("name")) for x in ("mexico","cdmx","ciudad de mexico"))]
-    santa=[c for c in cs if c.get("countryCode")=="CO" and "santa marta" in norm(c.get("name"))]
+    mex=[c for c in cs if c.get("countryCode")=="MX" and norm(c.get("name")) in ("mexico city","ciudad de mexico","cdmx")]
+    santa=[c for c in cs if c.get("countryCode")=="CO" and norm(c.get("name"))=="santa marta"]
     mexh=[h for h in hs if h.get("countryCode")=="MX" and any(x in norm(h.get("city")) for x in ("mexico city","ciudad de mexico","cdmx"))]
     santah=[h for h in hs if h.get("countryCode")=="CO" and "santa marta" in norm(h.get("city"))]
     lines=[
@@ -68,6 +72,7 @@ def main():
         "- Dataset timestamp: "+str(d.get("updatedAt","not specified")),
         "- Total hostel records: **"+str(len(hs))+"**",
         "- Total city-index records: **"+str(len(cs))+"**",
+        "- City index source: **"+("data/cities.json (persistent)" if CITY_DATA.exists() else "legacy embedded list")+"**",
         "- No listing records were changed or deleted by this audit.","",
         "## Coverage by approved country","","### Hostels",
         mdtable(["Code","Country","Records"],[(k,v,hcountry.get(k,0)) for k,v in APPROVED.items()]),
