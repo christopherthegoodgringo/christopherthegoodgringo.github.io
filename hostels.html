@@ -197,7 +197,7 @@ async function loadHostels(){
   }
   const all=data.hostels||[];
   listings=all.filter(x=>x.countryCode===code&&Number.isFinite(Number(x.lat))&&Number.isFinite(Number(x.lon))&&distanceKm(Number(target.lat),Number(target.lon),Number(x.lat),Number(x.lon))<=25);
-  listings.sort((a,b)=>{const rank=x=>x.isTest&&x.listingPlan==='premium'?0:x.isTest&&x.listingPlan==='featured'?1:2;return rank(a)-rank(b)||a.name.localeCompare(b.name);});
+  listings.sort((a,b)=>listingPriority(a)-listingPriority(b)||String(a.name||'').localeCompare(String(b.name||''));
   title.textContent=(document.documentElement.lang==='es'?'Hostales cerca de ':'Hostels near ')+(target.name||target.detail||place);
   const updated=data.updatedAt?new Date(data.updatedAt).toLocaleDateString(document.documentElement.lang==='es'?'es':'en-US'):'';
   if(!listings.length){
@@ -218,10 +218,17 @@ async function loadHostels(){
   load.textContent=document.documentElement.lang==='es'?'Buscar hostales':'Find hostels';
  }
 }
+function listingPriority(x){
+ const plan=String(x.listingPlan||x.plan||'').toLowerCase().trim();
+ if(['premium','paid-premium','premium-paid'].includes(plan))return 0;
+ if(['featured','paid-featured','featured-paid'].includes(plan))return 1;
+ const claimStatus=String(x.claimStatus||x.claim_status||'').toLowerCase().trim();
+ const verifiedClaim=x.isClaimed===true||x.claimed===true||x.claimApproved===true||x.ownerVerified===true||['approved','verified','claimed','active'].includes(claimStatus);
+ return verifiedClaim?2:3;
+}
 function render(){
  const term=search.value.trim().toLowerCase();
- const planRank=x=>x.listingPlan==='premium'?0:x.listingPlan==='featured'?1:2;
- const filtered=listings.filter(x=>(x.name+' '+x.city+' '+x.address+' '+x.operator).toLowerCase().includes(term)).sort((a,b)=>planRank(a)-planRank(b)||a.name.localeCompare(b.name));
+ const filtered=listings.filter(x=>(x.name+' '+x.city+' '+x.address+' '+x.operator).toLowerCase().includes(term)).sort((a,b)=>listingPriority(a)-listingPriority(b)||String(a.name||'').localeCompare(String(b.name||''));
  count.textContent=document.documentElement.lang==='es'?filtered.length+' alojamientos'+(term?' encontrados':''):filtered.length+' listing'+(filtered.length===1?'':'s')+(term?' found':'');
  if(!listings.length){results.className='empty';results.textContent=document.documentElement.lang==='es'?'Todavía no se han cargado listados.':'No listings loaded yet.';return;}
  if(!filtered.length){results.className='empty';results.textContent=document.documentElement.lang==='es'?'No hay coincidencias. Prueba otra forma de escribirlo o borra la búsqueda.':'No matches. Try another spelling or clear your search.';return;}
