@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Refresh the site's static OpenStreetMap hostel and destination index."""
+"""Refresh the site's static OpenStreetMap hostel and destination index.
+
+This is the canonical refresh script; it preserves both hostel listings and
+the city index consumed by the live destination search.
+"""
 import json, os, sys, time
 from datetime import datetime, timezone
 from urllib.parse import urlencode
