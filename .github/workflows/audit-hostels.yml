@@ -25,7 +25,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add reports/hostel-database-audit.md reports/hostel-city-suggestions.csv reports/hostel-city-proposals-high-confidence.csv
+          git add reports/hostel-database-audit.md reports/hostel-city-suggestions.csv reports/hostel-city-proposals-high-confidence.csv reports/hostel-duplicate-review.csv
           if git diff --cached --quiet; then
             echo "Audit report unchanged."
           else
