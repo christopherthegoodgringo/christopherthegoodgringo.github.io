@@ -19,7 +19,7 @@
 | Canonical Mexico City and Santa Marta records | PASS | both present once near expected coordinates |
 | Panama City fallback is wired into live search | PASS | expected fallback code found |
 | Mexico City aliases are wired into search | PASS | expected aliases found |
-| Search loads persistent city index | PASS | persistent index fetch found |
+| Search loads persistent city index | FAIL | persistent index fetch missing |
 | Hostel results are limited by distance from selected city | PASS | 25 km coordinate filter found |
 
 ## City-index coverage by country
@@ -45,4 +45,4 @@
 | SV | 671 | 87 |
 | UY | 339 | 121 |
 
-**Overall status: PASS**
+**Overall status: FAIL**
