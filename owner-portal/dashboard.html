@@ -21,6 +21,8 @@ footer{padding-top:20px!important;padding-bottom:20px!important;line-height:1.6!
 footer>.wrap{padding:0 16px!important;margin:0 auto!important;min-height:0!important;height:auto!important;line-height:1.6!important;gap:8px 18px!important;align-content:center!important}
 footer>.wrap>*{margin-top:0!important;margin-bottom:0!important;padding-top:0!important;padding-bottom:0!important;line-height:1.6!important}
 footer .legal-footer{margin-top:0!important;padding-top:0!important;border-top:0!important}
+/* Header language visibility and initial state must match the homepage. */
+html:not([lang="es"]) .site-header [data-l="es"],html[lang="es"] .site-header [data-l="en"]{display:none!important}
 /* Shared site-wide header */
 .site-header{display:block!important;position:sticky;top:0;z-index:20;padding:0 22px!important;background:linear-gradient(110deg,#09291e 0%,#103e2f 70%,#174b3b 100%)!important;color:#fbf5e8!important;border-bottom:1px solid #f5bd3e55;box-shadow:0 8px 24px #09291e24}
 .site-header-inner{width:min(1200px,100%);min-height:82px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:26px}
@@ -134,6 +136,8 @@ async function loadAdmin(){
 await loadClaims();await loadOwnerManager();await loadAdmin();
 </script><script>
 const headerLanguageToggle=document.getElementById("languageToggle");
-headerLanguageToggle?.addEventListener("click",()=>{const isSpanish=document.documentElement.lang!=="es";document.documentElement.lang=isSpanish?"es":"en";headerLanguageToggle.classList.toggle("is-spanish",isSpanish);headerLanguageToggle.setAttribute("aria-pressed",String(isSpanish));document.querySelectorAll(".site-header-nav [data-l]").forEach(el=>{el.hidden=el.getAttribute("data-l")!==document.documentElement.lang});});
+function syncHeaderLanguage(){const isSpanish=document.documentElement.lang==="es";headerLanguageToggle?.classList.toggle("is-spanish",isSpanish);headerLanguageToggle?.setAttribute("aria-pressed",String(isSpanish));document.querySelectorAll(".site-header-nav [data-l]").forEach(el=>{el.hidden=el.getAttribute("data-l")!==document.documentElement.lang;});}
+syncHeaderLanguage();
+headerLanguageToggle?.addEventListener("click",()=>{document.documentElement.lang=document.documentElement.lang==="es"?"en":"es";syncHeaderLanguage();});
 </script>
 </body></html>
