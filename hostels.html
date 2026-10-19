@@ -55,7 +55,18 @@ function getLocalData(){
  if(!cachedDataPromise)cachedDataPromise=fetch('/data/hostels.json?v=local').then(r=>{
   if(!r.ok)throw new Error('The local hostel database is not available yet.');
   return r.json();
- }).then(d=>d&&Array.isArray(d.hostels)?d:{hostels:[],cities:[]});
+ }).then(async d=>{
+  if(!d||!Array.isArray(d.hostels))return {hostels:[],cities:[]};
+  // Prefer the persistent city index. Fall back to the legacy embedded list only during migration.
+  try{
+   const response=await fetch('/data/cities.json?v=1');
+   if(response.ok){
+    const registry=await response.json();
+    if(Array.isArray(registry.cities)&&registry.cities.length)return {...d,cities:registry.cities};
+   }
+  }catch(_error){}
+  return {...d,cities:Array.isArray(d.cities)?d.cities:[]};
+ });
  return cachedDataPromise;
 }
 function getCachedHostels(){return getLocalData().then(d=>d.hostels||[]);}
@@ -94,15 +105,14 @@ destination.addEventListener('input',()=>{
   try{
    const data=await getLocalData();
    const code=country.value;
-   const normalized=query.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase().trim();
-   // Accept common English names for destinations stored under their local names.
-   const cityAliases={'mexico city':'ciudad de mexico','cdmx':'ciudad de mexico'};
-   const normalizedQuery=cityAliases[normalized]||normalized;
+   const normalizeCityName=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase().replace(/[.,]/g,' ').replace(/\s+/g,' ').trim();
+   const normalized=normalizeCityName(query);
+   const aliases={'mexico city':'mexico city','ciudad de mexico':'mexico city','cdmx':'mexico city','santa marta':'santa marta'};
+   const normalizedQuery=aliases[normalized]||normalized;
    const cities=(data.cities||[]).filter(c=>c.countryCode===code&&c.name)
-    .filter(c=>c.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase().includes(normalizedQuery))
+    .filter(c=>normalizeCityName(c.name).includes(normalizedQuery))
     .sort((a,b)=>{
-      const an=a.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase();
-      const bn=b.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase();
+      const an=normalizeCityName(a.name),bn=normalizeCityName(b.name);
       return (an===normalizedQuery?-1:bn===normalizedQuery?1:an.localeCompare(bn));
     }).slice(0,12).map(c=>({name:c.name,lat:c.lat,lon:c.lon,detail:c.detail||c.name,countryCode:c.countryCode}));
    if(!cities.length){
@@ -142,10 +152,11 @@ async function loadHostels(){
   const data=await getLocalData();
   let target=chosenPlace;
   if(!target||!target.lat||!target.lon){
-   const normalized=place.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase().trim();
-   const cityAliases={'mexico city':'ciudad de mexico','cdmx':'ciudad de mexico','ciudad de mexico':'ciudad de mexico'};
-   const normalizedPlace=cityAliases[normalized]||normalized;
-   const match=(data.cities||[]).find(c=>c.countryCode===code&&c.name&&c.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase().trim()===normalizedPlace);
+   const normalizeCityName=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase().replace(/[.,]/g,' ').replace(/\s+/g,' ').trim();
+   const normalized=normalizeCityName(place);
+   const aliases={'mexico city':'mexico city','ciudad de mexico':'mexico city','cdmx':'mexico city'};
+   const normalizedPlace=aliases[normalized]||normalized;
+   const match=(data.cities||[]).find(c=>c.countryCode===code&&c.name&&normalizeCityName(c.name)===normalizedPlace);
    if(match)target={...match,detail:match.detail||match.name};
   }
   if(!target||!target.lat||!target.lon){
