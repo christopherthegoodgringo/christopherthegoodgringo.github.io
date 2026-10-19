@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hostel Finder | Christopher the Good Gringo</title>
+<meta name="description" content="Explore hostels across Latin America by country and search real-world hostel listings mapped by OpenStreetMap contributors.">
+<style>
+:root{--green:#174b3b;--deep:#103629;--cream:#fbf7ed;--gold:#d6a84f;--ink:#20332b;--muted:#63756d;--line:#e4e0d5;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.55}a{color:inherit}.top{background:var(--deep);color:#fff;padding:16px max(20px,calc((100% - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-weight:850;letter-spacing:.02em;text-decoration:none}.top a:last-child{color:#f4d58e}.wrap{max-width:1120px;margin:auto;padding:42px 22px 64px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-weight:800;font-size:.76rem;color:#98712d}.hero h1{font-size:clamp(2.3rem,6vw,4.4rem);line-height:1.02;letter-spacing:-.04em;max-width:780px;margin:10px 0 16px;color:var(--green)}.hero p{max-width:720px;font-size:1.1rem;color:var(--muted)}.panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;margin:28px 0;box-shadow:0 8px 30px #20332b0b}.controls{display:grid;grid-template-columns: minmax(220px,1fr) minmax(220px,2fr) auto;gap:12px;align-items:end}label{display:block;font-size:.85rem;font-weight:750;margin-bottom:6px}select,input,button{width:100%;font:inherit;border-radius:10px;padding:13px 14px;border:1px solid #cbd4cd;background:white;color:var(--ink)}button{background:var(--green);color:white;font-weight:800;border:0;cursor:pointer}button:disabled{opacity:.55;cursor:wait}.meta{color:var(--muted);font-size:.9rem;margin:16px 0 0}.results-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}.results-head h2{margin:0;color:var(--green)}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-top:18px}.hostel{border:1px solid var(--line);border-radius:15px;padding:17px;background:#fff;min-width:0}.hostel h3{margin:0 0 7px;color:var(--green);font-size:1.05rem;overflow-wrap:anywhere}.hostel p{margin:5px 0;color:var(--muted);font-size:.9rem;overflow-wrap:anywhere}.hostel .links{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-weight:750;font-size:.9rem;color:#176348}.tag{display:inline-block;background:#f3eddd;border-radius:99px;padding:4px 9px;font-size:.75rem;font-weight:750;color:#70521f}.empty{padding:32px;text-align:center;color:var(--muted);border:1px dashed #cbd4cd;border-radius:15px;margin-top:18px}.foot{border-top:1px solid var(--line);padding-top:18px;margin-top:38px;font-size:.82rem;color:var(--muted)}.foot a{color:var(--green)}@media(max-width:760px){.controls{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.wrap{padding-top:30px}.top{padding:14px 18px}}
+</style>
+</head>
+<body>
+<header class="top"><a class="brand" href="/">CHRISTOPHER THE GOOD GRINGO</a><a href="/">← Back to the guide</a></header>
+<main class="wrap">
+<section class="hero"><div class="eyebrow">Stay somewhere memorable</div><h1>Find hostels across Latin America.</h1><p>From Mexico and the Caribbean to the southern tip of South America, explore hostel listings mapped by local contributors. Choose a country to load its current open-map listings, then search by hostel name or city.</p></section>
+<section class="panel" aria-label="Hostel search">
+<div class="controls">
+<div><label for="country">Country or destination</label><select id="country"><option value="">Choose a country…</option></select></div>
+<div><label for="search">Search hostel or city</label><input id="search" type="search" placeholder="e.g. Oaxaca, Medellín, Cusco" disabled></div>
+<div><button id="load" disabled>Load hostels</button></div>
+</div>
+<p class="meta" id="status" role="status">Select a country to search its OpenStreetMap hostel listings. Results depend on what has been mapped and may not include every hostel.</p>
+</section>
+<section aria-live="polite"><div class="results-head"><h2 id="resultsTitle">Explore by country</h2><span id="count" class="tag">No results loaded</span></div><div id="results" class="empty">Choose a country above to get started.</div></section>
+<footer class="foot"><strong>Data & attribution:</strong> Hostel listings are retrieved from <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap</a> contributors and are provided under the <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">Open Database License (ODbL)</a>. Data is community-maintained, can be incomplete or outdated, and is not an endorsement. Confirm details with the property before booking. Map data © OpenStreetMap contributors. This page does not copy a commercial booking site's database.</footer>
+</main>
+<script>
+const countries = [
+["MX","Mexico"],["BZ","Belize"],["CR","Costa Rica"],["SV","El Salvador"],["GT","Guatemala"],["HN","Honduras"],["NI","Nicaragua"],["PA","Panama"],
+["AR","Argentina"],["BO","Bolivia"],["BR","Brazil"],["CL","Chile"],["CO","Colombia"],["EC","Ecuador"],["GY","Guyana"],["PY","Paraguay"],["PE","Peru"],["SR","Suriname"],["UY","Uruguay"],["VE","Venezuela"],
+["CU","Cuba"],["DO","Dominican Republic"],["HT","Haiti"],["JM","Jamaica"],["TT","Trinidad and Tobago"],["PR","Puerto Rico"],["AW","Aruba"],["CW","Curaçao"],["BQ","Caribbean Netherlands"],["GF","French Guiana"],["GP","Guadeloupe"],["MQ","Martinique"],["MF","Saint Martin"],["LC","Saint Lucia"],["VC","Saint Vincent and the Grenadines"],["GD","Grenada"],["AG","Antigua and Barbuda"],["KN","Saint Kitts and Nevis"],["DM","Dominica"],["BS","Bahamas"],["BB","Barbados"],["KY","Cayman Islands"],["VI","U.S. Virgin Islands"]
+];
+const country=document.querySelector('#country'), search=document.querySelector('#search'), load=document.querySelector('#load'), status=document.querySelector('#status'), results=document.querySelector('#results'), count=document.querySelector('#count'), title=document.querySelector('#resultsTitle');
+countries.sort((a,b)=>a[1].localeCompare(b[1])).forEach(([code,name])=>{const o=document.createElement('option');o.value=code;o.textContent=name;country.append(o)});
+let listings=[];
+country.addEventListener('change',()=>{load.disabled=!country.value;search.disabled=!country.value;if(country.value)status.textContent='Ready to load mapped hostels in '+country.selectedOptions[0].text+'.'});
+load.addEventListener('click',loadHostels);
+search.addEventListener('input',render);
+async function loadHostels(){
+ const code=country.value;if(!code)return;
+ load.disabled=true;load.textContent='Loading…';status.textContent='Fetching mapped hostel records. This can take a little while for larger countries…';results.className='empty';results.textContent='Loading listings…';listings=[];
+ const query='[out:json][timeout:90];area["ISO3166-1"="'+code+'"]["admin_level"="2"]->.country;(nwr["tourism"="hostel"](area.country););out center tags;';
+ try{
+  let response;
+  for(const endpoint of ['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter']){
+   try{response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:'data='+encodeURIComponent(query)});if(response.ok)break;}catch(e){}
+  }
+  if(!response||!response.ok)throw new Error('The open map service is busy. Please try again in a minute.');
+  const data=await response.json();
+  listings=data.elements.map(e=>{const t=e.tags||{};return {id:e.type+'/'+e.id,name:t.name||t['name:en']||'Unnamed hostel',city:t['addr:city']||t['addr:town']||t['addr:village']||t['is_in:city']||'',address:[t['addr:street'],t['addr:housenumber']].filter(Boolean).join(' '),website:t.website||t['contact:website']||'',phone:t.phone||t['contact:phone']||'',email:t.email||t['contact:email']||'',lat:e.lat??e.center?.lat,lon:e.lon??e.center?.lon,operator:t.operator||'',osm:'https://www.openstreetmap.org/'+e.type+'/'+e.id}});
+  listings.sort((a,b)=>a.name.localeCompare(b.name));
+  status.textContent='Source: OpenStreetMap. Listings can be incomplete, duplicated, or out of date; please verify before relying on them.';
+  title.textContent='Hostels in '+country.selectedOptions[0].text;render();
+ }catch(err){results.className='empty';results.textContent=err.message||'Could not load listings. Please try again.';status.textContent='The data service did not respond. Your search has not changed any saved data.';count.textContent='Unavailable';}
+ finally{load.disabled=!country.value;load.textContent='Load hostels';}
+}
+function render(){
+ const term=search.value.trim().toLowerCase();
+ const filtered=listings.filter(x=>(x.name+' '+x.city+' '+x.address+' '+x.operator).toLowerCase().includes(term));
+ count.textContent=filtered.length+' listing'+(filtered.length===1?'':'s')+(term?' found':'');
+ if(!listings.length){results.className='empty';results.textContent='No listings loaded yet.';return;}
+ if(!filtered.length){results.className='empty';results.textContent='No matches. Try another spelling or clear your search.';return;}
+ results.className='grid';results.replaceChildren();
+ filtered.forEach(x=>{
+  const card=document.createElement('article');card.className='hostel';
+  const h=document.createElement('h3');h.textContent=x.name;card.append(h);
+  const place=document.createElement('p');place.textContent=[x.city,x.address].filter(Boolean).join(' · ')||'Location not listed';card.append(place);
+  if(x.operator){const p=document.createElement('p');p.textContent='Operator: '+x.operator;card.append(p);}
+  const links=document.createElement('div');links.className='links';
+  const osm=document.createElement('a');osm.href=x.osm;osm.target='_blank';osm.rel='noopener';osm.textContent='Open map record ↗';links.append(osm);
+  if(x.website){const a=document.createElement('a');a.href=/^https?:\/\//i.test(x.website)?x.website:'https://'+x.website;a.target='_blank';a.rel='noopener';a.textContent='Website ↗';links.append(a);}
+  if(x.phone){const p=document.createElement('p');p.textContent='Phone: '+x.phone;card.append(p);}
+  if(x.email){const p=document.createElement('p');p.textContent='Email: '+x.email;card.append(p);}
+  if(Number.isFinite(x.lat)&&Number.isFinite(x.lon)){const a=document.createElement('a');a.href='https://www.openstreetmap.org/?mlat='+x.lat+'&mlon='+x.lon+'#map=17/'+x.lat+'/'+x.lon;a.target='_blank';a.rel='noopener';a.textContent='View location ↗';links.append(a);}
+  card.append(links);results.append(card);
+ });
+}
+</script>
+</body>
+</html>
