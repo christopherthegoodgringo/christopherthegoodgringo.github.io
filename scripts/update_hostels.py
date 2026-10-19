@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Refresh mapped hostels in Latin America from OpenStreetMap Overpass."""
 import json
+import re
 import time
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
-# ISO-3166-1 alpha-2 codes covering Latin America and the Caribbean.
+# LOCKED COUNTRY LIST: do not change without explicit approval from the site owner.
+# ISO-3166-1 alpha-2 codes for the owner's fixed hostel-finder country list.
 COUNTRIES = [
     "MX", "BZ", "GT", "HN", "SV", "NI", "CR", "PA",
     "AR", "BO", "CL", "CO", "EC", "PY", "PE", "UY",
@@ -18,6 +20,20 @@ ENDPOINTS = [
     "https://overpass.kumi.systems/api/interpreter",
     "https://overpass.private.coffee/api/interpreter",
 ]
+# Fail the weekly audit if the website country selector drifts from this locked list.
+def validate_country_list():
+    page = Path("hostels.html").read_text(encoding="utf-8")
+    match = re.search(r"const countries = \\[(.*?)\\];", page, re.S)
+    if not match:
+        raise SystemExit("ERROR: Could not find the hostel finder country list.")
+    website_codes = re.findall(r'\\["([A-Z]{2})","[^"]+"\\]', match.group(1))
+    if website_codes != COUNTRIES:
+        raise SystemExit(
+            "ERROR: Locked country list changed or is out of sync. "
+            f"Expected {COUNTRIES}; website has {website_codes}. "
+            "Get explicit site-owner approval before changing either list."
+        )
+
 OUT = Path("data/hostels.json")
 HEADERS = {"User-Agent": "ChristopherTheGoodGringoHostelIndex/1.0 (weekly public OpenStreetMap data refresh)", "Content-Type": "application/x-www-form-urlencoded"}
 
@@ -62,6 +78,7 @@ def normalize(element, country):
     }
 
 def main():
+    validate_country_list()
     OUT.parent.mkdir(parents=True, exist_ok=True)
     all_items = {}
     failures = []
