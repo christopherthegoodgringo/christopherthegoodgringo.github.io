@@ -58,6 +58,7 @@
 - Missing or generic hostel name: **895**
 - Hostel with blank city field: **9239**
 - Blank-city listings with nearest same-country city within 5 km: **7985**
+- High-confidence city proposals in separate review file: **5947**
 - Blank-city listings within 5 km with an unambiguous nearest city (at least 2 km closer than second-nearest): **5947**
 - Blank-city listings within 5 km with competing nearby city candidates: **2036**
 - Blank-city listings with nearest same-country city within 10 km: **8840**
