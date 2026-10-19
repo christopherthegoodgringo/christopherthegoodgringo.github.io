@@ -9,9 +9,9 @@ from pathlib import Path
 
 # ISO-3166-1 alpha-2 codes covering Latin America and the Caribbean.
 COUNTRIES = [
-    "MX", "BZ", "CR", "SV", "GT", "HN", "NI", "PA",
-    "AR", "BO", "BR", "CL", "CO", "EC", "GF", "GY", "PY", "PE", "SR", "UY", "VE",
-    "CU", "DO", "HT", "JM", "BS", "BB", "TT", "AG", "DM", "GD", "KN", "LC", "VC",
+    "MX", "GT", "HN", "SV", "NI", "CR", "PA",
+    "AR", "BO", "CL", "CO", "EC", "PY", "PE", "UY", "VE",
+    "CU", "DO",
 ]
 ENDPOINTS = [
     "https://overpass-api.de/api/interpreter",
