@@ -54,34 +54,33 @@ async function loadHostels(){
    geo=await geoResponse.json();
   }
   if(!geo.length)throw new Error('Could not find that city or region in '+countryName+'. Check the spelling and try again.');
-  const target=geo.find(x=>x.osm_type==='relation'||x.osm_type==='way')||geo[0];
-  let query;
-  if(target.osm_type==='relation'||target.osm_type==='way'){
-   const areaId=Number(target.osm_id)+(target.osm_type==='relation'?3600000000:2400000000);
-   query='[out:json][timeout:25];area('+areaId+')->.dest;(nwr["tourism"="hostel"](area.dest););out center tags;';
-  }else{
-   const bb=target.boundingbox;
-   if(!bb)throw new Error('Found the destination but could not determine its search area.');
-   query='[out:json][timeout:25];(nwr["tourism"="hostel"]('+bb[0]+','+bb[2]+','+bb[1]+','+bb[3]+'););out center tags;';
-  }
-  results.textContent='Loading hostels near '+(target.display_name.split(',')[0]||place)+'…';
+  const target=geo.find(x=>x.lat&&x.lon)||geo[0];
+  if(!target.lat||!target.lon)throw new Error('Found the destination but could not determine its map location. Try a nearby city name.');
+  // Search around the destination's coordinates instead of relying on an Overpass area ID.
+  // This is simpler and more reliable across city, town, and region geocoder results.
+  const query='[out:json][timeout:25];(nwr(around:20000,'+target.lat+','+target.lon+')["tourism"="hostel"];);out center tags;';
+  results.textContent='Searching within about 20 km of '+(target.display_name.split(',')[0]||place)+'…';
   const endpoints=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter'];
   const data=await Promise.any(endpoints.map(async endpoint=>{
-   const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),16000);
+   const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),30000);
    try{
     const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:'data='+encodeURIComponent(query),signal:controller.signal});
-    if(!response.ok)throw new Error('Map server returned '+response.status);
-    return await response.json();
+    if(!response.ok)throw new Error('Map server returned HTTP '+response.status);
+    const payload=await response.json();
+    if(!Array.isArray(payload.elements))throw new Error(payload.remark||'Map server returned an invalid response');
+    return payload;
    }finally{clearTimeout(timeout);}
   }));
   listings=data.elements.map(e=>{const t=e.tags||{};return {id:e.type+'/'+e.id,name:t.name||t['name:en']||'Unnamed hostel',city:t['addr:city']||t['addr:town']||t['addr:village']||t['is_in:city']||'',address:[t['addr:street'],t['addr:housenumber']].filter(Boolean).join(' '),website:t.website||t['contact:website']||'',phone:t.phone||t['contact:phone']||'',email:t.email||t['contact:email']||'',lat:e.lat??e.center?.lat,lon:e.lon??e.center?.lon,operator:t.operator||'',osm:'https://www.openstreetmap.org/'+e.type+'/'+e.id}});
   listings.sort((a,b)=>a.name.localeCompare(b.name));
   title.textContent='Hostels near '+(target.display_name.split(',')[0]||place);
-  status.textContent='Showing OpenStreetMap hostels mapped in or near '+place+'. Listings may be incomplete or outdated; verify details before booking.';
+  status.textContent='Showing OpenStreetMap hostels within about 20 km of '+place+'. Listings may be incomplete or outdated; verify details before booking.';
+  if(!listings.length){results.className='empty';results.textContent='No hostels are currently mapped within about 20 km of '+place+'. Try a nearby city or a shorter destination name.';count.textContent='0 listings';return;}
   search.disabled=false;search.value='';render();
  }catch(err){
-  results.className='empty';results.textContent=err.message||'Could not load listings. Please try again.';
-  status.textContent='The search could not be completed. Please try again in a moment.';count.textContent='Search unavailable';
+  results.className='empty';const reason=err instanceof AggregateError?'All map servers are temporarily unavailable or timed out.':(err.message||'Could not load listings.');
+  results.textContent=reason+' Try again in a minute, or search a nearby city.';
+  status.textContent='If this keeps happening, the public OpenStreetMap services may be rate-limited. Please try again shortly.';count.textContent='Search unavailable';
  }finally{load.disabled=!country.value||!destination.value.trim();load.textContent='Find hostels';}
 }
 function render(){
