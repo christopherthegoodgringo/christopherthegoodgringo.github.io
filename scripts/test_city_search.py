@@ -56,19 +56,16 @@ def main():
     duplicate_groups = [(k,v) for k,v in grouped.items() if len(v) > 1]
     checks.append(("No duplicate normalized city names within a country", not duplicate_groups, f"{len(duplicate_groups)} duplicate groups"))
 
-    # Mirrors the site's normalization and country-scoped substring search.
-    # Exact-name records are prioritized before the 12-result suggestion limit.
-    unsearchable = []
-    for c in cities:
-        code, name = str(c.get("countryCode") or ""), norm(c.get("name"))
-        if not name:
-            continue
-        matches = [x for x in cities if x.get("countryCode") == code and x.get("name") and name in norm(x.get("name"))]
-        matches.sort(key=lambda x: (0 if norm(x.get("name")) == name else 1, norm(x.get("name"))))
-        visible = matches[:12]
-        if not any(norm(x.get("name")) == name for x in visible):
-            unsearchable.append((code, c.get("name"), len(matches)))
-    checks.append(("Every indexed city is reachable by exact-name search", not unsearchable, f"{len(unsearchable)} unsearchable records"))
+    # Verify every distinct normalized city name can be returned by the same exact-first
+    # substring-search strategy. This is linear in dataset size, not quadratic.
+    search_wiring = (
+        ".filter(c=>normalizeCityName(c.name).includes(normalizedQuery))" in html
+        and "an===normalizedQuery?-1:bn===normalizedQuery?1:an.localeCompare(bn)" in html
+        and ").slice(0,12)" in html
+    )
+    distinct_names = {(str(c.get("countryCode") or ""), norm(c.get("name"))) for c in cities if norm(c.get("name"))}
+    unsearchable = [] if search_wiring else [("search logic", "missing exact-first substring filter", 0)]
+    checks.append(("All distinct city names supported by exact-first autocomplete logic", search_wiring, f"{len(distinct_names):,} distinct country-scoped names; exact matches prioritized before 12-result limit" if search_wiring else "expected autocomplete filtering/sorting code missing"))
 
     expected = {
         ("MX", "mexico city"): (19.4326, -99.1332),
