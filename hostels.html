@@ -103,7 +103,7 @@ destination.addEventListener('input',()=>{
     citySuggestions.replaceChildren();
     const note=document.createElement('div');
     note.className='suggestion';
-    note.textContent='No city matches found. Try another spelling.';
+    note.textContent=document.documentElement.lang==='es'?'No se encontraron coincidencias para esa ciudad. Prueba otra forma de escribirla.':'No city matches found. Try another spelling.';
     citySuggestions.append(note);
     citySuggestions.hidden=false;
     destination.setAttribute('aria-expanded','true');
@@ -113,11 +113,11 @@ destination.addEventListener('input',()=>{
     citySuggestions.replaceChildren();
     const note=document.createElement('div');
     note.className='suggestion';
-    note.textContent='City suggestions are temporarily unavailable. Please try again in a moment.';
+    note.textContent=document.documentElement.lang==='es'?'Las sugerencias de ciudades no están disponibles temporalmente. Inténtalo de nuevo en un momento.':'City suggestions are temporarily unavailable. Please try again in a moment.';
     citySuggestions.append(note);
     citySuggestions.hidden=false;
     destination.setAttribute('aria-expanded','true');
-    status.textContent='Could not load city suggestions from OpenStreetMap. Please try again shortly.';
+    status.textContent=document.documentElement.lang==='es'?'No se pudieron cargar sugerencias de ciudades de OpenStreetMap. Inténtalo de nuevo pronto.':'Could not load city suggestions from OpenStreetMap. Please try again shortly.';
    }
   }
  },450);
@@ -128,13 +128,13 @@ destination.addEventListener('keydown',e=>{
  if(e.key==='Enter'&&!citySuggestions.hidden){const first=citySuggestions.querySelector('button');if(first){e.preventDefault();first.click();}}
 });
 document.addEventListener('click',e=>{if(!e.target.closest('.destination-field'))closeSuggestions();});
-country.addEventListener('change',()=>{destination.disabled=!country.value;destination.value='';chosenPlace=null;closeSuggestions();load.disabled=true;search.disabled=true;listings=[];results.className='empty';results.textContent='Enter a city or region to search nearby hostels.';count.textContent='No results loaded';if(country.value)status.textContent='Enter a city or region in '+country.selectedOptions[0].text+' to search a smaller area.';});
+country.addEventListener('change',()=>{destination.disabled=!country.value;destination.value='';chosenPlace=null;closeSuggestions();load.disabled=true;search.disabled=true;listings=[];results.className='empty';results.textContent=document.documentElement.lang==='es'?'Introduce una ciudad o región para buscar hostales cercanos.':'Enter a city or region to search nearby hostels.';count.textContent=document.documentElement.lang==='es'?'No hay resultados cargados':'No results loaded';if(country.value)status.textContent=(document.documentElement.lang==='es'?'Introduce una ciudad o región de ':'Enter a city or region in ')+country.selectedOptions[0].text+(document.documentElement.lang==='es'?' para buscar en un área más pequeña.':' to search a smaller area.');});
 destination.addEventListener('input',()=>{load.disabled=!country.value||!destination.value.trim();});
 load.addEventListener('click',loadHostels);
 search.addEventListener('input',render);
 async function loadHostels(){
  const code=country.value, place=destination.value.trim();if(!code||!place)return;closeSuggestions();
- load.disabled=true;load.textContent='Searching…';search.disabled=true;status.textContent='Finding the city or region, then searching nearby mapped hostels…';results.className='empty';results.textContent='Finding your destination…';listings=[];
+ load.disabled=true;load.textContent=document.documentElement.lang==='es'?'Buscando…':'Searching…';search.disabled=true;status.textContent=document.documentElement.lang==='es'?'Buscando la ciudad o región y luego los hostales cercanos en el mapa…':'Finding the city or region, then searching nearby mapped hostels…';results.className='empty';results.textContent=document.documentElement.lang==='es'?'Buscando tu destino…':'Finding your destination…';listings=[];
  const countryName=country.selectedOptions[0].text;
  try{
   let target;
@@ -161,8 +161,8 @@ async function loadHostels(){
    if(nearby.length){
     listings=nearby;
     listings.sort((a,b)=>a.name.localeCompare(b.name));
-    title.textContent='Hostels near '+(target.display_name.split(',')[0]||place);
-    status.textContent='Showing saved OpenStreetMap hostel data within about 10 km of '+place+'. Database refreshed weekly; details may change.';
+    title.textContent=(document.documentElement.lang==='es'?'Hostales cerca de ':'Hostels near ')+(target.display_name.split(',')[0]||place);
+    status.textContent=(document.documentElement.lang==='es'?'Mostrando datos guardados de hostales de OpenStreetMap a unos 10 km de ':'Showing saved OpenStreetMap hostel data within about 10 km of ')+place+(document.documentElement.lang==='es'?'. Base de datos actualizada semanalmente; los detalles pueden cambiar.':'. Database refreshed weekly; details may change.');
     count.textContent=listings.length+' listings';
     search.disabled=false;search.value='';render();return;
    }
@@ -192,9 +192,9 @@ async function loadHostels(){
   }));
   listings=data.elements.map(e=>{const t=e.tags||{};return {id:e.type+'/'+e.id,name:t.name||t['name:en']||'Unnamed hostel',city:t['addr:city']||t['addr:town']||t['addr:village']||t['is_in:city']||'',address:[t['addr:street'],t['addr:housenumber']].filter(Boolean).join(' '),website:t.website||t['contact:website']||'',phone:t.phone||t['contact:phone']||'',email:t.email||t['contact:email']||'',lat:e.lat??e.center?.lat,lon:e.lon??e.center?.lon,operator:t.operator||'',osm:'https://www.openstreetmap.org/'+e.type+'/'+e.id}});
   listings.sort((a,b)=>a.name.localeCompare(b.name));
-  title.textContent='Hostels near '+(target.display_name.split(',')[0]||place);
-  status.textContent='Showing OpenStreetMap hostels within about 20 km of '+place+'. Listings may be incomplete or outdated; verify details before booking.';
-  if(!listings.length){results.className='empty';results.textContent='No hostels are currently mapped within about 20 km of '+place+'. Try a nearby city or a shorter destination name.';count.textContent='0 listings';return;}
+  title.textContent=(document.documentElement.lang==='es'?'Hostales cerca de ':'Hostels near ')+(target.display_name.split(',')[0]||place);
+  status.textContent=(document.documentElement.lang==='es'?'Mostrando hostales de OpenStreetMap a unos 20 km de ':'Showing OpenStreetMap hostels within about 20 km of ')+place+(document.documentElement.lang==='es'?'. Los listados pueden estar incompletos o desactualizados; verifica los detalles antes de reservar.':'. Listings may be incomplete or outdated; verify details before booking.');
+  if(!listings.length){results.className='empty';results.textContent=(document.documentElement.lang==='es'?'No hay hostales registrados en el mapa a unos 20 km de ':'No hostels are currently mapped within about 20 km of ')+place+(document.documentElement.lang==='es'?'. Prueba con una ciudad cercana o un nombre de destino más corto.':'. Try a nearby city or a shorter destination name.');count.textContent=document.documentElement.lang==='es'?'0 alojamientos':'0 listings';return;}
   search.disabled=false;search.value='';render();
  }catch(err){
   results.className='empty';
@@ -209,26 +209,26 @@ async function loadHostels(){
   const osmFallback=document.createElement('p');osmFallback.style.marginTop='14px';
   const osmLink=document.createElement('a');osmLink.href='https://www.openstreetmap.org/search?query='+encodeURIComponent('hostel '+place+' '+countryName);osmLink.target='_blank';osmLink.rel='noopener';osmLink.textContent='Try OpenStreetMap search ↗';osmFallback.append(osmLink);results.append(osmFallback);
   status.textContent='The in-page listings service is currently unavailable. Use one of the live map searches below instead.';count.textContent='External search available';
- }finally{load.disabled=!country.value||!destination.value.trim();load.textContent='Find hostels';}
+ }finally{load.disabled=!country.value||!destination.value.trim();load.textContent=document.documentElement.lang==='es'?'Buscar hostales':'Find hostels';}
 }
 function render(){
  const term=search.value.trim().toLowerCase();
  const filtered=listings.filter(x=>(x.name+' '+x.city+' '+x.address+' '+x.operator).toLowerCase().includes(term));
- count.textContent=filtered.length+' listing'+(filtered.length===1?'':'s')+(term?' found':'');
- if(!listings.length){results.className='empty';results.textContent='No listings loaded yet.';return;}
- if(!filtered.length){results.className='empty';results.textContent='No matches. Try another spelling or clear your search.';return;}
+ count.textContent=document.documentElement.lang==='es'?filtered.length+' alojamientos'+(term?' encontrados':''):filtered.length+' listing'+(filtered.length===1?'':'s')+(term?' found':'');
+ if(!listings.length){results.className='empty';results.textContent=document.documentElement.lang==='es'?'Todavía no se han cargado listados.':'No listings loaded yet.';return;}
+ if(!filtered.length){results.className='empty';results.textContent=document.documentElement.lang==='es'?'No hay coincidencias. Prueba otra forma de escribirlo o borra la búsqueda.':'No matches. Try another spelling or clear your search.';return;}
  results.className='grid';results.replaceChildren();
  filtered.forEach(x=>{
   const card=document.createElement('article');card.className='hostel';
   const h=document.createElement('h3');h.textContent=x.name;card.append(h);
-  const place=document.createElement('p');place.textContent=[x.city,x.address].filter(Boolean).join(' · ')||'Location not listed';card.append(place);
-  if(x.operator){const p=document.createElement('p');p.textContent='Operator: '+x.operator;card.append(p);}
+  const place=document.createElement('p');place.textContent=[x.city,x.address].filter(Boolean).join(' · ')||(document.documentElement.lang==='es'?'Ubicación no indicada':'Location not listed');card.append(place);
+  if(x.operator){const p=document.createElement('p');p.textContent=(document.documentElement.lang==='es'?'Operador: ':'Operator: ')+x.operator;card.append(p);}
   const links=document.createElement('div');links.className='links';
-  const osm=document.createElement('a');osm.href=x.osm;osm.target='_blank';osm.rel='noopener';osm.textContent='Open map record ↗';links.append(osm);
-  if(x.website){const a=document.createElement('a');a.href=/^https?:\/\//i.test(x.website)?x.website:'https://'+x.website;a.target='_blank';a.rel='noopener';a.textContent='Website ↗';links.append(a);}
-  if(x.phone){const p=document.createElement('p');p.textContent='Phone: '+x.phone;card.append(p);}
-  if(x.email){const p=document.createElement('p');p.textContent='Email: '+x.email;card.append(p);}
-  if(Number.isFinite(x.lat)&&Number.isFinite(x.lon)){const a=document.createElement('a');a.href='https://www.openstreetmap.org/?mlat='+x.lat+'&mlon='+x.lon+'#map=17/'+x.lat+'/'+x.lon;a.target='_blank';a.rel='noopener';a.textContent='View location ↗';links.append(a);}
+  const osm=document.createElement('a');osm.href=x.osm;osm.target='_blank';osm.rel='noopener';osm.textContent=document.documentElement.lang==='es'?'Abrir ficha del mapa ↗':'Open map record ↗';links.append(osm);
+  if(x.website){const a=document.createElement('a');a.href=/^https?:\/\//i.test(x.website)?x.website:'https://'+x.website;a.target='_blank';a.rel='noopener';a.textContent=document.documentElement.lang==='es'?'Sitio web ↗':'Website ↗';links.append(a);}
+  if(x.phone){const p=document.createElement('p');p.textContent=(document.documentElement.lang==='es'?'Teléfono: ':'Phone: ')+x.phone;card.append(p);}
+  if(x.email){const p=document.createElement('p');p.textContent=(document.documentElement.lang==='es'?'Correo: ':'Email: ')+x.email;card.append(p);}
+  if(Number.isFinite(x.lat)&&Number.isFinite(x.lon)){const a=document.createElement('a');a.href='https://www.openstreetmap.org/?mlat='+x.lat+'&mlon='+x.lon+'#map=17/'+x.lat+'/'+x.lon;a.target='_blank';a.rel='noopener';a.textContent=document.documentElement.lang==='es'?'Ver ubicación ↗':'View location ↗';links.append(a);}
   card.append(links);results.append(card);
  });
 }
