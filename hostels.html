@@ -232,6 +232,19 @@ function render(){
   card.append(links);results.append(card);
  });
 }
+
+// Accept destination details passed from the homepage search form.
+(function initFromHome(){
+ const params=new URLSearchParams(location.search);
+ const lang=params.get('lang');
+ if(lang==='en'||lang==='es'){document.documentElement.lang=lang;try{localStorage.setItem('gg-lang',lang);}catch(e){}}
+ const code=params.get('country'), place=params.get('destination');
+ if(code&&countries.some(([c])=>c===code)&&place){
+  country.value=code;destination.disabled=false;destination.value=place;chosenPlace=null;load.disabled=false;
+  status.textContent='Searching for hostels near '+place+'…';
+  setTimeout(()=>loadHostels(),0);
+ }
+})();
 </script>
 </body>
 </html>
