@@ -1,0 +1,38 @@
+name: Refresh local hostel directory
+
+on:
+  schedule:
+    - cron: "23 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-local-hostel-directory
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Refresh local OpenStreetMap data
+        run: python scripts/refresh_hostels.py
+      - name: Commit refreshed data to the website
+        run: |
+          if git diff --quiet -- data/hostels.json; then
+            echo "The local directory data is already up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/hostels.json
+          git commit -m "Refresh local hostel directory data"
+          git push
