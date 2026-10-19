@@ -67,7 +67,7 @@ async function loadAdmin(){
  }));
  $('admin-claims').querySelectorAll('button[data-edit-action]').forEach(btn=>btn.addEventListener('click',async()=>{
   const card=btn.closest('[data-edit-id]'),id=card.dataset.editId,note=card.querySelector('.edit-admin-note').value.trim();btn.disabled=true;
-  const {error}=await sb.from('hostel_edit_requests').update({status:btn.dataset.editAction,reviewed_by:user.id,reviewed_at:new Date().toISOString(),admin_notes:note||null}).eq('id',id).eq('status','pending');
+  const {error}=await sb.from('hostel_edit_requests').update({status:btn.dataset.editAction,reviewed_by:user.id,admin_notes:note||null}).eq('id',id).eq('status','pending');
   if(error){alert('Change review failed: '+error.message);btn.disabled=false;return}
   await loadOwnerManager();await loadAdmin();
  }));
