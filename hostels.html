@@ -64,34 +64,62 @@ destination.addEventListener('input',()=>{
   const selected=countries.find(([code])=>code===country.value);
   if(!selected)return;
   suggestionController=new AbortController();
-  try{
-   // Use Nominatim's structured city field rather than a free-text search.
-   // This avoids matching districts, neighbourhoods, suburbs, and other admin areas.
-   const url='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=10&countrycodes='+encodeURIComponent(selected[0].toLowerCase())+'&city='+encodeURIComponent(query)+'&country='+encodeURIComponent(selected[1]);
-   const response=await fetch(url,{headers:{'Accept':'application/json'},signal:suggestionController.signal});
-   if(!response.ok)throw new Error('Suggestions unavailable');
-   const data=await response.json();
+  const signal=suggestionController.signal;
+  function cityItems(data){
    const seenNames=new Set();
-   const items=data
-    .filter(item=>{
-     const a=item.address||{};
-     // Accept city-level administrative results too (for example Bogotá),
-     // while excluding neighbourhoods, districts, and suburbs.
-     return Boolean(a.city||a.town||a.village) || (item.class==='place'&&['city','town','village'].includes(item.type));
-    })
-    .map(item=>{
-     const a=item.address||{};
-     const name=a.city||a.town||a.village||item.name;
-     return {name,lat:item.lat,lon:item.lon,detail:name};
-    })
-    .filter(item=>{
-     const key=item.name.trim().toLocaleLowerCase();
-     if(!key||seenNames.has(key))return false;
-     seenNames.add(key);
-     return true;
-    });
+   return data.filter(item=>{
+    const a=item.address||{};
+    return Boolean(a.city||a.town||a.village) ||
+      (item.class==='place'&&['city','town','village'].includes(item.type));
+   }).map(item=>{
+    const a=item.address||{};
+    const name=a.city||a.town||a.village||item.name;
+    return {name,lat:item.lat,lon:item.lon,detail:name};
+   }).filter(item=>{
+    const key=(item.name||'').trim().toLocaleLowerCase();
+    if(!key||seenNames.has(key))return false;
+    seenNames.add(key);
+    return true;
+   });
+  }
+  try{
+   // Try the structured city search first, then fall back to a country-scoped
+   // text search because some OpenStreetMap records are not indexed by city.
+   const urls=[
+    'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=10&countrycodes='+encodeURIComponent(selected[0].toLowerCase())+'&city='+encodeURIComponent(query),
+    'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=10&countrycodes='+encodeURIComponent(selected[0].toLowerCase())+'&q='+encodeURIComponent(query+' '+selected[1])
+   ];
+   let items=[];
+   for(const url of urls){
+    const response=await fetch(url,{headers:{'Accept':'application/json'},signal});
+    if(!response.ok)throw new Error('OpenStreetMap returned HTTP '+response.status);
+    const data=await response.json();
+    items=cityItems(data);
+    if(items.length)break;
+   }
+   if(signal.aborted)return;
    showSuggestions(items);
-  }catch(error){if(error.name!=='AbortError')closeSuggestions();}
+   if(!items.length){
+    citySuggestions.replaceChildren();
+    const note=document.createElement('div');
+    note.className='suggestion';
+    note.textContent='No city matches found. Try another spelling.';
+    citySuggestions.append(note);
+    citySuggestions.hidden=false;
+    destination.setAttribute('aria-expanded','true');
+   }
+  }catch(error){
+   if(error.name!=='AbortError'){
+    citySuggestions.replaceChildren();
+    const note=document.createElement('div');
+    note.className='suggestion';
+    note.textContent='City suggestions are temporarily unavailable. Please try again in a moment.';
+    citySuggestions.append(note);
+    citySuggestions.hidden=false;
+    destination.setAttribute('aria-expanded','true');
+    status.textContent='Could not load city suggestions from OpenStreetMap. Please try again shortly.';
+   }
+  }
  },450);
 });
 destination.addEventListener('keydown',e=>{
