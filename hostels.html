@@ -26,7 +26,7 @@
 </style>
 </head>
 <body>
-<header class="site-header"><div class="site-header-inner"><a class="site-brand" href="/" aria-label="Christopher the Good Gringo home"><img src="/assets/cgg-logo.svg" alt=""><span>CHRISTOPHER THE GOOD GRINGO<span class="brand-mark">™</span></span></a><nav class="site-header-nav" aria-label="Main navigation"><a href="/"><span class="en" data-l="en">Home</span><span class="es" data-l="es">Inicio</span></a><a href="/hostels.html" aria-current="page"><span class="en" data-l="en">Hostel Finder</span><span class="es" data-l="es">Buscador de hostales</span></a><a href="/team/"><span class="en" data-l="en">Meet the Team</span><span class="es" data-l="es">Conoce al equipo</span></a><button id="languageToggle" class="language-toggle" type="button" aria-label="Switch language"><span class="toggle-label">EN</span><span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span><span class="toggle-label">ES</span></button></nav></div></header>
+<header class="site-header"><div class="site-header-inner"><a class="site-brand" href="/" aria-label="Christopher the Good Gringo home"><img src="/assets/cgg-logo.svg" alt=""><span>CHRISTOPHER THE GOOD GRINGO<span class="brand-mark">™</span></span></a><nav class="site-header-nav" aria-label="Main navigation"><a href="/"><span class="en" data-l="en">Home</span><span class="es" data-l="es">Inicio</span></a><a href="/hostels.html" aria-current="page"><span class="en" data-l="en">Hostel Finder</span><span class="es" data-l="es">Buscador de hostales</span></a><a href="/claim-hostel.html"><span class="en" data-l="en">Claim Your Hostel</span><span class="es" data-l="es">Reclama tu hostal</span></a><a href="/team/"><span class="en" data-l="en">Meet the Team</span><span class="es" data-l="es">Conoce al equipo</span></a><button id="languageToggle" class="language-toggle" type="button" aria-label="Switch language"><span class="toggle-label">EN</span><span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span><span class="toggle-label">ES</span></button></nav></div></header>
 <main class="wrap">
 <section class="hero"><div class="eyebrow"><span class="en">Stay somewhere memorable</span><span class="es">Alójate en un lugar inolvidable</span></div><h1><span class="en">Find hostels across Latin America.</span><span class="es">Encuentra hostales por América Latina.</span></h1><p><span class="en">Explore Spanish-speaking Latin American countries, from Mexico and Central America to the Andes, the Southern Cone, Cuba, and the Dominican Republic. Choose a country and city or region to load nearby hostel listings, then search by hostel name.</span><span class="es">Explora países latinoamericanos, desde México y Centroamérica hasta los Andes, el Cono Sur, Cuba y República Dominicana. Elige un país y una ciudad o región para ver hostales cercanos y buscar por nombre.</span></p></section>
 <section class="panel" aria-label="Hostel search">
@@ -192,6 +192,12 @@ function render(){
   if(x.phone){const p=document.createElement('p');p.textContent=(document.documentElement.lang==='es'?'Teléfono: ':'Phone: ')+x.phone;card.append(p);}
   if(x.email){const p=document.createElement('p');p.textContent=(document.documentElement.lang==='es'?'Correo: ':'Email: ')+x.email;card.append(p);}
   if(Number.isFinite(x.lat)&&Number.isFinite(x.lon)){const a=document.createElement('a');a.href='https://www.openstreetmap.org/?mlat='+x.lat+'&mlon='+x.lon+'#map=17/'+x.lat+'/'+x.lon;a.target='_blank';a.rel='noopener';a.textContent=document.documentElement.lang==='es'?'Ver ubicación ↗':'View location ↗';links.append(a);}
+  const claim=document.createElement('a');
+  const claimParams=new URLSearchParams({name:x.name||'',city:x.city||'',country:country.selectedOptions[0]?.text||'',osm:x.osm||'',website:x.website||''});
+  claim.href='/claim-hostel.html?'+claimParams.toString();
+  claim.textContent=document.documentElement.lang==='es'?'¿Eres el propietario? Reclama este hostal':'Own this hostel? Claim this listing';
+  claim.style.cssText='display:inline-flex;margin-top:12px;padding:9px 12px;border-radius:999px;background:#f5bd3e;color:#103629;font-weight:800;text-decoration:none;font-size:.86rem';
+  links.append(claim);
   card.append(links);results.append(card);
  });
 }
