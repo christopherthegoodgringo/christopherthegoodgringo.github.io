@@ -28,9 +28,9 @@
 </main>
 <script>
 const countries = [
-["MX","Mexico"],["BZ","Belize"],["CR","Costa Rica"],["SV","El Salvador"],["GT","Guatemala"],["HN","Honduras"],["NI","Nicaragua"],["PA","Panama"],
-["AR","Argentina"],["BO","Bolivia"],["BR","Brazil"],["CL","Chile"],["CO","Colombia"],["EC","Ecuador"],["GF","French Guiana"],["GY","Guyana"],["PY","Paraguay"],["PE","Peru"],["SR","Suriname"],["UY","Uruguay"],["VE","Venezuela"],
-["CU","Cuba"],["DO","Dominican Republic"],["HT","Haiti"],["JM","Jamaica"],["BS","Bahamas"],["BB","Barbados"],["TT","Trinidad and Tobago"],["AG","Antigua and Barbuda"],["DM","Dominica"],["GD","Grenada"],["KN","Saint Kitts and Nevis"],["LC","Saint Lucia"],["VC","Saint Vincent and the Grenadines"]
+["MX","Mexico"],["GT","Guatemala"],["HN","Honduras"],["SV","El Salvador"],["NI","Nicaragua"],["CR","Costa Rica"],["PA","Panama"],
+["AR","Argentina"],["BO","Bolivia"],["CL","Chile"],["CO","Colombia"],["EC","Ecuador"],["PY","Paraguay"],["PE","Peru"],["UY","Uruguay"],["VE","Venezuela"],
+["CU","Cuba"],["DO","Dominican Republic"]
 ];
 const country=document.querySelector('#country'), destination=document.querySelector('#destination'), search=document.querySelector('#search'), load=document.querySelector('#load'), status=document.querySelector('#status'), results=document.querySelector('#results'), count=document.querySelector('#count'), title=document.querySelector('#resultsTitle');
 countries.sort((a,b)=>a[1].localeCompare(b[1])).forEach(([code,name])=>{const o=document.createElement('option');o.value=code;o.textContent=name;country.append(o)});
