@@ -81,7 +81,6 @@ footer .wrap a { color: #f5bd3e !important; font-weight: 400 !important; text-de
 </main>
 <footer><div class="wrap" style="display:flex;align-items:center;justify-content:center;gap:8px 18px;flex-wrap:wrap;text-align:center"><span id="footerText">Good places. Good people. Good stories.</span><span data-l="en">© 2026 Christopher The Good Gringo™. All rights reserved.</span><span data-l="es">© 2026 Christopher The Good Gringo™. Todos los derechos reservados.</span><span data-l="en"><a href="/team/">Meet the Team</a> · <a href="/hostels.html">Hostel Finder</a> · <a href="/privacy-policy.html">Privacy Policy</a> · <a href="/terms-of-use.html">Terms of Use</a></span><span data-l="es"><a href="/team/">Conoce al equipo</a> · <a href="/hostels.html">Buscador de hostales</a> · <a href="/privacy-policy.html">Política de privacidad</a> · <a href="/terms-of-use.html">Términos de uso</a></span></div></footer>
 
-<script src="/owner-portal/config.js"></script>
 <script>
 const countries = [
 ["MX","Mexico"],["BZ","Belize"],["GT","Guatemala"],["HN","Honduras"],["SV","El Salvador"],["NI","Nicaragua"],["CR","Costa Rica"],["PA","Panama"],
@@ -100,29 +99,9 @@ function getLocalData(){
   if(!d||!Array.isArray(d.hostels))return {hostels:[],cities:[]};
   // Fictional TEST-* demo records are intentionally excluded from the public directory.
   // Keep data/test-hostels.json separate for internal workflow testing only.
-  // Apply administrator-approved edits from Supabase without rewriting the large source JSON.
-  // Only an exact, unique match by directory id or OSM URL is eligible; test listings are excluded.
-  try{
-   const cfgUrl=window.CGG_SUPABASE_URL,publicKey=window.CGG_SUPABASE_PUBLISHABLE_KEY;
-   if(cfgUrl&&publicKey){
-    const response=await fetch(cfgUrl+'/rest/v1/published_hostel_overrides?select=hostel_id,changes',{headers:{apikey:publicKey,Authorization:'Bearer '+publicKey}});
-    if(response.ok){
-     const overrides=await response.json();
-     for(const override of overrides){
-      const key=String(override.hostel_id||'');
-      if(!key||key.startsWith('TEST-')||!override.changes||typeof override.changes!=='object')continue;
-      const matches=d.hostels.filter(x=>!x.isTest&&!String(x.id||'').startsWith('TEST-')&&(String(x.id||'')===key||String(x.osm||'')===key));
-      if(matches.length!==1)continue;
-      const listing=matches[0],changes=override.changes;
-      if(typeof changes.hostel_name==='string'&&changes.hostel_name.trim())listing.name=changes.hostel_name.trim();
-      if(typeof changes.contact_email==='string'&&changes.contact_email.trim())listing.email=changes.contact_email.trim();
-      if(typeof changes.website==='string'&&changes.website.trim())listing.website=changes.website.trim();
-      if(Array.isArray(changes.photo_urls)&&changes.photo_urls.length)listing.photoUrls=changes.photo_urls.filter(v=>typeof v==='string'&&/^https?:\/\//i.test(v));
-      if(typeof changes.description==='string'&&changes.description.trim())listing.description=changes.description;
-     }
-    }
-   }
-  }catch(_overrideError){/* Directory remains usable if Supabase is unavailable. */}
+  // The public directory is managed by the site administrator in data/hostels.json.
+  // Owner submissions are reviewed by email; they never change published data automatically.
+  // Fictional TEST-* demo records remain separate from the live directory.
   // Prefer the persistent city index. Fall back to the legacy embedded list only during migration.
   try{
    const response=await fetch('/data/cities.json?v=1');
@@ -282,8 +261,14 @@ function render(){
  if(!filtered.length){results.className='empty';results.textContent=document.documentElement.lang==='es'?'No hay coincidencias. Prueba otra forma de escribirlo o borra la búsqueda.':'No matches. Try another spelling or clear your search.';return;}
  results.className='grid';results.replaceChildren();
  filtered.forEach(x=>{
-  const card=document.createElement('article');card.className='hostel'+(x.listingPlan==='featured'?' plan-featured':x.listingPlan==='premium'?' plan-premium':'');
+  const plan=String(x.listingPlan||x.plan||'free').toLowerCase().trim();
+  const card=document.createElement('article');card.className='hostel'+(plan==='featured'?' plan-featured':plan==='premium'?' plan-premium':'');
   const h=document.createElement('h3');h.textContent=x.name;card.append(h);
+  if(!x.isTest&&(plan==='featured'||plan==='premium')){
+   const ribbon=document.createElement('p');ribbon.className='plan-ribbon';
+   ribbon.textContent=plan==='premium'?(document.documentElement.lang==='es'?'✦ FICHA PRÉMIUM':'✦ PREMIUM LISTING'):(document.documentElement.lang==='es'?'✦ FICHA DESTACADA':'✦ FEATURED LISTING');
+   card.append(ribbon);
+  }
   if(x.isTest){
    const demoImage=document.createElement('img');demoImage.className='demo-logo-image';demoImage.src='/assets/cgg-logo.svg';demoImage.alt=document.documentElement.lang==='es'?'Logotipo de Christopher the Good Gringo como imagen de muestra del hostal':'Christopher the Good Gringo logo used as the sample hostel image';demoImage.loading='lazy';card.append(demoImage);
    const ribbon=document.createElement('p');ribbon.className='plan-ribbon';
