@@ -130,6 +130,9 @@ html[lang="mix"] [data-l="es"] { display: none !important; }
 html[lang="mix"] .es-first [data-l="en"] { display: none !important; }
 html[lang="mix"] .es-first [data-l="es"] { display: inline !important; }
 
+
+/* Shared homepage footer: identical colors, typography, spacing, and responsive layout on every page. */
+footer{background:#09291e!important;color:#cbd8cf!important;padding:20px 0!important;font-size:.82rem!important;width:100%;box-sizing:border-box}footer .wrap{display:flex!important;align-items:center!important;justify-content:center!important;gap:8px 18px!important;flex-wrap:wrap!important;text-align:center!important}footer a{color:#f5bd3e!important;margin-left:14px!important;text-decoration:none!important}html[lang="es"] footer [data-l="en"],html[lang="es"] footer .en{display:none!important}html:not([lang="es"]) footer [data-l="es"],html:not([lang="es"]) footer .es{display:none!important}
 </style>
 
 <header class="top">
@@ -171,17 +174,7 @@ html[lang="mix"] .es-first [data-l="es"] { display: inline !important; }
   </div>
 </section>
 
-<footer>
-  <div class="wrap">
-    <span><b>Christopher The Good Gringo™</b> · <span data-l="en">Life in LATAM, done right</span><span data-l="es">Vivir en LATAM, como debe ser</span></span>
-    <a href="https://christopherthegoodgringo.com"><span data-l="en">Back to the main site</span><span data-l="es">Volver al sitio principal</span></a>
-  </div>
-
-  <div class="legal-footer" style="margin-top:14px;padding-top:12px;border-top:1px solid currentColor;opacity:.92;font-size:.82rem;display:flex;gap:8px 16px;justify-content:space-between;align-items:center;flex-wrap:wrap;width:100%">
-    <span>© 2026 Christopher The Good Gringo™. All rights reserved. · Todos los derechos reservados.</span>
-    <span><a href="/privacy-policy.html" style="color:inherit;text-decoration:underline">Privacy Policy / Privacidad</a> · <a href="/terms-of-use.html" style="color:inherit;text-decoration:underline">Terms of Use / Términos</a></span>
-  </div>
-</footer>
+<footer><div class="wrap" style="display:flex;align-items:center;justify-content:center;gap:8px 18px;flex-wrap:wrap;text-align:center"><span id="footerText">Good places. Good people. Good stories.</span><span data-l="en" class="en">© 2026 Christopher The Good Gringo™. All rights reserved.</span><span data-l="es" class="es">© 2026 Christopher The Good Gringo™. Todos los derechos reservados.</span><span data-l="en" class="en"><a href="/team/">Meet the Team</a> · <a href="/hostels.html">Hostel Finder</a> · <a href="/privacy-policy.html">Privacy Policy</a> · <a href="/terms-of-use.html">Terms of Use</a></span><span data-l="es" class="es"><a href="/team/">Conoce al equipo</a> · <a href="/hostels.html">Buscador de hostales</a> · <a href="/privacy-policy.html">Política de privacidad</a> · <a href="/terms-of-use.html">Términos de uso</a></span></div></footer>
 
 <script>
 (function () {
