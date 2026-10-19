@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">\n<meta name="hostel-finder-build" content="2026-10-19-fast-fallback-3">
+<meta name="viewport" content="width=device-width, initial-scale=1">\n<meta name="hostel-finder-build" content="2026-10-19-city-autocomplete-1">
 <title>Hostel Finder | Christopher the Good Gringo</title>
 <meta name="description" content="Explore hostels across Latin America by country and search real-world hostel listings mapped by OpenStreetMap contributors.">
 <style>
 :root{--green:#174b3b;--deep:#103629;--cream:#fbf7ed;--gold:#d6a84f;--ink:#20332b;--muted:#63756d;--line:#e4e0d5;--white:#fff}
-*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.55}a{color:inherit}.top{background:var(--deep);color:#fff;padding:16px max(20px,calc((100% - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-weight:850;letter-spacing:.02em;text-decoration:none;display:flex;align-items:center;gap:10px}.brand img{width:42px;height:42px;object-fit:contain;flex:0 0 auto}.top a:last-child{color:#f4d58e}.wrap{max-width:1120px;margin:auto;padding:42px 22px 64px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-weight:800;font-size:.76rem;color:#98712d}.hero h1{font-size:clamp(2.3rem,6vw,4.4rem);line-height:1.02;letter-spacing:-.04em;max-width:780px;margin:10px 0 16px;color:var(--green)}.hero p{max-width:720px;font-size:1.1rem;color:var(--muted)}.panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;margin:28px 0;box-shadow:0 8px 30px #20332b0b}.controls{display:grid;grid-template-columns:minmax(170px,1fr) minmax(180px,1fr) minmax(180px,1.4fr) auto;gap:12px;align-items:end}label{display:block;font-size:.85rem;font-weight:750;margin-bottom:6px}select,input,button{width:100%;font:inherit;border-radius:10px;padding:13px 14px;border:1px solid #cbd4cd;background:white;color:var(--ink)}button{background:var(--green);color:white;font-weight:800;border:0;cursor:pointer}button:disabled{opacity:.55;cursor:wait}.meta{color:var(--muted);font-size:.9rem;margin:16px 0 0}.results-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}.results-head h2{margin:0;color:var(--green)}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-top:18px}.hostel{border:1px solid var(--line);border-radius:15px;padding:17px;background:#fff;min-width:0}.hostel h3{margin:0 0 7px;color:var(--green);font-size:1.05rem;overflow-wrap:anywhere}.hostel p{margin:5px 0;color:var(--muted);font-size:.9rem;overflow-wrap:anywhere}.hostel .links{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-weight:750;font-size:.9rem;color:#176348}.tag{display:inline-block;background:#f3eddd;border-radius:99px;padding:4px 9px;font-size:.75rem;font-weight:750;color:#70521f}.empty{padding:32px;text-align:center;color:var(--muted);border:1px dashed #cbd4cd;border-radius:15px;margin-top:18px}.foot{border-top:1px solid var(--line);padding-top:18px;margin-top:38px;font-size:.82rem;color:var(--muted)}.foot a{color:var(--green)}@media(max-width:900px){.controls{grid-template-columns:1fr 1fr}}@media(max-width:760px){.controls{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.wrap{padding-top:30px}.top{padding:14px 18px}}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.55}a{color:inherit}.top{background:var(--deep);color:#fff;padding:16px max(20px,calc((100% - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-weight:850;letter-spacing:.02em;text-decoration:none;display:flex;align-items:center;gap:10px}.brand img{width:42px;height:42px;object-fit:contain;flex:0 0 auto}.top a:last-child{color:#f4d58e}.wrap{max-width:1120px;margin:auto;padding:42px 22px 64px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-weight:800;font-size:.76rem;color:#98712d}.hero h1{font-size:clamp(2.3rem,6vw,4.4rem);line-height:1.02;letter-spacing:-.04em;max-width:780px;margin:10px 0 16px;color:var(--green)}.hero p{max-width:720px;font-size:1.1rem;color:var(--muted)}.panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;margin:28px 0;box-shadow:0 8px 30px #20332b0b}.controls{display:grid;grid-template-columns:minmax(170px,1fr) minmax(180px,1fr) minmax(180px,1.4fr) auto;gap:12px;align-items:end}.destination-field{position:relative}.suggestions{position:absolute;top:100%;left:0;right:0;z-index:8;background:#fff;border:1px solid #cbd4cd;border-radius:10px;box-shadow:0 12px 28px #20332b20;max-height:260px;overflow:auto;margin-top:4px}.suggestions[hidden]{display:none}.suggestion{display:block;width:100%;border:0;border-radius:0;background:#fff;color:var(--ink);text-align:left;padding:11px 13px;font-weight:500;line-height:1.35}.suggestion:hover,.suggestion:focus{background:#f3eddd;outline:none}.suggestion+.suggestion{border-top:1px solid #eee9df}.suggestion small{display:block;color:var(--muted);font-size:.78rem;font-weight:400;margin-top:3px}label{display:block;font-size:.85rem;font-weight:750;margin-bottom:6px}select,input,button{width:100%;font:inherit;border-radius:10px;padding:13px 14px;border:1px solid #cbd4cd;background:white;color:var(--ink)}button{background:var(--green);color:white;font-weight:800;border:0;cursor:pointer}button:disabled{opacity:.55;cursor:wait}.meta{color:var(--muted);font-size:.9rem;margin:16px 0 0}.results-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}.results-head h2{margin:0;color:var(--green)}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-top:18px}.hostel{border:1px solid var(--line);border-radius:15px;padding:17px;background:#fff;min-width:0}.hostel h3{margin:0 0 7px;color:var(--green);font-size:1.05rem;overflow-wrap:anywhere}.hostel p{margin:5px 0;color:var(--muted);font-size:.9rem;overflow-wrap:anywhere}.hostel .links{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-weight:750;font-size:.9rem;color:#176348}.tag{display:inline-block;background:#f3eddd;border-radius:99px;padding:4px 9px;font-size:.75rem;font-weight:750;color:#70521f}.empty{padding:32px;text-align:center;color:var(--muted);border:1px dashed #cbd4cd;border-radius:15px;margin-top:18px}.foot{border-top:1px solid var(--line);padding-top:18px;margin-top:38px;font-size:.82rem;color:var(--muted)}.foot a{color:var(--green)}@media(max-width:900px){.controls{grid-template-columns:1fr 1fr}}@media(max-width:760px){.controls{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.wrap{padding-top:30px}.top{padding:14px 18px}}
 </style>
 </head>
 <body>
@@ -17,7 +17,7 @@
 <section class="panel" aria-label="Hostel search">
 <div class="controls">
 <div><label for="country">Country or destination</label><select id="country"><option value="">Choose a country…</option></select></div>
-<div><label for="destination">City or region</label><input id="destination" type="text" placeholder="e.g. Oaxaca, Medellín, Cusco" disabled></div>
+<div class="destination-field"><label for="destination">City or region</label><input id="destination" type="text" placeholder="Start typing a city…" autocomplete="off" aria-autocomplete="list" aria-controls="citySuggestions" aria-expanded="false" disabled><div id="citySuggestions" class="suggestions" role="listbox" hidden></div></div>
 <div><label for="search">Filter loaded hostels</label><input id="search" type="search" placeholder="Search names or addresses" disabled></div>
 <div><button id="load" disabled>Find hostels</button></div>
 </div>
@@ -35,16 +35,62 @@ const countries = [
 const country=document.querySelector('#country'), destination=document.querySelector('#destination'), search=document.querySelector('#search'), load=document.querySelector('#load'), status=document.querySelector('#status'), results=document.querySelector('#results'), count=document.querySelector('#count'), title=document.querySelector('#resultsTitle');
 countries.sort((a,b)=>a[1].localeCompare(b[1])).forEach(([code,name])=>{const o=document.createElement('option');o.value=code;o.textContent=name;country.append(o)});
 let listings=[];
-country.addEventListener('change',()=>{destination.disabled=!country.value;load.disabled=!country.value||!destination.value.trim();search.disabled=true;listings=[];results.className='empty';results.textContent='Enter a city or region to search nearby hostels.';count.textContent='No results loaded';if(country.value)status.textContent='Enter a city or region in '+country.selectedOptions[0].text+' to search a smaller area.';});
+const citySuggestions=document.querySelector('#citySuggestions');
+let suggestionTimer=null,suggestionController=null,chosenPlace=null;
+function closeSuggestions(){citySuggestions.hidden=true;destination.setAttribute('aria-expanded','false');}
+function showSuggestions(items){
+ citySuggestions.replaceChildren();
+ if(!items.length){closeSuggestions();return;}
+ items.forEach(item=>{
+  const button=document.createElement('button');button.type='button';button.className='suggestion';button.setAttribute('role','option');
+  const name=document.createElement('span');name.textContent=item.name;button.append(name);
+  const detail=document.createElement('small');detail.textContent=item.detail;button.append(detail);
+  button.addEventListener('click',()=>{destination.value=item.name;chosenPlace=item;closeSuggestions();load.disabled=!country.value||!destination.value.trim();status.textContent='Destination selected: '+item.name+'. Click Find hostels to search nearby.';});
+  citySuggestions.append(button);
+ });
+ citySuggestions.hidden=false;destination.setAttribute('aria-expanded','true');
+}
+destination.addEventListener('input',()=>{
+ chosenPlace=null;
+ clearTimeout(suggestionTimer);
+ if(suggestionController)suggestionController.abort();
+ const query=destination.value.trim();
+ load.disabled=!country.value||query.length<2;
+ if(query.length<2){closeSuggestions();return;}
+ suggestionTimer=setTimeout(async()=>{
+  const selected=countries.find(([code])=>code===country.value);
+  if(!selected)return;
+  suggestionController=new AbortController();
+  try{
+   const url='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=6&countrycodes='+encodeURIComponent(selected[0].toLowerCase())+'&q='+encodeURIComponent(query+', '+selected[1]);
+   const response=await fetch(url,{headers:{'Accept':'application/json'},signal:suggestionController.signal});
+   if(!response.ok)throw new Error('Suggestions unavailable');
+   const data=await response.json();
+   const items=data.map(item=>{
+    const a=item.address||{};
+    const name=a.city||a.town||a.village||a.municipality||a.county||item.name||item.display_name.split(',')[0];
+    return {name,detail:item.display_name,lat:item.lat,lon:item.lon};
+   });
+   showSuggestions(items);
+  }catch(error){if(error.name!=='AbortError')closeSuggestions();}
+ },450);
+});
+destination.addEventListener('keydown',e=>{
+ if(e.key==='Escape')closeSuggestions();
+ if(e.key==='ArrowDown'&&!citySuggestions.hidden){e.preventDefault();citySuggestions.querySelector('button')?.focus();}
+ if(e.key==='Enter'&&!citySuggestions.hidden){const first=citySuggestions.querySelector('button');if(first){e.preventDefault();first.click();}}
+});
+document.addEventListener('click',e=>{if(!e.target.closest('.destination-field'))closeSuggestions();});
+country.addEventListener('change',()=>{destination.disabled=!country.value;destination.value='';chosenPlace=null;closeSuggestions();load.disabled=true;search.disabled=true;listings=[];results.className='empty';results.textContent='Enter a city or region to search nearby hostels.';count.textContent='No results loaded';if(country.value)status.textContent='Enter a city or region in '+country.selectedOptions[0].text+' to search a smaller area.';});
 destination.addEventListener('input',()=>{load.disabled=!country.value||!destination.value.trim();});
 load.addEventListener('click',loadHostels);
 search.addEventListener('input',render);
 async function loadHostels(){
- const code=country.value, place=destination.value.trim();if(!code||!place)return;
+ const code=country.value, place=destination.value.trim();if(!code||!place)return;closeSuggestions();
  load.disabled=true;load.textContent='Searching…';search.disabled=true;status.textContent='Finding the city or region, then searching nearby mapped hostels…';results.className='empty';results.textContent='Finding your destination…';listings=[];
  try{
   const countryName=country.selectedOptions[0].text;
-  const geocodeUrl='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&country='+encodeURIComponent(countryName)+'&city='+encodeURIComponent(place);
+  const geocodeUrl=chosenPlace&&chosenPlace.lat&&chosenPlace.lon?'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&lat='+encodeURIComponent(chosenPlace.lat)+'&lon='+encodeURIComponent(chosenPlace.lon):'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&country='+encodeURIComponent(countryName)+'&city='+encodeURIComponent(place);
   let geoResponse=await fetch(geocodeUrl,{headers:{'Accept':'application/json'}});
   if(!geoResponse.ok)throw new Error('The destination search service is busy. Please try again.');
   let geo=await geoResponse.json();
