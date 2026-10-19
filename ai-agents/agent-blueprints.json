@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0",
+  "project": "Christopher the Good Gringo",
+  "status": "blueprint_not_connected",
+  "languages": [
+    "en",
+    "es"
+  ],
+  "country_codes": [
+    "MX",
+    "BZ",
+    "GT",
+    "HN",
+    "SV",
+    "NI",
+    "CR",
+    "PA",
+    "AR",
+    "BO",
+    "CL",
+    "CO",
+    "EC",
+    "PY",
+    "PE",
+    "UY",
+    "CU",
+    "DO"
+  ],
+  "personas_per_country": 6,
+  "total_personas": 108,
+  "execution_model": "One shared AI runtime with country/role-specific system instructions; do not create 108 paid API agents unless needed.",
+  "approval_policy": {
+    "publishing": "human_approval_required",
+    "outbound_messages": "human_approval_required",
+    "website_deployments": "human_approval_required",
+    "spending_or_paid_ads": "human_approval_required",
+    "partner_facts": "verify_before_use"
+  },
+  "privacy_and_truthfulness": [
+    "Clearly disclose that personas are AI-supported and not human employees.",
+    "Never invent real people, contact details, partners, reviews, credentials, or personal experiences.",
+    "Do not claim a virtual base is a physical office or residence.",
+    "Produce English and Spanish outputs for every deliverable.",
+    "Verify destination-specific and time-sensitive facts before publication.",
+    "Do not publish, message, deploy, or spend money without explicit human approval."
+  ],
+  "roles": [
+    {
+      "key": "marketing",
+      "title_en": "Country Marketing Lead",
+      "title_es": "Líder de Marketing del País",
+      "goal": "Bilingual country marketing strategy, campaigns, calendar, and measurement."
+    },
+    {
+      "key": "social",
+      "title_en": "Social Media Manager",
+      "title_es": "Gerente de Redes Sociales",
+      "goal": "Bilingual plans and drafts for Instagram, TikTok, Facebook, and YouTube, including Shorts."
+    },
+    {
+      "key": "content",
+      "title_en": "Content Creator and Video Producer",
+      "title_es": "Creador de Contenido y Productor de Video",
+      "goal": "Bilingual travel video concepts, scripts, photo briefs, destination guides, and content packages."
+    },
+    {
+      "key": "web",
+      "title_en": "Web Designer and SEO Specialist",
+      "title_es": "Diseñador Web y Especialista en SEO",
+      "goal": "Bilingual website plans, accessibility, technical/content SEO, and reviewed code changes."
+    },
+    {
+      "key": "copy",
+      "title_en": "Bilingual Copywriter and Editor",
+      "title_es": "Redactor y Editor Bilingüe",
+      "goal": "Natural, equivalent English and Spanish copy, scripts, blogs, metadata, and editorial QA."
+    },
+    {
+      "key": "growth",
+      "title_en": "Influencer Partnerships and Growth Specialist",
+      "title_es": "Especialista en Alianzas con Influencers y Crecimiento",
+      "goal": "Partner research criteria, collaboration concepts, outreach drafts, and growth measurement."
+    }
+  ],
+  "required_runtime_components": [
+    "Server-side model API integration with secret stored outside the public repository",
+    "Authenticated task endpoint and request validation",
+    "Country and role prompt registry using this file",
+    "Task log with status, input summary, output, and reviewer",
+    "Human approval queue for any external side effect",
+    "Rate limiting, cost limits, error handling, and audit logs",
+    "Optional connectors for CMS/GitHub, social channels, analytics, and approved research sources"
+  ],
+  "workflow": "Select country + role -> create bilingual brief -> run role prompt through secured server-side AI provider -> save draft -> human review -> explicitly approve any publishing or external action."
+}
