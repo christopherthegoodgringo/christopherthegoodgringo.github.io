@@ -67,16 +67,21 @@ destination.addEventListener('input',()=>{
   try{
    // Use Nominatim's structured city field rather than a free-text search.
    // This avoids matching districts, neighbourhoods, suburbs, and other admin areas.
-   const url='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=10&featuretype=city&countrycodes='+encodeURIComponent(selected[0].toLowerCase())+'&city='+encodeURIComponent(query)+'&country='+encodeURIComponent(selected[1]);
+   const url='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=10&countrycodes='+encodeURIComponent(selected[0].toLowerCase())+'&city='+encodeURIComponent(query)+'&country='+encodeURIComponent(selected[1]);
    const response=await fetch(url,{headers:{'Accept':'application/json'},signal:suggestionController.signal});
    if(!response.ok)throw new Error('Suggestions unavailable');
    const data=await response.json();
    const seenNames=new Set();
    const items=data
-    .filter(item=>item.class==='place'&&['city','town','village'].includes(item.type))
+    .filter(item=>{
+     const a=item.address||{};
+     // Accept city-level administrative results too (for example Bogotá),
+     // while excluding neighbourhoods, districts, and suburbs.
+     return Boolean(a.city||a.town||a.village) || (item.class==='place'&&['city','town','village'].includes(item.type));
+    })
     .map(item=>{
      const a=item.address||{};
-     const name=item.type==='city'? (a.city||item.name) : item.type==='town' ? (a.town||item.name) : (a.village||item.name);
+     const name=a.city||a.town||a.village||item.name;
      return {name,lat:item.lat,lon:item.lon,detail:name};
     })
     .filter(item=>{
