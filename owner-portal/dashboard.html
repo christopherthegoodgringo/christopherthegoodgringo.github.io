@@ -47,6 +47,17 @@ $('edit-form').addEventListener('submit',async e=>{
  say('edit-status','Your proposed changes were sent to the administrator. The public listing has not changed yet.');$('edit-description').value='';$('edit-photos').value='';$('edit-website').value='';$('edit-email').value='';$('edit-notes').value='';await loadOwnerManager();
 });
 
+let publicDirectoryPromise=null;
+async function verifyPublicDirectoryListing(hostelId){
+ if(!hostelId||String(hostelId).startsWith('TEST-'))return {ok:false,message:'Fictional TEST listings cannot be published.'};
+ try{
+  if(!publicDirectoryPromise)publicDirectoryPromise=fetch('/data/hostels.json').then(r=>{if(!r.ok)throw new Error('Public directory data could not be loaded.');return r.json();});
+  const directory=await publicDirectoryPromise;
+  const matches=(directory.hostels||[]).filter(x=>String(x.id||'')===String(hostelId)||String(x.osm||'')===String(hostelId));
+  if(matches.length!==1)return {ok:false,message:matches.length?'This listing ID matches multiple directory records. Resolve the duplicate before publishing.':'This listing ID does not match a real listing in the public directory.'};
+  return {ok:true};
+ }catch(error){return {ok:false,message:error.message||'Could not verify this listing against the public directory.'};}
+}
 async function loadAdmin(){
  const {data:adminRow,error:adminError}=await sb.from('portal_admins').select('user_id').eq('user_id',user.id).maybeSingle();
  if(adminError){$('admin-panel').classList.remove('hidden');$('admin-claims').textContent='Administrator check failed: '+adminError.message+' (code: '+(adminError.code||'unknown')+'). Your account may be registered, but the portal cannot read the administrator list.';return}
@@ -57,7 +68,7 @@ async function loadAdmin(){
  const rows=data||[];
  const claimHtml=rows.length?'<h3>Pending ownership claims</h3>'+rows.map(c=>'<article class="item" data-id="'+esc(c.id)+'"><strong>'+esc(c.hostel_name)+'</strong> · '+esc(c.city)+', '+esc(c.country)+'<p class="muted">Listing ID: '+esc(c.hostel_id)+'<br>Claimant: '+esc(c.contact_email)+'<br>Account: '+esc(c.user_id)+'<br>Submitted: '+esc(new Date(c.created_at).toLocaleString())+'</p><p>'+esc(c.evidence_notes||'No evidence notes provided.')+'</p><label>Administrator note<textarea class="admin-note" maxlength="2000">'+esc(c.admin_notes||'')+'</textarea></label><div class="actions"><button data-action="approved">Approve claim</button><button class="secondary" data-action="rejected">Reject claim</button></div></article>').join(''):'<h3>Pending ownership claims</h3><p>No pending ownership claims.</p>';
  const {data:editRows,error:editError}=await sb.from('hostel_edit_requests').select('id,user_id,hostel_id,proposed_changes,created_at').eq('status','pending').order('created_at',{ascending:true});
- const editHtml=editError?'<p>Could not load change requests: '+esc(editError.message)+'</p>':(editRows||[]).length?'<h3>Pending listing changes</h3>'+editRows.map(x=>'<article class="item" data-edit-id="'+esc(x.id)+'"><strong>Listing ID: '+esc(x.hostel_id)+'</strong><p class="muted">Owner account: '+esc(x.user_id)+' · Submitted: '+esc(new Date(x.created_at).toLocaleString())+'</p><pre style="white-space:pre-wrap;overflow-wrap:anywhere">'+esc(JSON.stringify(x.proposed_changes,null,2))+'</pre><label>Administrator note<textarea class="edit-admin-note" maxlength="2000"></textarea></label><div class="actions"><button data-edit-action="approved">Approve proposed changes</button><button class="secondary" data-edit-action="rejected">Reject proposed changes</button></div><p class="muted">Approval publishes the approved fields to the public directory. Fictional TEST listings are blocked.</p></article>').join(''):'<h3>Pending listing changes</h3><p>No pending listing changes.</p>';
+ const editHtml=editError?'<p>Could not load change requests: '+esc(editError.message)+'</p>':(editRows||[]).length?'<h3>Pending listing changes</h3>'+editRows.map(x=>'<article class="item" data-edit-id="'+esc(x.id)+'" data-hostel-id="'+esc(x.hostel_id)+'"><strong>Listing ID: '+esc(x.hostel_id)+'</strong><p class="muted">Owner account: '+esc(x.user_id)+' · Submitted: '+esc(new Date(x.created_at).toLocaleString())+'</p><pre style="white-space:pre-wrap;overflow-wrap:anywhere">'+esc(JSON.stringify(x.proposed_changes,null,2))+'</pre><label>Administrator note<textarea class="edit-admin-note" maxlength="2000"></textarea></label><div class="actions"><button data-edit-action="approved">Approve proposed changes</button><button class="secondary" data-edit-action="rejected">Reject proposed changes</button></div><p class="muted">Approval publishes the approved fields to the public directory. Fictional TEST listings are blocked.</p></article>').join(''):'<h3>Pending listing changes</h3><p>No pending listing changes.</p>';
  $('admin-claims').innerHTML=claimHtml+editHtml;
  $('admin-claims').querySelectorAll('button[data-action]').forEach(btn=>btn.addEventListener('click',async()=>{
   const card=btn.closest('[data-id]'),id=card.dataset.id,note=card.querySelector('.admin-note').value.trim();btn.disabled=true;
@@ -69,6 +80,8 @@ async function loadAdmin(){
   const card=btn.closest('[data-edit-id]'),id=card.dataset.editId,note=card.querySelector('.edit-admin-note').value.trim(),decision=btn.dataset.editAction;btn.disabled=true;
   let error=null;
   if(decision==='approved'){
+   const listingCheck=await verifyPublicDirectoryListing(card.dataset.hostelId);
+   if(!listingCheck.ok){alert('Cannot publish this change: '+listingCheck.message);btn.disabled=false;return}
    const {error:publishError}=await sb.rpc('admin_publish_hostel_edit_request',{p_request_id:id,p_admin_notes:note||null});
    error=publishError;
   }else{
