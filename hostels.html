@@ -88,19 +88,24 @@ search.addEventListener('input',render);
 async function loadHostels(){
  const code=country.value, place=destination.value.trim();if(!code||!place)return;closeSuggestions();
  load.disabled=true;load.textContent='Searching…';search.disabled=true;status.textContent='Finding the city or region, then searching nearby mapped hostels…';results.className='empty';results.textContent='Finding your destination…';listings=[];
+ const countryName=country.selectedOptions[0].text;
  try{
-  const countryName=country.selectedOptions[0].text;
-  const geocodeUrl=chosenPlace&&chosenPlace.lat&&chosenPlace.lon?'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&lat='+encodeURIComponent(chosenPlace.lat)+'&lon='+encodeURIComponent(chosenPlace.lon):'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&country='+encodeURIComponent(countryName)+'&city='+encodeURIComponent(place);
-  let geoResponse=await fetch(geocodeUrl,{headers:{'Accept':'application/json'}});
-  if(!geoResponse.ok)throw new Error('The destination search service is busy. Please try again.');
-  let geo=await geoResponse.json();
-  if(!geo.length){
-   geoResponse=await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&country='+encodeURIComponent(countryName)+'&q='+encodeURIComponent(place),{headers:{'Accept':'application/json'}});
-   if(!geoResponse.ok)throw new Error('The destination search service is busy. Please try again.');
-   geo=await geoResponse.json();
+  let target;
+  if(chosenPlace&&chosenPlace.lat&&chosenPlace.lon){
+   target={lat:chosenPlace.lat,lon:chosenPlace.lon,display_name:chosenPlace.detail||chosenPlace.name};
+  }else{
+   const geocodeUrl='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&country='+encodeURIComponent(countryName)+'&city='+encodeURIComponent(place);
+   let geoResponse=await fetch(geocodeUrl,{headers:{'Accept':'application/json'}});
+   if(!geoResponse.ok)throw new Error('The city lookup service is temporarily busy. Please select a city from the suggestions or try again shortly.');
+   let geo=await geoResponse.json();
+   if(!geo.length){
+    geoResponse=await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&country='+encodeURIComponent(countryName)+'&q='+encodeURIComponent(place),{headers:{'Accept':'application/json'}});
+    if(!geoResponse.ok)throw new Error('The city lookup service is temporarily busy. Please select a city from the suggestions or try again shortly.');
+    geo=await geoResponse.json();
+   }
+   if(!geo.length)throw new Error('Could not find that city or region in '+countryName+'. Check the spelling and try again.');
+   target=geo.find(x=>x.lat&&x.lon)||geo[0];
   }
-  if(!geo.length)throw new Error('Could not find that city or region in '+countryName+'. Check the spelling and try again.');
-  const target=geo.find(x=>x.lat&&x.lon)||geo[0];
   if(!target.lat||!target.lon)throw new Error('Found the destination but could not determine its map location. Try a nearby city name.');
   // Search around the destination's coordinates instead of relying on an Overpass area ID.
   // This is simpler and more reliable across city, town, and region geocoder results.
