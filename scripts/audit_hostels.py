@@ -113,7 +113,7 @@ def main():
     colombia_emails = set()
     for h in colombia_email_listings:
         raw_email = str(h.get("email") or "").strip()
-        for address in re.findall(r"[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9.-]+\\.[A-Z]{2,}", raw_email, re.I):
+        for address in re.findall(r"[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9.-]+\.[A-Z]{2,}", raw_email, re.I):
             colombia_emails.add(address.strip(".,;:").casefold())
     hcountry,countrycity=Counter(),Counter()
     missing_name,missing_city,bad_h,unknown_h=[],[],[],[]
