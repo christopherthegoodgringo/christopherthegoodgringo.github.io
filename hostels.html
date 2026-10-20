@@ -60,6 +60,9 @@ footer{background:#09291e!important;color:#cbd8cf;padding:20px 0;font-size:.82re
 .grid>.hostel.plan-premium{background:#fff8dc}
 .grid>.hostel.plan-premium .featured-why{background:#fff0b8}
 .grid>.hostel.plan-premium .featured-perk{background:#fffbe9}
+
+/* Explicit bilingual visibility for the Free, Featured and Premium pricing cards */
+html[lang="es"] .owner-pricing-grid [data-l="en"]{display:none!important}html[lang="es"] .owner-pricing-grid [data-l="es"]{display:revert!important}html:not([lang="es"]) .owner-pricing-grid [data-l="es"]{display:none!important}html:not([lang="es"]) .owner-pricing-grid [data-l="en"]{display:revert!important}
 </style><style>
 .owner-pricing{padding:30px 0 38px}.owner-pricing-head{text-align:center;max-width:680px;margin:0 auto 18px}.owner-pricing-head h2{font-size:clamp(1.8rem,4vw,2.7rem);color:var(--green);margin:6px 0}.owner-pricing-head p{color:var(--muted);margin:6px 0}.owner-pricing-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.owner-pricing-grid article{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:20px}.owner-pricing-grid article:nth-child(2){border:2px solid var(--gold)}.owner-pricing-grid h3{color:var(--green);margin:0 0 8px;font-size:1.15rem}.owner-pricing-grid strong{display:block;color:var(--green);font-size:1.8rem;white-space:nowrap}.owner-pricing-grid strong small{white-space:nowrap;display:inline-block}.owner-pricing-grid small{font-size:.85rem}.owner-pricing-grid p{color:var(--muted);margin:8px 0 0;font-size:.92rem}.owner-pricing-note{text-align:center;font-size:.88rem;color:var(--muted);margin-top:14px}.owner-pricing-note a{display:inline-block;color:var(--green);font-weight:800;text-decoration:underline;text-underline-offset:3px}@media(max-width:700px){.owner-pricing-grid{grid-template-columns:1fr}}
 
