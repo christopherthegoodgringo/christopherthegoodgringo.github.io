@@ -536,6 +536,66 @@
         "Local specialty"
       ],
       "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "mesa-franca-bogota",
+      "name": "Mesa Franca",
+      "city": "Bogotá",
+      "address": "Calle 61 #5-56, Chapinero, Bogotá, Colombia",
+      "description": "Independent chef-led restaurant and bar focused on Colombian criollo flavors, native techniques, and local ingredients.",
+      "cuisine": "Contemporary Colombian, creative cuisine",
+      "rating": 4.5,
+      "ratingSource": "Google rating reported by Restaurant Guru (2026 search result)",
+      "priceRange": "$$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://www.restaurantemesafranca.com/",
+      "features": [
+        "Chef-led dining",
+        "Local Colombian ingredients",
+        "Cocktail program"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "carmen-cartagena",
+      "name": "Carmen",
+      "city": "Cartagena",
+      "address": "Calle 38 #8-19, Calle del Santísimo, Cartagena, Colombia",
+      "description": "Contemporary Colombian cuisine inspired by the country's biodiversity, with a special focus on Caribbean ingredients.",
+      "cuisine": "Contemporary Colombian, Caribbean",
+      "rating": 4.5,
+      "ratingSource": "Tripadvisor (2026 search result)",
+      "priceRange": "$$$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://carmencartagena.com/",
+      "features": [
+        "Contemporary dining",
+        "Caribbean ingredients",
+        "Reservations"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "juan-del-mar-cartagena",
+      "name": "Juan del Mar",
+      "city": "Cartagena",
+      "address": "Plaza de San Diego #8-12, Cartagena, Colombia",
+      "description": "Long-standing Cartagena restaurant combining seafood, fish, Cartagena-inspired dishes, and gourmet pizza in a historic house.",
+      "cuisine": "Caribbean, seafood, Colombian",
+      "rating": 4.4,
+      "ratingSource": "Degusta Colombia listing (search result)",
+      "priceRange": "$$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://juandelmar.com/en/inicio-english/",
+      "features": [
+        "Seafood",
+        "Historic setting",
+        "Live music"
+      ],
+      "verifiedOn": "2026-10-20"
     }
   ]
 }
