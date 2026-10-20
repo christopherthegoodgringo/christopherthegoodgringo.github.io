@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-19",
+  "updatedAt": "2026-10-20",
   "hostels": [
     {
       "id": "paid-spotty-hostel-bogota",
@@ -32,7 +32,10 @@
       "address": "Calle 17 #3-99, Comuna 2, Santa Marta, Magdalena, Colombia",
       "photoUrls": [
         "https://hostelbaboonsantamarta.santamartachotel.com/data/Photos/450x450w/15538/1553854/1553854690.JPEG"
-      ]
+      ],
+      "website": "https://www.hostelworld.com/hostels/p/285100/mr-baboon-hostel/",
+      "membershipTier": "bronze",
+      "description": "Social, centrally located hostel with a pool, rooftop terrace, and communal kitchen."
     },
     {
       "id": "paid-2600-hostel-dc-bogota",
@@ -67,6 +70,42 @@
       "photoUrls": [
         "https://img1.wsimg.com/isteam/ip/f1f8de7c-ccb2-4fb5-b694-fec323c915bb/image00012.jpeg/:/rs=w:1240,h:620,cg:true,m/cr=w:1240,h:620"
       ]
+    },
+    {
+      "id": "directory-cacao-hostel-santa-marta",
+      "name": "Cacao Hostel Santa Marta",
+      "city": "Santa Marta",
+      "countryCode": "CO",
+      "address": "Carrera 11 #17-49, Santa Marta, Magdalena, Colombia",
+      "website": "https://www.hostelworld.com/hostels/p/279357/cacao-hostel-santa-marta/",
+      "description": "Relaxed hostel with a tropical patio, swimming pool, breakfast, bar and restaurant, plus coworking space.",
+      "listingPlan": "directory",
+      "paidListing": false,
+      "membershipTier": "gold"
+    },
+    {
+      "id": "directory-la-guaca-hostel-santa-marta",
+      "name": "La Guaca Hostel Santa Marta",
+      "city": "Santa Marta",
+      "countryCode": "CO",
+      "address": "Carrera 8 #27-75, Santa Marta, Magdalena, Colombia",
+      "website": "https://www.hostelworld.com/hostels/p/85499/la-guaca-hostel-santa-marta/",
+      "description": "Backpacker-friendly hostel in a remodeled mansion near the historic center, with breakfast and communal spaces.",
+      "listingPlan": "directory",
+      "paidListing": false,
+      "membershipTier": "silver"
+    },
+    {
+      "id": "directory-casa-avelina-boutique-hostel-santa-marta",
+      "name": "Casa Avelina Boutique Hostel",
+      "city": "Santa Marta",
+      "countryCode": "CO",
+      "address": "Calle 14 #14-52, Santa Marta, Magdalena, Colombia",
+      "website": "https://www.hostelworld.com/hostels/p/295581/casa-avelina-boutique-hostel/",
+      "description": "Boutique hostel in a renovated historic house, offering private and shared rooms and a focus on nature and sustainability.",
+      "listingPlan": "directory",
+      "paidListing": false,
+      "membershipTier": "platinum"
     }
   ]
 }
