@@ -172,12 +172,12 @@ footer a,footer .wrap a{color:var(--gold,#f5bd3e)!important;margin:0!important;t
     {en:"Uruguay",es:"Uruguay",city:"Montevideo"}
   ];
   const roles = [
-    {en:"Marketing",es:"Marketing",title:"Marketing Specialist",desc:"Plans campaigns, brand messaging, and audience growth."},
-    {en:"Social Media",es:"Redes sociales",title:"Social Media Specialist",desc:"Plans social posts, short-form video ideas, and community engagement."},
-    {en:"Content Creator",es:"Creación de contenido",title:"Content Creator",desc:"Develops travel stories, guides, and useful editorial content."},
-    {en:"Web Design",es:"Diseño web",title:"Web Design Specialist",desc:"Supports clear layouts, accessibility, and website improvements."},
-    {en:"Local Research",es:"Investigación local",title:"Local Research Specialist",desc:"Researches local travel context, useful places, and destination details."},
-    {en:"Partnerships",es:"Alianzas",title:"Partnerships Specialist",desc:"Identifies relevant local businesses and partnership opportunities."}
+    {en:"Marketing",es:"Marketing",title:"Marketing Specialist",desc:"Plans campaigns, brand messaging, and audience growth.",colombiaName:"Valentina Torres",colombiaDesc:"Leads Santa Marta city marketing, directory growth, and local tourism campaigns."},
+    {en:"Social Media",es:"Redes sociales",title:"Social Media Specialist",desc:"Plans social posts, short-form video ideas, and community engagement.",colombiaName:"Santiago Rojas",colombiaDesc:"Prepares Instagram, TikTok, Facebook, and YouTube campaigns featuring Santa Marta."},
+    {en:"Content Creator",es:"Creación de contenido",title:"Content Creator",desc:"Develops travel stories, guides, and useful editorial content.",colombiaName:"Camila Restrepo",colombiaDesc:"Creates Santa Marta destination guides, short-video concepts, shot lists, and photo briefs."},
+    {en:"Web Design",es:"Diseño web",title:"Web Design Specialist",desc:"Supports clear layouts, accessibility, and website improvements.",colombiaName:"Andrés Mendoza",colombiaDesc:"Audits the five Finders, city dropdowns, listing links, duplicates, and Platinum photo slideshows."},
+    {en:"Local Research",es:"Investigación local",title:"Local Research Specialist",desc:"Researches local travel context, useful places, and destination details.",colombiaName:"Isabella Moreno",colombiaDesc:"Finds and verifies independent hotels, hostels, restaurants, bars, and street-food businesses in Santa Marta."},
+    {en:"Partnerships",es:"Alianzas",title:"Partnerships Specialist",desc:"Identifies relevant local businesses and partnership opportunities.",colombiaName:"Mateo Vargas",colombiaDesc:"Researches local tourism collaborators, creators, and business partnership prospects."}
   ];
   const countrySelect=document.getElementById("teamCountry");
   const roleSelect=document.getElementById("teamRole");
@@ -205,11 +205,11 @@ footer a,footer .wrap a{color:var(--gold,#f5bd3e)!important;margin:0!important;t
       const card=document.createElement("article");card.className="person";
       const top=document.createElement("div");top.className="person-top";
       const img=document.createElement("img");img.className="portrait";img.src="/assets/cgg-logo.svg";img.alt=(spanish()?"Perfil de IA: ":"AI persona: ")+role.title;
-      const heading=document.createElement("div");const h=document.createElement("h3");h.textContent=(spanish()?role.es:role.en)+" — "+(spanish()?country.es:country.en);
+      const heading=document.createElement("div");const h=document.createElement("h3");h.textContent=(country.en==="Colombia"&&role.colombiaName?role.colombiaName+" — ":"")+(spanish()?role.es:role.en)+" — "+(spanish()?country.es:country.en);
       const title=document.createElement("div");title.className="role";title.textContent=role.title;
       heading.append(h,title);top.append(img,heading);
       const base=document.createElement("div");base.className="base";base.textContent=(spanish()?"Base virtual: ":"Virtual base: ")+country.city+", "+(spanish()?country.es:country.en);
-      const desc=document.createElement("p");desc.className="desc";desc.textContent=role.desc;
+      const desc=document.createElement("p");desc.className="desc";desc.textContent=country.en==="Colombia"&&role.colombiaDesc?role.colombiaDesc:role.desc;
       const contacts=document.createElement("div");contacts.className="contact-links";
       const email=document.createElement("a");email.className="primary";email.href="mailto:christopher@christopherthegoodgringo.com";email.textContent=spanish()?"Correo":"Email";
       const wa=document.createElement("a");wa.href="https://wa.me/13054405175";wa.target="_blank";wa.rel="noopener";wa.textContent="WhatsApp";
