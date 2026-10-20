@@ -41,6 +41,10 @@ footer{padding-top:20px!important;padding-bottom:20px!important;line-height:1.6!
 footer>.wrap{padding:0 16px!important;margin:0 auto!important;min-height:0!important;height:auto!important;line-height:1.6!important;gap:8px 18px!important;align-content:center!important}
 footer>.wrap>*{margin-top:0!important;margin-bottom:0!important;padding-top:0!important;padding-bottom:0!important;line-height:1.6!important}
 footer .legal-footer{margin-top:0!important;padding-top:0!important;border-top:0!important}
+
+/* Language toggle: hide the inactive navigation and footer labels everywhere. */
+html[lang="es"] [data-l="en"]{display:none!important}
+html:not([lang="es"]) [data-l="es"]{display:none!important}
 </style>
 
 <style id="homepage-footer-text-match">
@@ -118,5 +122,5 @@ footer a,footer .wrap a{color:#f5bd3e!important;margin:0!important;text-decorati
 <a href="/team/"><span data-l="en">Meet the Team</span><span data-l="es">Conoce al equipo</span></a>
 <a href="/privacy-policy.html"><span data-l="en">Privacy Policy</span><span data-l="es">Política de privacidad</span></a>
 <a href="/terms-of-use.html"><span data-l="en">Terms of Use</span><span data-l="es">Términos de uso</span></a></nav></div></footer>
-<script>(function(){var lang="en";try{var q=new URLSearchParams(location.search).get("lang");var saved=localStorage.getItem("gg-lang");if(q==="en"||q==="es")lang=q;else if(saved==="en"||saved==="es")lang=saved}catch(e){}var b=document.getElementById("languageToggle");function apply(){document.documentElement.lang=lang;b.classList.toggle("is-spanish",lang==="es");b.setAttribute("aria-pressed",lang==="es"?"true":"false")}b.addEventListener("click",function(){lang=lang==="en"?"es":"en";try{localStorage.setItem("gg-lang",lang)}catch(e){}apply()});apply()})();</script>
+<script>(function(){var q=null;try{q=new URLSearchParams(location.search).get("lang")}catch(e){}var lang=q==="es"?"es":"en";var b=document.getElementById("languageToggle");function apply(){document.documentElement.lang=lang;b.classList.toggle("is-spanish",lang==="es");b.setAttribute("aria-pressed",lang==="es"?"true":"false");b.setAttribute("aria-label",lang==="en"?"Switch to Spanish":"Cambiar a inglés")}b.addEventListener("click",function(){lang=lang==="en"?"es":"en";apply()});apply()})();</script>
 </body></html>
