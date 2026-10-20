@@ -14,11 +14,14 @@ EARTH_RADIUS_KM = 6371.0088
 
 with HOSTELS_PATH.open(encoding="utf-8") as f:
     hostels_data = json.load(f)
-with CITIES_PATH.open(encoding="utf-8") as f:
-    cities_data = json.load(f)
-
 hostels = hostels_data["hostels"] if isinstance(hostels_data, dict) else hostels_data
-cities = cities_data["cities"] if isinstance(cities_data, dict) and "cities" in cities_data else cities_data
+# Prefer the same embedded city index used to generate the reviewed correction file.
+if isinstance(hostels_data, dict) and isinstance(hostels_data.get("cities"), list):
+    cities = hostels_data["cities"]
+else:
+    with CITIES_PATH.open(encoding="utf-8") as f:
+        cities_data = json.load(f)
+    cities = cities_data["cities"] if isinstance(cities_data, dict) and "cities" in cities_data else cities_data
 
 cities_by_country = {}
 for city in cities:
