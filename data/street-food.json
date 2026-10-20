@@ -465,6 +465,21 @@
       "photoNote": "Illustrative food photo; not a verified photo of this vendor.",
       "membershipTier": "bronze",
       "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "fritos-los-angeles-santa-marta",
+      "name": "Fritos Los Ángeles",
+      "city": "Santa Marta",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "address": "Carrera 6 #26A-21, Comuna 2, Santa Marta, Magdalena, Colombia",
+      "description": "Popular local fritos stop known for empanadas, papas rellenas, carimañolas, cheese fingers and other traditional Colombian fried snacks. Check current hours before visiting.",
+      "cuisine": "Colombian fritos, empanadas, papas rellenas, carimañolas",
+      "rating": 4.5,
+      "ratingSource": "Local business listing; 1,076 reviews checked 2026-10-20",
+      "website": "https://www.google.com/maps/search/?api=1&query=Fritos+Los+Angeles+Carrera+6+26A-21+Santa+Marta+Colombia",
+      "membershipTier": "bronze",
+      "verifiedOn": "2026-10-20"
     }
   ]
 }
