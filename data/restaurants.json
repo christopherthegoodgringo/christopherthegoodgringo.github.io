@@ -953,6 +953,182 @@
         "Special occasions"
       ],
       "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "artesanal-restobar-santa-marta",
+      "name": "Artesanal Restobar",
+      "city": "Santa Marta",
+      "address": "Calle 18 #2-72, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "Independent restobar celebrating wood-fired cooking, handmade preparations, and ingredients from the Colombian Caribbean.",
+      "cuisine": "Caribbean, wood-fired cooking, pizza, cocktails",
+      "rating": 4.8,
+      "ratingSource": "Google rating reported on official website (checked October 2026)",
+      "priceRange": "$$–$$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://artesanalrestobar.com/conocenos/",
+      "photo": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=85",
+      "features": [
+        "Wood-fired cooking",
+        "Local ingredients",
+        "Historic center"
+      ],
+      "membershipTier": "gold",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "ouzo-santa-marta",
+      "name": "Ouzo Restaurante",
+      "city": "Santa Marta",
+      "address": "Carrera 3 #19-29, Parque de los Novios, Santa Marta, Magdalena, Colombia",
+      "description": "Mediterranean cooking with Caribbean ingredients, handmade pasta, seafood, wood-fired pizza, and cocktails in the historic center.",
+      "cuisine": "Mediterranean, seafood, pizza",
+      "rating": 4.5,
+      "ratingSource": "Google business listing (checked October 2026)",
+      "priceRange": "$$–$$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://grupoouzo.com/ouzo-2/",
+      "photo": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=85",
+      "features": [
+        "Mediterranean cuisine",
+        "Wood-fired pizza",
+        "Parque de los Novios"
+      ],
+      "membershipTier": "gold",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "donde-chucho-gourmet-santa-marta",
+      "name": "Donde Chucho Gourmet",
+      "city": "Santa Marta",
+      "address": "Calle 19 #2-17, Parque de los Novios, Santa Marta, Magdalena, Colombia",
+      "description": "Long-running local seafood restaurant known for Caribbean fish, ceviche, lobster, and traditional coastal dishes.",
+      "cuisine": "Caribbean, seafood, Colombian",
+      "rating": 4,
+      "ratingSource": "Tripadvisor (October 2026)",
+      "priceRange": "$$–$$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://restaurantedondechucho.com/",
+      "photo": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=1200&q=85",
+      "features": [
+        "Caribbean seafood",
+        "Local tradition",
+        "Historic center"
+      ],
+      "membershipTier": "silver",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "serena-tropical-bistro-santa-marta",
+      "name": "Serena Tropical Bistro",
+      "city": "Santa Marta",
+      "address": "Prolongación del Camellón Rodrigo de Bastidas, Carrera 1 #22-93, Santa Marta, Magdalena, Colombia",
+      "description": "Waterfront tropical bistro blending local coastal ingredients with fresh, contemporary flavors and sunset views over the marina.",
+      "cuisine": "Tropical, Caribbean, fusion",
+      "rating": 4.3,
+      "ratingSource": "Google business listing (checked October 2026)",
+      "priceRange": "$$$–$$$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://www.grupoouzo.com/serenatropical",
+      "photo": "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1200&q=85",
+      "features": [
+        "Marina views",
+        "Tropical cuisine",
+        "Sunset dining"
+      ],
+      "membershipTier": "silver",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "santa-masala-santa-marta",
+      "name": "Santa Masala Indian Restaurant",
+      "city": "Santa Marta",
+      "address": "Carrera 3 #18-52, Parque de los Novios, Santa Marta, Magdalena, Colombia",
+      "description": "Independent Indian restaurant near Parque de los Novios, offering spice-forward Indian dishes and vegetarian-friendly choices.",
+      "cuisine": "Indian, vegetarian-friendly",
+      "rating": 4.8,
+      "ratingSource": "Google business listing (checked October 2026)",
+      "priceRange": "$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://santamasala.com/",
+      "photo": "https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=1200&q=85",
+      "features": [
+        "Indian cuisine",
+        "Vegetarian options",
+        "Historic center"
+      ],
+      "membershipTier": "silver",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "lulo-cafe-bar-santa-marta",
+      "name": "Lulo Café Bar",
+      "city": "Santa Marta",
+      "address": "Carrera 3 #16-34, Callejón del Correo, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "Relaxed café-bar serving gourmet arepas, fresh juices, ceviches, wraps, organic coffee, and cocktails.",
+      "cuisine": "Colombian, Caribbean, café-bar",
+      "rating": 4.5,
+      "ratingSource": "Tripadvisor (October 2026)",
+      "priceRange": "$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://www.lulocafebar.com/",
+      "photo": "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1200&q=85",
+      "features": [
+        "Gourmet arepas",
+        "Organic coffee",
+        "Fresh juices and cocktails"
+      ],
+      "membershipTier": "bronze",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "lamart-santa-marta",
+      "name": "Restaurante LamArt",
+      "city": "Santa Marta",
+      "address": "Carrera 3 #16-36, Callejón del Correo, Santa Marta, Magdalena, Colombia",
+      "description": "Art-focused dining in the historic center, featuring Caribbean seafood, ceviches, handmade pasta, and a creative menu.",
+      "cuisine": "Caribbean, seafood, contemporary",
+      "rating": 4.5,
+      "ratingSource": "Tripadvisor (October 2026)",
+      "priceRange": "$$–$$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://lamart.menux.live/",
+      "photo": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=85",
+      "features": [
+        "Caribbean seafood",
+        "Artistic atmosphere",
+        "Historic center"
+      ],
+      "membershipTier": "bronze",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "ikaro-cafe-santa-marta",
+      "name": "Ikaro Café",
+      "city": "Santa Marta",
+      "address": "Calle 19 #3-60, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "Independent café and restaurant focused on specialty coffee, organic ingredients, and vegetarian-friendly Asian-inspired dishes.",
+      "cuisine": "International, Asian fusion, vegetarian",
+      "rating": 4.2,
+      "ratingSource": "Tripadvisor (October 2026)",
+      "priceRange": "$$–$$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://ikarocafe.com/",
+      "photo": "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?auto=format&fit=crop&w=1200&q=85",
+      "features": [
+        "Specialty coffee",
+        "Vegetarian-friendly",
+        "Asian-inspired cuisine"
+      ],
+      "membershipTier": "bronze",
+      "verifiedOn": "2026-10-20"
     }
   ]
 }
