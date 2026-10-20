@@ -417,6 +417,29 @@
       "verifiedOn": "2026-10-19"
     },
     {
+      "id": "porthos-steakhouse-pub-santa-marta",
+      "name": "Porthos Steakhouse & Pub",
+      "city": "Santa Marta",
+      "address": "Calle 19 #3-25, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "A lively steakhouse and pub in Santa Marta’s historic center, serving steaks, burgers, BBQ ribs, cocktails, and beer in a warm, welcoming atmosphere.",
+      "cuisine": "Steakhouse, pub, Colombian",
+      "rating": 4.8,
+      "ratingSource": "Tripadvisor (checked October 2026)",
+      "priceRange": "$$–$$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://www.porthos.com.co/",
+      "photo": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=85",
+      "features": [
+        "Steaks and BBQ ribs",
+        "Burgers and cocktails",
+        "Historic center",
+        "Featured restaurant"
+      ],
+      "featured": true,
+      "verifiedOn": "2026-10-20"
+    },
+    {
       "id": "el-chato-bogota",
       "name": "El Chato",
       "city": "Bogotá",
