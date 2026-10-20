@@ -106,6 +106,15 @@ def main():
     city_source=json.loads(CITY_DATA.read_text(encoding="utf-8")) if CITY_DATA.exists() else d
     cs=city_source.get("cities",[])
     if not isinstance(hs,list) or not isinstance(cs,list): raise SystemExit("Expected hostels and cities arrays")
+
+    # Contact coverage counts are read-only; they never modify hostel records.
+    colombia_hostels = [h for h in hs if str(h.get("countryCode") or "").upper() == "CO"]
+    colombia_email_listings = [h for h in colombia_hostels if str(h.get("email") or "").strip()]
+    colombia_emails = set()
+    for h in colombia_email_listings:
+        raw_email = str(h.get("email") or "").strip()
+        for address in re.findall(r"[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9.-]+\\.[A-Z]{2,}", raw_email, re.I):
+            colombia_emails.add(address.strip(".,;:").casefold())
     hcountry,countrycity=Counter(),Counter()
     missing_name,missing_city,bad_h,unknown_h=[],[],[],[]
     ids,namedup,citydup=defaultdict(list),defaultdict(list),defaultdict(list)
@@ -156,6 +165,13 @@ def main():
         "- Total city-index records: **"+str(len(cs))+"**",
         "- City index source: **"+("data/cities.json (persistent)" if CITY_DATA.exists() else "legacy embedded list")+"**",
         "- No listing records were changed or deleted by this audit.","",
+        "## Colombia email coverage","",
+        "- Colombian hostel listings: **"+str(len(colombia_hostels))+"**",
+        "- Colombian listings with a non-empty email field: **"+str(len(colombia_email_listings))+"**",
+        "- Colombian listings without an email field: **"+str(len(colombia_hostels)-len(colombia_email_listings))+"**",
+        "- Distinct email addresses found in Colombian listings: **"+str(len(colombia_emails))+"**",
+        "- Counts are based on the current dataset; email addresses are counted case-insensitively and hostel records are not changed.",
+        "",
         "## Coverage by approved country","","### Hostels",
         mdtable(["Code","Country","Records"],[(k,v,hcountry.get(k,0)) for k,v in APPROVED.items()]),
         "","### City index",
