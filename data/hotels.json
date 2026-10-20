@@ -713,6 +713,42 @@
       ],
       "website": "https://www.expedia.com/Santa-Marta-Hotels-Hotel-Suite-Boutique-El-Cactus.h21510496.Hotel-Information",
       "membershipTier": "bronze"
+    },
+    {
+      "id": "hotel-boutique-casa-carolina-santa-marta",
+      "name": "Hotel Boutique Casa Carolina",
+      "city": "Santa Marta",
+      "address": "Calle 12 #3-40, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "Family-owned boutique hotel in a restored colonial house, with pools, jacuzzis, rooftop terraces, spa and on-site dining.",
+      "amenities": [
+        "Independent boutique",
+        "Historic center",
+        "Pools and jacuzzis",
+        "Rooftop terrace",
+        "Spa"
+      ],
+      "website": "https://www.hotelcasacarolina.com/en/",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "membershipTier": "bronze"
+    },
+    {
+      "id": "la-casa-del-patio-hotel-boutique-santa-marta",
+      "name": "La Casa del Patio Hotel Boutique by Xarm Hotels",
+      "city": "Santa Marta",
+      "address": "Calle 21 #3-47, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "Boutique hotel in the historic center with an outdoor pool, breakfast, individually furnished rooms and spa services.",
+      "amenities": [
+        "Boutique",
+        "Historic center",
+        "Outdoor pool",
+        "Breakfast",
+        "Spa services"
+      ],
+      "website": "https://www.expedia.com/Santa-Marta-Hotels-La-Casa-Del-Patio-Hotel-Boutique-By-Xarm-Hotels.h9600450.Hotel-Information",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "membershipTier": "bronze"
     }
   ]
 }
