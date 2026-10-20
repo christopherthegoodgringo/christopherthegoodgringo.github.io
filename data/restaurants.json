@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-19",
-  "scope": "Independent restaurants in the same 18 Latin American countries as the hotel and hostel directories. Initial curated listings rated 4.5+ based on publicly surfaced 2026 sources; ratings can change and should be rechecked. 5-star tier uses 4.8+ out of 5.",
+  "scope": "Independent restaurants in the same 18 Latin American countries as the hotel and hostel directories. Initial curated listings use publicly surfaced 2026 ratings; ratings can change and should be rechecked. Standard filter is 4.0+; top-rated filter is 4.8+ out of 5.",
   "countries": [
     {
       "code": "BZ",
@@ -187,6 +187,118 @@
       "features": [
         "Fine dining",
         "Reservations recommended"
+      ],
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "basilico-san-salvador",
+      "name": "Basílico",
+      "city": "San Salvador",
+      "address": "San Salvador, El Salvador",
+      "description": "Highly rated independent restaurant serving contemporary dining in the capital.",
+      "cuisine": "Contemporary, international",
+      "rating": 4.9,
+      "ratingSource": "EatOutMap (2026 search result)",
+      "priceRange": "$$$",
+      "countryCode": "SV",
+      "countryName": "El Salvador",
+      "website": "https://www.google.com/maps/search/?api=1&query=Basilico+restaurant+San+Salvador+El+Salvador",
+      "features": [
+        "Contemporary dining"
+      ],
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "bocanariz-santiago",
+      "name": "Bocanariz",
+      "city": "Santiago",
+      "address": "Santiago, Chile",
+      "description": "Popular independent wine bar and restaurant known for pairing Chilean wines with food.",
+      "cuisine": "Wine bar, Mediterranean",
+      "rating": 4.5,
+      "ratingSource": "Tripadvisor (October 2026 search result)",
+      "priceRange": "$$$",
+      "countryCode": "CL",
+      "countryName": "Chile",
+      "website": "https://www.google.com/maps/search/?api=1&query=Bocanariz+Santiago+Chile",
+      "features": [
+        "Wine pairing",
+        "Central location"
+      ],
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "che-cha-lima",
+      "name": "CHÉ CHÁ Food & Bar",
+      "city": "Lima",
+      "address": "Lima, Peru",
+      "description": "Well-reviewed independent restaurant and bar with a contemporary Peruvian menu.",
+      "cuisine": "Peruvian, Latin",
+      "rating": 4.9,
+      "ratingSource": "Tripadvisor (2026 search result)",
+      "priceRange": "$$$",
+      "countryCode": "PE",
+      "countryName": "Peru",
+      "website": "https://www.google.com/maps/search/?api=1&query=CHE+CHA+Food+Bar+Lima+Peru",
+      "features": [
+        "Contemporary menu",
+        "Bar"
+      ],
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "primuseum-montevideo",
+      "name": "Restaurant Primuseum",
+      "city": "Montevideo",
+      "address": "Montevideo, Uruguay",
+      "description": "Dinner destination combining Latin and international cooking with a tango experience.",
+      "cuisine": "Latin, international",
+      "rating": 4.8,
+      "ratingSource": "Tripadvisor (2026 search result)",
+      "priceRange": "$$$$",
+      "countryCode": "UY",
+      "countryName": "Uruguay",
+      "website": "https://www.google.com/maps/search/?api=1&query=Restaurant+Primuseum+Montevideo+Uruguay",
+      "features": [
+        "Special occasion",
+        "Tango experience"
+      ],
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "adastra-havana",
+      "name": "Adastra Restaurant's",
+      "city": "Havana",
+      "address": "Havana, Cuba",
+      "description": "Highly rated independent restaurant with Caribbean and Latin dishes.",
+      "cuisine": "Caribbean, Latin",
+      "rating": 4.9,
+      "ratingSource": "Tripadvisor (2026 search result)",
+      "priceRange": "$$$",
+      "countryCode": "CU",
+      "countryName": "Cuba",
+      "website": "https://www.google.com/maps/search/?api=1&query=Adastra+Restaurants+Havana+Cuba",
+      "features": [
+        "Caribbean cuisine"
+      ],
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "panchita-lima",
+      "name": "Panchita",
+      "city": "Lima",
+      "address": "Lima, Peru",
+      "description": "Popular Peruvian restaurant focused on local flavors and grilled dishes.",
+      "cuisine": "Peruvian, grill",
+      "rating": 4.5,
+      "ratingSource": "Tripadvisor (2026 search result)",
+      "priceRange": "$$$",
+      "countryCode": "PE",
+      "countryName": "Peru",
+      "website": "https://www.google.com/maps/search/?api=1&query=Panchita+restaurant+Lima+Peru",
+      "features": [
+        "Peruvian cuisine",
+        "Grill"
       ],
       "verifiedOn": "2026-10-19"
     }
