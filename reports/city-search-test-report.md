@@ -10,7 +10,7 @@
 | Check | Result | Details |
 |---|---|---|
 | Clean hostel database loads | PASS | 10,904 records |
-| All 18 approved countries are available in the selector | FAIL | 18 approved country codes configured |
+| All 18 approved countries are available in the selector | PASS | 18 approved country codes configured |
 | No records outside the approved 18-country scope | PASS | 0 out-of-scope records |
 | Clean records have names and valid coordinates | PASS | 0 invalid records |
 | No exact normalized name/city duplicates remain | PASS | 0 duplicate groups |
@@ -44,4 +44,4 @@
 | SV | 84 |
 | UY | 120 |
 
-**Overall status: FAIL**
+**Overall status: PASS**
