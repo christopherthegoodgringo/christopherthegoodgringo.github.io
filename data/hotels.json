@@ -1,6 +1,120 @@
 {
   "country": "CO",
   "countryName": "Colombia",
-  "updatedAt": "2026-10-19",
-  "hotels": []
+  "updatedAt": "2026-10-20",
+  "hotels": [
+    {
+      "id": "click-clack-bogota",
+      "name": "The Click Clack Hotel Bogotá",
+      "city": "Bogotá",
+      "address": "Carrera 11 #93-77, Bogotá",
+      "description": "Design-forward hotel near Parque de la 93, with dining and a rooftop bar.",
+      "amenities": [
+        "Design hotel",
+        "Restaurant",
+        "Rooftop bar"
+      ],
+      "website": "https://www.clickclackhotel.com/en/"
+    },
+    {
+      "id": "click-clack-medellin",
+      "name": "The Click Clack Hotel Medellín",
+      "city": "Medellín",
+      "address": "Carrera 37 #10A-29, Medellín",
+      "description": "Contemporary design hotel in Provenza, surrounded by restaurants and city life.",
+      "amenities": [
+        "Design hotel",
+        "Restaurant",
+        "Provenza"
+      ],
+      "website": "https://www.clickclackhotel.com/en/"
+    },
+    {
+      "id": "berthas-collection",
+      "name": "Bertha's Collection",
+      "city": "Cartagena",
+      "address": "Carrera 3 #4-23, Bocagrande, Cartagena",
+      "description": "Boutique hotel in Bocagrande, steps from the Caribbean Sea.",
+      "amenities": [
+        "Boutique",
+        "Near beach",
+        "Direct booking"
+      ],
+      "website": "https://www.berthascollection.com/"
+    },
+    {
+      "id": "santa-alejandria-cartagena",
+      "name": "Santa Alejandría Hotel — Cartagena",
+      "city": "Cartagena",
+      "description": "Boutique stay in Cartagena's historic walled city, combining colonial architecture with contemporary comfort.",
+      "amenities": [
+        "Boutique",
+        "Historic center"
+      ],
+      "website": "https://www.santalejandriahotels.com/?lang=en"
+    },
+    {
+      "id": "santa-alejandria-medellin",
+      "name": "Santa Alejandría Hotel — Medellín",
+      "city": "Medellín",
+      "description": "Boutique hotel in Medellín with a personalized, design-led hospitality experience.",
+      "amenities": [
+        "Boutique",
+        "Design hotel"
+      ],
+      "website": "https://www.santalejandriahotels.com/?lang=en"
+    },
+    {
+      "id": "madisson-cartagena",
+      "name": "Madisson Boutique Hotel",
+      "city": "Cartagena",
+      "address": "Carrera 2 #7-135, Cartagena",
+      "description": "Boutique hotel near Bocagrande beach, with a pool, terrace, and on-site restaurant.",
+      "amenities": [
+        "Boutique",
+        "Pool",
+        "Restaurant"
+      ],
+      "website": "https://www.madissonboutiquehotel.com/en/"
+    },
+    {
+      "id": "ananda-cartagena",
+      "name": "Anandá Hotel Boutique",
+      "city": "Cartagena",
+      "address": "Calle del Cuartel #36-77, Cartagena",
+      "description": "Boutique hotel in a restored colonial house in Cartagena's historic center.",
+      "amenities": [
+        "Boutique",
+        "Historic center",
+        "Pool"
+      ],
+      "website": "https://www.anandahotelboutique.com/"
+    },
+    {
+      "id": "sophia-cartagena",
+      "name": "Sophia Hotel Boutique",
+      "city": "Cartagena",
+      "address": "Calle 32 #4-45, Plaza de la Aduana, Cartagena",
+      "description": "Boutique hotel in Cartagena's walled city, close to plazas, museums, and historic landmarks.",
+      "amenities": [
+        "Boutique",
+        "Historic center",
+        "Rooftop"
+      ],
+      "website": "https://www.sophiahotel.com.co/es/"
+    },
+    {
+      "id": "casa-santiago-botero",
+      "name": "Casa Santiago Botero",
+      "city": "Cartagena",
+      "address": "Calle Santo Domingo #3-72, Cartagena",
+      "description": "Small historic boutique hotel with original Colombian art in the heart of the walled city.",
+      "amenities": [
+        "Boutique",
+        "Art",
+        "Historic center"
+      ],
+      "website": "https://casasantiagobotero.com/en/"
+    }
+  ]
 }
