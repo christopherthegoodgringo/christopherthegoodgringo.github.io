@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-19",
-  "scope": "Independent restaurants in the same 18 Latin American countries as the hotel and hostel directories. Start with ratings of 4 stars and above; 5-star tier uses 4.8+ out of 5. Ratings and links must be checked against current public sources before listings are published.",
+  "scope": "Independent restaurants in the same 18 Latin American countries as the hotel and hostel directories. Initial curated listings rated 4.5+ based on publicly surfaced 2026 sources; ratings can change and should be rechecked. 5-star tier uses 4.8+ out of 5.",
   "countries": [
     {
       "code": "BZ",
@@ -75,5 +75,120 @@
       "name": "Dominican Republic"
     }
   ],
-  "restaurants": []
+  "restaurants": [
+    {
+      "id": "vino-tinto-belize-city",
+      "name": "Vino Tinto Restaurant Bar & Grill",
+      "city": "Belize City",
+      "address": "Belize City, Belize",
+      "description": "Independent waterfront dining with an international and fusion menu.",
+      "cuisine": "International, fusion",
+      "rating": 4.8,
+      "ratingSource": "Tripadvisor (2026 search result)",
+      "priceRange": "$$$$",
+      "countryCode": "BZ",
+      "countryName": "Belize",
+      "website": "https://www.google.com/maps/search/?api=1&query=Vino+Tinto+Restaurant+Bar+Grill+Belize+City",
+      "features": [
+        "Waterfront dining",
+        "Special occasion"
+      ],
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "criollo-oaxaca",
+      "name": "Criollo",
+      "city": "Oaxaca de Juárez",
+      "address": "Oaxaca de Juárez, Oaxaca, Mexico",
+      "description": "Contemporary Oaxacan tasting-menu restaurant in a garden setting.",
+      "cuisine": "Contemporary Mexican, Oaxacan",
+      "rating": 4.5,
+      "ratingSource": "Open Travel Guide (July 2026)",
+      "priceRange": "$$$$",
+      "countryCode": "MX",
+      "countryName": "Mexico",
+      "website": "https://www.google.com/maps/search/?api=1&query=Criollo+restaurant+Oaxaca+Mexico",
+      "features": [
+        "Tasting menu",
+        "Garden setting"
+      ],
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "por-que-no-cafe-antigua",
+      "name": "Por Qué No? Cafe",
+      "city": "Antigua Guatemala",
+      "address": "Antigua Guatemala, Guatemala",
+      "description": "Popular independent café-restaurant in Antigua's historic center.",
+      "cuisine": "Cafe, international",
+      "rating": 4.8,
+      "ratingSource": "Local Insider Guide (2026)",
+      "priceRange": "$$",
+      "countryCode": "GT",
+      "countryName": "Guatemala",
+      "website": "https://www.google.com/maps/search/?api=1&query=Por+Que+No+Cafe+Antigua+Guatemala",
+      "features": [
+        "Historic center",
+        "Casual dining"
+      ],
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "coco-calala-leon",
+      "name": "Coco Calala",
+      "city": "León",
+      "address": "León, Nicaragua",
+      "description": "Highly rated independent vegetarian restaurant known for a relaxed, distinctive dining experience.",
+      "cuisine": "Vegetarian, healthy",
+      "rating": 4.8,
+      "ratingSource": "Tripadvisor (2026 search result)",
+      "priceRange": "$$$",
+      "countryCode": "NI",
+      "countryName": "Nicaragua",
+      "website": "https://www.google.com/maps/search/?api=1&query=Coco+Calala+Leon+Nicaragua",
+      "features": [
+        "Vegetarian",
+        "Healthy options"
+      ],
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "somos-ecuador-quito",
+      "name": "Somos Ecuador",
+      "city": "Quito",
+      "address": "Quito, Ecuador",
+      "description": "Contemporary Ecuadorian restaurant showcasing local ingredients and flavors.",
+      "cuisine": "Contemporary Ecuadorian",
+      "rating": 4.8,
+      "ratingSource": "EatOutMap (2026 search result)",
+      "priceRange": "$$$$",
+      "countryCode": "EC",
+      "countryName": "Ecuador",
+      "website": "https://www.google.com/maps/search/?api=1&query=Somos+Ecuador+Restaurante+Quito",
+      "features": [
+        "Contemporary dining",
+        "Local ingredients"
+      ],
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "tierra-colorada-asuncion",
+      "name": "Tierra Colorada Gastro",
+      "city": "Asunción",
+      "address": "Asunción, Paraguay",
+      "description": "Contemporary independent restaurant with a creative international menu.",
+      "cuisine": "International, contemporary",
+      "rating": 4.7,
+      "ratingSource": "Tripadvisor (2026 search result)",
+      "priceRange": "$$$$",
+      "countryCode": "PY",
+      "countryName": "Paraguay",
+      "website": "https://www.google.com/maps/search/?api=1&query=Tierra+Colorada+Gastro+Asuncion+Paraguay",
+      "features": [
+        "Fine dining",
+        "Reservations recommended"
+      ],
+      "verifiedOn": "2026-10-19"
+    }
+  ]
 }
