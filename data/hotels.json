@@ -115,6 +115,44 @@
         "Historic center"
       ],
       "website": "https://casasantiagobotero.com/en/"
+    },
+    {
+      "id": "casa-de-leda-santa-marta",
+      "name": "Casa de Leda, a Kali Hotel",
+      "city": "Santa Marta",
+      "address": "Calle 18 #4-38, Centro Histórico, Santa Marta",
+      "description": "Historic boutique hotel with a rooftop pool, spa, and views over the old city.",
+      "amenities": [
+        "Boutique",
+        "Rooftop pool",
+        "Spa"
+      ],
+      "website": "https://kalihotels.com/en/casa-leda/"
+    },
+    {
+      "id": "hotel-boutique-san-antonio-cali",
+      "name": "Hotel Boutique San Antonio",
+      "city": "Cali",
+      "address": "Carrera 6 #2-51, Cali",
+      "description": "Colonial-style boutique hotel in Cali's San Antonio neighborhood, with breakfast and a solarium terrace.",
+      "amenities": [
+        "Boutique",
+        "Breakfast",
+        "Terrace",
+        "Wi-Fi"
+      ],
+      "website": "https://en.hotelboutiquesanantonio.com/"
+    },
+    {
+      "id": "san-luis-beach-house",
+      "name": "Hotel San Luis Beach House",
+      "city": "San Andrés",
+      "description": "Island hotel with a relaxed beach-house atmosphere and direct booking through its official site.",
+      "amenities": [
+        "Island stay",
+        "Near beach"
+      ],
+      "website": "https://www.hotelsanluis.com.co/en/"
     }
   ]
 }
