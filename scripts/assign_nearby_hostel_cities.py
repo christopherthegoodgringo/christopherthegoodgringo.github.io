@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fill blank hostel city fields only when the nearest same-country city is <= 5 km."""
+"""Fill remaining blank hostel city fields with the nearest same-country city."""
 import json
 import math
 from pathlib import Path
@@ -9,7 +9,6 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 HOSTELS_PATH = ROOT / "data" / "hostels.json"
 CITIES_PATH = ROOT / "data" / "cities.json"
-MAX_DISTANCE_KM = 5.0
 EARTH_RADIUS_KM = 6371.0088
 
 with HOSTELS_PATH.open(encoding="utf-8") as f:
@@ -46,16 +45,15 @@ for hostel in hostels:
         continue
     distances, indices = trees[cc].query(np.radians([[lat, lon]]), k=1)
     distance_km = float(distances[0][0]) * EARTH_RADIUS_KM
-    if distance_km <= MAX_DISTANCE_KM:
-        candidate = cities_by_country[cc][int(indices[0][0])]
-        hostel["city"] = candidate["name"]
-        changed += 1
+    candidate = cities_by_country[cc][int(indices[0][0])]
+    hostel["city"] = candidate["name"]
+    changed += 1
 
 print(f"Filled blank city fields: {changed}")
 print(f"Hostel records preserved: {len(hostels)}")
-if changed != 8112:
+if changed != 1127:
     raise SystemExit(
-        f"Safety stop: expected 8112 assignments based on the reviewed correction file, got {changed}. "
+        f"Safety stop: expected 1127 remaining blank-city assignments, got {changed}. "
         "No database change will be committed."
     )
 
