@@ -30,6 +30,8 @@ html:not([lang="es"]) [data-l="es"]{display:none!important}
 @media(max-width:820px){.site-header .site-header-inner{align-items:center!important;flex-direction:column!important;gap:8px!important}.site-header .site-header-nav{width:100%!important;justify-content:flex-start!important;}}
 
 .whatsapp-button{gap:9px;margin-top:10px;font:800 .98rem var(--body)!important}.whatsapp-button .whatsapp-logo{width:23px;height:23px;flex:0 0 23px;color:currentColor}
+/* data-l-language-rules */
+html[lang="es"] [data-l="en"]{display:none!important}html:not([lang="es"]) [data-l="es"]{display:none!important}
 </style>
 
 <style id="sitewide-header-consistency">
@@ -68,5 +70,6 @@ html:not([lang="es"]) [data-l="es"]{display:none!important}
 <a href="/privacy-policy.html"><span data-l="en">Privacy Policy</span><span data-l="es">Política de privacidad</span></a>
 <a href="/terms-of-use.html"><span data-l="en">Terms of Use</span><span data-l="es">Términos de uso</span></a>
 </nav></div></footer>
+<script id="site-language-persistence">(()=>{const p=new URLSearchParams(location.search);let lang=p.get('lang');try{if(lang!=='es'&&lang!=='en')lang=localStorage.getItem('gg-lang')||'en';if(lang!=='es'&&lang!=='en')lang='en';localStorage.setItem('gg-lang',lang)}catch(e){if(lang!=='es'&&lang!=='en')lang='en'}document.documentElement.lang=lang;})();</script>
 </body>
 </html>
