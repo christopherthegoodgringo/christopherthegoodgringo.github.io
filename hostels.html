@@ -350,7 +350,7 @@ function render(){
   h.append(planMark,document.createTextNode(x.name));card.append(h);
   if(!x.isTest&&(plan==='featured'||plan==='premium')){
    const ribbon=document.createElement('p');ribbon.className='plan-ribbon';
-   ribbon.textContent=plan==='premium'?'PREMIUM':(document.documentElement.lang==='es'?'✦ FICHA DESTACADA':'✦ FEATURED LISTING');
+   ribbon.textContent=plan==='premium'?'PREMIUM':(document.documentElement.lang==='es'?'✦ DESTACADO':'✦ FEATURED');
    card.append(ribbon);
   }
   if(x.isTest){
