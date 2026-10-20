@@ -155,6 +155,86 @@
         "Reservation-worthy"
       ],
       "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "alquimico-cartagena",
+      "name": "Alquímico",
+      "city": "Cartagena",
+      "countryName": "Colombia",
+      "countryCode": "CO",
+      "address": "Calle del Colegio #34-24, Historic Center, Cartagena, Colombia",
+      "description": "Multi-level cocktail bar in a historic mansion, known for inventive drinks using Colombian ingredients and a rooftop atmosphere.",
+      "drinks": "Craft cocktails, Colombian ingredients",
+      "rating": 4.1,
+      "ratingSource": "Current business listing rating; checked 2026-10-20",
+      "priceRange": "$$–$$$",
+      "website": "https://alquimico.com/en/about-us/",
+      "features": [
+        "Craft cocktails",
+        "Historic mansion",
+        "Rooftop"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "chipe-libre-santiago",
+      "name": "Chipe Libre – República Independiente del Pisco",
+      "city": "Santiago",
+      "countryName": "Chile",
+      "countryCode": "CL",
+      "address": "José Victorino Lastarria 282, Santiago, Chile",
+      "description": "Pisco-focused bar and restaurant featuring Chilean and Peruvian pisco, tasting flights, and signature cocktails.",
+      "drinks": "Pisco, pisco sours, craft cocktails",
+      "rating": 4.6,
+      "ratingSource": "Current business listing rating; checked 2026-10-20",
+      "priceRange": "$$–$$$",
+      "website": "https://www.chipe-libre.cl/en",
+      "features": [
+        "Pisco specialist",
+        "Tasting flights",
+        "Lastarria neighborhood"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "diesel-nacional-la-paz",
+      "name": "Diesel Nacional",
+      "city": "La Paz",
+      "countryName": "Bolivia",
+      "countryCode": "BO",
+      "address": "Av. 20 de Octubre #2271, La Paz, Bolivia",
+      "description": "Long-running pub with an industrial, machinery-inspired interior, cocktails, beer, music, and a late-night atmosphere.",
+      "drinks": "Cocktails, beer, spirits",
+      "rating": 4.2,
+      "ratingSource": "Current business listing rating; checked 2026-10-20",
+      "priceRange": "$$–$$$",
+      "website": "https://dieselnacional.pub/",
+      "features": [
+        "Distinctive industrial design",
+        "Cocktails",
+        "Live music/nightlife"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "baar-fun-fun-montevideo",
+      "name": "Baar Fun Fun",
+      "city": "Montevideo",
+      "countryName": "Uruguay",
+      "countryCode": "UY",
+      "address": "Ciudadela 1229, Ciudad Vieja, Montevideo, Uruguay",
+      "description": "Historic bar founded in 1895, known for live tango performances, classic local drinks, and a traditional Montevideo atmosphere.",
+      "drinks": "Classic cocktails, wine, beer, uvita",
+      "rating": 4.5,
+      "ratingSource": "Google review aggregation reported by Top-Rated.Online and Wanderlog; checked 2026-10-20",
+      "priceRange": "$$–$$$",
+      "website": "https://barfunfun.com/",
+      "features": [
+        "Historic bar",
+        "Live tango",
+        "Local culture"
+      ],
+      "verifiedOn": "2026-10-20"
     }
   ]
 }
