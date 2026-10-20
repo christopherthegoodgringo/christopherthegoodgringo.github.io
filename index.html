@@ -139,8 +139,8 @@ Promise.all([fetch('/data/hostels-clean.json').then(r=>{if(!r.ok)throw Error('Ho
  let language=(new URLSearchParams(location.search).get('lang')||(()=>{try{return localStorage.getItem('gg-lang')||'en'}catch(e){return 'en'}})()); if(language!=='es')language='en';
  let step=1;
  const text={
- en:{title1:'Choose your language',copy1:'How would you like to explore?',title2:'Where would you like to stay?',copy2:'Choose the kind of place you want to find in Colombia.',hotels:'Hotels',hotelsSmall:'Explore boutique and independent hotels',hostels:'Hostels',hostelsSmall:'Find hostels across Latin America',restaurants:'Restaurants',restaurantsSmall:'Discover highly rated independent restaurants',back:'Back',step:'STEP'},
- es:{title1:'Elige tu idioma',copy1:'¿En qué idioma quieres explorar?',title2:'¿Dónde te gustaría alojarte?',copy2:'Elige el tipo de alojamiento que buscas en Colombia.',hotels:'Hoteles',hotelsSmall:'Explora hoteles boutique e independientes',hostels:'Hostales',hostelsSmall:'Encuentra hostales en América Latina',restaurants:'Restaurantes',restaurantsSmall:'Descubre restaurantes independientes muy bien valorados',back:'Volver',step:'PASO'}
+ en:{title1:'Choose your language',copy1:'How would you like to explore?',title2:'Where would you like to stay?',copy2:'Choose the kind of place you want to find in Colombia.',hotels:'Hotels',hotelsSmall:'Explore boutique and independent hotels',hostels:'Hostels',hostelsSmall:'Find hostels across Latin America',restaurants:'Restaurants',restaurantsSmall:'Discover highly rated independent restaurants',bars:'Bars',barsSmall:'Discover independent bars with great atmosphere',back:'Back',step:'STEP'},
+ es:{title1:'Elige tu idioma',copy1:'¿En qué idioma quieres explorar?',title2:'¿Dónde te gustaría alojarte?',copy2:'Elige el tipo de alojamiento que buscas en Colombia.',hotels:'Hoteles',hotelsSmall:'Explora hoteles boutique e independientes',hostels:'Hostales',hostelsSmall:'Encuentra hostales en América Latina',restaurants:'Restaurantes',restaurantsSmall:'Descubre restaurantes independientes muy bien valorados',bars:'Bares',barsSmall:'Descubre bares independientes y con estilo',back:'Volver',step:'PASO'}
  };
  function render(){
   const w=text[language];document.documentElement.lang=language;
@@ -148,7 +148,7 @@ Promise.all([fetch('/data/hostels-clean.json').then(r=>{if(!r.ok)throw Error('Ho
   title.textContent=step===1?w.title1:w.title2;copy.textContent=step===1?w.copy1:w.copy2;
   back.hidden=step===1;back.textContent=w.back;
   if(step===1) choices.innerHTML='<button class="welcome-choice" data-welcome-lang="en">English<small>Continue in English</small></button><button class="welcome-choice" data-welcome-lang="es">Español<small>Continuar en español</small></button>';
-  else choices.innerHTML='<button class="welcome-choice" id="welcomeHotels">'+w.hotels+'<small>'+w.hotelsSmall+'</small></button><button class="welcome-choice" id="welcomeHostels">'+w.hostels+'<small>'+w.hostelsSmall+'</small></button><button class="welcome-choice" id="welcomeRestaurants">'+w.restaurants+'<small>'+w.restaurantsSmall+'</small></button>';
+  else choices.innerHTML='<button class="welcome-choice" id="welcomeHotels">'+w.hotels+'<small>'+w.hotelsSmall+'</small></button><button class="welcome-choice" id="welcomeHostels">'+w.hostels+'<small>'+w.hostelsSmall+'</small></button><button class="welcome-choice" id="welcomeRestaurants">'+w.restaurants+'<small>'+w.restaurantsSmall+'</small></button><button class="welcome-choice" id="welcomeBars">'+w.bars+'<small>'+w.barsSmall+'</small></button>';
  }
  choices.addEventListener('click',e=>{
   const choice=e.target.closest('[data-welcome-lang]');
@@ -156,6 +156,7 @@ Promise.all([fetch('/data/hostels-clean.json').then(r=>{if(!r.ok)throw Error('Ho
   if(e.target.closest('#welcomeHotels')){try{localStorage.setItem('gg-lang',language)}catch(err){}location.href='/hotels.html?country=CO&lang='+encodeURIComponent(language);return}
   if(e.target.closest('#welcomeHostels')){try{localStorage.setItem('gg-lang',language)}catch(err){}overlay.hidden=true;const country=document.getElementById('countryFilter');if(country){country.value='CO';country.dispatchEvent(new Event('change'))}document.getElementById('searchTitle').scrollIntoView({behavior:'smooth',block:'start'});return}
    if(e.target.closest('#welcomeRestaurants')){try{localStorage.setItem('gg-lang',language)}catch(err){}location.href='/restaurants.html?lang='+encodeURIComponent(language);return}
+  if(e.target.closest('#welcomeBars')){try{localStorage.setItem('gg-lang',language)}catch(err){}location.href='/bars.html?lang='+encodeURIComponent(language);return}
  });
  back.addEventListener('click',()=>{step=1;render()});
  render();
