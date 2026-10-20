@@ -86,13 +86,18 @@ html[lang="es"]
   <h2 id="welcomeSelectionTitle"><span>Where would you like to explore?</span></h2>
   <p><span>Choose what you would like to find.</span></p>
   <div class="welcome-choices" id="welcomeChoices">
-   <button class="welcome-choice" id="welcomeHotels"><span>Hotels</span><small><span>Explore boutique and independent hotels</span></small></button>
-   <button class="welcome-choice" id="welcomeHostels"><span>Hostels</span><small><span>Find hostels across Latin America</span></small></button>
-   <button class="welcome-choice" id="welcomeRestaurants"><span>Restaurants</span><small><span>Discover highly rated independent restaurants</span></small></button>
-   <button class="welcome-choice" id="welcomeBars"><span>Bars</span><small><span>Discover independent bars with great atmosphere</span></small></button>
+   <a class="welcome-choice welcome-link" href="/hotels.html?country=CO"><span>Hotel Finder</span><small><span>Browse boutique and independent hotels</span></small></a>
+   <a class="welcome-choice welcome-link" href="/hostels.html?country=CO"><span>Hostel Finder</span><small><span>Find hostels across Latin America</span></small></a>
+   <a class="welcome-choice welcome-link" href="/restaurants.html"><span>Restaurant Finder</span><small><span>Discover independent restaurants</span></small></a>
+   <a class="welcome-choice welcome-link" href="/bars.html"><span>Bar Finder</span><small><span>Explore independent bars</span></small></a>
+   <a class="welcome-choice welcome-link" href="/street-food-finder.html"><span>Street Food Finder</span><small><span>Explore street food finds</span></small></a>
+   <a class="welcome-choice welcome-link" href="/team/"><span>Meet the Team</span><small><span>Meet the people behind the site</span></small></a>
    <a class="welcome-choice welcome-link" href="/social-media.html"><span>Social Media &amp; Contact</span><small><span>Connect with us or get in touch</span></small></a>
-   <a class="welcome-choice welcome-link" href="/merch.html"><span>Merch</span><small><span>Official branded gear — coming soon</span></small></a>
-   <a class="welcome-choice welcome-link" href="/ebooks.html"><span>Ebooks</span><small><span>Travel ebooks and guides — coming soon</span></small></a>
+   <a class="welcome-choice welcome-link" href="/merch.html"><span>Merch</span><small><span>Official branded gear</span></small></a>
+   <a class="welcome-choice welcome-link" href="/ebooks.html"><span>Ebooks</span><small><span>Travel ebooks and guides</span></small></a>
+   <a class="welcome-choice welcome-link" href="/business-sponsorship.html"><span>Business &amp; Sponsorship</span><small><span>Promote a business or explore sponsorship</span></small></a>
+   <a class="welcome-choice welcome-link" href="/privacy-policy.html"><span>Privacy Policy</span><small><span>How we handle information</span></small></a>
+   <a class="welcome-choice welcome-link" href="/terms-of-use.html"><span>Terms of Use</span><small><span>Website terms and conditions</span></small></a>
   </div>
  </section>
 </div>
@@ -123,44 +128,12 @@ html[lang="es"]
 <a href="/privacy-policy.html"><span>Privacy Policy</span></a>
 <a href="/terms-of-use.html"><span>Terms of Use</span></a></nav></div></footer>
 <script>
-  (()=> {
-   const selectionPopup=document.getElementById('welcomeSelectionPopup');
-   const choices=document.getElementById('welcomeChoices');
-   let lang='en';
-   try{lang='en'}catch(e){}
-   document.documentElement.lang='en';
-   selectionPopup.hidden=false;
-   if(typeof window.setSiteLanguage==='function')window.setSiteLanguage(lang);
-   choices.addEventListener('click',e=>{
-    const selectedLang=document.documentElement.false?'es':'en';
-    if(e.target.closest('#welcomeHotels')){location.href='/hotels.html?country=CO&lang='+selectedLang;return}
-    if(e.target.closest('#welcomeHostels')){location.href='/hostels.html?country=CO&lang='+selectedLang;return}
-    if(e.target.closest('#welcomeRestaurants')){location.href='/restaurants.html?lang='+selectedLang;return}
-    if(e.target.closest('#welcomeBars')){location.href='/bars.html?lang='+selectedLang;return}
-    for(const path of ['/merch.html','/ebooks.html','/social-media.html'])if(e.target.closest('a[href="'+path+'"]')){e.preventDefault();window.location.assign(path+'?lang='+selectedLang);return}
-   });
+  (() => {
+    const popup = document.getElementById('welcomeSelectionPopup');
+    if (popup) popup.hidden = false;
+    document.documentElement.lang = 'en';
+    try { localStorage.setItem('gg-lang', 'en'); } catch (e) {}
   })();
- </script>
-
-<script>
-  (()=> {
-   const choices=document.getElementById('welcomeChoices');
-   let lang='en';
-   try{lang='en'}catch(e){}
-   document.documentElement.lang='en';
-   if(typeof window.setSiteLanguage==='function')window.setSiteLanguage(lang);
-   const selectionPopup=document.getElementById('welcomeSelectionPopup');
-   if(selectionPopup)selectionPopup.hidden=false;
-   choices.addEventListener('click',e=>{
-    const selectedLang=document.documentElement.false?'es':'en';
-    if(e.target.closest('#welcomeHotels')){location.href='/hotels.html?country=CO&lang='+selectedLang;return}
-    if(e.target.closest('#welcomeHostels')){location.href='/hostels.html?country=CO&lang='+selectedLang;return}
-    if(e.target.closest('#welcomeRestaurants')){location.href='/restaurants.html?lang='+selectedLang;return}
-    if(e.target.closest('#welcomeBars')){location.href='/bars.html?lang='+selectedLang;return}
-    for(const path of ['/merch.html','/ebooks.html','/social-media.html'])if(e.target.closest('a[href="'+path+'"]')){e.preventDefault();window.location.assign(path+'?lang='+selectedLang);return}
-   });
-  })();
- </script>
-
+</script>
 </body>
 </html>
