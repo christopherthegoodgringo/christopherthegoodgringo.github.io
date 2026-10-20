@@ -379,25 +379,6 @@
       "verifiedOn": "2026-10-19"
     },
     {
-      "id": "tierra-restaurante-bogota",
-      "name": "Tierra Restaurante — Chapinero",
-      "city": "Bogotá",
-      "address": "Bogotá, Colombia",
-      "description": "Highly rated contemporary Latin restaurant known for creative fusion cooking.",
-      "cuisine": "Latin, contemporary fusion",
-      "rating": 4.9,
-      "ratingSource": "Tripadvisor (October 2026 search result)",
-      "priceRange": "$$$$",
-      "countryCode": "CO",
-      "countryName": "Colombia",
-      "website": "https://www.google.com/maps/search/?api=1&query=Tierra+Restaurante+Chapinero+Bogota",
-      "features": [
-        "Contemporary dining",
-        "Fusion cuisine"
-      ],
-      "verifiedOn": "2026-10-19"
-    },
-    {
       "id": "casa-vera-santo-domingo",
       "name": "Casa Vera",
       "city": "Santo Domingo",
@@ -434,6 +415,127 @@
         "Island dining"
       ],
       "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "el-chato-bogota",
+      "name": "El Chato",
+      "city": "Bogotá",
+      "address": "Calle 65 Bis #4-76, Chapinero, Bogotá, Colombia",
+      "description": "Contemporary Colombian dining by chef Álvaro Clavijo, showcasing regional ingredients and evolving menus.",
+      "cuisine": "Contemporary Colombian, Latin American",
+      "rating": 4,
+      "ratingSource": "Tripadvisor (2026 search result)",
+      "priceRange": "$$$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://www.elchato.co/",
+      "bookingUrl": "https://www.opentable.com/r/el-chato-bogota",
+      "features": [
+        "Contemporary Colombian cuisine",
+        "Tasting menu",
+        "Reservations"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "celele-cartagena",
+      "name": "Celele",
+      "city": "Cartagena",
+      "address": "Carrera 10C #29-200, Getsemaní, Cartagena, Colombia",
+      "description": "Contemporary Caribbean cuisine celebrating the biodiversity, ingredients, and culinary traditions of Colombia's Caribbean coast.",
+      "cuisine": "Caribbean, Colombian, contemporary",
+      "rating": 4.6,
+      "ratingSource": "Tripadvisor (2026 search result)",
+      "priceRange": "$$$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://celelerestaurante.com/",
+      "features": [
+        "Caribbean ingredients",
+        "Contemporary dining",
+        "Reservations"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "alambique-medellin",
+      "name": "Alambique",
+      "city": "Medellín",
+      "address": "Calle 10 #43A-30, El Poblado, Medellín, Colombia",
+      "description": "Distinctive Colombian restaurant and rooftop-style dining experience focused on local flavors.",
+      "cuisine": "Colombian, Latin American",
+      "rating": 4.3,
+      "ratingSource": "Tripadvisor (2026 search result)",
+      "priceRange": "$$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://www.alambiquemedellin.com/",
+      "features": [
+        "Colombian cuisine",
+        "Distinctive atmosphere",
+        "Vegetarian options"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "gabo-medellin",
+      "name": "Gabo",
+      "city": "Medellín",
+      "address": "Calle 12 #43E-25, Manila, El Poblado, Medellín, Colombia",
+      "description": "Contemporary Colombian restaurant interpreting local flavors through a creative, story-driven dining experience.",
+      "cuisine": "Contemporary Colombian",
+      "rating": 4.9,
+      "ratingSource": "Google rating displayed on official website (2026 search result)",
+      "priceRange": "$$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://gabo.com.co/",
+      "features": [
+        "Contemporary Colombian cuisine",
+        "Creative dining",
+        "Reservations"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "la-cabrera-bogota-cartagena",
+      "name": "La Cabrera",
+      "city": "Bogotá and Cartagena",
+      "address": "Multiple locations in Bogotá and Cartagena, Colombia",
+      "description": "Argentine-style parrilla known for premium cuts and a polished dining experience, with locations in Bogotá and Cartagena.",
+      "cuisine": "Argentine grill, steakhouse",
+      "rating": 4.8,
+      "ratingSource": "Google rating displayed on official website (2026 search result)",
+      "priceRange": "$$$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://la-cabrera.com/",
+      "features": [
+        "Argentine-style parrilla",
+        "Premium steaks",
+        "Multiple locations"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "arepamia-bogota",
+      "name": "Arepa Mía",
+      "city": "Bogotá",
+      "address": "Kennedy, Bogotá, Colombia",
+      "description": "Local eatery specializing in freshly prepared stuffed arepas and Colombian comfort food.",
+      "cuisine": "Colombian, casual dining",
+      "rating": 4.5,
+      "ratingSource": "Rating displayed on official website (2026 search result)",
+      "priceRange": "$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://www.arepamiaoficial.com/",
+      "features": [
+        "Freshly prepared arepas",
+        "Casual dining",
+        "Local specialty"
+      ],
+      "verifiedOn": "2026-10-20"
     }
   ]
 }
