@@ -15,12 +15,12 @@
 | Every city has valid numeric coordinates | PASS | 0 invalid records |
 | No city records outside approved countries | PASS | 0 outside-country records |
 | No duplicate normalized city names within a country | PASS | 0 duplicate groups |
-| All distinct city names supported by exact-first autocomplete logic | PASS | 46,538 distinct country-scoped names; exact matches prioritized before 12-result limit |
+| All distinct city names supported by exact-first autocomplete logic | FAIL | expected autocomplete filtering/sorting code missing |
 | Canonical Mexico City and Santa Marta records | PASS | both present once near expected coordinates |
-| Panama City fallback is wired into live search | PASS | expected fallback code found |
-| Mexico City aliases are wired into search | PASS | expected aliases found |
+| Panama City fallback is wired into live search | FAIL | fallback code missing |
+| Mexico City aliases are wired into search | FAIL | aliases missing |
 | Search loads persistent city index | FAIL | persistent index fetch missing |
-| Hostel results are limited by distance from selected city | PASS | 25 km coordinate filter found |
+| Hostel results are limited by distance from selected city | FAIL | distance filter missing |
 
 ## City-index coverage by country
 
@@ -44,5 +44,9 @@
 | PY | 932 | 91 |
 | SV | 671 | 87 |
 | UY | 339 | 121 |
+
+## Unsearchable city records (first 50)
+
+- search logic: missing exact-first substring filter (0 substring matches)
 
 **Overall status: FAIL**
