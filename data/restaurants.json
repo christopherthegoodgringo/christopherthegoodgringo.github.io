@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-19",
-  "scope": "Independent restaurants in the same 18 Latin American countries as the hotel and hostel directories. Initial curated listings use publicly surfaced 2026 ratings; ratings can change and should be rechecked. Standard filter is 4.0+; top-rated filter is 4.8+ out of 5.",
+  "scope": "Independent restaurants in all 18 Latin American countries. Initial curated listings use publicly surfaced 2026 ratings; ratings can change and should be rechecked. Standard filter is 4.0+; top-rated filter is 4.8+ out of 5.",
   "countries": [
     {
       "code": "BZ",
@@ -299,6 +299,139 @@
       "features": [
         "Peruvian cuisine",
         "Grill"
+      ],
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "amana-san-jose",
+      "name": "Amana",
+      "city": "San José",
+      "address": "Avenida 9, 125 m west of Fresh Market, Barrio Escalante, San José, Costa Rica",
+      "description": "Independent modern restaurant blending local ingredients with international techniques; chef's-table option available.",
+      "cuisine": "Contemporary, Costa Rican",
+      "rating": 4.8,
+      "ratingSource": "Tripadvisor listing (2026)",
+      "priceRange": "$$$",
+      "countryCode": "CR",
+      "countryName": "Costa Rica",
+      "website": "https://www.google.com/maps/search/?api=1&query=Amana+restaurant+San+Jose+Costa+Rica",
+      "features": [
+        "Local ingredients",
+        "Chef's table"
+      ],
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "concolon-panama-city",
+      "name": "Concolon Panamanian Street Food",
+      "city": "Panama City",
+      "address": "Panama City, Panama",
+      "description": "Highly rated local spot focused on Panamanian flavors and casual street-food-style dining.",
+      "cuisine": "Panamanian, Latin",
+      "rating": 4.9,
+      "ratingSource": "Tripadvisor (October 2026 search result)",
+      "priceRange": "$",
+      "countryCode": "PA",
+      "countryName": "Panama",
+      "website": "https://www.google.com/maps/search/?api=1&query=Concolon+Panamanian+Street+Food+Panama+City",
+      "features": [
+        "Local cuisine",
+        "Casual dining"
+      ],
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "fogon-asado-buenos-aires",
+      "name": "Fogón Asado",
+      "city": "Buenos Aires",
+      "address": "Buenos Aires, Argentina",
+      "description": "Popular independent Argentine asado experience built around open-fire cooking and a tasting format.",
+      "cuisine": "Argentine, barbecue",
+      "rating": 4.9,
+      "ratingSource": "Tripadvisor (October 2026 search result)",
+      "priceRange": "$$$$",
+      "countryCode": "AR",
+      "countryName": "Argentina",
+      "website": "https://www.google.com/maps/search/?api=1&query=Fogon+Asado+Buenos+Aires+Argentina",
+      "features": [
+        "Tasting menu",
+        "Open-fire cooking"
+      ],
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "la-rufina-la-paz",
+      "name": "La Rufina Bolivia",
+      "city": "La Paz",
+      "address": "Belisario Salinas 572, Sopocachi, La Paz, Bolivia",
+      "description": "Contemporary Bolivian restaurant highlighting local ingredients with a modern twist.",
+      "cuisine": "Bolivian, Latin, healthy",
+      "rating": 4.8,
+      "ratingSource": "Tripadvisor listing (2026)",
+      "priceRange": "$$$",
+      "countryCode": "BO",
+      "countryName": "Bolivia",
+      "website": "https://www.google.com/maps/search/?api=1&query=La+Rufina+Bolivia+La+Paz",
+      "features": [
+        "Local ingredients",
+        "Vegetarian-friendly"
+      ],
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "tierra-restaurante-bogota",
+      "name": "Tierra Restaurante — Chapinero",
+      "city": "Bogotá",
+      "address": "Bogotá, Colombia",
+      "description": "Highly rated contemporary Latin restaurant known for creative fusion cooking.",
+      "cuisine": "Latin, contemporary fusion",
+      "rating": 4.9,
+      "ratingSource": "Tripadvisor (October 2026 search result)",
+      "priceRange": "$$$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://www.google.com/maps/search/?api=1&query=Tierra+Restaurante+Chapinero+Bogota",
+      "features": [
+        "Contemporary dining",
+        "Fusion cuisine"
+      ],
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "casa-vera-santo-domingo",
+      "name": "Casa Vera",
+      "city": "Santo Domingo",
+      "address": "Santo Domingo, Dominican Republic",
+      "description": "Highly rated independent restaurant with Caribbean and Latin cuisine.",
+      "cuisine": "Caribbean, Latin",
+      "rating": 4.8,
+      "ratingSource": "Tripadvisor (October 2026 search result)",
+      "priceRange": "$$$",
+      "countryCode": "DO",
+      "countryName": "Dominican Republic",
+      "website": "https://www.google.com/maps/search/?api=1&query=Casa+Vera+restaurant+Santo+Domingo+Dominican+Republic",
+      "features": [
+        "Caribbean cuisine",
+        "Dinner"
+      ],
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "id": "ahari-by-arca-roatan",
+      "name": "Ahari By Arca",
+      "city": "Roatán",
+      "address": "Roatán, Bay Islands, Honduras",
+      "description": "Well-reviewed independent restaurant offering seafood and Caribbean-inspired dining.",
+      "cuisine": "Caribbean, seafood",
+      "rating": 4.8,
+      "ratingSource": "Tripadvisor (September 2026 search result)",
+      "priceRange": "$$$",
+      "countryCode": "HN",
+      "countryName": "Honduras",
+      "website": "https://www.google.com/maps/search/?api=1&query=Ahari+By+Arca+Roatan+Honduras",
+      "features": [
+        "Seafood",
+        "Island dining"
       ],
       "verifiedOn": "2026-10-19"
     }
