@@ -45,6 +45,8 @@ footer .legal-footer{margin-top:0!important;padding-top:0!important;border-top:0
 /* Language toggle: hide the inactive navigation and footer labels everywhere. */
 html[lang="es"] [data-l="en"]{display:none!important}
 html:not([lang="es"]) [data-l="es"]{display:none!important}
+/* data-l-language-rules */
+html[lang="es"] [data-l="en"]{display:none!important}html:not([lang="es"]) [data-l="es"]{display:none!important}
 </style>
 
 <style id="homepage-footer-text-match">
@@ -136,4 +138,5 @@ footer a,footer .wrap a{color:#f5bd3e!important;margin:0!important;text-decorati
 <a href="/privacy-policy.html"><span data-l="en">Privacy Policy</span><span data-l="es">Política de privacidad</span></a>
 <a href="/terms-of-use.html"><span data-l="en">Terms of Use</span><span data-l="es">Términos de uso</span></a></nav></div></footer>
 <script>document.documentElement.lang='en';</script>
+<script id="site-language-persistence">(()=>{const p=new URLSearchParams(location.search);let lang=p.get('lang');try{if(lang!=='es'&&lang!=='en')lang=localStorage.getItem('gg-lang')||'en';if(lang!=='es'&&lang!=='en')lang='en';localStorage.setItem('gg-lang',lang)}catch(e){if(lang!=='es'&&lang!=='en')lang='en'}document.documentElement.lang=lang;})();</script>
 </body></html>
