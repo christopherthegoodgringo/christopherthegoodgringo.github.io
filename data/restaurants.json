@@ -515,7 +515,8 @@
         "Premium steaks",
         "Multiple locations"
       ],
-      "verifiedOn": "2026-10-20"
+      "verifiedOn": "2026-10-20",
+      "bookingUrl": "https://www.opentable.com/r/la-cabrera-cartagena-parrilla-argentina-cartagena-de-indias"
     },
     {
       "id": "arepamia-bogota",
@@ -575,7 +576,8 @@
         "Caribbean ingredients",
         "Reservations"
       ],
-      "verifiedOn": "2026-10-20"
+      "verifiedOn": "2026-10-20",
+      "bookingUrl": "https://www.opentable.com/r/carmen-cartagena"
     },
     {
       "id": "juan-del-mar-cartagena",
