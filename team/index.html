@@ -56,6 +56,8 @@ footer{padding-top:20px!important;padding-bottom:20px!important;line-height:1.6!
 footer>.wrap{padding:0 16px!important;margin:0 auto!important;min-height:0!important;height:auto!important;line-height:1.6!important;gap:8px 18px!important;align-content:center!important}
 footer>.wrap>*{margin-top:0!important;margin-bottom:0!important;padding-top:0!important;padding-bottom:0!important;line-height:1.6!important}
 footer .legal-footer{margin-top:0!important;padding-top:0!important;border-top:0!important}
+/* data-l-language-rules */
+html[lang="es"] [data-l="en"]{display:none!important}html:not([lang="es"]) [data-l="es"]{display:none!important}
 </style>
 
 <style id="homepage-footer-text-match">
@@ -232,5 +234,6 @@ footer a,footer .wrap a{color:var(--gold,#f5bd3e)!important;margin:0!important;t
 })();
 </script>
 
+<script id="site-language-persistence">(()=>{const p=new URLSearchParams(location.search);let lang=p.get('lang');try{if(lang!=='es'&&lang!=='en')lang=localStorage.getItem('gg-lang')||'en';if(lang!=='es'&&lang!=='en')lang='en';localStorage.setItem('gg-lang',lang)}catch(e){if(lang!=='es'&&lang!=='en')lang='en'}document.documentElement.lang=lang;})();</script>
 </body>
 </html>
