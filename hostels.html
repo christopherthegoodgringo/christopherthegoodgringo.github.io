@@ -81,7 +81,8 @@ if(h.description){const p=document.createElement('p');p.textContent=h.descriptio
 const contacts=[h.phone,h.email].filter(Boolean);if(contacts.length){const p=document.createElement('p');p.textContent=contacts.join(' · ');card.appendChild(p)}
 const links=document.createElement('div');links.className='links';
 const booking=h.website&&/hostelworld\.com/i.test(h.website)?h.website:(h.bookingUrl&&/hostelworld\.com/i.test(h.bookingUrl)?h.bookingUrl:'');
-const bookingLink=makeLink(lang==='es'?'Ver en Hostelworld':'View on Hostelworld',booking);if(bookingLink)links.appendChild(bookingLink);
+const hostelworldSearch='https://www.hostelworld.com/pwa/wds/s?q='+encodeURIComponent([h.name,h.city,countryName(h.countryCode)].filter(Boolean).join(', '))+'&guests=2&page=1';
+const bookingLink=makeLink(booking?(lang==='es'?'Ver en Hostelworld':'View on Hostelworld'):(lang==='es'?'Buscar en Hostelworld':'Search on Hostelworld'),booking||hostelworldSearch);if(bookingLink)links.appendChild(bookingLink);
 
 
 if(links.children.length)card.appendChild(links);
