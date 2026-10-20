@@ -83,9 +83,18 @@ html[lang="es"] html[lang="es"] [data-l="en"]{display:none!important}html:not([l
  <section class="welcome-dialog">
   <img class="welcome-mark" src="/assets/cgg-logo.svg" alt="Christopher the Good Gringo">
   
-  <h2 id="welcomeTitle">Where would you like to explore?</h2>
-  <p id="welcomeCopy">Choose a finder to get started.</p>
-  <div class="welcome-choices" id="welcomeChoices"><button class="welcome-choice" id="welcomeHotels">Hotels<small>Explore boutique and independent hotels</small></button><button class="welcome-choice" id="welcomeHostels">Hostels<small>Find hostels across Latin America</small></button><button class="welcome-choice" id="welcomeRestaurants">Restaurants<small>Discover highly rated independent restaurants</small></button><button class="welcome-choice" id="welcomeBars">Bars<small>Discover independent bars with great atmosphere</small></button><a class="welcome-choice welcome-link" href="/social-media.html"><span data-l="en">Social Media &amp; Contact</span><span data-l="es">Redes sociales y contacto</span><small><span data-l="en">Connect with us or get in touch</span><span data-l="es">Conéctate con nosotros o escríbenos</span></small></a><a class="welcome-choice welcome-link" href="/merch.html"><span data-l="en">Merch</span><span data-l="es">Mercancía</span><small>Official branded gear — coming soon</small></a><a class="welcome-choice welcome-link" href="/ebooks.html"><span data-l="en">Ebooks</span><span data-l="es">Libros electrónicos</span><small>Travel ebooks and guides — coming soon</small></a></div>
+  <h2 id="welcomeTitle"><span data-l="en">Choose your language</span><span data-l="es">Elige tu idioma</span></h2>
+  <p id="welcomeCopy"><span data-l="en">Select English or Spanish to continue.</span><span data-l="es">Selecciona inglés o español para continuar.</span></p>
+  <div class="welcome-choices" id="welcomeLanguageChoices"><button class="welcome-choice" id="chooseEnglish">English<small>Continue in English</small></button><button class="welcome-choice" id="chooseSpanish">Español<small>Continuar en español</small></button></div>
+  <div class="welcome-choices" id="welcomeChoices" hidden>
+   <button class="welcome-choice" id="welcomeHotels"><span data-l="en">Hotels</span><span data-l="es">Hoteles</span><small><span data-l="en">Explore boutique and independent hotels</span><span data-l="es">Explora hoteles boutique e independientes</span></small></button>
+   <button class="welcome-choice" id="welcomeHostels"><span data-l="en">Hostels</span><span data-l="es">Hostales</span><small><span data-l="en">Find hostels across Latin America</span><span data-l="es">Encuentra hostales en Latinoamérica</span></small></button>
+   <button class="welcome-choice" id="welcomeRestaurants"><span data-l="en">Restaurants</span><span data-l="es">Restaurantes</span><small><span data-l="en">Discover highly rated independent restaurants</span><span data-l="es">Descubre restaurantes independientes bien valorados</span></small></button>
+   <button class="welcome-choice" id="welcomeBars"><span data-l="en">Bars</span><span data-l="es">Bares</span><small><span data-l="en">Discover independent bars with great atmosphere</span><span data-l="es">Descubre bares independientes con buen ambiente</span></small></button>
+   <a class="welcome-choice welcome-link" href="/social-media.html"><span data-l="en">Social Media &amp; Contact</span><span data-l="es">Redes sociales y contacto</span><small><span data-l="en">Connect with us or get in touch</span><span data-l="es">Conéctate con nosotros o escríbenos</span></small></a>
+   <a class="welcome-choice welcome-link" href="/merch.html"><span data-l="en">Merch</span><span data-l="es">Mercancía</span><small><span data-l="en">Official branded gear — coming soon</span><span data-l="es">Productos oficiales — próximamente</span></small></a>
+   <a class="welcome-choice welcome-link" href="/ebooks.html"><span data-l="en">Ebooks</span><span data-l="es">Libros electrónicos</span><small><span data-l="en">Travel ebooks and guides — coming soon</span><span data-l="es">Libros y guías de viaje — próximamente</span></small></a>
+  </div>
  </section>
 </div>
 
@@ -125,8 +134,9 @@ let hostels=[],paid=[],countries=[],shownLimit=48;const PAGE_SIZE=48;
 const countryNames=[['BZ','Belize'],['CU','Cuba'],['DO','Dominican Republic'],['SV','El Salvador'],['GT','Guatemala'],['HN','Honduras'],['MX','Mexico'],['NI','Nicaragua'],['CR','Costa Rica'],['PA','Panama'],['AR','Argentina'],['BO','Bolivia'],['CL','Chile'],['CO','Colombia'],['EC','Ecuador'],['PY','Paraguay'],['PE','Peru'],['UY','Uruguay']];
 const countryNamesEs={BZ:'Belice',CU:'Cuba',DO:'República Dominicana',SV:'El Salvador',GT:'Guatemala',HN:'Honduras',MX:'México',NI:'Nicaragua',CR:'Costa Rica',PA:'Panamá',AR:'Argentina',BO:'Bolivia',CL:'Chile',CO:'Colombia',EC:'Ecuador',PY:'Paraguay',PE:'Perú',UY:'Uruguay'};
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
-function setLanguage(next){lang=next;document.documentElement.lang=lang;const toggle=document.getElementById('languageToggle');toggle.classList.toggle('is-spanish',lang==='es');toggle.setAttribute('aria-pressed',lang==='es'?'true':'false');toggle.setAttribute('aria-label',lang==='en'?'Switch to Spanish':'Cambiar a inglés');try{localStorage.setItem('gg-lang',lang)}catch(e){}document.querySelectorAll('#languageToggle .toggle-label').forEach((el,i)=>el.classList.toggle('active',(i===0&&lang==='en')||(i===1&&lang==='es')));query.placeholder=query.dataset['placeholder'+(lang==='es'?'Es':'En')];renderCountryOptions();renderCityOptions();render();renderShortcuts()}
-document.getElementById('languageToggle').classList.toggle('is-spanish',lang==='es');document.getElementById('languageToggle').setAttribute('aria-pressed',lang==='es'?'true':'false');document.getElementById('languageToggle').setAttribute('aria-label',lang==='en'?'Switch to Spanish':'Cambiar a inglés');document.getElementById('languageToggle').addEventListener('click',()=>setLanguage(lang==='en'?'es':'en'));
+function setLanguage(next){lang=next;document.documentElement.lang=lang;const toggle=document.getElementById('languageToggle');if(toggle){toggle.classList.toggle('is-spanish',lang==='es');toggle.setAttribute('aria-pressed',lang==='es'?'true':'false');toggle.setAttribute('aria-label',lang==='en'?'Switch to Spanish':'Cambiar a inglés');toggle.querySelectorAll('.toggle-label').forEach((el,i)=>el.classList.toggle('active',(i===0&&lang==='en')||(i===1&&lang==='es')))}try{localStorage.setItem('gg-lang',lang)}catch(e){}query.placeholder=query.dataset['placeholder'+(lang==='es'?'Es':'En')];renderCountryOptions();renderCityOptions();render();renderShortcuts()}
+window.setSiteLanguage=setLanguage;
+const languageToggle=document.getElementById('languageToggle');if(languageToggle){languageToggle.classList.toggle('is-spanish',lang==='es');languageToggle.setAttribute('aria-pressed',lang==='es'?'true':'false');languageToggle.setAttribute('aria-label',lang==='en'?'Switch to Spanish':'Cambiar a inglés');languageToggle.addEventListener('click',()=>setLanguage(lang==='en'?'es':'en'));}
 function countryName(code){const c=countryNames.find(x=>x[0]===code);return c?(lang==='es'?(countryNamesEs[code]||c[1]):c[1]):(code||'')}
 function renderCountryOptions(){const selected=countryFilter.value||params.get('country')||'CO';countryFilter.innerHTML='';const all=document.createElement('option');all.value='';all.textContent=lang==='es'?'Todos los países':'All countries';countryFilter.appendChild(all);[...countries].sort((a,b)=>(lang==='es'?(countryNamesEs[a.code]||a.name):a.name).localeCompare(lang==='es'?(countryNamesEs[b.code]||b.name):b.name,lang==='es'?'es':'en')).forEach(c=>{const o=document.createElement('option');o.value=c.code;o.textContent=lang==='es'?(countryNamesEs[c.code]||c.name):c.name;countryFilter.appendChild(o)});countryFilter.value=countries.some(c=>c.code===selected)?selected:''}
 function renderCityOptions(){const selected=cityFilter.value,code=countryFilter.value;const list=[...new Set(hostels.concat(paid).filter(h=>(!code||h.countryCode===code)&&h.city).map(h=>h.city))].sort((a,b)=>a.localeCompare(b));cityFilter.innerHTML='';const all=document.createElement('option');all.value='';all.textContent=lang==='es'?'Todas las ciudades':'All cities';cityFilter.appendChild(all);list.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;cityFilter.appendChild(o)});if(list.includes(selected))cityFilter.value=selected}
@@ -166,20 +176,26 @@ Promise.all([fetch('/data/hostels-clean.json').then(r=>{if(!r.ok)throw Error('Ho
 </script>
 
 <script>
- (()=> {
-  const overlay=document.getElementById('welcomeChooser'), choices=document.getElementById('welcomeChoices');
-  document.documentElement.lang='en';
-  choices.addEventListener('click',e=>{
-   if(e.target.closest('#welcomeHotels')){location.href='/hotels.html?country=CO';return}
-   if(e.target.closest('#welcomeHostels')){location.href='/hostels.html?country=CO';return}
-   if(e.target.closest('#welcomeRestaurants')){location.href='/restaurants.html';return}
-   if(e.target.closest('#welcomeBars')){location.href='/bars.html';return}
-   const merch=e.target.closest('a[href="/merch.html"]');
-   if(merch){e.preventDefault();window.location.assign('/merch.html');return}
-   const ebooks=e.target.closest('a[href="/ebooks.html"]');
-   if(ebooks){e.preventDefault();window.location.assign('/ebooks.html');return}
-  });
- })();
+  (()=> {
+   const languageChoices=document.getElementById('welcomeLanguageChoices'), choices=document.getElementById('welcomeChoices');
+   const title=document.getElementById('welcomeTitle'), copy=document.getElementById('welcomeCopy');
+   function continueIn(language){
+    if(typeof window.setSiteLanguage==='function')window.setSiteLanguage(language);
+    title.innerHTML=language==='es'?'¿Qué te gustaría explorar?':'Where would you like to explore?';
+    copy.textContent=language==='es'?'Elige una opción para comenzar.':'Choose a finder to get started.';
+    languageChoices.hidden=true;choices.hidden=false;
+   }
+   document.getElementById('chooseEnglish').addEventListener('click',()=>continueIn('en'));
+   document.getElementById('chooseSpanish').addEventListener('click',()=>continueIn('es'));
+   choices.addEventListener('click',e=>{
+    const lang=document.documentElement.lang==='es'?'es':'en';
+    if(e.target.closest('#welcomeHotels')){location.href='/hotels.html?country=CO&lang='+lang;return}
+    if(e.target.closest('#welcomeHostels')){location.href='/hostels.html?country=CO&lang='+lang;return}
+    if(e.target.closest('#welcomeRestaurants')){location.href='/restaurants.html?lang='+lang;return}
+    if(e.target.closest('#welcomeBars')){location.href='/bars.html?lang='+lang;return}
+    for(const path of ['/merch.html','/ebooks.html','/social-media.html'])if(e.target.closest('a[href="'+path+'"]')){e.preventDefault();window.location.assign(path+'?lang='+lang);return}
+   });
+  })();
  </script>
 
 </body>
