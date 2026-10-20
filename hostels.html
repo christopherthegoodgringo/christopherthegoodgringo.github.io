@@ -82,8 +82,8 @@ const contacts=[h.phone,h.email].filter(Boolean);if(contacts.length){const p=doc
 const links=document.createElement('div');links.className='links';
 const booking=h.website&&/hostelworld\.com/i.test(h.website)?h.website:(h.bookingUrl&&/hostelworld\.com/i.test(h.bookingUrl)?h.bookingUrl:'');
 const bookingLink=makeLink(lang==='es'?'Ver en Hostelworld':'View on Hostelworld',booking);if(bookingLink)links.appendChild(bookingLink);
-const mapsQuery=[h.name,h.city,countryName(h.countryCode)].filter(Boolean).join(' ');const mapsLink=makeLink(lang==='es'?'Buscar en Google Maps':'Find on Google Maps','https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(mapsQuery),true);if(mapsLink)links.appendChild(mapsLink);
-if(h.osm){const mapLink=makeLink(lang==='es'?'Fuente OpenStreetMap':'OpenStreetMap source',h.osm,true);if(mapLink)links.appendChild(mapLink)}
+
+
 if(links.children.length)card.appendChild(links);
 results.appendChild(card)});
 count.textContent=lang==='es'?(Math.min(shownLimit,unique.length)+' de '+unique.length+' hostales encontrados'):(Math.min(shownLimit,unique.length)+' of '+unique.length+' hostels found');
