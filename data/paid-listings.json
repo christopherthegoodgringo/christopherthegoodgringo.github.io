@@ -46,8 +46,9 @@
       "lon": -74.0678,
       "website": "https://www.hostelworld.com/hostels/p/282662/2600-hostel-dc/",
       "description": "A welcoming hostel in Bogotá’s La Candelaria neighborhood, with views over the city and easy access to historic sights and cultural attractions.",
-      "phone": "+57 311 556 8491",
-      "email": "2600hosteldc@gmail.com"
+      "photoUrls": [
+        "https://cf.bstatic.com/xdata/images/hotel/max1280x900/383334259.jpg?hp=1&k=b9db3cc5974edcecff7d5125e82eaa7368a6ba56358e2a5f314c784f0780d8ff&o="
+      ]
     }
   ]
 }
