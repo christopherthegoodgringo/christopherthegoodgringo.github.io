@@ -106,6 +106,19 @@
       "listingPlan": "directory",
       "paidListing": false,
       "membershipTier": "platinum"
+    },
+    {
+      "id": "directory-tia-chela-hostel-santa-marta",
+      "name": "Tía Chela Hostel",
+      "city": "Santa Marta",
+      "countryCode": "CO",
+      "address": "Carrera 16C #7-14, Santa Marta, Magdalena, Colombia",
+      "website": "https://www.hostelworld.com/hostels/p/308777/tia-chela-hostel/",
+      "description": "Family-run hostel in a quiet residential neighborhood, with air-conditioned rooms, a guest kitchen, free coffee, bicycle rental and local travel recommendations.",
+      "listingPlan": "directory",
+      "paidListing": false,
+      "membershipTier": "bronze",
+      "rating": 9.1
     }
   ]
 }
