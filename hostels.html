@@ -366,7 +366,7 @@ function render(){
    const labels={
     free:{en:'FREE PLAN DEMO · $0',es:'DEMOSTRACIÓN DEL PLAN GRATIS · $0'},
     featured:{en:'FEATURED PLAN DEMO · $19.99/month',es:'DEMOSTRACIÓN DESTACADA · $19.99/mes'},
-    premium:{en:'PREMIUM PLAN DEMO · $39/month',es:'DEMOSTRACIÓN PREMIUM · $39/mes'}
+    premium:{en:'PREMIUM PLAN DEMO · $39.99/month',es:'DEMOSTRACIÓN PREMIUM · $39.99/mes'}
    };
    ribbon.textContent=(labels[plan]||labels.free)[document.documentElement.lang==='es'?'es':'en'];card.append(ribbon);
    const descriptions={
