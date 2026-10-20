@@ -1,0 +1,79 @@
+{
+  "updatedAt": "2026-10-19",
+  "scope": "Independent restaurants in the same 18 Latin American countries as the hotel and hostel directories. Start with ratings of 4 stars and above; 5-star tier uses 4.8+ out of 5. Ratings and links must be checked against current public sources before listings are published.",
+  "countries": [
+    {
+      "code": "BZ",
+      "name": "Belize"
+    },
+    {
+      "code": "MX",
+      "name": "Mexico"
+    },
+    {
+      "code": "GT",
+      "name": "Guatemala"
+    },
+    {
+      "code": "HN",
+      "name": "Honduras"
+    },
+    {
+      "code": "SV",
+      "name": "El Salvador"
+    },
+    {
+      "code": "NI",
+      "name": "Nicaragua"
+    },
+    {
+      "code": "CR",
+      "name": "Costa Rica"
+    },
+    {
+      "code": "PA",
+      "name": "Panama"
+    },
+    {
+      "code": "AR",
+      "name": "Argentina"
+    },
+    {
+      "code": "BO",
+      "name": "Bolivia"
+    },
+    {
+      "code": "CL",
+      "name": "Chile"
+    },
+    {
+      "code": "CO",
+      "name": "Colombia"
+    },
+    {
+      "code": "EC",
+      "name": "Ecuador"
+    },
+    {
+      "code": "PY",
+      "name": "Paraguay"
+    },
+    {
+      "code": "PE",
+      "name": "Peru"
+    },
+    {
+      "code": "UY",
+      "name": "Uruguay"
+    },
+    {
+      "code": "CU",
+      "name": "Cuba"
+    },
+    {
+      "code": "DO",
+      "name": "Dominican Republic"
+    }
+  ],
+  "restaurants": []
+}
