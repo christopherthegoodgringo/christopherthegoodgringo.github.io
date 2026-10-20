@@ -118,6 +118,17 @@
       "listingPlan": "directory",
       "paidListing": false,
       "membershipTier": "bronze"
+    },
+    {
+      "id": "directory-sana-mar-hostel-santa-marta",
+      "name": "Sana Mar Hostel & Eco-Café",
+      "city": "Santa Marta",
+      "address": "Calle 21 #5-72, El Centro, Santa Marta, Magdalena, Colombia",
+      "description": "Small, centrally located hostel with a garden, shared lounge, free Wi-Fi and breakfast.",
+      "website": "https://www.hostelworld.com/hostels/p/329796/sana-mar-hostel-and-eco-cafe/",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "membershipTier": "bronze"
     }
   ]
 }
