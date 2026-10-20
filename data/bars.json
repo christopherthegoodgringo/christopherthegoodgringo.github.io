@@ -255,6 +255,90 @@
         "Cuban cocktail culture"
       ],
       "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "oh-la-la-la-puerta-santa-marta",
+      "name": "Oh La La La Puerta",
+      "city": "Santa Marta",
+      "countryName": "Colombia",
+      "countryCode": "CO",
+      "address": "Calle 17 #2-29, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "A lively independent nightlife spot known for tropical music, dancing, and a distinctly local atmosphere.",
+      "drinks": "Cocktails, beer, mixed drinks",
+      "rating": 4.9,
+      "ratingSource": "Tripadvisor Santa Marta nightlife listing; checked 2026-10-20",
+      "priceRange": "$$–$$$",
+      "website": "https://www.instagram.com/ohlalalapuerta/",
+      "features": [
+        "Dance floor",
+        "Tropical and Colombian music",
+        "Historic center"
+      ],
+      "membershipTier": "platinum",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "crabs-bar-santa-marta",
+      "name": "Crab's Bar",
+      "city": "Santa Marta",
+      "countryName": "Colombia",
+      "countryCode": "CO",
+      "address": "Calle 18 #3-69, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "A distinctive rock-and-roll bar with a relaxed terrace, music memorabilia, beers, and cocktails.",
+      "drinks": "Beer, cocktails, whisky",
+      "rating": 4.8,
+      "ratingSource": "Wanderlog summary of Google reviews (about 1,055 reviews); checked 2026-10-20",
+      "priceRange": "$$–$$$",
+      "website": "https://www.crabsbar.com/",
+      "features": [
+        "Rock music",
+        "Outdoor terrace",
+        "Distinctive interior"
+      ],
+      "membershipTier": "gold",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "la-azotea-ocean-bar-santa-marta",
+      "name": "La Azotea Ocean Bar",
+      "city": "Santa Marta",
+      "countryName": "Colombia",
+      "countryCode": "CO",
+      "address": "Carrera 4 #103-85, Centro Comercial Aluna Plaza, Pozos Colorados, Santa Marta, Colombia",
+      "description": "A rooftop cocktail bar with sea views, signature drinks, live music, and DJs near Pozos Colorados.",
+      "drinks": "Signature cocktails, mocktails",
+      "rating": 4.2,
+      "ratingSource": "Wanderlog summary of Google reviews for La Azotea Disco Bar Santa Marta; checked 2026-10-20. Confirm this rating refers to the same venue before relying on it.",
+      "priceRange": "$$–$$$",
+      "website": "https://www.laazoteaoceanbar.com/",
+      "features": [
+        "Rooftop sea views",
+        "Signature cocktails",
+        "Live music and DJs"
+      ],
+      "membershipTier": "silver",
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "burukuka-santa-marta",
+      "name": "Burukuka Restaurante Bar",
+      "city": "Santa Marta",
+      "countryName": "Colombia",
+      "countryCode": "CO",
+      "address": "Carrera 1 #1-104, El Rodadero, Santa Marta, Magdalena, Colombia",
+      "description": "A viewpoint restaurant-bar overlooking El Rodadero, known for Caribbean-inspired cocktails, sunset views, and a lively evening atmosphere.",
+      "drinks": "Signature cocktails, wine, beer",
+      "rating": 4.4,
+      "ratingSource": "Wanderlog / Google review summary; checked 2026-10-20",
+      "priceRange": "$$$–$$$$",
+      "website": "https://www.burukuka.com/",
+      "features": [
+        "Panoramic sunset views",
+        "Cocktails",
+        "Terrace and nightlife"
+      ],
+      "membershipTier": "bronze",
+      "verifiedOn": "2026-10-20"
     }
   ]
 }
