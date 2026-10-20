@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Automated integrity checks for the public city-search index and search wiring."""
+"""Integrity checks for the rebuilt country/city hostel finder."""
 import json, math, re, unicodedata
 from collections import Counter, defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CITY_FILE = ROOT / "data" / "cities.json"
-HOSTEL_FILE = ROOT / "data" / "hostels.json"
+CLEAN_FILE = ROOT / "data" / "hostels-clean.json"
+PAID_FILE = ROOT / "data" / "paid-listings.json"
 HTML_FILE = ROOT / "hostels.html"
 REPORT_FILE = ROOT / "reports" / "city-search-test-report.md"
 APPROVED = {"MX","BZ","GT","HN","SV","NI","CR","PA","AR","BO","CL","CO","EC","PY","PE","UY","CU","DO"}
@@ -14,7 +14,7 @@ APPROVED = {"MX","BZ","GT","HN","SV","NI","CR","PA","AR","BO","CL","CO","EC","PY
 def norm(value):
     value = unicodedata.normalize("NFKD", str(value or ""))
     value = "".join(c for c in value if not unicodedata.combining(c)).casefold()
-    return re.sub(r"\s+", " ", re.sub(r"[.,]", " ", value)).strip()
+    return re.sub(r"[^a-z0-9]+", " ", value).strip()
 
 def valid(lat, lon):
     try:
@@ -24,105 +24,42 @@ def valid(lat, lon):
         return False
 
 def main():
-    failures, warnings, checks = [], [], []
-    if not CITY_FILE.exists() or not HOSTEL_FILE.exists() or not HTML_FILE.exists():
-        raise SystemExit("Required site file missing: city index, hostel data, or hostels.html")
-    city_data = json.loads(CITY_FILE.read_text(encoding="utf-8"))
-    hostel_data = json.loads(HOSTEL_FILE.read_text(encoding="utf-8"))
-    cities = city_data.get("cities", [])
-    hostels = hostel_data.get("hostels", [])
+    failures, checks = [], []
+    if not CLEAN_FILE.exists() or not PAID_FILE.exists() or not HTML_FILE.exists():
+        raise SystemExit("Required file missing: clean hostel data, paid listings, or hostels.html")
+    data = json.loads(CLEAN_FILE.read_text(encoding="utf-8"))
+    paid_data = json.loads(PAID_FILE.read_text(encoding="utf-8"))
+    hostels = data.get("hostels", [])
+    paid = paid_data.get("hostels", [])
     html = HTML_FILE.read_text(encoding="utf-8")
-
-    checks.append(("City index loads", isinstance(cities, list) and len(cities) > 0, f"{len(cities):,} records"))
-    checks.append(("Hostel database loads", isinstance(hostels, list) and len(hostels) > 0, f"{len(hostels):,} records"))
-
-    country_counts = Counter(str(c.get("countryCode") or "") for c in cities)
-    missing_countries = sorted(APPROVED - set(country_counts))
-    checks.append(("All 18 approved countries represented in city index", not missing_countries, ", ".join(missing_countries) if missing_countries else "all present"))
-
-    bad_names = [i for i,c in enumerate(cities) if not str(c.get("name") or "").strip()]
-    bad_coords = [i for i,c in enumerate(cities) if not valid(c.get("lat"), c.get("lon"))]
-    outside = [i for i,c in enumerate(cities) if c.get("countryCode") not in APPROVED]
-    checks.append(("Every city has a name", not bad_names, f"{len(bad_names)} invalid records"))
-    checks.append(("Every city has valid numeric coordinates", not bad_coords, f"{len(bad_coords)} invalid records"))
-    checks.append(("No city records outside approved countries", not outside, f"{len(outside)} outside-country records"))
-
-    grouped = defaultdict(list)
-    for c in cities:
-        cc = str(c.get("countryCode") or "")
-        name = norm(c.get("name"))
-        if name:
-            grouped[(cc, name)].append(c)
-    duplicate_groups = [(k,v) for k,v in grouped.items() if len(v) > 1]
-    checks.append(("No duplicate normalized city names within a country", not duplicate_groups, f"{len(duplicate_groups)} duplicate groups"))
-
-    # Verify every distinct normalized city name can be returned by the same exact-first
-    # substring-search strategy. This is linear in dataset size, not quadratic.
-    search_wiring = (
-        ".filter(c=>normalizeCityName(c.name).includes(normalizedQuery))" in html
-        and "an===normalizedQuery?-1:bn===normalizedQuery?1:an.localeCompare(bn)" in html
-        and ").slice(0,12)" in html
-    )
-    distinct_names = {(str(c.get("countryCode") or ""), norm(c.get("name"))) for c in cities if norm(c.get("name"))}
-    unsearchable = [] if search_wiring else [("search logic", "missing exact-first substring filter", 0)]
-    checks.append(("All distinct city names supported by exact-first autocomplete logic", search_wiring, f"{len(distinct_names):,} distinct country-scoped names; exact matches prioritized before 12-result limit" if search_wiring else "expected autocomplete filtering/sorting code missing"))
-
-    expected = {
-        ("MX", "mexico city"): (19.4326, -99.1332),
-        ("CO", "santa marta"): (11.2408, -74.1990),
-    }
-    canonical_issues = []
-    for key, coords in expected.items():
-        found = grouped.get(key, [])
-        if len(found) != 1 or not valid(found[0].get("lat"), found[0].get("lon")):
-            canonical_issues.append(f"{key[0]}:{key[1]} count={len(found)}")
-        elif abs(float(found[0]["lat"])-coords[0]) > 0.02 or abs(float(found[0]["lon"])-coords[1]) > 0.02:
-            canonical_issues.append(f"{key[0]}:{key[1]} coordinates={found[0].get('lat')},{found[0].get('lon')}")
-    checks.append(("Canonical Mexico City and Santa Marta records", not canonical_issues, "; ".join(canonical_issues) if canonical_issues else "both present once near expected coordinates"))
-
-    panama_fallback = "Ensure Panama's capital is searchable" in html and "lat:8.9824,lon:-79.5199" in html
-    mexico_alias = "'cdmx':'mexico city'" in html and "'ciudad de mexico':'mexico city'" in html
-    persistent_registry = "fetch('/data/cities.json?v=1')" in html
-    radius_filter = "distanceKm(Number(target.lat)" in html and "<=25" in html
-    checks.append(("Panama City fallback is wired into live search", panama_fallback, "expected fallback code found" if panama_fallback else "fallback code missing"))
-    checks.append(("Mexico City aliases are wired into search", mexico_alias, "expected aliases found" if mexico_alias else "aliases missing"))
-    checks.append(("Search loads persistent city index", persistent_registry, "persistent index fetch found" if persistent_registry else "persistent index fetch missing"))
-    checks.append(("Hostel results are limited by distance from selected city", radius_filter, "25 km coordinate filter found" if radius_filter else "distance filter missing"))
-
-    # Report counts by country for easy monitoring.
-    hostel_counts = Counter(str(h.get("countryCode") or "") for h in hostels)
-    lines = [
-        "# Automated City Search Quality Report", "",
-        f"- City index records: **{len(cities):,}**",
-        f"- Hostel records: **{len(hostels):,}**",
-        "- Scope: static data and search-code integrity; this does not independently verify every location against ground truth or guarantee a hostel exists near every town.", "",
-        "## Automated checks", "",
-        "| Check | Result | Details |", "|---|---|---|"
-    ]
+    checks.append(("Clean hostel database loads", isinstance(hostels, list) and len(hostels) > 0, f"{len(hostels):,} records"))
+    checks.append(("All 18 approved countries are available in the selector", all(f"['{code}'" in html for code in []) is False and all(f"['{code}'" in html or f'["{code}"' in html for code in APPROVED), "18 approved country codes configured"))
+    outside = [h for h in hostels if h.get("countryCode") not in APPROVED]
+    checks.append(("No records outside the approved 18-country scope", not outside, f"{len(outside)} out-of-scope records"))
+    bad = [h for h in hostels if not str(h.get("name") or "").strip() or not valid(h.get("lat"), h.get("lon"))]
+    checks.append(("Clean records have names and valid coordinates", not bad, f"{len(bad)} invalid records"))
+    groups = defaultdict(list)
+    for h in hostels:
+        groups[(h.get("countryCode"), norm(h.get("city")), norm(h.get("name")))].append(h)
+    duplicates = [k for k, rows in groups.items() if len(rows) > 1]
+    checks.append(("No exact normalized name/city duplicates remain", not duplicates, f"{len(duplicates)} duplicate groups"))
+    checks.append(("Page loads compact cleaned data", "fetch('/data/hostels-clean.json')" in html, "clean data endpoint found"))
+    checks.append(("Paid and free owner listings are merged separately", "fetch('/data/paid-listings.json')" in html and len(paid) > 0, f"{len(paid)} owner listings available"))
+    checks.append(("Country and city filters are present", 'id="countryFilter"' in html and 'id="cityFilter"' in html, "both selectors found"))
+    checks.append(("English/Spanish toggle is wired", 'id="languageToggle"' in html and "setLanguage(lang==='en'?'es':'en')" in html, "bilingual toggle found"))
+    checks.append(("Booking buttons only link to Hostelworld", "hostelworld\\.com" in html and "View on Hostelworld" in html, "Hostelworld-only booking link logic found"))
+    checks.append(("No link to the separate hotel directory", "hotels.html" not in html, "directory pages remain separate"))
+    lines = ["# Automated Hostel Directory Quality Report", "", f"- Clean hostel records: **{len(hostels):,}**", f"- Owner-managed listings: **{len(paid):,}**", f"- Source database updated: **{data.get('updatedAt', 'unknown')}**", "- Scope: structural data checks; OpenStreetMap coverage may be incomplete and listings are not independently verified.", "", "## Automated checks", "", "| Check | Result | Details |", "|---|---|---|"]
     for name, passed, details in checks:
         lines.append(f"| {name} | {'PASS' if passed else 'FAIL'} | {details.replace('|','/')} |")
-        if not passed:
-            failures.append(name)
-    lines.extend(["", "## City-index coverage by country", "", "| Country code | Cities | Hostel records |", "|---|---:|---:|"])
-    for code in sorted(APPROVED):
-        lines.append(f"| {code} | {country_counts.get(code,0):,} | {hostel_counts.get(code,0):,} |")
-    if duplicate_groups:
-        lines.extend(["", "## Duplicate city groups (first 50)", ""])
-        for (code,name), group in duplicate_groups[:50]:
-            lines.append(f"- {code}: {group[0].get('name')} ({len(group)} records)")
-    if unsearchable:
-        lines.extend(["", "## Unsearchable city records (first 50)", ""])
-        for code,name,count in unsearchable[:50]:
-            lines.append(f"- {code}: {name} ({count} substring matches)")
-    if bad_coords:
-        lines.extend(["", "## Invalid coordinate records (first 50)", ""])
-        for i in bad_coords[:50]:
-            c = cities[i]
-            lines.append(f"- {c.get('countryCode')}: {c.get('name')} ({c.get('lat')}, {c.get('lon')})")
+        if not passed: failures.append(name)
+    counts = Counter(h.get("countryCode", "") for h in hostels)
+    lines.extend(["", "## Clean data coverage by country", "", "| Country code | Listings |", "|---|---:|"])
+    for code in sorted(APPROVED): lines.append(f"| {code} | {counts.get(code, 0):,} |")
     lines.extend(["", f"**Overall status: {'FAIL' if failures else 'PASS'}**", ""])
     REPORT_FILE.parent.mkdir(parents=True, exist_ok=True)
     REPORT_FILE.write_text("\n".join(lines), encoding="utf-8")
-    print(f"City search tests: {len(checks)-len(failures)}/{len(checks)} passed. Cities={len(cities)} Hostels={len(hostels)}")
+    print(f"Hostel directory checks: {len(checks)-len(failures)}/{len(checks)} passed. Clean records={len(hostels)}")
     if failures:
         print("FAILED: " + "; ".join(failures))
         raise SystemExit(1)
