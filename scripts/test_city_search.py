@@ -33,7 +33,7 @@ def main():
     paid = paid_data.get("hostels", [])
     html = HTML_FILE.read_text(encoding="utf-8")
     checks.append(("Clean hostel database loads", isinstance(hostels, list) and len(hostels) > 0, f"{len(hostels):,} records"))
-    checks.append(("All 18 approved countries are available in the selector", all(f"['{code}'" in html for code in []) is False and all(f"['{code}'" in html or f'["{code}"' in html for code in APPROVED), "18 approved country codes configured"))
+    checks.append(("All 18 approved countries are available in the selector", all(f"['{code}'" in html or f'["{code}"' in html for code in APPROVED), "18 approved country codes configured"))
     outside = [h for h in hostels if h.get("countryCode") not in APPROVED]
     checks.append(("No records outside the approved 18-country scope", not outside, f"{len(outside)} out-of-scope records"))
     bad = [h for h in hostels if not str(h.get("name") or "").strip() or not valid(h.get("lat"), h.get("lon"))]
