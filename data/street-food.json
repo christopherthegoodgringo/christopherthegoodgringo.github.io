@@ -450,6 +450,21 @@
       "photoNote": "Illustrative food photo; not a verified photo of these vendors.",
       "membershipTier": "silver",
       "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "arepa-e-huevo-la-industrial-donde-patricia",
+      "name": "Arepa e'huevo La Industrial — Donde Patricia",
+      "city": "Santa Marta",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "address": "Carrera 11 #15-1 to #15-51, Comuna 4, Santa Marta, Magdalena, Colombia",
+      "description": "A well-known traditional breakfast stop associated with the La Industrial arepa vendors. Specialties include freshly fried arepas de huevo and other coastal breakfast fritos. Go early; hours and exact stall position should be confirmed locally.",
+      "cuisine": "Arepas de huevo, coastal Colombian fritos",
+      "website": "https://www.google.com/maps/search/?api=1&query=Arepa+e+huevo+La+Industrial+Donde+Patricia+Santa+Marta+Colombia",
+      "photo": "https://images.unsplash.com/photo-1604467715878-83e57e8bc129?auto=format&fit=crop&w=900&q=80",
+      "photoNote": "Illustrative food photo; not a verified photo of this vendor.",
+      "membershipTier": "bronze",
+      "verifiedOn": "2026-10-20"
     }
   ]
 }
