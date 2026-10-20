@@ -35,6 +35,9 @@ footer{padding-top:20px!important;padding-bottom:20px!important;line-height:1.6!
 footer>.wrap{padding:0 16px!important;margin:0 auto!important;min-height:0!important;height:auto!important;line-height:1.6!important;gap:8px 18px!important;align-content:center!important}
 footer>.wrap>*{margin-top:0!important;margin-bottom:0!important;padding-top:0!important;padding-bottom:0!important;line-height:1.6!important}
 footer .legal-footer{margin-top:0!important;padding-top:0!important;border-top:0!important}
+
+/* Explicit bilingual visibility for the three sample listing cards */
+html[lang="es"] .preview-grid .en{display:none!important}html[lang="es"] .preview-grid .es{display:revert!important}html:not([lang="es"]) .preview-grid .es{display:none!important}html:not([lang="es"]) .preview-grid .en{display:revert!important}
 </style>
 
 <style id="homepage-footer-text-match">
