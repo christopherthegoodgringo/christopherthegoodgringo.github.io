@@ -49,23 +49,6 @@
       "photoUrls": [
         "https://cf.bstatic.com/xdata/images/hotel/max1280x900/383334259.jpg?hp=1&k=b9db3cc5974edcecff7d5125e82eaa7368a6ba56358e2a5f314c784f0780d8ff&o="
       ]
-    },
-    {
-      "id": "free-82-hostel-bogota",
-      "name": "82 Hostel",
-      "city": "Bogotá",
-      "countryCode": "CO",
-      "address": "Carrera 19 #80-14, 110221 Bogotá, Colombia",
-      "website": "https://82hostel.com.co/inicio",
-      "phone": "+57 315 643 3355",
-      "lat": 4.665,
-      "lon": -74.055,
-      "description": "Hostel in Bogotá with private rooms and shared dormitories, a lounge, kitchen and garden.",
-      "listingPlan": "free",
-      "paidListing": false,
-      "photoUrls": [
-        "https://img1.wsimg.com/isteam/ip/f1f8de7c-ccb2-4fb5-b694-fec323c915bb/image00012.jpeg/:/rs=w:1240,h:620,cg:true,m/cr=w:1240,h:620"
-      ]
     }
   ]
 }
