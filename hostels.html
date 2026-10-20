@@ -401,6 +401,14 @@ function render(){
    const items=document.documentElement.lang==='es'?['✦ Piscina en la azotea','☀ Terraza','🍹 Bar','🎯 Zona de juegos','🤝 Espacios sociales']:['✦ Rooftop pool','☀ Terrace','🍹 Bar','🎯 Games area','🤝 Social spaces'];
    items.forEach(label=>{const chip=document.createElement('span');chip.className='featured-perk';chip.textContent=label;perks.append(chip);});why.append(perks);card.append(why);
   }
+  if((plan==='featured'||plan==='premium')&&x.id==='paid-2600-hostel-dc-bogota'){
+   const why=document.createElement('div');why.className='featured-why';
+   const heading=document.createElement('strong');heading.textContent=document.documentElement.lang==='es'?'¿Por qué alojarte aquí?':'Why stay here?';why.append(heading);
+   const intro=document.createElement('span');intro.textContent=document.documentElement.lang==='es'?'Alójate en el histórico barrio de La Candelaria, con vistas de Bogotá y cerca de lugares culturales e históricos.':'Stay in historic La Candelaria, with views over Bogotá and easy access to cultural attractions and historic sights.';why.append(intro);
+   const perks=document.createElement('div');perks.className='featured-perk-list';
+   const items=document.documentElement.lang==='es'?['✦ Vistas de Bogotá','🏛 La Candelaria histórica','📍 Cerca de lugares de interés','📶 Wi-Fi gratis','☀ Desayuno incluido']:['✦ Bogotá city views','🏛 Historic La Candelaria','📍 Near historic sights','📶 Free Wi-Fi','☀ Breakfast included'];
+   items.forEach(label=>{const chip=document.createElement('span');chip.className='featured-perk';chip.textContent=label;perks.append(chip);});why.append(perks);card.append(why);
+  }
 
   // Contact details are a Featured benefit; Free cards never expose them.
   if(plan==='featured'||plan==='premium'){
