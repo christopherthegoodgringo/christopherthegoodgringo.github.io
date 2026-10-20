@@ -339,6 +339,29 @@
       ],
       "membershipTier": "bronze",
       "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "hops-and-barley-pub-tunja",
+      "name": "Hops and Barley Pub",
+      "city": "Tunja",
+      "countryName": "Colombia",
+      "countryCode": "CO",
+      "address": "Cra. 6 #47-40, Tunja, Boyacá, Colombia",
+      "description": "Craft-beer pub with casual food, darts, and a social nightlife atmosphere.",
+      "drinks": "Craft beer, dark beer, cocktails",
+      "rating": 4,
+      "ratingSource": "Google rating summarized by Restaurant Guru; 112 Google ratings checked 2026-10-20",
+      "priceRange": "$–$$",
+      "website": "https://www.waze.com/live-map/directions/co/boyaca/tunja/hops-and-barley-pub?to=place.ChIJCTShXRR8ao4RXmGnR0OWAXg",
+      "phone": "+57 315 667 9242",
+      "features": [
+        "Craft beer",
+        "Darts",
+        "Casual food",
+        "Nightlife"
+      ],
+      "membershipTier": "platinum",
+      "verifiedOn": "2026-10-20"
     }
   ]
 }
