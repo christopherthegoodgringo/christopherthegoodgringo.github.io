@@ -1,7 +1,11 @@
 {
   "updatedAt": "2026-10-19",
-  "scope": "The 17 countries in the hostel directory. Boutique and independent properties only; major international chains excluded.",
+  "scope": "The 18 countries in the hostel directory. Boutique and independent properties only; major international chains excluded.",
   "countries": [
+    {
+      "code": "BZ",
+      "name": "Belize"
+    },
     {
       "code": "MX",
       "name": "Mexico"
