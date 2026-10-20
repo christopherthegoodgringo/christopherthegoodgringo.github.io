@@ -117,8 +117,7 @@
       "description": "Family-run hostel in a quiet residential neighborhood, with air-conditioned rooms, a guest kitchen, free coffee, bicycle rental and local travel recommendations.",
       "listingPlan": "directory",
       "paidListing": false,
-      "membershipTier": "bronze",
-      "rating": 9.1
+      "membershipTier": "bronze"
     }
   ]
 }
