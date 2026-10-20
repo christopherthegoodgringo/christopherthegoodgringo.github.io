@@ -7,6 +7,14 @@
 - City index source: **data/cities.json (persistent)**
 - No listing records were changed or deleted by this audit.
 
+## Colombia email coverage
+
+- Colombian hostel listings: **1372**
+- Colombian listings with a non-empty email field: **163**
+- Colombian listings without an email field: **1209**
+- Distinct email addresses found in Colombian listings: **156**
+- Counts are based on the current dataset; email addresses are counted case-insensitively and hostel records are not changed.
+
 ## Coverage by approved country
 
 ### Hostels
