@@ -48,7 +48,12 @@
     },
     {
       "code": "CO",
-      "name": "Colombia"
+      "name": "Colombia",
+      "cities": [
+        "Cartagena",
+        "Santa Marta",
+        "Tunja"
+      ]
     },
     {
       "code": "EC",
