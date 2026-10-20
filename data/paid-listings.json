@@ -33,6 +33,14 @@
       "photoUrls": [
         "https://hostelbaboonsantamarta.santamartachotel.com/data/Photos/450x450w/15538/1553854/1553854690.JPEG"
       ]
+    },
+    {
+      "id": "paid-2600-hostel-dc-bogota",
+      "name": "2600 Hostel DC",
+      "city": "Bogotá",
+      "countryCode": "CO",
+      "listingPlan": "featured",
+      "paidListing": true
     }
   ]
 }
