@@ -367,6 +367,27 @@
       ],
       "membershipTier": "platinum",
       "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "surf-monkey-beer-taproom-santa-marta",
+      "name": "Surf Monkey Beer Taproom",
+      "city": "Santa Marta",
+      "countryName": "Colombia",
+      "countryCode": "CO",
+      "address": "Calle 15 #2-16, Centro, Santa Marta, Magdalena, Colombia",
+      "description": "Independent craft-beer taproom serving house-brewed beers and tasting-friendly pours in a relaxed central Santa Marta setting.",
+      "drinks": "House craft beer, tasting pours",
+      "rating": 5,
+      "ratingSource": "Tripadvisor Santa Marta nightlife listing (3 reviews), checked October 2026; low review count",
+      "priceRange": "$$",
+      "website": "https://www.facebook.com/surfmonkeybeer",
+      "features": [
+        "Independent craft beer",
+        "House-brewed beer",
+        "Central Santa Marta"
+      ],
+      "verifiedOn": "2026-10-20",
+      "membershipTier": "bronze"
     }
   ]
 }
