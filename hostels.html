@@ -425,12 +425,12 @@ function render(){
     a.innerHTML='<span aria-hidden="true">↗</span><span>'+(document.documentElement.lang==='es'?'Visitar / reservar':'Visit / Book')+'</span>';
     contacts.append(a);
    }
-   if(x.phone){
+   if(x.phone&&x.id!=='free-82-hostel-bogota'){
     const a=document.createElement('a');a.className='contact-link';a.href='tel:'+String(x.phone).replace(/[^+\d]/g,'');
     a.innerHTML='<span aria-hidden="true">☎</span><span>'+(document.documentElement.lang==='es'?'Llamar':'Call')+'</span>';
     contacts.append(a);
    }
-   if(x.email){
+   if(x.email&&x.id!=='free-82-hostel-bogota'){
     const a=document.createElement('a');a.className='contact-link contact-email';a.href='mailto:'+x.email;
     a.innerHTML='<span aria-hidden="true">✉</span><span>'+(document.documentElement.lang==='es'?'Correo electrónico':'Email')+'</span>';
     contacts.append(a);
