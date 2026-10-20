@@ -388,6 +388,25 @@
       ],
       "verifiedOn": "2026-10-20",
       "membershipTier": "bronze"
+    },
+    {
+      "id": "sunset-rooftop-el-rodadero-santa-marta",
+      "name": "Sunset Rooftop",
+      "city": "Santa Marta",
+      "countryName": "Colombia",
+      "countryCode": "CO",
+      "address": "Centro Comercial Arrecife, tercer piso, El Rodadero, Santa Marta, Magdalena, Colombia",
+      "description": "Rooftop cocktail bar with sunset views over El Rodadero, signature cocktails, live music, karaoke and a daily happy hour.",
+      "drinks": "Signature cocktails, frozen cocktails, micheladas",
+      "priceRange": "$$–$$$",
+      "website": "https://www.sunsetsmr.com/",
+      "features": [
+        "Rooftop terrace",
+        "Sunset views",
+        "Signature cocktails",
+        "Live music"
+      ],
+      "verifiedOn": "2026-10-20"
     }
   ]
 }
