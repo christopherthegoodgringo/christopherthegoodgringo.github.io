@@ -67,7 +67,7 @@ footer .wrap a { color: #f5bd3e !important; font-weight: 400 !important; text-de
 </head>
 <body>
 <header class="site-header"><div class="site-header-inner"><a class="site-brand" href="/" aria-label="Christopher the Good Gringo home"><img src="/assets/cgg-logo.svg" alt=""><span>CHRISTOPHER THE GOOD GRINGO™</span></a><nav class="site-header-nav" aria-label="Main navigation"><a href="/"><span data-l="en">Home</span><span data-l="es">Inicio</span></a><a href="/hotels.html"><span data-l="en">Hotel Finder</span><span data-l="es">Buscador de hoteles</span></a><a href="/hostels.html"><span data-l="en">Hostel Finder</span><span data-l="es">Buscador de hostales</span></a><a href="/restaurants.html"><span data-l="en">Restaurant Finder</span><span data-l="es">Buscador de restaurantes</span></a>
-<a href="/bars.html"><span data-l="en">Bar Finder</span><span data-l="es">Buscador de bares</span></a><a href="/team/"><span data-l="en">Meet the Team</span><span data-l="es">Conoce al equipo</span></a><button id="languageToggle" class="language-toggle" type="button" aria-label="Switch language"><span class="toggle-label">EN</span><span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span><span class="toggle-label">ES</span></button></nav></div></header>
+<a href="/bars.html"><span data-l="en">Bar Finder</span><span data-l="es">Buscador de bares</span></a><a href="/team/"><span data-l="en">Meet the Team</span><span data-l="es">Conoce al equipo</span></a></nav></div></header>
 <main>
 <section class="hero"><div class="wrap"><div class="eyebrow"><span data-l="en">The people and intelligence behind the brand</span><span data-l="es">Las personas y la inteligencia detrás de la marca</span></div><h1><span data-l="en">Meet the team building <em>better LATAM travel.</em></span><span data-l="es">Conoce al equipo que crea <em>mejores viajes por LATAM.</em></span></h1><p><span data-l="en">Christopher The Good Gringo combines real human leadership with clearly identified AI executive personas to help build useful tools, share local insight, and serve curious travelers.</span><span data-l="es">Christopher The Good Gringo combina liderazgo humano con perfiles ejecutivos de IA claramente identificados para crear herramientas útiles, compartir información local y ayudar a viajeros curiosos.</span></p></div><svg class="mtn" viewBox="0 0 1200 62" preserveAspectRatio="none" aria-hidden="true"><path d="M0 36 L140 10 L290 40 L450 5 L600 33 L760 8 L920 38 L1070 14 L1200 31 L1200 62 L0 62Z" fill="#09291e"/><path d="M0 50 L210 35 L430 53 L650 32 L870 50 L1200 36 L1200 62 L0 62Z" fill="#fbf5e8"/></svg></section>
 <section class="block"><div class="wrap"><div class="section-head"><div class="eyebrow"><span data-l="en">Human leadership</span><span data-l="es">Liderazgo humano</span></div><h2><span data-l="en">The founders</span><span data-l="es">Los fundadores</span></h2><p><span data-l="en">The people accountable for the brand, its direction, and its decisions. Logo portraits are placeholders until real photos are added.</span><span data-l="es">Las personas responsables de la marca, su dirección y sus decisiones. Los logotipos son imágenes provisionales hasta añadir fotos reales.</span></p></div>
@@ -115,57 +115,7 @@ footer .wrap a { color: #f5bd3e !important; font-weight: 400 !important; text-de
 <a href="/team/"><span data-l="en">Meet the Team</span><span data-l="es">Conoce al equipo</span></a>
 <a href="/privacy-policy.html"><span data-l="en">Privacy Policy</span><span data-l="es">Política de privacidad</span></a>
 <a href="/terms-of-use.html"><span data-l="en">Terms of Use</span><span data-l="es">Términos de uso</span></a></nav></div></footer>
-<script>
-(function(){
-const countries=[
-{code:"MX",en:"Mexico",es:"México",cityEn:"Mexico City, Mexico",cityEs:"Ciudad de México, México"},
-{code:"BZ",en:"Belize",es:"Belice",cityEn:"Belize City, Belize",cityEs:"Ciudad de Belice, Belice"},
-{code:"GT",en:"Guatemala",es:"Guatemala",cityEn:"Guatemala City, Guatemala",cityEs:"Ciudad de Guatemala, Guatemala"},
-{code:"HN",en:"Honduras",es:"Honduras",cityEn:"Tegucigalpa, Honduras",cityEs:"Tegucigalpa, Honduras"},
-{code:"SV",en:"El Salvador",es:"El Salvador",cityEn:"San Salvador, El Salvador",cityEs:"San Salvador, El Salvador"},
-{code:"NI",en:"Nicaragua",es:"Nicaragua",cityEn:"Managua, Nicaragua",cityEs:"Managua, Nicaragua"},
-{code:"CR",en:"Costa Rica",es:"Costa Rica",cityEn:"San José, Costa Rica",cityEs:"San José, Costa Rica"},
-{code:"PA",en:"Panama",es:"Panamá",cityEn:"Panama City, Panama",cityEs:"Ciudad de Panamá, Panamá"},
-{code:"AR",en:"Argentina",es:"Argentina",cityEn:"Buenos Aires, Argentina",cityEs:"Buenos Aires, Argentina"},
-{code:"BO",en:"Bolivia",es:"Bolivia",cityEn:"La Paz, Bolivia",cityEs:"La Paz, Bolivia"},
-{code:"CL",en:"Chile",es:"Chile",cityEn:"Santiago, Chile",cityEs:"Santiago, Chile"},
-{code:"CO",en:"Colombia",es:"Colombia",cityEn:"Bogotá, Colombia",cityEs:"Bogotá, Colombia"},
-{code:"EC",en:"Ecuador",es:"Ecuador",cityEn:"Quito, Ecuador",cityEs:"Quito, Ecuador"},
-{code:"PY",en:"Paraguay",es:"Paraguay",cityEn:"Asunción, Paraguay",cityEs:"Asunción, Paraguay"},
-{code:"PE",en:"Peru",es:"Perú",cityEn:"Lima, Peru",cityEs:"Lima, Perú"},
-{code:"UY",en:"Uruguay",es:"Uruguay",cityEn:"Montevideo, Uruguay",cityEs:"Montevideo, Uruguay"},
-{code:"CU",en:"Cuba",es:"Cuba",cityEn:"Havana, Cuba",cityEs:"La Habana, Cuba"},
-{code:"DO",en:"Dominican Republic",es:"República Dominicana",cityEn:"Santo Domingo, Dominican Republic",cityEs:"Santo Domingo, República Dominicana"}];
-const roles=[
-{key:"marketing",en:"Country Marketing Lead",es:"Líder de Marketing del País",descEn:"Plans country-specific marketing strategy, campaigns, calendars, and brand consistency for English- and Spanish-speaking audiences.",descEs:"Planifica la estrategia de marketing local, campañas, calendarios y coherencia de marca para audiencias en inglés y español."},
-{key:"social",en:"Social Media Manager",es:"Gerente de Redes Sociales",descEn:"Plans bilingual content for Instagram, TikTok, Facebook, and YouTube, including Shorts, publishing calendars, and audience engagement.",descEs:"Planifica contenido bilingüe para Instagram, TikTok, Facebook y YouTube, incluidos Shorts, calendarios de publicación e interacción con la audiencia."},
-{key:"content",en:"Content Creator & Video Producer",es:"Creador de Contenido y Productor de Video",descEn:"Develops travel-video concepts, scripts, photo briefs, destination guides, reels, and stories for both languages.",descEs:"Desarrolla conceptos de videos de viaje, guiones, briefs fotográficos, guías de destinos, reels e historias en ambos idiomas."},
-{key:"web",en:"Web Designer & SEO Specialist",es:"Diseñador Web y Especialista en SEO",descEn:"Plans bilingual country pages, mobile experiences, accessibility improvements, destination content, and search visibility.",descEs:"Planifica páginas de país bilingües, experiencias móviles, mejoras de accesibilidad, contenido turístico y visibilidad en buscadores."},
-{key:"copy",en:"Bilingual Copywriter & Editor",es:"Redactor y Editor Bilingüe",descEn:"Writes and adapts website copy, blogs, captions, video scripts, email campaigns, and natural English/Spanish content.",descEs:"Redacta y adapta textos web, blogs, pies de foto, guiones, campañas de correo y contenido natural en inglés y español."},
-{key:"growth",en:"Influencer Partnerships & Growth Specialist",es:"Especialista en Alianzas con Influencers y Crecimiento",descEn:"Plans travel-creator collaborations and hostel/local-business partnership ideas, outreach drafts, and measurable growth campaigns.",descEs:"Planifica colaboraciones con creadores de viajes y hostales/negocios locales, borradores de contacto y campañas de crecimiento medibles."}];
-const firstNames=["Sofía","Mateo","Valentina","Diego","Camila","Andrés","Lucía","Javier","Isabella","Gabriel","Elena","Nicolás","Mariana","Samuel","Paula","Tomás","Daniela","Alejandro"];
-const surnames=["Rivera","Morales","Castillo","Navarro","Vega","Mendoza","Reyes","Cruz","Herrera","Rojas","Silva","Torres","Medina","Flores","Ortega","Campos","Fuentes","Paredes"];
-const $=id=>document.getElementById(id),countrySelect=$("teamCountry"),roleSelect=$("teamRole"),grid=$("countryTeamPeople"),summary=$("countryTeamSummary");
-if(!countrySelect||!roleSelect||!grid||!summary)return;
-countries.forEach(c=>{const o=document.createElement("option");o.value=c.code;o.textContent=c.en;countrySelect.appendChild(o)});
-roles.forEach(r=>{const o=document.createElement("option");o.value=r.key;o.textContent=r.en;roleSelect.appendChild(o)});
-const people=[];countries.forEach((c,ci)=>roles.forEach((r,ri)=>{const n=ci*6+ri;people.push({id:c.code+"-"+r.key,country:c,role:r,name:firstNames[(n+ci*3+ri)%firstNames.length]+" "+surnames[(n*3+ci+ri)%surnames.length]})}));
-const esc=s=>String(s).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
-function render(){const cf=countrySelect.value,rf=roleSelect.value,list=people.filter(p=>(cf==="all"||p.country.code===cf)&&(rf==="all"||p.role.key===rf));summary.textContent=list.length+" AI personas";
-grid.innerHTML=list.map(p=>'<article class="person"><div class="person-top"><img class="portrait" src="/assets/cgg-logo.svg" alt="" loading="lazy"><div><h3>'+esc(p.name)+'</h3><div class="role"><span data-l="en">'+esc(p.role.en)+'</span><span data-l="es">'+esc(p.role.es)+'</span></div></div></div><div class="base"><span data-l="en">Virtual base: '+esc(p.country.cityEn)+'</span><span data-l="es">Base virtual: '+esc(p.country.cityEs)+'</span></div><p class="desc"><span data-l="en">'+esc(p.role.descEn)+'</span><span data-l="es">'+esc(p.role.descEs)+'</span></p><div class="contact-links"><a class="primary" href="mailto:help@christopherthegoodgringo.com"><span data-l="en">Email</span><span data-l="es">Correo</span></a><a href="https://wa.me/13054405175" target="_blank" rel="noopener">WhatsApp</a></div><span class="pill"><span data-l="en">AI persona · '+esc(p.country.en)+'</span><span data-l="es">Perfil de IA · '+esc(p.country.es)+'</span></span></article>').join("");}
-countrySelect.addEventListener("change",render);roleSelect.addEventListener("change",render);render();
-})();
-</script>
-<script>
-(function(){
-  var lang='en';
-  try { var q=new URLSearchParams(location.search).get('lang'); var saved=localStorage.getItem('gg-lang'); if(q==='en'||q==='es')lang=q;else if(saved==='en'||saved==='es')lang=saved; } catch(e){}
-  var btn=document.getElementById('languageToggle');
-  function apply(){document.documentElement.lang=lang;btn.classList.toggle('is-spanish',lang==='es');btn.setAttribute('aria-pressed',lang==='es'?'true':'false');btn.setAttribute('aria-label',lang==='en'?'Switch to Spanish':'Cambiar a inglés');}
-  btn.addEventListener('click',function(){lang=lang==='en'?'es':'en';try{localStorage.setItem('gg-lang',lang);}catch(e){}apply();});
-  apply();
-})();
-</script>
+<script>document.documentElement.lang='en';</script>
 
 <style id="team-header-fixes">
 /* Match the homepage header exactly. */
