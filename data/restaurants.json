@@ -598,6 +598,194 @@
         "Live music"
       ],
       "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "ana-restaurante-bar-cartagena",
+      "name": "Ana Restaurante Bar",
+      "city": "Cartagena",
+      "address": "Calle del Colegio, Carrera 6 #34-56, Centro, Cartagena de Indias, Bolívar, Colombia",
+      "description": "Caribbean and Asian-inspired dining in Cartagena’s historic center, with cocktails and a lively atmosphere.",
+      "cuisine": "Caribbean, Asian",
+      "rating": 4.8,
+      "ratingSource": "OpenTable (October 2026)",
+      "priceRange": "COP 50,000–100,000",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://www.instagram.com/anarestaurantectg/",
+      "bookingUrl": "https://www.opentable.com/r/ana-restaurante-bar-cartagena-de-indias",
+      "features": [
+        "Caribbean-Asian cuisine",
+        "Cocktails",
+        "Historic center"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "7-cielos-cartagena",
+      "name": "7 CIELOS",
+      "city": "Cartagena",
+      "address": "Carrera 3 #10-59, Bocagrande, Cartagena de Indias, Bolívar, Colombia",
+      "description": "Rooftop restaurant with panoramic bay views, seafood, grilled dishes, signature cocktails, and live music.",
+      "cuisine": "Seafood, Caribbean, international",
+      "rating": 4.6,
+      "ratingSource": "OpenTable (October 2026)",
+      "priceRange": "COP 180,000+",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://7cielos.com.co/",
+      "bookingUrl": "https://www.opentable.com/r/7-cielos-cartagena-de-indias",
+      "features": [
+        "Rooftop views",
+        "Seafood",
+        "Cocktails and live music"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "relato-medellin",
+      "name": "Relato",
+      "city": "Medellín",
+      "address": "Carrera 33 #7-115, El Poblado, Medellín, Antioquia, Colombia",
+      "description": "Contemporary restaurant with Mediterranean, Asian, and Latin American influences, suited to special occasions.",
+      "cuisine": "Mediterranean, Asian, Latin American",
+      "rating": 4.8,
+      "ratingSource": "OpenTable (October 2026)",
+      "priceRange": "COP 100,000–180,000",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "bookingUrl": "https://www.opentable.com/r/relato-medellin",
+      "features": [
+        "Contemporary cuisine",
+        "Special occasions",
+        "Cocktails"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "simah-medellin",
+      "name": "Simah",
+      "city": "Medellín",
+      "address": "Avenida Las Palmas #16A Sur-42, local 102, Medellín, Antioquia, Colombia",
+      "description": "Contemporary Latin American dining with local ingredients and panoramic views from Las Palmas.",
+      "cuisine": "Contemporary Latin American",
+      "rating": 4.6,
+      "ratingSource": "OpenTable (October 2026)",
+      "priceRange": "COP 100,000–180,000",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://www.instagram.com/simah_restaurante",
+      "bookingUrl": "https://www.opentable.com/r/simah-medellin",
+      "features": [
+        "Panoramic views",
+        "Local ingredients",
+        "Contemporary dining"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "colosal-restaurante-medellin",
+      "name": "Colosal Restaurante",
+      "city": "Medellín",
+      "address": "Calle 16A Sur, Casaloma, El Poblado, Medellín, Antioquia, Colombia",
+      "description": "Contemporary restaurant focused on seafood, fire-grilled dishes, and scenic views in El Poblado.",
+      "cuisine": "International, seafood, grilled dishes",
+      "rating": 4.7,
+      "ratingSource": "OpenTable (October 2026)",
+      "priceRange": "COP 100,000–180,000",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://colosalrestaurante.com/",
+      "bookingUrl": "https://www.opentable.com/r/colosal-restaurante-casaloma",
+      "features": [
+        "Scenic views",
+        "Seafood",
+        "Outdoor dining"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "dolores-restaurante-bogota",
+      "name": "Dolores restaurante",
+      "city": "Bogotá",
+      "address": "Calle 76 #10-44, El Nogal, Bogotá, Colombia",
+      "description": "Contemporary European cuisine with tasting-menu options in a polished, design-forward setting.",
+      "cuisine": "Contemporary European",
+      "rating": 4.8,
+      "ratingSource": "OpenTable (October 2026)",
+      "priceRange": "COP 50,000–100,000",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://www.dolores.com.co/",
+      "bookingUrl": "https://www.opentable.com/r/dolores-restaurante-bogota",
+      "features": [
+        "Tasting menu",
+        "Contemporary European cuisine",
+        "Special occasions"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "galenos-bogota",
+      "name": "Restaurante Galenos",
+      "city": "Bogotá",
+      "address": "Transversal 23 #93-23, floor 8, Bogotá, Colombia",
+      "description": "Elevated dining with creative international cuisine, skyline views, and a refined setting for special occasions.",
+      "cuisine": "International, contemporary fusion",
+      "rating": 5,
+      "ratingSource": "OpenTable (October 2026; 14 reviews)",
+      "priceRange": "COP 50,000–100,000",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://www.losgalenos.com/",
+      "bookingUrl": "https://www.opentable.com/r/galenos-bogota",
+      "features": [
+        "Skyline views",
+        "Creative cuisine",
+        "Special occasions"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "diestro-restaurante-bogota",
+      "name": "Diestro Restaurante",
+      "city": "Bogotá",
+      "address": "Calle 140 #18A-27, local 3, Usaquén, Bogotá, Colombia",
+      "description": "Spanish and Mediterranean cooking with paella, tapas, and a lively atmosphere featuring flamenco guitar.",
+      "cuisine": "Spanish, Mediterranean",
+      "rating": 4.8,
+      "ratingSource": "OpenTable (October 2026; 3 reviews)",
+      "priceRange": "COP 50,000–100,000",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://www.diestrorestaurante.com/",
+      "bookingUrl": "https://www.opentable.com/r/diestro-restaurante-bogota",
+      "features": [
+        "Tapas and paella",
+        "Spanish cuisine",
+        "Live music"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "petronio-cocina-autor-bogota",
+      "name": "Petronio Cocina de autor",
+      "city": "Bogotá",
+      "address": "Carrera 22 #84-99, Chapinero, Bogotá, Colombia",
+      "description": "Author-driven Colombian cooking inspired by the Pacific region, reinterpreting regional ingredients and traditions.",
+      "cuisine": "Contemporary Colombian, Pacific-inspired",
+      "rating": 4,
+      "ratingSource": "OpenTable (October 2026; 33 reviews)",
+      "priceRange": "COP 50,000–100,000",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://www.petroniococinadeautor.com/",
+      "bookingUrl": "https://www.opentable.com/r/petronio-cocina-de-autor-bogota",
+      "features": [
+        "Pacific Colombian cuisine",
+        "Local ingredients",
+        "Creative cooking"
+      ],
+      "verifiedOn": "2026-10-20"
     }
   ]
 }
