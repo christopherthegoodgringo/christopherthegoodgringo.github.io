@@ -343,7 +343,7 @@ function render(){
   if(x.operator){const p=document.createElement('p');p.textContent=(document.documentElement.lang==='es'?'Operador: ':'Operator: ')+x.operator;card.append(p);}
   if(x.description&&!x.isTest){const p=document.createElement('p');p.textContent=x.description;card.append(p);}
   if(Array.isArray(x.photoUrls)&&!x.isTest){
-   x.photoUrls.filter(url=>typeof url==='string'&&/^https?:\/\//i.test(url)).slice(0,6).forEach(url=>{const img=document.createElement('img');img.src=url;img.alt=(document.documentElement.lang==='es'?'Foto de ':'Photo of ')+x.name;img.loading='lazy';img.referrerPolicy='no-referrer';img.style.cssText='display:block;width:100%;max-height:220px;object-fit:cover;border-radius:9px;margin:8px 0';card.append(img);});
+   x.photoUrls.filter(url=>typeof url==='string'&&/^https?:\/\//i.test(url)).slice(0,6).forEach(url=>{const img=document.createElement('img');img.src=url;img.alt='';img.loading='lazy';img.referrerPolicy='no-referrer';img.style.cssText='display:block;width:100%;max-height:220px;object-fit:cover;border-radius:9px;margin:8px 0';card.append(img);});
   }
   const links=document.createElement('div');links.className='links';
   // The only action link shown on any hostel card is its official website.
