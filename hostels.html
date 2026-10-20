@@ -287,12 +287,16 @@ async function loadHostels(){
  }
 }
 function listingPriority(x){
- const plan=String(x.listingPlan||x.plan||'').toLowerCase().trim();
+ const plan=String(x.listingPlan||x.plan||'free').toLowerCase().trim();
  if(['premium','paid-premium','premium-paid'].includes(plan))return 0;
  if(['featured','paid-featured','featured-paid'].includes(plan))return 1;
+ // Baboon Hostal is a free listing with an administrator-approved position
+ // immediately after Featured listings, as specifically requested.
+ const normalizeName=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+ if(normalizeName(x.name)==='baboon hostal'&&normalizeName(x.city)==='santa marta'&&x.countryCode==='CO')return 2;
  const claimStatus=String(x.claimStatus||x.claim_status||'').toLowerCase().trim();
  const verifiedClaim=x.isClaimed===true||x.claimed===true||x.claimApproved===true||x.ownerVerified===true||['approved','verified','claimed','active'].includes(claimStatus);
- return verifiedClaim?2:3;
+ return verifiedClaim?3:4;
 }
 function render(){
  const term=search.value.trim().toLowerCase();
