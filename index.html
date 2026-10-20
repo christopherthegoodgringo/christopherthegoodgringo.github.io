@@ -144,28 +144,20 @@ html[lang="es"] html[lang="es"] [data-l="en"]{display:none!important}html:not([l
 
 <script>
   (()=> {
-   const languagePopup=document.getElementById('welcomeLanguagePopup');
-   const selectionPopup=document.getElementById('welcomeSelectionPopup');
    const choices=document.getElementById('welcomeChoices');
-   function continueIn(language){
-    if(typeof window.setSiteLanguage==='function')window.setSiteLanguage(language);
-    try{localStorage.setItem('gg-lang',language)}catch(e){}
-    languagePopup.hidden=true;
-    selectionPopup.hidden=false;
-   }
-   document.getElementById('chooseEnglish').addEventListener('click',()=>continueIn('en'));
-   document.getElementById('chooseSpanish').addEventListener('click',()=>continueIn('es'));
-   document.getElementById('welcomeBack').addEventListener('click',()=>{
-    selectionPopup.hidden=true;
-    languagePopup.hidden=false;
-   });
+   let lang='en';
+   try{lang=localStorage.getItem('gg-lang')==='es'?'es':'en'}catch(e){}
+   document.documentElement.lang=lang;
+   if(typeof window.setSiteLanguage==='function')window.setSiteLanguage(lang);
+   const selectionPopup=document.getElementById('welcomeSelectionPopup');
+   if(selectionPopup)selectionPopup.hidden=false;
    choices.addEventListener('click',e=>{
-    const lang=document.documentElement.lang==='es'?'es':'en';
-    if(e.target.closest('#welcomeHotels')){location.href='/hotels.html?country=CO&lang='+lang;return}
-    if(e.target.closest('#welcomeHostels')){location.href='/hostels.html?country=CO&lang='+lang;return}
-    if(e.target.closest('#welcomeRestaurants')){location.href='/restaurants.html?lang='+lang;return}
-    if(e.target.closest('#welcomeBars')){location.href='/bars.html?lang='+lang;return}
-    for(const path of ['/merch.html','/ebooks.html','/social-media.html'])if(e.target.closest('a[href="'+path+'"]')){e.preventDefault();window.location.assign(path+'?lang='+lang);return}
+    const selectedLang=document.documentElement.lang==='es'?'es':'en';
+    if(e.target.closest('#welcomeHotels')){location.href='/hotels.html?country=CO&lang='+selectedLang;return}
+    if(e.target.closest('#welcomeHostels')){location.href='/hostels.html?country=CO&lang='+selectedLang;return}
+    if(e.target.closest('#welcomeRestaurants')){location.href='/restaurants.html?lang='+selectedLang;return}
+    if(e.target.closest('#welcomeBars')){location.href='/bars.html?lang='+selectedLang;return}
+    for(const path of ['/merch.html','/ebooks.html','/social-media.html'])if(e.target.closest('a[href="'+path+'"]')){e.preventDefault();window.location.assign(path+'?lang='+selectedLang);return}
    });
   })();
  </script>
