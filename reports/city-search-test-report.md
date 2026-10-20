@@ -17,7 +17,7 @@
 | Page loads compact cleaned data | PASS | clean data endpoint found |
 | Paid and free owner listings are merged separately | PASS | 4 owner listings available |
 | Country and city filters are present | PASS | both selectors found |
-| English/Spanish toggle is wired | PASS | bilingual toggle found |
+| English/Spanish toggle is wired | FAIL | bilingual toggle found |
 | Booking buttons only link to Hostelworld | PASS | Hostelworld-only booking link logic found |
 | No link to the separate hotel directory | FAIL | directory pages remain separate |
 
