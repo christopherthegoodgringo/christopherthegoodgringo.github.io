@@ -15,7 +15,11 @@
       "listingPlan": "featured",
       "paidListing": true,
       "phone": "+57 322 234 8055",
-      "email": "info@thespotforliving.com"
+      "email": "info@thespotforliving.com",
+      "photoUrls": [
+        "https://visitbogota.co/sites/default/files/2025-12/5.TERRAZA%20BBQ%203_11zon.jpg",
+        "https://visitbogota.co/sites/default/files/2025-12/6.PISCINA%203_11zon.jpg"
+      ]
     }
   ]
 }
