@@ -358,7 +358,18 @@ function render(){
   }
   const place=document.createElement('p');place.textContent=[x.city,x.address].filter(Boolean).join(' · ')||(document.documentElement.lang==='es'?'Ubicación no indicada':'Location not listed');card.append(place);
   if(x.operator){const p=document.createElement('p');p.textContent=(document.documentElement.lang==='es'?'Operador: ':'Operator: ')+x.operator;card.append(p);}
-  if(x.description&&!x.isTest){const p=document.createElement('p');p.textContent=x.description;card.append(p);}
+  if(x.description&&!x.isTest){
+   const p=document.createElement('p');
+   const localizedDescriptions={
+    'paid-spotty-hostel-bogota':{
+     en:'Modern hostel in central Bogotá with a rooftop pool, terrace, bar, games area and spaces to connect with fellow travelers.',
+     es:'Hostal moderno en el centro de Bogotá con piscina en la azotea, terraza, bar, zona de juegos y espacios para conectar con otros viajeros.'
+    }
+   };
+   const localized=localizedDescriptions[x.id];
+   p.textContent=localized?localized[document.documentElement.lang==='es'?'es':'en']:x.description;
+   card.append(p);
+  }
   if(plan==='featured'&&x.id==='paid-spotty-hostel-bogota'){
    const why=document.createElement('div');why.className='featured-why';
    const heading=document.createElement('strong');heading.textContent=document.documentElement.lang==='es'?'¿Por qué alojarte aquí?':'Why stay here?';why.append(heading);
