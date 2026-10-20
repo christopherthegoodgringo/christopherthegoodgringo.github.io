@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-19",
+  "updatedAt": "2026-10-20",
   "scope": "Independent restaurants in all 18 Latin American countries. Initial curated listings use publicly surfaced 2026 ratings; ratings can change and should be rechecked. Standard filter is 4.0+; top-rated filter is 4.8+ out of 5.",
   "countries": [
     {
@@ -107,7 +107,7 @@
       "priceRange": "$$$$",
       "countryCode": "MX",
       "countryName": "Mexico",
-      "website": "https://www.google.com/maps/search/?api=1&query=Criollo+restaurant+Oaxaca+Mexico",
+      "website": "https://criollo.mx/",
       "features": [
         "Tasting menu",
         "Garden setting"
@@ -164,7 +164,7 @@
       "priceRange": "$$$$",
       "countryCode": "EC",
       "countryName": "Ecuador",
-      "website": "https://www.google.com/maps/search/?api=1&query=Somos+Ecuador+Restaurante+Quito",
+      "website": "https://somos.rest/",
       "features": [
         "Contemporary dining",
         "Local ingredients"
@@ -183,7 +183,7 @@
       "priceRange": "$$$$",
       "countryCode": "PY",
       "countryName": "Paraguay",
-      "website": "https://www.google.com/maps/search/?api=1&query=Tierra+Colorada+Gastro+Asuncion+Paraguay",
+      "website": "https://tierracoloradagastro.com/",
       "features": [
         "Fine dining",
         "Reservations recommended"
@@ -220,7 +220,7 @@
       "priceRange": "$$$",
       "countryCode": "CL",
       "countryName": "Chile",
-      "website": "https://www.google.com/maps/search/?api=1&query=Bocanariz+Santiago+Chile",
+      "website": "https://bocanariz.cl/",
       "features": [
         "Wine pairing",
         "Central location"
@@ -239,7 +239,7 @@
       "priceRange": "$$$",
       "countryCode": "PE",
       "countryName": "Peru",
-      "website": "https://www.google.com/maps/search/?api=1&query=CHE+CHA+Food+Bar+Lima+Peru",
+      "website": "https://chechateabar.com/",
       "features": [
         "Contemporary menu",
         "Bar"
@@ -258,7 +258,7 @@
       "priceRange": "$$$$",
       "countryCode": "UY",
       "countryName": "Uruguay",
-      "website": "https://www.google.com/maps/search/?api=1&query=Restaurant+Primuseum+Montevideo+Uruguay",
+      "website": "https://primuseum.com/",
       "features": [
         "Special occasion",
         "Tango experience"
@@ -277,7 +277,7 @@
       "priceRange": "$$$",
       "countryCode": "CU",
       "countryName": "Cuba",
-      "website": "https://www.google.com/maps/search/?api=1&query=Adastra+Restaurants+Havana+Cuba",
+      "website": "https://adastrarestaurante.com/",
       "features": [
         "Caribbean cuisine"
       ],
@@ -295,7 +295,7 @@
       "priceRange": "$$$",
       "countryCode": "PE",
       "countryName": "Peru",
-      "website": "https://www.google.com/maps/search/?api=1&query=Panchita+restaurant+Lima+Peru",
+      "website": "https://panchita.pe/",
       "features": [
         "Peruvian cuisine",
         "Grill"
@@ -314,7 +314,7 @@
       "priceRange": "$$$",
       "countryCode": "CR",
       "countryName": "Costa Rica",
-      "website": "https://www.google.com/maps/search/?api=1&query=Amana+restaurant+San+Jose+Costa+Rica",
+      "website": "https://amanacr.com/",
       "features": [
         "Local ingredients",
         "Chef's table"
@@ -352,7 +352,7 @@
       "priceRange": "$$$$",
       "countryCode": "AR",
       "countryName": "Argentina",
-      "website": "https://www.google.com/maps/search/?api=1&query=Fogon+Asado+Buenos+Aires+Argentina",
+      "website": "https://fogonasado.com/",
       "features": [
         "Tasting menu",
         "Open-fire cooking"
@@ -371,7 +371,7 @@
       "priceRange": "$$$",
       "countryCode": "BO",
       "countryName": "Bolivia",
-      "website": "https://www.google.com/maps/search/?api=1&query=La+Rufina+Bolivia+La+Paz",
+      "website": "https://larufinabolivia.com/",
       "features": [
         "Local ingredients",
         "Vegetarian-friendly"
@@ -428,7 +428,7 @@
       "priceRange": "$$$",
       "countryCode": "HN",
       "countryName": "Honduras",
-      "website": "https://www.google.com/maps/search/?api=1&query=Ahari+By+Arca+Roatan+Honduras",
+      "website": "https://arcaroatan.com/dining/",
       "features": [
         "Seafood",
         "Island dining"
