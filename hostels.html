@@ -25,7 +25,7 @@
 @media(max-width:480px){.site-header{padding:0 14px!important}.site-header-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.site-header-nav a{justify-content:flex-start;white-space:normal}.site-header-nav .language-toggle{justify-self:start;margin:3px 0}.site-brand{font-size:.78rem;white-space:normal}.site-brand img{width:38px;height:38px}}
 .demo-logo-image{display:block;width:100%;height:150px;object-fit:contain;padding:22px;background:linear-gradient(135deg,#fbf7ed,#edf4ee);border:1px solid #e4e0d5;border-radius:11px;margin:0 0 12px}.demo-copy{font-size:.9rem!important;line-height:1.5;color:#40594d!important;margin:7px 0 12px!important}.hostel.plan-featured{border:2px solid #d6a84f;box-shadow:0 5px 18px #d6a84f20}
 /* Free listings get a subtle green outline so they are easy to distinguish without competing with Featured cards. */
-.hostel:not(.plan-featured):not(.plan-premium){border:2px solid #8fb6a2;box-shadow:0 3px 12px #174b3b0b}.plan-ribbon{display:inline-block;margin:0 0 9px;padding:6px 10px;border-radius:7px;font-size:.76rem;font-weight:900;letter-spacing:.035em}.plan-featured .plan-ribbon{background:#f7e8bd;color:#654810}
+.hostel.plan-free{border:2px solid #8fb6a2;background:#fcfffd;box-shadow:0 3px 12px #174b3b0b}.plan-ribbon{display:inline-block;margin:0 0 9px;padding:6px 10px;border-radius:7px;font-size:.76rem;font-weight:900;letter-spacing:.035em}.plan-featured .plan-ribbon{background:#f7e8bd;color:#654810}
 /* Match the homepage footer colors exactly. */
 footer{background:#09291e!important;color:#cbd8cf;padding:20px 0;font-size:.82rem}footer a{color:#f5bd3e;margin-left:14px}
 </style><style>
@@ -308,9 +308,15 @@ function render(){
  if(!filtered.length){results.className='empty';results.textContent=document.documentElement.lang==='es'?'No hay coincidencias. Prueba otra forma de escribirlo o borra la búsqueda.':'No matches. Try another spelling or clear your search.';return;}
  results.className='grid';results.replaceChildren();
  filtered.forEach(x=>{
-  const plan=String(x.listingPlan||x.plan||'free').toLowerCase().trim();
-  const card=document.createElement('article');card.className='hostel'+(plan==='featured'?' plan-featured':plan==='premium'?' plan-premium':'');
+  const explicitPlan=String(x.listingPlan||x.plan||'').toLowerCase().trim();
+  const plan=explicitPlan||'free';
+  const card=document.createElement('article');card.className='hostel'+(plan==='featured'?' plan-featured':plan==='premium'?' plan-premium':explicitPlan==='free'?' plan-free':'');
   const h=document.createElement('h3');h.textContent=x.name;card.append(h);
+  if(!x.isTest&&explicitPlan==='free'){
+   const ribbon=document.createElement('p');ribbon.className='plan-ribbon';
+   ribbon.style.cssText='background:#e5f2e9;color:#174b3b;border:1px solid #8fb6a2';
+   ribbon.textContent=document.documentElement.lang==='es'?'✓ FICHA GRATIS':'✓ FREE LISTING';card.append(ribbon);
+  }
   if(!x.isTest&&(plan==='featured'||plan==='premium')){
    const ribbon=document.createElement('p');ribbon.className='plan-ribbon';
    ribbon.textContent=plan==='premium'?(document.documentElement.lang==='es'?'✦ FICHA PRÉMIUM':'✦ PREMIUM LISTING'):(document.documentElement.lang==='es'?'✦ FICHA DESTACADA':'✦ FEATURED LISTING');
