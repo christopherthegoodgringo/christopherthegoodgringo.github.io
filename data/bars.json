@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-20",
-  "scope": "Starter directory of independent and distinctive bars across 18 Latin American countries. Ratings are indicative starter values and should be checked against current public reviews before relying on them. Standard filter is 4.0+; top-rated filter is 4.8+ out of 5.",
+  "scope": "Initial researched batch of independent and distinctive bars. Listings must have an official website or direct OpenTable listing and a currently sourced rating of at least 4.0/5. Ratings and sources should be rechecked periodically. The directory covers 18 Latin American countries; additional countries remain to be researched.",
   "countries": [
     {
       "code": "BZ",
@@ -77,142 +77,22 @@
   ],
   "bars": [
     {
-      "id": "wet-lizard-belize-city",
-      "name": "The Wet Lizard",
-      "city": "Belize City",
-      "countryName": "Belize",
-      "countryCode": "BZ",
-      "address": "Belize City, Belize",
-      "description": "Casual waterfront bar near the Swing Bridge, known for drinks and a lively setting.",
-      "drinks": "Cocktails, beer",
-      "rating": 4.3,
-      "ratingSource": "Starter rating — verify current public reviews",
-      "priceRange": "$$–$$$",
-      "website": "https://www.google.com/maps/search/?api=1&query=The+Wet+Lizard+Belize+City+Belize",
-      "features": [
-        "Waterfront",
-        "Casual",
-        "Local favorite"
-      ],
-      "verifiedOn": "2026-10-20"
-    },
-    {
-      "id": "hanky-panky-mexico-city",
-      "name": "Hanky Panky",
-      "city": "Mexico City",
-      "countryName": "Mexico",
-      "countryCode": "MX",
-      "address": "Mexico City, Mexico",
-      "description": "Independent speakeasy-style cocktail bar with inventive drinks and reservations recommended.",
-      "drinks": "Craft cocktails",
-      "rating": 4.6,
-      "ratingSource": "Starter rating — verify current public reviews",
-      "priceRange": "$$–$$$",
-      "website": "https://www.google.com/maps/search/?api=1&query=Hanky+Panky+Mexico+City+Mexico",
-      "features": [
-        "Speakeasy",
-        "Craft cocktails",
-        "Reservations"
-      ],
-      "verifiedOn": "2026-10-20"
-    },
-    {
-      "id": "casa-del-ron-antigua",
-      "name": "Ulew Cocktail Bar",
-      "city": "Antigua Guatemala",
-      "countryName": "Guatemala",
-      "countryCode": "GT",
-      "address": "Antigua Guatemala, Guatemala",
-      "description": "Cocktail-focused bar in Antigua's historic center with a polished, intimate atmosphere.",
-      "drinks": "Craft cocktails",
-      "rating": 4.5,
-      "ratingSource": "Starter rating — verify current public reviews",
-      "priceRange": "$$–$$$",
-      "website": "https://www.google.com/maps/search/?api=1&query=Ulew+Cocktail+Bar+Antigua+Guatemala+Guatemala",
-      "features": [
-        "Historic center",
-        "Cocktails",
-        "Date night"
-      ],
-      "verifiedOn": "2026-10-20"
-    },
-    {
-      "id": "lighthouse-roatan",
-      "name": "The Lighthouse",
-      "city": "West End, Roatán",
-      "countryName": "Honduras",
-      "countryCode": "HN",
-      "address": "West End, Roatán, Honduras",
-      "description": "Relaxed island bar setting for sunset drinks and a casual night out.",
-      "drinks": "Cocktails, beer",
-      "rating": 4.4,
-      "ratingSource": "Starter rating — verify current public reviews",
-      "priceRange": "$$–$$$",
-      "website": "https://www.google.com/maps/search/?api=1&query=The+Lighthouse+West+End%2C+Roat%C3%A1n+Honduras",
-      "features": [
-        "Island atmosphere",
-        "Sunset",
-        "Casual"
-      ],
-      "verifiedOn": "2026-10-20"
-    },
-    {
-      "id": "cadejo-san-salvador",
-      "name": "Cadejo Brewing Company",
-      "city": "San Salvador",
-      "countryName": "El Salvador",
-      "countryCode": "SV",
-      "address": "San Salvador, El Salvador",
-      "description": "Local craft-beer brewery and taproom with a broad beer selection and social atmosphere.",
-      "drinks": "Craft beer",
-      "rating": 4.4,
-      "ratingSource": "Starter rating — verify current public reviews",
-      "priceRange": "$$–$$$",
-      "website": "https://www.google.com/maps/search/?api=1&query=Cadejo+Brewing+Company+San+Salvador+El+Salvador",
-      "features": [
-        "Local beer",
-        "Taproom",
-        "Casual"
-      ],
-      "verifiedOn": "2026-10-20"
-    },
-    {
-      "id": "art-warehouse-granada",
-      "name": "The Art Warehouse",
-      "city": "Granada",
-      "countryName": "Nicaragua",
-      "countryCode": "NI",
-      "address": "Granada, Nicaragua",
-      "description": "Independent arts-and-drinks venue with a creative atmosphere for an easygoing evening.",
-      "drinks": "Cocktails, beer",
-      "rating": 4.5,
-      "ratingSource": "Starter rating — verify current public reviews",
-      "priceRange": "$$–$$$",
-      "website": "https://www.google.com/maps/search/?api=1&query=The+Art+Warehouse+Granada+Nicaragua",
-      "features": [
-        "Creative setting",
-        "Casual",
-        "Nightlife"
-      ],
-      "verifiedOn": "2026-10-20"
-    },
-    {
       "id": "apotecario-san-jose",
       "name": "Apotecario",
       "city": "San José",
       "countryName": "Costa Rica",
       "countryCode": "CR",
-      "address": "San José, Costa Rica",
-      "description": "Cocktail bar with a botanical feel and creative drinks in a lively neighborhood.",
-      "drinks": "Craft cocktails",
-      "rating": 4.5,
-      "ratingSource": "Starter rating — verify current public reviews",
+      "address": "Barrio Escalante, San José, Costa Rica",
+      "description": "Family-owned Costa Rican venue with creative cocktails, local ingredients, live music, and an eclectic atmosphere.",
+      "drinks": "Craft cocktails, gin cocktails",
+      "rating": 4.6,
+      "ratingSource": "Wanderlog summary of Google reviews; checked 2026-10-20",
       "priceRange": "$$–$$$",
-      "website": "https://www.google.com/maps/search/?api=1&query=Apotecario+San+Jos%C3%A9+Costa+Rica",
+      "website": "https://www.apotecario.cr/",
       "features": [
         "Craft cocktails",
-        "Botanical",
-        "Date night"
+        "Live music",
+        "Local ingredients"
       ],
       "verifiedOn": "2026-10-20"
     },
@@ -222,137 +102,37 @@
       "city": "Panama City",
       "countryName": "Panama",
       "countryCode": "PA",
-      "address": "Panama City, Panama",
-      "description": "Independent rum bar celebrating Panamanian rum with cocktails and a distinctive local identity.",
-      "drinks": "Rum, cocktails",
-      "rating": 4.5,
-      "ratingSource": "Starter rating — verify current public reviews",
+      "address": "Calle Avenida A, Casco Antiguo, Panama City, Panama",
+      "description": "Panamanian craft-rum bar serving rum flights, artisanal cocktails, and salsa in a distinctive local setting.",
+      "drinks": "Panamanian rum, rum flights, cocktails",
+      "rating": 4.7,
+      "ratingSource": "Google-review aggregation reported by Top-Rated.Online; checked 2026-10-20",
       "priceRange": "$$–$$$",
-      "website": "https://www.google.com/maps/search/?api=1&query=Pedro+Mandinga+Rum+Bar+Panama+City+Panama",
+      "website": "https://pedromandinga.com/en/",
       "features": [
         "Rum specialist",
-        "Cocktails",
-        "Historic district"
-      ],
-      "verifiedOn": "2026-10-20"
-    },
-    {
-      "id": "floreria-atlantico-buenos-aires",
-      "name": "Florería Atlántico",
-      "city": "Buenos Aires",
-      "countryName": "Argentina",
-      "countryCode": "AR",
-      "address": "Buenos Aires, Argentina",
-      "description": "Renowned cocktail bar hidden behind a flower shop, with creative drinks inspired by immigrant histories.",
-      "drinks": "Craft cocktails",
-      "rating": 4.6,
-      "ratingSource": "Starter rating — verify current public reviews",
-      "priceRange": "$$–$$$",
-      "website": "https://www.google.com/maps/search/?api=1&query=Florer%C3%ADa+Atl%C3%A1ntico+Buenos+Aires+Argentina",
-      "features": [
-        "Hidden bar",
         "Craft cocktails",
-        "Late night"
+        "Local identity"
       ],
       "verifiedOn": "2026-10-20"
     },
     {
-      "id": "diesel-nacional-la-paz",
-      "name": "Diesel Nacional",
-      "city": "La Paz",
-      "countryName": "Bolivia",
-      "countryCode": "BO",
-      "address": "La Paz, Bolivia",
-      "description": "Distinctive industrial-themed bar with cocktails, music, and a lively local crowd.",
-      "drinks": "Cocktails, beer",
-      "rating": 4.4,
-      "ratingSource": "Starter rating — verify current public reviews",
-      "priceRange": "$$–$$$",
-      "website": "https://www.google.com/maps/search/?api=1&query=Diesel+Nacional+La+Paz+Bolivia",
-      "features": [
-        "Unique interior",
-        "Music",
-        "Nightlife"
-      ],
-      "verifiedOn": "2026-10-20"
-    },
-    {
-      "id": "chipe-libre-santiago",
-      "name": "Chipe Libre",
-      "city": "Santiago",
-      "countryName": "Chile",
-      "countryCode": "CL",
-      "address": "Santiago, Chile",
-      "description": "Pisco-focused bar offering Chilean and Peruvian pisco flights alongside cocktails.",
-      "drinks": "Pisco, cocktails",
+      "id": "cadejo-san-salvador",
+      "name": "Cadejo Brewing Company",
+      "city": "San Salvador",
+      "countryName": "El Salvador",
+      "countryCode": "SV",
+      "address": "Calle La Reforma #222, San Salvador, El Salvador",
+      "description": "Independent Salvadoran craft brewery and brewpub with house-brewed beers and a lively taproom atmosphere.",
+      "drinks": "Craft beer",
       "rating": 4.5,
-      "ratingSource": "Starter rating — verify current public reviews",
-      "priceRange": "$$–$$$",
-      "website": "https://www.google.com/maps/search/?api=1&query=Chipe+Libre+Santiago+Chile",
+      "ratingSource": "Google-review aggregation reported by Top-Rated.Online; checked 2026-10-20",
+      "priceRange": "$$",
+      "website": "https://cervezacadejo.com/",
       "features": [
-        "Pisco specialist",
-        "Tasting flights",
-        "Historic center"
-      ],
-      "verifiedOn": "2026-10-20"
-    },
-    {
-      "id": "alquimico-cartagena",
-      "name": "Alquímico",
-      "city": "Cartagena",
-      "countryName": "Colombia",
-      "countryCode": "CO",
-      "address": "Cartagena, Colombia",
-      "description": "Multi-level cocktail bar known for creative drinks and a rooftop atmosphere in the historic city.",
-      "drinks": "Craft cocktails",
-      "rating": 4.7,
-      "ratingSource": "Starter rating — verify current public reviews",
-      "priceRange": "$$–$$$",
-      "website": "https://www.google.com/maps/search/?api=1&query=Alqu%C3%ADmico+Cartagena+Colombia",
-      "features": [
-        "Rooftop",
-        "Craft cocktails",
-        "Historic center"
-      ],
-      "verifiedOn": "2026-10-20"
-    },
-    {
-      "id": "la-ideal-quito",
-      "name": "La Ideal",
-      "city": "Quito",
-      "countryName": "Ecuador",
-      "countryCode": "EC",
-      "address": "Quito, Ecuador",
-      "description": "Independent cocktail destination for well-made drinks and an intimate evening out.",
-      "drinks": "Cocktails, spirits",
-      "rating": 4.4,
-      "ratingSource": "Starter rating — verify current public reviews",
-      "priceRange": "$$–$$$",
-      "website": "https://www.google.com/maps/search/?api=1&query=La+Ideal+Quito+Ecuador",
-      "features": [
-        "Cocktails",
-        "Intimate",
-        "Nightlife"
-      ],
-      "verifiedOn": "2026-10-20"
-    },
-    {
-      "id": "la-cachamba-asuncion",
-      "name": "La Cachamba",
-      "city": "Asunción",
-      "countryName": "Paraguay",
-      "countryCode": "PY",
-      "address": "Asunción, Paraguay",
-      "description": "Casual local bar and social stop for drinks in Asunción.",
-      "drinks": "Beer, cocktails",
-      "rating": 4.3,
-      "ratingSource": "Starter rating — verify current public reviews",
-      "priceRange": "$$–$$$",
-      "website": "https://www.google.com/maps/search/?api=1&query=La+Cachamba+Asunci%C3%B3n+Paraguay",
-      "features": [
-        "Local atmosphere",
-        "Casual",
-        "Nightlife"
+        "Local craft beer",
+        "Brewpub",
+        "Taproom"
       ],
       "verifiedOn": "2026-10-20"
     },
@@ -362,77 +142,17 @@
       "city": "Lima",
       "countryName": "Peru",
       "countryCode": "PE",
-      "address": "Lima, Peru",
-      "description": "Creative cocktail bar with an inventive menu and a polished, contemporary setting.",
-      "drinks": "Craft cocktails",
-      "rating": 4.6,
-      "ratingSource": "Starter rating — verify current public reviews",
-      "priceRange": "$$–$$$",
-      "website": "https://www.google.com/maps/search/?api=1&query=Carnaval+Bar+Lima+Peru",
+      "address": "Av. Felipe Pardo y Aliaga 662, San Isidro, Lima, Peru",
+      "description": "Concept-driven cocktail bar known for inventive mixology, a carefully designed ice program, and contemporary Peruvian inspiration.",
+      "drinks": "Craft cocktails, pisco cocktails",
+      "rating": 4.4,
+      "ratingSource": "Current business listing rating; checked 2026-10-20",
+      "priceRange": "$$$–$$$$",
+      "website": "https://carnavalbar.com/",
       "features": [
         "Signature cocktails",
         "Contemporary",
-        "Reservations"
-      ],
-      "verifiedOn": "2026-10-20"
-    },
-    {
-      "id": "bar-fun-fun-montevideo",
-      "name": "Bar Fun Fun",
-      "city": "Montevideo",
-      "countryName": "Uruguay",
-      "countryCode": "UY",
-      "address": "Montevideo, Uruguay",
-      "description": "Historic tango bar with a traditional atmosphere, live music, and classic local character.",
-      "drinks": "Wine, cocktails",
-      "rating": 4.4,
-      "ratingSource": "Starter rating — verify current public reviews",
-      "priceRange": "$$–$$$",
-      "website": "https://www.google.com/maps/search/?api=1&query=Bar+Fun+Fun+Montevideo+Uruguay",
-      "features": [
-        "Historic bar",
-        "Live music",
-        "Local culture"
-      ],
-      "verifiedOn": "2026-10-20"
-    },
-    {
-      "id": "el-floridita-havana",
-      "name": "El Floridita",
-      "city": "Havana",
-      "countryName": "Cuba",
-      "countryCode": "CU",
-      "address": "Havana, Cuba",
-      "description": "Historic Havana cocktail bar famous for daiquiris and its long-standing place in the city's bar culture.",
-      "drinks": "Daiquiris, cocktails",
-      "rating": 4.2,
-      "ratingSource": "Starter rating — verify current public reviews",
-      "priceRange": "$$–$$$",
-      "website": "https://www.google.com/maps/search/?api=1&query=El+Floridita+Havana+Cuba",
-      "features": [
-        "Historic",
-        "Classic cocktails",
-        "Tourist landmark"
-      ],
-      "verifiedOn": "2026-10-20"
-    },
-    {
-      "id": "onnos-punta-cana",
-      "name": "Onno's",
-      "city": "Punta Cana",
-      "countryName": "Dominican Republic",
-      "countryCode": "DO",
-      "address": "Punta Cana, Dominican Republic",
-      "description": "Lively independent-style beach-area bar and restaurant for cocktails and a casual night out.",
-      "drinks": "Cocktails, beer",
-      "rating": 4.3,
-      "ratingSource": "Starter rating — verify current public reviews",
-      "priceRange": "$$–$$$",
-      "website": "https://www.google.com/maps/search/?api=1&query=Onno's+Punta+Cana+Dominican+Republic",
-      "features": [
-        "Beach area",
-        "Casual",
-        "Nightlife"
+        "Reservation-worthy"
       ],
       "verifiedOn": "2026-10-20"
     }
