@@ -46,6 +46,16 @@ footer{background:#09291e!important;color:#cbd8cf;padding:20px 0;font-size:.82re
 .hostel.plan-premium .plan-ribbon:after{border-top-color:#ffefc7;border-bottom-color:#ffefc7}
 .hostel.plan-premium .plan-mark{background:#f7e8bd;color:#946200;border:1px solid #d6a84f}
 
+/* Put Featured labels in the upper-right corner as a gold ribbon. */
+.hostel.plan-featured h3{padding-right:140px}
+.hostel.plan-featured .plan-ribbon{position:absolute;top:13px;right:12px;z-index:2;display:flex;align-items:center;justify-content:center;min-width:110px;margin:0;padding:8px 12px;background:linear-gradient(110deg,#f7e8bd,#ffefc7);color:#654810;border:1px solid #d6a84f;border-radius:3px;box-shadow:0 3px 8px #9c741d20;font-size:.72rem;font-weight:950;letter-spacing:.05em;line-height:1}
+.hostel.plan-featured .plan-ribbon:before,.hostel.plan-featured .plan-ribbon:after{content:'';position:absolute;top:0;width:0;height:0;border-top:16px solid #d6a84f;border-bottom:16px solid #d6a84f}
+.hostel.plan-featured .plan-ribbon:before{left:-8px;border-left:8px solid transparent}
+.hostel.plan-featured .plan-ribbon:after{right:-8px;border-right:8px solid transparent}
+.hostel.plan-featured .plan-ribbon:before{border-top-color:#f7e8bd;border-bottom-color:#f7e8bd}
+.hostel.plan-featured .plan-ribbon:after{border-top-color:#ffefc7;border-bottom-color:#ffefc7}
+@media(max-width:420px){.hostel.plan-featured h3{padding-right:112px}.hostel.plan-featured .plan-ribbon{right:9px;top:10px;min-width:88px;padding:7px 8px;font-size:.65rem}}
+
 /* Give the Premium listing interior a soft light-yellow finish. */
 .grid>.hostel.plan-premium{background:#fff8dc}
 .grid>.hostel.plan-premium .featured-why{background:#fff0b8}
