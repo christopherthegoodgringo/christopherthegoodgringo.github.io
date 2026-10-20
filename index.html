@@ -24,8 +24,8 @@ html[lang="es"] html[lang="es"] [data-l="en"]{display:none!important}html:not([l
 .hostel-featured,.hostel-premium{padding-top:18px}.hostel-featured .plan-ribbon,.hostel-premium .plan-ribbon{position:absolute;top:13px;right:13px;z-index:2;margin:0;min-width:100px;justify-content:center;border-radius:4px;box-shadow:0 3px 8px #9c741d20}.hostel-featured h3,.hostel-premium h3{padding-right:112px}.hostel-featured img,.hostel-premium img{height:190px;object-fit:cover}.load-more-wrap{text-align:center;margin:-20px 0 44px}.load-more{width:auto;min-width:220px}.load-more[hidden]{display:none!important}@media(max-width:560px){.hostel-featured h3,.hostel-premium h3{padding-right:0}.hostel-featured .plan-ribbon,.hostel-premium .plan-ribbon{position:static;display:inline-flex;margin:3px 0 8px}}
 
 /* Welcome chooser: language first, then hotel or hostel */
-.welcome-overlay{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(5,24,17,.78);backdrop-filter:blur(7px)}
-.welcome-overlay[hidden]{display:none!important}.welcome-dialog{width:min(480px,100%);padding:30px 26px 24px;border-radius:24px;background:var(--white);border:1px solid var(--gold);box-shadow:0 25px 90px #0005;text-align:center}
+.welcome-overlay{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:22px;background:rgba(5,24,17,.78);backdrop-filter:blur(7px)}
+.welcome-overlay[hidden]{display:none!important}.welcome-dialog{width:min(480px,100%);max-height:calc(100vh - 44px);overflow-y:auto;padding:30px 26px 24px;border-radius:24px;background:var(--white);border:1px solid var(--gold);box-shadow:0 25px 90px #0005;text-align:center;flex:0 0 auto}
 .welcome-dialog .welcome-mark{width:68px;height:68px;object-fit:contain;margin-bottom:8px}.welcome-step{color:#a66f0a;font-size:.72rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase}
 .welcome-dialog h2{margin:10px 0;color:var(--green);font-size:clamp(1.8rem,5vw,2.35rem)}.welcome-dialog p{margin:0 0 22px;color:var(--muted)}
 .welcome-choices{display:grid;grid-template-columns:1fr;gap:11px}.welcome-choice{width:100%;padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:#fffdf8;color:var(--green);font:800 1.05rem var(--body);cursor:pointer;text-align:left}
@@ -61,7 +61,7 @@ html[lang="es"] html[lang="es"] [data-l="en"]{display:none!important}html:not([l
   
   <h2 id="welcomeTitle">Where would you like to explore?</h2>
   <p id="welcomeCopy">Choose a finder to get started.</p>
-  <div class="welcome-choices" id="welcomeChoices"><button class="welcome-choice" id="welcomeHotels">Hotels<small>Explore boutique and independent hotels</small></button><button class="welcome-choice" id="welcomeHostels">Hostels<small>Find hostels across Latin America</small></button><button class="welcome-choice" id="welcomeRestaurants">Restaurants<small>Discover highly rated independent restaurants</small></button><button class="welcome-choice" id="welcomeBars">Bars<small>Discover independent bars with great atmosphere</small></button><a class="welcome-choice welcome-link" href="/social-media.html"><span data-l="en">Social Media &amp; Contact</span><span data-l="es">Redes sociales y contacto</span><small><span data-l="en">Connect with us or get in touch</span><span data-l="es">Conéctate con nosotros o escríbenos</span></small></a><a class="welcome-choice welcome-link" href="/merch.html"><span data-l="en">Merch</span><span data-l="es">Mercancía</span><small><span data-l="en">Official branded gear — coming soon</span><span data-l="es">Artículos oficiales de la marca — próximamente</span></small></a><a class="welcome-choice welcome-link" href="/ebooks.html"><span data-l="en">Ebooks</span><span data-l="es">Libros electrónicos</span><small><span data-l="en">Travel ebooks and guides — coming soon</span><span data-l="es">Libros y guías de viaje — próximamente</span></small></a></div>
+  <div class="welcome-choices" id="welcomeChoices"><button class="welcome-choice" id="welcomeHotels">Hotels<small>Explore boutique and independent hotels</small></button><button class="welcome-choice" id="welcomeHostels">Hostels<small>Find hostels across Latin America</small></button><button class="welcome-choice" id="welcomeRestaurants">Restaurants<small>Discover highly rated independent restaurants</small></button><button class="welcome-choice" id="welcomeBars">Bars<small>Discover independent bars with great atmosphere</small></button><a class="welcome-choice welcome-link" href="/social-media.html"><span data-l="en">Social Media &amp; Contact</span><span data-l="es">Redes sociales y contacto</span><small><span data-l="en">Connect with us or get in touch</span><span data-l="es">Conéctate con nosotros o escríbenos</span></small></a><a class="welcome-choice welcome-link" href="/merch.html"><span data-l="en">Merch</span><span data-l="es">Mercancía</span><small>Official branded gear — coming soon</small></a><a class="welcome-choice welcome-link" href="/ebooks.html"><span data-l="en">Ebooks</span><span data-l="es">Libros electrónicos</span><small>Travel ebooks and guides — coming soon</small></a></div>
  </section>
 </div>
 
@@ -148,6 +148,10 @@ Promise.all([fetch('/data/hostels-clean.json').then(r=>{if(!r.ok)throw Error('Ho
    if(e.target.closest('#welcomeHostels')){location.href='/hostels.html?country=CO';return}
    if(e.target.closest('#welcomeRestaurants')){location.href='/restaurants.html';return}
    if(e.target.closest('#welcomeBars')){location.href='/bars.html';return}
+   const merch=e.target.closest('a[href="/merch.html"]');
+   if(merch){e.preventDefault();window.location.assign('/merch.html');return}
+   const ebooks=e.target.closest('a[href="/ebooks.html"]');
+   if(ebooks){e.preventDefault();window.location.assign('/ebooks.html');return}
   });
  })();
  </script>
