@@ -18,7 +18,8 @@ h1,h2,h3{font-family:var(--display);line-height:1.08;letter-spacing:-.035em}h1{f
 </style>
 </head>
 <body>
-<header class="site-header"><div class="site-header-inner"><a class="site-brand" href="/" aria-label="Christopher The Good Gringo home"><img src="/assets/cgg-logo.svg" alt=""><span>CHRISTOPHER THE GOOD GRINGO™</span></a><nav class="site-header-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/hotels.html">Hotel Finder</a><a href="/hostels.html">Hostel Finder</a><a href="/restaurants.html">Restaurant Finder</a><a href="/bars.html">Bar Finder</a><a href="/team/">Meet the Team</a></nav></div></header>
+<header class="site-header"><div class="site-header-inner"><a class="site-brand" href="/" aria-label="Christopher the Good Gringo home"><img src="/assets/cgg-logo.svg" alt=""><span>CHRISTOPHER THE GOOD GRINGO™</span></a><nav class="site-header-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/hotels.html">Hotel Finder</a><a href="/hostels.html">Hostel Finder</a><a href="/restaurants.html">Restaurant Finder</a>
+<a href="/bars.html">Bar Finder</a><a href="/street-food-finder.html">Street Food Finder</a><a href="/team/">Meet the Team</a><a href="/social-media.html">Social Media &amp; Contact</a><a href="/merch.html">Merch</a><a href="/ebooks.html">Ebooks</a></nav></div></header>
 <main class="wrap">
 <section class="hero"><div class="eyebrow">Business listings & sponsorships</div><h1>Get your business <em>noticed.</em></h1><p>Claim your business on Christopher The Good Gringo. Start with a free listing or request a paid sponsorship for greater visibility. Complete the form below and our team will review your details before making changes to the directory.</p></section>
 <section class="tiers" aria-label="Sponsorship levels">
@@ -51,7 +52,17 @@ h1,h2,h3{font-family:var(--display);line-height:1.08;letter-spacing:-.035em}h1{f
 </form></div>
 </section>
 </main>
-<footer><div class="wrap"><span>Good places. Good people. Good stories.</span><span>© 2026 Christopher The Good Gringo™. All rights reserved.</span><nav aria-label="Footer navigation"><a href="/">Home</a><a href="/team/">Meet the Team</a><a href="/hotels.html">Hotel Finder</a><a href="/hostels.html">Hostel Finder</a><a href="/restaurants.html">Restaurant Finder</a><a href="/privacy-policy.html">Privacy Policy</a><a href="/terms-of-use.html">Terms of Use</a></nav></div></footer>
+<footer><div class="wrap" style="display:flex;align-items:center;justify-content:center;gap:10px 18px;flex-wrap:wrap;text-align:center;padding-top:22px;padding-bottom:22px"><span id="footerText" data-l="en">Good places. Good people. Good stories.</span><span id="footerTextEs" data-l="es">Buenos lugares. Buena gente. Grandes historias.</span>© 2026 Christopher The Good Gringo™. All rights reserved.<nav aria-label="Footer navigation" style="display:flex;align-items:center;justify-content:center;gap:8px 18px;flex-wrap:wrap">
+<a href="/">Home</a>
+<a href="/hotels.html">Hotel Finder</a>
+
+<a href="/hostels.html">Hostel Finder</a><a href="/restaurants.html">Restaurant Finder</a>
+<a href="/bars.html">Bar Finder</a><a href="/street-food-finder.html">Street Food Finder</a>
+<a href="/team/">Meet the Team</a><a href="/social-media.html">Social Media &amp; Contact</a>
+<a href="/merch.html">Merch</a><a href="/ebooks.html">Ebooks</a>
+<a href="/privacy-policy.html">Privacy Policy</a>
+<a href="/terms-of-use.html">Terms of Use</a>
+</nav></div></footer>
 <script>
 (()=>{const form=document.getElementById('claimForm'),plan=document.getElementById('requestType'),notice=document.getElementById('formNotice');document.querySelectorAll('[data-plan]').forEach(btn=>btn.addEventListener('click',()=>{plan.value=btn.dataset.plan;document.getElementById('claim-form').scrollIntoView({behavior:'smooth'});document.getElementById('businessName').focus({preventScroll:true})}));form.addEventListener('submit',e=>{e.preventDefault();if(!form.reportValidity())return;const data=new FormData(form);const lines=[];for(const [key,value] of data.entries())lines.push(key+': '+value);lines.push('Authorized to submit: Yes');const subject=encodeURIComponent('Business listing request — '+data.get('Business name'));const body=encodeURIComponent(lines.join('\n'));notice.style.display='block';window.location.href='mailto:help@christopherthegoodgringo.com?subject='+subject+'&body='+body;});})();
 </script>
