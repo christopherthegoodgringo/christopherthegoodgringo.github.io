@@ -1129,6 +1129,28 @@
       ],
       "membershipTier": "bronze",
       "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "danico-italian-restaurant-santa-marta",
+      "name": "Danico Italian Restaurant",
+      "city": "Santa Marta",
+      "address": "Arena Padel Club, Carrera 4 #61-30, Rodadero, Santa Marta, Magdalena, Colombia",
+      "description": "Italian restaurant serving pizza, handmade pasta and classic Italian mains inside Arena Padel Club in the Rodadero area.",
+      "cuisine": "Italian, Pizza, Pasta",
+      "rating": 4.9,
+      "ratingSource": "Public business listing checked October 2026; recheck periodically",
+      "priceRange": "$$–$$$",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://www.danicoitalianrestaurants.com/",
+      "features": [
+        "Italian cuisine",
+        "Pizza and pasta",
+        "Rodadero area",
+        "Official website"
+      ],
+      "verifiedOn": "2026-10-20",
+      "membershipTier": "bronze"
     }
   ]
 }
