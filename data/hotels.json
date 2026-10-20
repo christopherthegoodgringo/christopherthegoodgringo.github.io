@@ -695,6 +695,24 @@
         "Boutique / independent"
       ],
       "website": "https://www.lascumbres.com.uy/"
+    },
+    {
+      "id": "hotel-boutique-el-cactus-santa-marta",
+      "name": "Hotel Boutique El Cactus",
+      "city": "Santa Marta",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "address": "Calle 18 #6-85, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "Independent boutique-style suites and apartments in Santa Marta’s historic center, with rooftop terrace, garden and swimming pools.",
+      "amenities": [
+        "Boutique",
+        "Historic Center",
+        "Swimming pools",
+        "Rooftop terrace",
+        "Kitchenettes"
+      ],
+      "website": "https://www.expedia.com/Santa-Marta-Hotels-Hotel-Suite-Boutique-El-Cactus.h21510496.Hotel-Information",
+      "membershipTier": "bronze"
     }
   ]
 }
