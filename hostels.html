@@ -355,6 +355,16 @@ function render(){
    links.append(a);
   }
   if(links.childElementCount)card.append(links);
+  if(x.phone){
+   const p=document.createElement('p');
+   p.textContent=(document.documentElement.lang==='es'?'Teléfono: ':'Phone: ')+x.phone;
+   card.append(p);
+  }
+  if(x.email){
+   const p=document.createElement('p');
+   p.textContent=(document.documentElement.lang==='es'?'Correo electrónico: ':'Email: ')+x.email;
+   card.append(p);
+  }
   results.append(card);
  });
 
