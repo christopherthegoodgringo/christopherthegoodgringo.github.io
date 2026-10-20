@@ -19,7 +19,7 @@
 | Country and city filters are present | PASS | both selectors found |
 | English/Spanish toggle is wired | PASS | bilingual toggle found |
 | Booking buttons only link to Hostelworld | PASS | Hostelworld-only booking link logic found |
-| No link to the separate hotel directory | PASS | directory pages remain separate |
+| No link to the separate hotel directory | FAIL | directory pages remain separate |
 
 ## Clean data coverage by country
 
@@ -44,4 +44,4 @@
 | SV | 84 |
 | UY | 120 |
 
-**Overall status: PASS**
+**Overall status: FAIL**
