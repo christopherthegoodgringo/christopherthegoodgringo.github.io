@@ -151,6 +151,9 @@ function getLocalData(){
        const sameName=normalize(existing.name)===normalize(paid.name);
        const sameCity=normalize(existing.city)===normalize(paid.city);
        if(sameName&&sameCity)return true;
+       // Merge paid listings with the same real-world hostel even when city labels
+       // differ slightly (e.g. "Bogotá" vs "Bogotá D.C.") in the source database.
+       if(sameName&&Number.isFinite(Number(existing.lat))&&Number.isFinite(Number(existing.lon))&&Number.isFinite(Number(paid.lat))&&Number.isFinite(Number(paid.lon))&&distance(Number(existing.lat),Number(existing.lon),Number(paid.lat),Number(paid.lon))<=1.5)return true;
        if(normalize(paid.name).includes('spotty')&&normalize(existing.name).includes('spotty')&&Number.isFinite(Number(existing.lat))&&Number.isFinite(Number(existing.lon))&&distance(Number(existing.lat),Number(existing.lon),Number(paid.lat),Number(paid.lon))<=0.5)return true;
        return false;
       });
