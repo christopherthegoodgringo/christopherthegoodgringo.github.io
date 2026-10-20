@@ -312,11 +312,6 @@ function render(){
   const plan=explicitPlan||'free';
   const card=document.createElement('article');card.className='hostel'+(plan==='featured'?' plan-featured':plan==='premium'?' plan-premium':explicitPlan==='free'?' plan-free':'');
   const h=document.createElement('h3');h.textContent=x.name;card.append(h);
-  if(!x.isTest&&explicitPlan==='free'){
-   const ribbon=document.createElement('p');ribbon.className='plan-ribbon';
-   ribbon.style.cssText='background:#e5f2e9;color:#174b3b;border:1px solid #8fb6a2';
-   ribbon.textContent=document.documentElement.lang==='es'?'✓ FICHA GRATIS':'✓ FREE LISTING';card.append(ribbon);
-  }
   if(!x.isTest&&(plan==='featured'||plan==='premium')){
    const ribbon=document.createElement('p');ribbon.className='plan-ribbon';
    ribbon.textContent=plan==='premium'?(document.documentElement.lang==='es'?'✦ FICHA PRÉMIUM':'✦ PREMIUM LISTING'):(document.documentElement.lang==='es'?'✦ FICHA DESTACADA':'✦ FEATURED LISTING');
