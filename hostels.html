@@ -107,19 +107,23 @@ function getLocalData(){
      const normalize=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
      const distance=(a,b,c,e)=>{const rad=x=>x*Math.PI/180;const p=Math.sin(rad(c-a)/2)**2+Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(rad(e-b)/2)**2;return 6371*2*Math.atan2(Math.sqrt(p),Math.sqrt(1-p));};
      paidData.hostels.forEach(paid=>{
+      const plan=String(paid.listingPlan||'featured').toLowerCase()==='free'?'free':'featured';
       const matchIndex=d.hostels.findIndex(existing=>{
        if(existing.isTest||existing.countryCode!==paid.countryCode)return false;
-       const sameOsm=String(existing.osm||'').includes('9558320117')||String(paid.osm||'').includes('9558320117')&&String(existing.osm||'').includes('9558320117');
+       const sameOsm=Boolean(paid.osm&&String(existing.osm||'').includes(String(paid.osm).split('/').pop()));
        if(sameOsm)return true;
-       const name=normalize(existing.name);
-       const sameSpotty=name.includes('spotty')&&name.includes('hostel');
-       return sameSpotty&&Number.isFinite(Number(existing.lat))&&Number.isFinite(Number(existing.lon))&&distance(Number(existing.lat),Number(existing.lon),Number(paid.lat),Number(paid.lon))<=0.5;
+       const sameName=normalize(existing.name)===normalize(paid.name);
+       const sameCity=normalize(existing.city)===normalize(paid.city);
+       if(sameName&&sameCity)return true;
+       if(normalize(paid.name).includes('spotty')&&normalize(existing.name).includes('spotty')&&Number.isFinite(Number(existing.lat))&&Number.isFinite(Number(existing.lon))&&distance(Number(existing.lat),Number(existing.lon),Number(paid.lat),Number(paid.lon))<=0.5)return true;
+       return false;
       });
+      const override={...paid,listingPlan:plan,paidListing:plan!=='free'};
       if(matchIndex>=0){
        const existing=d.hostels[matchIndex];
-       d.hostels[matchIndex]={...existing,...paid,id:existing.id||paid.id,osm:existing.osm||paid.osm,lat:Number.isFinite(Number(existing.lat))?existing.lat:paid.lat,lon:Number.isFinite(Number(existing.lon))?existing.lon:paid.lon,listingPlan:'featured',paidListing:true};
+       d.hostels[matchIndex]={...existing,...override,id:existing.id||paid.id,osm:existing.osm||paid.osm,lat:Number.isFinite(Number(existing.lat))?existing.lat:paid.lat,lon:Number.isFinite(Number(existing.lon))?existing.lon:paid.lon};
       }else{
-       d.hostels.push({...paid,listingPlan:'featured',paidListing:true});
+       d.hostels.push(override);
       }
      });
     }
