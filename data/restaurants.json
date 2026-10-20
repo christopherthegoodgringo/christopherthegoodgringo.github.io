@@ -434,10 +434,11 @@
         "Steaks and BBQ ribs",
         "Burgers and cocktails",
         "Historic center",
-        "Featured restaurant"
+        "Platinum member"
       ],
       "featured": true,
-      "verifiedOn": "2026-10-20"
+      "verifiedOn": "2026-10-20",
+      "membershipTier": "platinum"
     },
     {
       "id": "el-chato-bogota",
