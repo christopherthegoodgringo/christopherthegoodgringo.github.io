@@ -135,7 +135,7 @@ Promise.all([fetch('/data/hostels-clean.json').then(r=>{if(!r.ok)throw Error('Ho
   document.documentElement.lang='en';
   choices.addEventListener('click',e=>{
    if(e.target.closest('#welcomeHotels')){location.href='/hotels.html?country=CO';return}
-   if(e.target.closest('#welcomeHostels')){overlay.hidden=true;const country=document.getElementById('countryFilter');if(country){country.value='CO';country.dispatchEvent(new Event('change'))}document.getElementById('searchTitle').scrollIntoView({behavior:'smooth',block:'start'});return}
+   if(e.target.closest('#welcomeHostels')){location.href='/hostels.html?country=CO';return}
    if(e.target.closest('#welcomeRestaurants')){location.href='/restaurants.html';return}
    if(e.target.closest('#welcomeBars')){location.href='/bars.html';return}
   });
