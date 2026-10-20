@@ -786,6 +786,149 @@
         "Creative cooking"
       ],
       "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "casa-mar-cartagena",
+      "name": "Casa Mar Cartagena",
+      "city": "Cartagena",
+      "address": "Carrera 2 #15, Cartagena de Indias, Bolívar, Colombia",
+      "description": "Seafood and Caribbean ingredients prepared with Spanish Mediterranean techniques, plus bay views and a waterfront setting.",
+      "cuisine": "Seafood, Caribbean, Mediterranean",
+      "rating": 4.8,
+      "ratingSource": "OpenTable (October 2026; 26 reviews)",
+      "priceRange": "COP 50,000–100,000",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "bookingUrl": "https://www.opentable.com/r/restaurante-casa-mar-cartagena-de-indias",
+      "features": [
+        "Seafood",
+        "Bay views",
+        "Waterfront dining"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "dona-lola-cartagena",
+      "name": "Doña Lola",
+      "city": "Cartagena",
+      "address": "Hotel Casa Lola, Calle del Guerrero #29-108/118, Getsemaní, Cartagena, Colombia",
+      "description": "Caribbean cooking with Mediterranean influences and Spanish tapas in a restored historic house.",
+      "cuisine": "Caribbean, Mediterranean, Spanish",
+      "rating": 4.5,
+      "ratingSource": "OpenTable (October 2026; 112 reviews)",
+      "priceRange": "COP 50,000–100,000",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "bookingUrl": "https://www.opentable.com/r/dona-lola-cartagena-de-indias",
+      "features": [
+        "Caribbean cuisine",
+        "Spanish tapas",
+        "Historic setting"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "niku-cartagena",
+      "name": "NIKU CARTAGENA",
+      "city": "Cartagena",
+      "address": "Centro Histórico, Cartagena de Indias, Bolívar, Colombia",
+      "description": "Upscale restaurant specializing in premium cuts and contemporary international cuisine with Japanese influences.",
+      "cuisine": "International, Japanese, steakhouse",
+      "rating": 4.7,
+      "ratingSource": "OpenTable (October 2026; 48 reviews)",
+      "priceRange": "COP 100,000–180,000",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "bookingUrl": "https://www.opentable.com/r/niku-cartagena",
+      "features": [
+        "Premium steaks",
+        "Japanese influences",
+        "Fine dining"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "roman-restaurante-cartagena",
+      "name": "ROMAN RESTAURANTE",
+      "city": "Cartagena",
+      "address": "Calle de la Tablada #7-12, Cartagena de Indias, Bolívar, Colombia",
+      "description": "Creative dining blending Cartagena traditions with Greek island flavors in the historic center.",
+      "cuisine": "Greek, Caribbean, Mediterranean",
+      "rating": 4.9,
+      "ratingSource": "OpenTable (October 2026; 6 reviews)",
+      "priceRange": "COP 100,000–180,000",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "bookingUrl": "https://www.opentable.com/r/roman-cartagena-de-indias",
+      "website": "https://romanrestaurante.com/",
+      "features": [
+        "Greek-Caribbean fusion",
+        "Historic center",
+        "Special occasions"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "clero-restaurante-cartagena",
+      "name": "Clero Restaurante",
+      "city": "Cartagena",
+      "address": "Calle de la Sierpe #29-52, Getsemaní, Cartagena de Indias, Bolívar, Colombia",
+      "description": "Caribbean and Colombian flavors with international influences, seafood, Peruvian touches, and a terrace in Getsemaní.",
+      "cuisine": "Caribbean, Colombian, seafood",
+      "rating": 4.8,
+      "ratingSource": "OpenTable (October 2026; 6 reviews)",
+      "priceRange": "COP 100,000–180,000",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "bookingUrl": "https://www.opentable.com/r/clero-restaurante-cartagena-de-indias",
+      "features": [
+        "Seafood",
+        "Terrace dining",
+        "Caribbean flavors"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "salvaje-medellin",
+      "name": "Salvaje Medellín",
+      "city": "Medellín",
+      "address": "Carrera 35 #10-75, El Poblado, Medellín, Antioquia, Colombia",
+      "description": "Japanese-inspired fusion with Latin American and Mediterranean touches, signature cocktails, and DJ sets.",
+      "cuisine": "Japanese fusion, international",
+      "rating": 4.7,
+      "ratingSource": "OpenTable (October 2026; 15 reviews)",
+      "priceRange": "COP 100,000–180,000",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://salvajemedellin.com/",
+      "bookingUrl": "https://www.opentable.com/r/salvaje-medellin",
+      "features": [
+        "Japanese fusion",
+        "Signature cocktails",
+        "Live DJ sets"
+      ],
+      "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "zelavi-rionegro",
+      "name": "Zelavi",
+      "city": "Rionegro",
+      "address": "Km 3, Vía Aeropuerto JMC–Guarne, Rionegro, Antioquia, Colombia",
+      "description": "Elegant restaurant combining Peruvian, Italian, and Mexican gastronomy near José María Córdova International Airport.",
+      "cuisine": "Peruvian, Italian, Mexican, international",
+      "rating": 4.8,
+      "ratingSource": "OpenTable (October 2026; 94 reviews)",
+      "priceRange": "COP 100,000–180,000",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "bookingUrl": "https://www.opentable.com/r/zelavi-rionegro",
+      "website": "https://linktr.ee/zelavi",
+      "features": [
+        "Fusion cuisine",
+        "Cocktails",
+        "Special occasions"
+      ],
+      "verifiedOn": "2026-10-20"
     }
   ]
 }
