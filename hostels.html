@@ -151,6 +151,8 @@ function getLocalData(){
        const sameName=normalize(existing.name)===normalize(paid.name);
        const sameCity=normalize(existing.city)===normalize(paid.city);
        if(sameName&&sameCity)return true;
+       // Match the directory's "82hostel" spelling to the curated "82 Hostel" record.
+       if(paid.id==='free-82-hostel-bogota'&&sameCity&&normalize(existing.name).replace(/\\s/g,'')==='82hostel'&&Number.isFinite(Number(existing.lat))&&Number.isFinite(Number(existing.lon))&&distance(Number(existing.lat),Number(existing.lon),Number(paid.lat),Number(paid.lon))<=1.5)return true;
        // Merge paid listings with the same real-world hostel even when city labels
        // differ slightly (e.g. "Bogotá" vs "Bogotá D.C.") in the source database.
        if(sameName&&Number.isFinite(Number(existing.lat))&&Number.isFinite(Number(existing.lon))&&Number.isFinite(Number(paid.lat))&&Number.isFinite(Number(paid.lon))&&distance(Number(existing.lat),Number(existing.lon),Number(paid.lat),Number(paid.lon))<=1.5)return true;
