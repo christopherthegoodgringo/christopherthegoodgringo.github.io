@@ -40,7 +40,14 @@
       "city": "Bogotá",
       "countryCode": "CO",
       "listingPlan": "featured",
-      "paidListing": true
+      "paidListing": true,
+      "address": "Carrera 1 Este #12D-17, La Candelaria, Bogotá, Colombia",
+      "lat": 4.5925,
+      "lon": -74.0678,
+      "website": "https://www.hostelworld.com/hostels/p/282662/2600-hostel-dc/",
+      "description": "A welcoming hostel in Bogotá’s La Candelaria neighborhood, with views over the city and easy access to historic sights and cultural attractions.",
+      "phone": "+57 311 556 8491",
+      "email": "2600hosteldc@gmail.com"
     }
   ]
 }
