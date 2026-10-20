@@ -235,6 +235,26 @@
         "Local culture"
       ],
       "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "el-floridita-havana",
+      "name": "El Floridita",
+      "city": "Havana",
+      "countryName": "Cuba",
+      "countryCode": "CU",
+      "address": "Obispo 557, Havana Vieja, Havana, Cuba",
+      "description": "Historic Havana bar known for daiquiris, Cuban rum cocktails, and its long-standing connection to the city's bar culture.",
+      "drinks": "Daiquiris, Cuban rum cocktails",
+      "rating": 4.4,
+      "ratingSource": "Current Google Maps listing; checked 2026-10-20",
+      "priceRange": "$$–$$$",
+      "website": "https://www.barfloridita.com/",
+      "features": [
+        "Historic bar",
+        "Classic daiquiris",
+        "Cuban cocktail culture"
+      ],
+      "verifiedOn": "2026-10-20"
     }
   ]
 }
