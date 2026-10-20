@@ -204,7 +204,7 @@ footer a,footer .wrap a{color:var(--gold,#f5bd3e)!important;margin:0!important;t
     selectedCountries.forEach(country=>selectedRoles.forEach(role=>{
       const card=document.createElement("article");card.className="person";
       const top=document.createElement("div");top.className="person-top";
-      const img=document.createElement("img");img.className="portrait";img.src=country.en==="Colombia"&&role.colombiaPhoto?role.colombiaPhoto:"/assets/cgg-logo.svg";img.alt=(country.en==="Colombia"&&role.colombiaName?role.colombiaName+" — ":"")+(spanish()?"Perfil de IA: ":"AI persona: ")+role.title;
+      const img=document.createElement("img");img.className="portrait";img.src=country.en==="Colombia"&&role.colombiaPhoto?role.colombiaPhoto+"?v=20261020-photos1":"/assets/cgg-logo.svg";img.alt=(country.en==="Colombia"&&role.colombiaName?role.colombiaName+" — ":"")+(spanish()?"Perfil de IA: ":"AI persona: ")+role.title;
       const heading=document.createElement("div");const h=document.createElement("h3");h.textContent=(country.en==="Colombia"&&role.colombiaName?role.colombiaName+" — ":"")+(spanish()?role.es:role.en)+" — "+(spanish()?country.es:country.en);
       const title=document.createElement("div");title.className="role";title.textContent=role.title;
       heading.append(h,title);top.append(img,heading);
