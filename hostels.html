@@ -377,7 +377,7 @@ function render(){
    card.append(flag);
   }
   if(Array.isArray(x.photoUrls)&&!x.isTest){
-   x.photoUrls.filter(url=>typeof url==='string'&&/^https?:\/\//i.test(url)).slice(0,6).forEach(url=>{const img=document.createElement('img');img.src=url;img.alt=x.name+' rooftop terrace';img.loading='lazy';img.referrerPolicy='no-referrer';if(plan==='featured'||plan==='premium'){img.className='featured-photo';}else{img.style.cssText='display:block;width:100%;max-height:220px;object-fit:cover;border-radius:9px;margin:8px 0';}card.append(img);});
+   x.photoUrls.filter(url=>typeof url==='string'&&/^https?:\/\//i.test(url)).slice(0,6).forEach(url=>{const img=document.createElement('img');img.src=url;img.alt=x.id==='paid-2600-hostel-dc-bogota'?'Illustrative Bogotá rooftop view; not a verified photo of this property':x.name+' rooftop terrace';img.loading='lazy';img.referrerPolicy='no-referrer';if(plan==='featured'||plan==='premium'){img.className='featured-photo';}else{img.style.cssText='display:block;width:100%;max-height:220px;object-fit:cover;border-radius:9px;margin:8px 0';}card.append(img);});
   }
   const place=document.createElement('p');place.textContent=[x.city,x.address].filter(Boolean).join(' · ')||(document.documentElement.lang==='es'?'Ubicación no indicada':'Location not listed');card.append(place);
   if(x.operator){const p=document.createElement('p');p.textContent=(document.documentElement.lang==='es'?'Operador: ':'Operator: ')+x.operator;card.append(p);}
