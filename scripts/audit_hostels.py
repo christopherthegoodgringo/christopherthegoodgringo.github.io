@@ -222,6 +222,15 @@ def main():
     if not dupcities: lines.append("- None found.")
     REPORT.parent.mkdir(parents=True,exist_ok=True)
     REPORT.write_text("\n".join(lines)+"\n",encoding="utf-8")
+
+    EMAIL_EXPORT = ROOT/"reports"/"colombia-hostel-emails.csv"
+    with EMAIL_EXPORT.open("w", newline="", encoding="utf-8-sig") as email_file:
+        writer = csv.writer(email_file)
+        writer.writerow(["email", "hostel_name", "city", "hostel_id"])
+        for h in colombia_hostels:
+            email = str(h.get("email") or "").strip()
+            if email:
+                writer.writerow([email, h.get("name") or "", h.get("city") or "", h.get("id") or h.get("osm") or ""])
     CITY_SUGGESTIONS.parent.mkdir(parents=True, exist_ok=True)
     with CITY_SUGGESTIONS.open("w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
