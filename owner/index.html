@@ -12,7 +12,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/assets/cgg-portal-config.js?v=1"></script>
 <script src="/assets/cgg-overrides.js?v=2"></script>
-<script src="/assets/cgg-portal.js?v=5"></script>
+<script src="/assets/cgg-portal.js?v=6"></script>
 <style id="cgg-global-header-css">.cgg-global-header{box-sizing:border-box;width:100%;min-height:84px;padding:0 14px;background:#103e2f;border-bottom:1px solid #f5bd3e;display:flex;align-items:center;gap:28px;position:relative;z-index:20;font-family:Arial,sans-serif;color:#fffdf8}.cgg-global-header *{box-sizing:border-box}.cgg-global-brand{display:flex;align-items:center;gap:12px;flex:0 0 auto;white-space:nowrap;text-decoration:none;color:#fffdf8;font-size:15px;font-weight:800;line-height:1;letter-spacing:0}.cgg-global-brand img{display:block;width:46px;height:46px;object-fit:contain;flex:0 0 46px}.cgg-global-nav{display:flex;align-items:center;justify-content:space-between;gap:clamp(10px,1.25vw,20px);flex:1 1 auto;min-width:0;white-space:nowrap;overflow-x:auto;scrollbar-width:thin}.cgg-global-nav a{display:block;flex:0 0 auto;padding:8px 0;margin:0;color:#fffdf8;text-decoration:none;font-family:Arial,sans-serif;font-size:13px;font-weight:700;line-height:1.2;white-space:nowrap}.cgg-global-nav a:hover{color:#f5bd3e}@media(max-width:1120px){.cgg-global-header{min-height:84px;align-items:flex-start;flex-direction:column;gap:8px;padding:10px 14px}.cgg-global-nav{width:100%;flex:0 0 auto;justify-content:flex-start;gap:22px}.cgg-global-brand{font-size:14px}.cgg-global-brand img{width:40px;height:40px;flex-basis:40px}}@media(max-width:560px){.cgg-global-header{padding:10px 12px}.cgg-global-brand{font-size:12px;gap:9px}.cgg-global-brand img{width:36px;height:36px;flex-basis:36px}.cgg-global-nav{gap:18px}.cgg-global-nav a{font-size:13px}}</style><style id="cgg-nav-hover-polish">.cgg-global-nav{gap:clamp(6px,.75vw,12px)!important}.cgg-global-nav a{font-weight:800!important;border-radius:999px!important;padding:9px 11px!important;transition:background-color .18s ease,color .18s ease!important}.cgg-global-nav a:hover,.cgg-global-nav a:focus-visible{background:#f5bd3e!important;color:#103e2f!important;outline:none!important}@media(max-width:1120px){.cgg-global-nav{gap:8px!important}.cgg-global-nav a{padding:8px 11px!important}}@media(max-width:560px){.cgg-global-nav{gap:5px!important}.cgg-global-nav a{padding:8px 10px!important}}</style>
 </head>
 <body>
@@ -36,7 +36,7 @@
         <div class="actions" style="margin-top:0"><button class="btn light" id="setpwBtn" type="button">Set or change password</button><button class="btn light" id="signout" type="button">Sign out</button></div>
       </div>
       <div class="list" id="myClaims"><p class="muted">Loading…</p></div>
-      <p class="meta" id="moreBiz" hidden style="margin:14px 0 0">Have another business? <a href="#claimPanel" style="color:var(--green);font-weight:700">Claim one</a> or <a href="#addPanel" style="color:var(--green);font-weight:700">add a new one</a>.</p>
+      <p class="meta" id="moreBiz" hidden style="margin:14px 0 0">Have another business? <a href="#claimPanel" style="color:var(--green);font-weight:700">Claim or add it below</a>.</p>
     </section>
 
     <section class="panel" id="editPanel" hidden>
@@ -54,8 +54,9 @@
     </section>
 
     <section class="panel" id="claimPanel">
-      <h2>Claim a business</h2>
-      <p class="sub">Find your business below. We'll verify that you own or manage it, usually by calling or messaging the business's official phone or email.</p>
+      <h2>Claim or add your business</h2>
+      <p class="sub">Search for your business first. If it's already listed, pick it to claim it. If it isn't, add it as a new business. Either way, we confirm it with you by WhatsApp or email before it goes live.</p>
+      <div class="actions" style="margin:0 0 6px"><button class="btn gold" type="button" id="openAdd">My business isn't listed. Add it</button></div>
       <div class="row">
         <div><label for="claimSearch">Business name or city</label><input id="claimSearch" type="search" placeholder="e.g. Santa Marta, La Puerta"></div>
         <div><label for="claimType">Type</label><select id="claimType"><option value="">All types</option></select></div>
@@ -80,11 +81,10 @@
       </form>
       <div id="claimMsg"></div>
       <p class="meta" style="margin-top:14px">Can't find your business? <a href="#addPanel" id="toAdd" style="color:var(--green);font-weight:700">Add it as a new business</a>.</p>
-    </section>
 
-    <section class="panel" id="addPanel">
-      <h2>Add a new business</h2>
-      <p class="sub">Not listed yet? Tell us about it. Once we confirm you run it, it goes live in the right Finder and is linked to your account automatically.</p>
+      <div id="addPanel" hidden style="margin-top:18px;padding-top:18px;border-top:1px solid var(--line)">
+      <h3 style="margin:0 0 4px;font-size:1.25rem">Add a new business</h3>
+      <p class="sub">Tell us about it. Once we confirm you run it, it goes live in the right Finder and is linked to your account automatically.</p>
       <form id="addForm">
         <div class="row">
           <div><label for="aType">Type of business</label><select id="aType" required><option value="">Choose one</option></select></div>
@@ -118,6 +118,8 @@
         <p class="meta" style="margin:4px 0 0">No payment now. We'll confirm your level with you before it starts. <a href="/business-sponsorship.html#compareTitle" style="color:var(--green)">Compare levels</a></p>
         <div class="actions"><button class="btn" type="submit">Send for review</button></div>
       </form>
+      <div class="actions" style="margin-top:6px"><button class="btn light" type="button" id="closeAdd">Back to search</button></div>
+      </div>
       <div id="addMsg"></div>
     </section>
   </div>
@@ -156,7 +158,8 @@
 
   // ---------- Sign in ----------
   var keep = params.get('type') && params.get('id') ? '?type=' + encodeURIComponent(params.get('type')) + '&id=' + encodeURIComponent(params.get('id')) : '';
-  P.mountAuth($('signin'), { redirect: location.origin + '/owner/' + keep, allowSignup: true, contact: { whatsapp: '13054405175', email: 'christopher@christopherthegoodgringo.com' } });
+  var auth = P.mountAuth($('signin'), { redirect: location.origin + '/owner/' + keep, allowSignup: true, contact: { whatsapp: '13054405175', email: 'christopher@christopherthegoodgringo.com' } });
+  if (params.get('signup') === '1' || params.get('plan') || params.get('add') === '1') auth.show('signup');
   $('setpwBtn').addEventListener('click', function () { P.mountSetPassword($('setpw'), { title: 'Set or change your password' }); $('setpw').scrollIntoView({ behavior: 'smooth' }); });
   $('signout').addEventListener('click', function () { sb.auth.signOut(); });
 
@@ -180,7 +183,7 @@
       renderResults();
       var t = params.get('type'), id = params.get('id');
       if (t && id) { var h = P.findListing(listings, t, id); if (h) choose(h); }
-      if (params.get('add') === '1' || location.hash === '#addPanel') setTimeout(function () { $('addPanel').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
+      if (params.get('add') === '1' || location.hash === '#addPanel') setTimeout(openAdd, 300);
       else if (location.hash === '#claimPanel') setTimeout(function () { $('claimPanel').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
     });
     loadClaims();
@@ -221,8 +224,8 @@
         el('h3', {}, "Let's get your business on the map"),
         el('p', { className: 'muted', style: 'margin:0' }, 'Is your business already in our Finders? Claim it. Not listed yet? Add it. Either way, we confirm it with you before it goes live.'),
         el('div', { className: 'actions', style: 'margin-top:10px' },
-          el('button', { className: 'btn', type: 'button', onclick: go('claimPanel') }, 'Claim my business'),
-          el('button', { className: 'btn gold', type: 'button', onclick: go('addPanel') }, 'Add a new business'))));
+          el('button', { className: 'btn', type: 'button', onclick: function () { go('claimPanel')(); $('claimSearch').focus({ preventScroll: true }); } }, 'Find and claim my business'),
+          el('button', { className: 'btn gold', type: 'button', onclick: function () { openAdd(); } }, "It isn't listed. Add it"))));
       return;
     }
     P.loadListings().then(function (list) {
@@ -368,7 +371,15 @@
       if (!wa && !$('aVerify').value && user) $('aVerify').value = user.email || '';
     });
   });
-  $('toAdd').addEventListener('click', function (e) { e.preventDefault(); $('addPanel').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+  function openAdd() {
+    $('addPanel').hidden = false; $('claimForm').hidden = true; chosen = null; renderResults();
+    var q = $('claimSearch').value.trim(); if (q && !$('aName').value) $('aName').value = q;
+    setTimeout(function () { $('addPanel').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
+  }
+  P.openAdd = openAdd;
+  $('toAdd').addEventListener('click', function (e) { e.preventDefault(); openAdd(); });
+  $('openAdd').addEventListener('click', openAdd);
+  $('closeAdd').addEventListener('click', function () { $('addPanel').hidden = true; $('claimPanel').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
   $('addForm').addEventListener('submit', function (e) {
     e.preventDefault();
     var wa = document.querySelector('input[name=aVerifyBy]:checked').value === 'whatsapp';
@@ -403,7 +414,11 @@
       return (!t || h.__type === t) && (!q || [h.name, h.city, h.countryName, h.address].join(' ').toLowerCase().indexOf(q) > -1);
     }).slice(0, 40);
     box.replaceChildren();
-    if (!found.length) { box.appendChild(el('p', { className: 'muted', style: 'padding:12px 14px;margin:0' }, "No matches. If your business isn't listed yet, email christopher@christopherthegoodgringo.com.")); return; }
+    if (!found.length) {
+      box.appendChild(el('div', { style: 'padding:12px 14px' }, el('p', { className: 'muted', style: 'margin:0 0 8px' }, "No matches. If your business isn't listed yet, add it:"),
+        el('button', { className: 'btn gold', type: 'button', onclick: openAdd }, 'Add ' + ($('claimSearch').value.trim() ? '"' + $('claimSearch').value.trim() + '"' : 'my business'))));
+      return;
+    }
     found.forEach(function (h) {
       box.appendChild(el('button', { className: 'result', type: 'button', attrs: { role: 'listitem', 'aria-pressed': chosen === h ? 'true' : 'false' }, onclick: function () { choose(h); } },
         el('span', {}, el('strong', {}, h.name), el('br'), el('span', { className: 'meta' }, [h.city, h.countryName].filter(Boolean).join(', '))),

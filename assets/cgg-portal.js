@@ -117,7 +117,7 @@
         extra = [link('Forgot password?', 'forgot')];
         if (opts.allowSignup) extra.unshift(link('New here? Create an account', 'signup'));
       } else if (view === 'signup') {
-        title = 'Create your account'; sub = 'Choose a password with at least 8 characters, including a number. We will email you a link to confirm your address.';
+        title = 'Create your free account'; sub = 'Use your business email and choose a password with at least 8 characters, including a number.';
         fields = fields.concat(pwField('authPw', 'Password', 'new-password'), pwField('authPw2', 'Confirm password', 'new-password'));
         btnText = 'Create account'; extra = [link('I already have an account', 'signin')];
       } else if (view === 'forgot') {
