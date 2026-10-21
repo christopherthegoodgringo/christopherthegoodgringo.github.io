@@ -98,7 +98,14 @@
         "Restaurant"
       ],
       "membershipTier": "platinum",
-      "verifiedOn": "2026-10-21"
+      "verifiedOn": "2026-10-21",
+      "photo": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=85",
+      "photos": [
+        "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1200&q=85"
+      ]
     },
     {
       "id": "casa-verde-santa-marta",
@@ -120,7 +127,8 @@
         "Breakfast"
       ],
       "membershipTier": "bronze",
-      "verifiedOn": "2026-10-21"
+      "verifiedOn": "2026-10-21",
+      "photo": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=85"
     },
     {
       "id": "casa-de-leda-santa-marta",
@@ -142,7 +150,8 @@
         "Historic-center location"
       ],
       "membershipTier": "silver",
-      "verifiedOn": "2026-10-21"
+      "verifiedOn": "2026-10-21",
+      "photo": "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1200&q=85"
     },
     {
       "id": "don-pepe-santa-marta",
@@ -166,7 +175,8 @@
         "Restaurant"
       ],
       "membershipTier": "gold",
-      "verifiedOn": "2026-10-21"
+      "verifiedOn": "2026-10-21",
+      "photo": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=85"
     },
     {
       "id": "casa-de-isabella-santa-marta",
@@ -187,7 +197,8 @@
         "Walkable to marina"
       ],
       "membershipTier": "silver",
-      "verifiedOn": "2026-10-21"
+      "verifiedOn": "2026-10-21",
+      "photo": "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=85"
     }
   ]
 }
