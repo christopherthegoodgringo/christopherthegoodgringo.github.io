@@ -177,28 +177,6 @@
       "membershipTier": "gold",
       "verifiedOn": "2026-10-21",
       "photo": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=85"
-    },
-    {
-      "id": "casa-de-isabella-santa-marta",
-      "name": "Casa de Isabella, a Kali Hotel",
-      "city": "Santa Marta",
-      "address": "Carrera 2 #19-20, Centro Histórico, Santa Marta, Magdalena, Colombia",
-      "description": "Small colonial-style boutique hotel with personalized service in Santa Marta's historic center.",
-      "countryCode": "CO",
-      "countryName": "Colombia",
-      "website": "https://kalihotels.com/en/casa-isabella/",
-      "officialWebsite": "https://kalihotels.com/en/casa-isabella/",
-      "rating": 4.8,
-      "ratingSource": "Public business listing; checked October 2026",
-      "priceRange": "$$$–$$$$",
-      "amenities": [
-        "Historic-center location",
-        "Boutique rooms",
-        "Walkable to marina"
-      ],
-      "membershipTier": "silver",
-      "verifiedOn": "2026-10-21",
-      "photo": "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=85"
     }
   ]
 }
