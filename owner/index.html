@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Business Owner Portal | Christopher the Good Gringo</title>
+<meta name="description" content="Claim and manage your business listing on Christopher The Good Gringo.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/cgg-portal.css?v=1">
+<style id="cgg-global-header-css">.cgg-global-header{box-sizing:border-box;width:100%;min-height:84px;padding:0 14px;background:#103e2f;border-bottom:1px solid #f5bd3e;display:flex;align-items:center;gap:28px;position:relative;z-index:20;font-family:Arial,sans-serif;color:#fffdf8}.cgg-global-header *{box-sizing:border-box}.cgg-global-brand{display:flex;align-items:center;gap:12px;flex:0 0 auto;white-space:nowrap;text-decoration:none;color:#fffdf8;font-size:15px;font-weight:800;line-height:1}.cgg-global-brand img{display:block;width:46px;height:46px;object-fit:contain}.cgg-global-nav{display:flex;align-items:center;gap:20px;flex:1 1 auto;min-width:0;white-space:nowrap;overflow-x:auto}.cgg-global-nav a{color:#fffdf8;text-decoration:none;font-size:13px;font-weight:700;padding:8px 0}.cgg-global-nav a:hover{color:#f5bd3e}@media(max-width:760px){.cgg-global-header{flex-direction:column;align-items:flex-start;gap:8px;padding:10px 12px}.cgg-global-brand{font-size:12px}.cgg-global-brand img{width:36px;height:36px}}</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/cgg-portal-config.js?v=1"></script>
+<script src="/assets/cgg-overrides.js?v=1"></script>
+<script src="/assets/cgg-portal.js?v=1"></script>
+</head>
+<body>
+<header class="cgg-global-header"><a class="cgg-global-brand" href="/" aria-label="Christopher the Good Gringo home"><img src="/assets/cgg-home-emblem.svg" alt=""><span>CHRISTOPHER THE GOOD GRINGO™</span></a><nav class="cgg-global-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/hotels.html">Hotels</a><a href="/hostels.html">Hostels</a><a href="/restaurants.html">Restaurants</a><a href="/bars.html">Bars</a><a href="/street-food-finder.html">Street Food</a><a href="/business-sponsorship.html">Business &amp; Sponsorship</a></nav></header>
+<main>
+  <section class="hero">
+    <h1>Business Owner Portal</h1>
+    <p>Claim your business, keep your listing up to date, and upgrade your tier. Every change is reviewed by our team before it goes live.</p>
+  </section>
+
+  <!-- Signed out -->
+  <section class="panel" id="signin" hidden>
+    <h2>Sign in</h2>
+    <p class="sub">No password needed. Enter your email and we'll send you a secure sign-in link.</p>
+    <form id="signinForm">
+      <label for="email">Email address</label>
+      <input id="email" type="email" autocomplete="email" required placeholder="you@yourbusiness.com">
+      <div class="actions"><button class="btn" type="submit">Email me a sign-in link</button></div>
+    </form>
+    <div id="signinMsg"></div>
+  </section>
+
+  <!-- Signed in -->
+  <div id="dash" hidden>
+    <section class="panel">
+      <div class="item-head">
+        <div><h2>My businesses</h2><p class="sub" id="who"></p></div>
+        <button class="btn light" id="signout" type="button">Sign out</button>
+      </div>
+      <div class="list" id="myClaims"><p class="muted">Loading…</p></div>
+    </section>
+
+    <section class="panel" id="editPanel" hidden>
+      <h2 id="editTitle">Edit listing</h2>
+      <p class="sub">Change only what you need. Leave a field as it is to keep it. Our team reviews every change before it appears on the site.</p>
+      <form id="editForm"></form>
+      <div id="editMsg"></div>
+    </section>
+
+    <section class="panel" id="upgradePanel" hidden>
+      <h2 id="upgradeTitle">Upgrade your listing</h2>
+      <p class="sub">Higher tiers add photos, ratings, a full information page and more visibility in the Finders.</p>
+      <div class="tiers" id="tierBoxes"></div>
+      <div id="upgradeMsg"></div>
+    </section>
+
+    <section class="panel" id="claimPanel">
+      <h2>Claim a business</h2>
+      <p class="sub">Find your business below. We'll verify that you own or manage it, usually by calling or messaging the business's official phone or email.</p>
+      <div class="row">
+        <div><label for="claimSearch">Business name or city</label><input id="claimSearch" type="search" placeholder="e.g. Santa Marta, La Puerta"></div>
+        <div><label for="claimType">Type</label><select id="claimType"><option value="">All types</option></select></div>
+      </div>
+      <div class="results" id="claimResults" role="list"></div>
+      <form id="claimForm" hidden>
+        <h3 id="claimChosen"></h3>
+        <div class="row">
+          <div><label for="cName">Your name</label><input id="cName" required maxlength="120" autocomplete="name"></div>
+          <div><label for="cRole">Your role <small>(owner, manager…)</small></label><input id="cRole" required maxlength="80"></div>
+        </div>
+        <label for="cPhone">Phone or WhatsApp</label><input id="cPhone" maxlength="60" autocomplete="tel">
+        <label for="cNotes">How can we confirm you run this business? <small>(e.g. "call the front desk and ask for me")</small></label>
+        <textarea id="cNotes" maxlength="2000"></textarea>
+        <div class="actions"><button class="btn" type="submit">Submit claim</button><button class="btn light" type="button" id="claimCancel">Cancel</button></div>
+      </form>
+      <div id="claimMsg"></div>
+    </section>
+  </div>
+</main>
+<footer>© 2026 Christopher The Good Gringo™ · <a href="/privacy-policy.html">Privacy Policy</a> · <a href="/terms-of-use.html">Terms of Use</a></footer>
+
+<script>
+(function () {
+  var cfg = window.CGG_PORTAL, P = window.CGGPortal, el = P.el;
+  var params = new URLSearchParams(location.search);
+  var sb = P.client(), user = null, listings = [], claims = [], chosen = null;
+  var $ = function (id) { return document.getElementById(id); };
+
+  Object.keys(cfg.typeLabels).forEach(function (t) { $('claimType').appendChild(el('option', { value: t }, cfg.typeLabels[t])); });
+
+  // ---------- Sign in ----------
+  $('signinForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var btn = e.submitter || this.querySelector('button'); btn.disabled = true;
+    var keep = params.get('type') && params.get('id') ? '?type=' + encodeURIComponent(params.get('type')) + '&id=' + encodeURIComponent(params.get('id')) : '';
+    sb.auth.signInWithOtp({ email: $('email').value.trim(), options: { emailRedirectTo: location.origin + '/owner/' + keep } })
+      .then(function (r) {
+        btn.disabled = false;
+        if (r.error) P.msg($('signinMsg'), 'err', 'Could not send the link: ' + r.error.message);
+        else P.msg($('signinMsg'), 'ok', 'Check your inbox for a sign-in link. It may take a minute, and check your spam folder too.');
+      });
+  });
+  $('signout').addEventListener('click', function () { sb.auth.signOut(); });
+
+  sb.auth.onAuthStateChange(function (_event, session) { setUser(session ? session.user : null); });
+  sb.auth.getSession().then(function (r) { setUser(r.data.session ? r.data.session.user : null); });
+
+  function setUser(u) {
+    if ((u && user && u.id === user.id) || (!u && !user && !$('signin').hidden)) return;
+    user = u;
+    $('signin').hidden = !!u; $('dash').hidden = !u;
+    if (u) { $('who').textContent = 'Signed in as ' + (u.email || ''); start(); }
+  }
+
+  function start() {
+    P.loadListings().then(function (list) {
+      listings = list;
+      renderResults();
+      var t = params.get('type'), id = params.get('id');
+      if (t && id) { var h = P.findListing(listings, t, id); if (h) choose(h); }
+    });
+    loadClaims();
+  }
+
+  // ---------- My businesses ----------
+  function loadClaims() {
+    Promise.all([
+      sb.from('listing_claims').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
+      sb.from('listing_edit_requests').select('id,claim_id,status,created_at,admin_notes').eq('user_id', user.id).order('created_at', { ascending: false }),
+      sb.from('listing_upgrade_requests').select('id,claim_id,tier,status,created_at').eq('user_id', user.id).order('created_at', { ascending: false })
+    ]).then(function (res) {
+      var err = res.find(function (r) { return r.error; });
+      if (err) { P.msg($('myClaims'), 'err', 'Could not load your businesses: ' + err.error.message); return; }
+      claims = res[0].data; renderClaims(res[1].data, res[2].data);
+    });
+  }
+
+  function renderClaims(edits, upgrades) {
+    var box = $('myClaims'); box.replaceChildren();
+    if (!claims.length) { box.appendChild(el('p', { className: 'muted' }, "You haven't claimed a business yet. Find yours below.")); return; }
+    P.loadListings().then(function (list) {
+      claims.forEach(function (c) {
+        var h = P.findListing(list, c.listing_type, c.listing_id);
+        var myEdits = edits.filter(function (e) { return e.claim_id === c.id; });
+        var myUps = upgrades.filter(function (u) { return u.claim_id === c.id; });
+        var card = el('article', { className: 'item' },
+          el('div', { className: 'item-head' },
+            el('h3', {}, c.listing_name || (h && h.name) || c.listing_id),
+            el('span', { className: 'badge ' + c.status }, c.status === 'approved' ? 'Verified owner' : c.status)),
+          el('p', { className: 'meta' }, cfg.typeLabels[c.listing_type] + (h && h.city ? ' · ' + h.city : '') + (h ? ' · Current tier: ' + P.tierOf(h) : '') + ' · Claimed ' + P.fmtDate(c.created_at)));
+        if (c.status === 'pending') card.appendChild(el('p', { className: 'muted' }, "We're reviewing your claim and will contact you to confirm."));
+        if (c.status === 'rejected') card.appendChild(el('p', { className: 'muted' }, 'This claim was not approved.' + (c.admin_notes ? ' Note: ' + c.admin_notes : '')));
+        if (c.status === 'approved') {
+          card.appendChild(el('div', { className: 'actions' },
+            el('button', { className: 'btn', type: 'button', onclick: function () { openEdit(c, h); } }, 'Edit listing'),
+            el('button', { className: 'btn gold', type: 'button', onclick: function () { openUpgrade(c, h, myUps); } }, 'Upgrade tier'),
+            h ? el('a', { className: 'btn light', href: '/listing-information.html?type=' + encodeURIComponent(c.listing_type) + '&id=' + encodeURIComponent(c.listing_id), target: '_blank' }, 'View listing') : null));
+        }
+        myEdits.slice(0, 3).forEach(function (e) {
+          card.appendChild(el('p', { className: 'meta' }, 'Update sent ' + P.fmtDate(e.created_at) + ' · ', el('span', { className: 'badge ' + e.status }, e.status), e.admin_notes ? ' ' + e.admin_notes : ''));
+        });
+        myUps.slice(0, 2).forEach(function (u) {
+          card.appendChild(el('p', { className: 'meta' }, u.tier + ' upgrade requested ' + P.fmtDate(u.created_at) + ' · ', el('span', { className: 'badge ' + u.status }, u.status)));
+        });
+        box.appendChild(card);
+      });
+    });
+  }
+
+  // ---------- Edit listing ----------
+  var current = null;
+  function fieldsFor(type) {
+    var f = ['description', 'address', 'phone', 'email', 'website', 'whatsapp', 'instagram', 'hours', 'priceRange', 'features', 'photo'];
+    if (type === 'restaurants' || type === 'street-food') f.splice(8, 0, 'cuisine');
+    if (type === 'bars') f.splice(8, 0, 'drinks');
+    return f;
+  }
+  function openEdit(c, h) {
+    current = { claim: c, listing: h || {} };
+    $('upgradePanel').hidden = true; $('editPanel').hidden = false;
+    $('editTitle').textContent = 'Edit ' + (c.listing_name || (h && h.name) || 'listing');
+    $('editMsg').replaceChildren();
+    var form = $('editForm'); form.replaceChildren();
+    fieldsFor(c.listing_type).forEach(function (k) {
+      var val = P.show(current.listing[k]);
+      var id = 'f_' + k;
+      var input = (k === 'description' || k === 'hours')
+        ? el('textarea', { id: id, name: k, maxLength: 1500, value: val })
+        : el('input', { id: id, name: k, maxLength: k === 'features' ? 300 : 300, value: val, type: (k === 'website' || k === 'photo') ? 'url' : (k === 'email' ? 'email' : 'text') });
+      if (k === 'features') input.placeholder = 'Separate with · or commas, e.g. Rooftop · Live music';
+      if (k === 'priceRange') input.placeholder = 'e.g. $$–$$$';
+      form.appendChild(el('label', { htmlFor: id }, P.fieldLabels[k]));
+      form.appendChild(input);
+    });
+    form.appendChild(el('label', { htmlFor: 'f_note' }, 'Anything else we should know?'));
+    form.appendChild(el('textarea', { id: 'f_note', maxLength: 2000 }));
+    form.appendChild(el('div', { className: 'actions' },
+      el('button', { className: 'btn', type: 'submit' }, 'Send for review'),
+      el('button', { className: 'btn light', type: 'button', onclick: function () { $('editPanel').hidden = true; } }, 'Cancel')));
+    $('editPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  $('editForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var changes = {}, form = this;
+    fieldsFor(current.claim.listing_type).forEach(function (k) {
+      var raw = form.elements[k].value.trim();
+      var before = P.show(current.listing[k]).trim();
+      if (raw === before) return;
+      changes[k] = k === 'features' ? raw.split(/\s*[·,;]\s*/).filter(Boolean).slice(0, 8) : raw;
+    });
+    var note = $('f_note').value.trim();
+    if (!Object.keys(changes).length && !note) { P.msg($('editMsg'), 'info', "You haven't changed anything yet."); return; }
+    var btn = e.submitter; if (btn) btn.disabled = true;
+    sb.from('listing_edit_requests').insert({
+      user_id: user.id, claim_id: current.claim.id, listing_type: current.claim.listing_type, listing_id: current.claim.listing_id,
+      listing_name: current.claim.listing_name, proposed_changes: changes, contact_email: user.email, note: note || null
+    }).then(function (r) {
+      if (btn) btn.disabled = false;
+      if (r.error) P.msg($('editMsg'), 'err', 'Could not send your changes: ' + r.error.message);
+      else { P.msg($('editMsg'), 'ok', 'Thanks! Your changes were sent for review. They will appear on the site once approved.'); loadClaims(); }
+    });
+  });
+
+  // ---------- Upgrade ----------
+  var tierInfo = {
+    bronze: ['Bronze', ['Name and address in the Finder']],
+    silver: ['Silver', ['Photo, rating and description', 'More Information page']],
+    gold: ['Gold', ['Everything in Silver', 'Highlighted gold card', 'Shown above Silver']],
+    platinum: ['Platinum', ['Everything in Gold', 'Rotating photo gallery', 'Top placement in the Finder']]
+  };
+  function openUpgrade(c, h, ups) {
+    $('editPanel').hidden = true; $('upgradePanel').hidden = false; $('upgradeMsg').replaceChildren();
+    $('upgradeTitle').textContent = 'Upgrade ' + (c.listing_name || (h && h.name) || 'your listing');
+    var now = P.tierOf(h || {}), order = ['bronze', 'silver', 'gold', 'platinum'];
+    var boxes = $('tierBoxes'); boxes.replaceChildren();
+    order.forEach(function (t) {
+      var info = tierInfo[t], isNow = t === now, higher = order.indexOf(t) > order.indexOf(now);
+      var pending = ups.find(function (u) { return u.tier === t && (u.status === 'pending' || u.status === 'paid'); });
+      var action = null;
+      if (isNow) action = el('span', { className: 'badge approved' }, 'Your current tier');
+      else if (pending) action = el('span', { className: 'badge pending' }, 'Requested');
+      else if (higher) action = el('button', { className: 'btn' + (t === 'platinum' ? ' gold' : ''), type: 'button', onclick: function (ev) { requestUpgrade(c, t, ev.currentTarget); } }, cfg.stripeLinks[t] ? 'Upgrade and pay' : 'Request ' + info[0]);
+      boxes.appendChild(el('div', { className: 'tier-box ' + t }, el('h4', {}, info[0]),
+        el('ul', {}, info[1].map(function (x) { return el('li', {}, x); }).reduce(function (f, li) { f.appendChild(li); return f; }, document.createDocumentFragment())), action));
+    });
+    $('upgradePanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function requestUpgrade(c, tier, btn) {
+    btn.disabled = true;
+    sb.from('listing_upgrade_requests').insert({ user_id: user.id, claim_id: c.id, tier: tier }).select('id').single().then(function (r) {
+      btn.disabled = false;
+      if (r.error) { P.msg($('upgradeMsg'), 'err', 'Could not request the upgrade: ' + r.error.message); return; }
+      var link = cfg.stripeLinks[tier];
+      if (link) {
+        location.href = link + (link.indexOf('?') > -1 ? '&' : '?') + 'client_reference_id=' + encodeURIComponent(r.data.id) + '&prefilled_email=' + encodeURIComponent(user.email || '');
+      } else {
+        P.msg($('upgradeMsg'), 'ok', 'Upgrade requested! We will contact you to complete payment, and your new tier goes live once it is confirmed.');
+        loadClaims();
+      }
+    });
+  }
+
+  // ---------- Claim a business ----------
+  function renderResults() {
+    var q = $('claimSearch').value.trim().toLowerCase(), t = $('claimType').value, box = $('claimResults');
+    var found = listings.filter(function (h) {
+      return (!t || h.__type === t) && (!q || [h.name, h.city, h.countryName, h.address].join(' ').toLowerCase().indexOf(q) > -1);
+    }).slice(0, 40);
+    box.replaceChildren();
+    if (!found.length) { box.appendChild(el('p', { className: 'muted', style: 'padding:12px 14px;margin:0' }, "No matches. If your business isn't listed yet, email christopher@christopherthegoodgringo.com.")); return; }
+    found.forEach(function (h) {
+      box.appendChild(el('button', { className: 'result', type: 'button', attrs: { role: 'listitem', 'aria-pressed': chosen === h ? 'true' : 'false' }, onclick: function () { choose(h); } },
+        el('span', {}, el('strong', {}, h.name), el('br'), el('span', { className: 'meta' }, [h.city, h.countryName].filter(Boolean).join(', '))),
+        el('span', { className: 'badge tier' }, cfg.typeLabels[h.__type])));
+    });
+  }
+  $('claimSearch').addEventListener('input', renderResults);
+  $('claimType').addEventListener('change', renderResults);
+  function choose(h) {
+    chosen = h; renderResults();
+    $('claimForm').hidden = false; $('claimMsg').replaceChildren();
+    $('claimChosen').textContent = 'Claim ' + h.name + ' (' + cfg.typeLabels[h.__type] + ', ' + (h.city || '') + ')';
+    $('claimForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  $('claimCancel').addEventListener('click', function () { chosen = null; $('claimForm').hidden = true; renderResults(); });
+  $('claimForm').addEventListener('submit', function (e) {
+    e.preventDefault(); if (!chosen) return;
+    var already = claims.find(function (c) { return c.listing_type === chosen.__type && c.listing_id === String(chosen.id || chosen.name) && c.status !== 'rejected'; });
+    if (already) { P.msg($('claimMsg'), 'info', 'You have already claimed this business.'); return; }
+    var btn = e.submitter; if (btn) btn.disabled = true;
+    sb.from('listing_claims').insert({
+      user_id: user.id, owner_email: user.email, listing_type: chosen.__type, listing_id: String(chosen.id || chosen.name), listing_name: chosen.name,
+      contact_name: $('cName').value.trim(), role: $('cRole').value.trim(), contact_phone: $('cPhone').value.trim() || null, evidence_notes: $('cNotes').value.trim() || null
+    }).then(function (r) {
+      if (btn) btn.disabled = false;
+      if (r.error) { P.msg($('claimMsg'), 'err', 'Could not submit your claim: ' + r.error.message); return; }
+      P.msg($('claimMsg'), 'ok', "Claim sent! We'll verify it and email you. You'll be able to edit your listing once it's approved.");
+      $('claimForm').reset(); $('claimForm').hidden = true; chosen = null; renderResults(); loadClaims();
+    });
+  });
+})();
+</script>
+</body>
+</html>
