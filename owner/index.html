@@ -10,10 +10,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/cgg-portal.css?v=6">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/assets/cgg-portal-config.js?v=1"></script>
-<script src="/assets/cgg-overrides.js?v=3"></script>
+<script src="/assets/cgg-portal-config.js?v=4"></script>
+<script src="/assets/cgg-overrides.js?v=5"></script>
 <script src="/assets/cgg-portal.js?v=7"></script>
-<script src="/assets/cgg-listing-editor.js?v=3"></script>
+<script src="/assets/cgg-listing-editor.js?v=4"></script>
 <style id="cgg-global-header-css">.cgg-global-header{box-sizing:border-box;width:100%;min-height:84px;padding:0 14px;background:#103e2f;border-bottom:1px solid #f5bd3e;display:flex;align-items:center;gap:28px;position:relative;z-index:20;font-family:Arial,sans-serif;color:#fffdf8}.cgg-global-header *{box-sizing:border-box}.cgg-global-brand{display:flex;align-items:center;gap:12px;flex:0 0 auto;white-space:nowrap;text-decoration:none;color:#fffdf8;font-size:15px;font-weight:800;line-height:1;letter-spacing:0}.cgg-global-brand img{display:block;width:46px;height:46px;object-fit:contain;flex:0 0 46px}.cgg-global-nav{display:flex;align-items:center;justify-content:space-between;gap:clamp(10px,1.25vw,20px);flex:1 1 auto;min-width:0;white-space:nowrap;overflow-x:auto;scrollbar-width:thin}.cgg-global-nav a{display:block;flex:0 0 auto;padding:8px 0;margin:0;color:#fffdf8;text-decoration:none;font-family:Arial,sans-serif;font-size:13px;font-weight:700;line-height:1.2;white-space:nowrap}.cgg-global-nav a:hover{color:#f5bd3e}@media(max-width:1120px){.cgg-global-header{min-height:84px;align-items:flex-start;flex-direction:column;gap:8px;padding:10px 14px}.cgg-global-nav{width:100%;flex:0 0 auto;justify-content:flex-start;gap:22px}.cgg-global-brand{font-size:14px}.cgg-global-brand img{width:40px;height:40px;flex-basis:40px}}@media(max-width:560px){.cgg-global-header{padding:10px 12px}.cgg-global-brand{font-size:12px;gap:9px}.cgg-global-brand img{width:36px;height:36px;flex-basis:36px}.cgg-global-nav{gap:18px}.cgg-global-nav a{font-size:13px}}</style><style id="cgg-nav-hover-polish">.cgg-global-nav{gap:clamp(6px,.75vw,12px)!important}.cgg-global-nav a{font-weight:800!important;border-radius:999px!important;padding:9px 11px!important;transition:background-color .18s ease,color .18s ease!important}.cgg-global-nav a:hover,.cgg-global-nav a:focus-visible{background:#f5bd3e!important;color:#103e2f!important;outline:none!important}@media(max-width:1120px){.cgg-global-nav{gap:8px!important}.cgg-global-nav a{padding:8px 11px!important}}@media(max-width:560px){.cgg-global-nav{gap:5px!important}.cgg-global-nav a{padding:8px 10px!important}}</style>
 </head>
 <body>
@@ -21,7 +21,7 @@
 <main>
   <section class="hero">
     <h1>Business Owner Portal</h1>
-    <p>Claim your business, keep your listing up to date, and upgrade your tier. Every change is reviewed by our team before it goes live.</p>
+    <p>Claim your business, keep your listing up to date, and upgrade your tier. Bronze goes live right away, paid levels go live as soon as your payment is confirmed, and listing edits are reviewed by our team.</p>
   </section>
   <section class="panel" id="planBanner" hidden style="border-color:#d6a84f;background:#fff8e6"></section>
 
@@ -56,7 +56,7 @@
 
     <section class="panel" id="claimPanel">
       <h2>Claim or add your business</h2>
-      <p class="sub">Search for your business first. If it's already listed, pick it to claim it. If it isn't, add it as a new business. Either way, we confirm it with you by WhatsApp or email before it goes live.</p>
+      <p class="sub">Search for your business first. If it's already listed, pick it to claim it. If it isn't, add it as a new business. Either way, it's linked to your account right away.</p>
       <div class="actions" style="margin:0 0 6px"><button class="btn gold" type="button" id="openAdd">My business isn't listed. Add it</button></div>
       <div class="row">
         <div><label for="claimSearch">Business name or city</label><input id="claimSearch" type="search" placeholder="e.g. Santa Marta, La Puerta"></div>
@@ -85,7 +85,7 @@
 
       <div id="addPanel" hidden style="margin-top:18px;padding-top:18px;border-top:1px solid var(--line)">
       <h3 style="margin:0 0 4px;font-size:1.25rem">Add a new business</h3>
-      <p class="sub">Tell us about it. Once we confirm you run it, it goes live in the right Finder and is linked to your account automatically.</p>
+      <p class="sub">Tell us about it. It goes live in the right Finder at Bronze right away and is linked to your account.</p>
       <form id="addForm">
         <div class="row">
           <div><label for="aType">Type of business</label><select id="aType" required><option value="">Choose one</option></select></div>
@@ -116,8 +116,8 @@
           <option value="bronze">Bronze · Free</option><option value="silver">Silver · $9.99/month</option>
           <option value="gold">Gold · $19.99/month</option><option value="platinum">Platinum · $49.99/month</option>
         </select>
-        <p class="meta" style="margin:4px 0 0">No payment now. We'll confirm your level with you before it starts. <a href="/business-sponsorship.html#compareTitle" style="color:var(--green)">Compare levels</a></p>
-        <div class="actions"><button class="btn" type="submit">Send for review</button></div>
+        <p class="meta" style="margin:4px 0 0">Bronze is free. For Silver, Gold or Platinum you'll go to secure checkout next, and your level goes live as soon as payment is confirmed. <a href="/business-sponsorship.html#compareTitle" style="color:var(--green)">Compare levels</a></p>
+        <div class="actions"><button class="btn" type="submit">Add my business</button></div>
       </form>
       <div class="actions" style="margin-top:6px"><button class="btn light" type="button" id="closeAdd">Back to search</button></div>
       </div>
@@ -151,7 +151,7 @@
     $('planBanner').hidden = false;
     $('planBanner').replaceChildren(
       el('h2', { style: 'margin:0 0 4px' }, 'You chose ' + LEVELS[plan][0] + ' · ' + LEVELS[plan][1]),
-      el('p', { className: 'sub', style: 'margin:0' }, (user ? '' : 'Sign in or create a free account below. ') + 'Then claim your business if it is already listed, or add it as a new business. We\'ll set up ' + LEVELS[plan][0] + ' after we confirm you run it' + (plan === 'bronze' ? '.' : ', and no payment is taken until then.')));
+      el('p', { className: 'sub', style: 'margin:0' }, (user ? '' : 'Sign in or create a free account below. ') + 'Then claim your business if it is already listed, or add it as a new business. ' + (plan === 'bronze' ? 'Bronze is free and goes live right away.' : 'You\'ll go to secure checkout next, and ' + LEVELS[plan][0] + ' goes live as soon as your payment is confirmed.')));
   }
   var COUNTRIES = [['AR','Argentina'],['BZ','Belize'],['BO','Bolivia'],['CL','Chile'],['CO','Colombia'],['CR','Costa Rica'],['CU','Cuba'],['DO','Dominican Republic'],['EC','Ecuador'],['SV','El Salvador'],['GT','Guatemala'],['HN','Honduras'],['MX','Mexico'],['NI','Nicaragua'],['PA','Panama'],['PY','Paraguay'],['PE','Peru'],['UY','Uruguay']];
 
@@ -223,7 +223,7 @@
       var go = function (id) { return function () { $(id).scrollIntoView({ behavior: 'smooth', block: 'start' }); }; };
       box.appendChild(el('div', { className: 'item', style: 'background:#fff8e6;border-color:#d6a84f' },
         el('h3', {}, "Let's get your business on the map"),
-        el('p', { className: 'muted', style: 'margin:0' }, 'Is your business already in our Finders? Claim it. Not listed yet? Add it. Either way, we confirm it with you before it goes live.'),
+        el('p', { className: 'muted', style: 'margin:0' }, 'Is your business already in our Finders? Claim it. Not listed yet? Add it. Either way, it goes live right away.'),
         el('div', { className: 'actions', style: 'margin-top:10px' },
           el('button', { className: 'btn', type: 'button', onclick: function () { go('claimPanel')(); $('claimSearch').focus({ preventScroll: true }); } }, 'Find and claim my business'),
           el('button', { className: 'btn gold', type: 'button', onclick: function () { openAdd(); } }, "It isn't listed. Add it"))));
@@ -251,7 +251,9 @@
           card.appendChild(el('p', { className: 'meta' }, 'Update sent ' + P.fmtDate(e.created_at) + ' · ', el('span', { className: 'badge ' + e.status }, e.status), e.admin_notes ? ' ' + e.admin_notes : ''));
         });
         myUps.slice(0, 2).forEach(function (u) {
-          card.appendChild(el('p', { className: 'meta' }, u.tier + ' upgrade requested ' + P.fmtDate(u.created_at) + ' · ', el('span', { className: 'badge ' + u.status }, u.status)));
+          var pay = u.status === 'pending' && payLink(u.id, u.tier);
+          card.appendChild(el('p', { className: 'meta' }, u.tier + ' upgrade requested ' + P.fmtDate(u.created_at) + ' · ', el('span', { className: 'badge ' + u.status }, pay ? 'waiting for payment' : u.status),
+            pay ? el('a', { href: pay, style: 'margin-left:8px;color:var(--green);font-weight:800' }, 'Pay now') : null));
         });
         box.appendChild(card);
       });
@@ -297,6 +299,7 @@
       var pending = ups.find(function (u) { return u.tier === t && (u.status === 'pending' || u.status === 'paid'); });
       var action = null;
       if (isNow) action = el('span', { className: 'badge approved' }, 'Your current tier');
+      else if (pending && pending.status === 'pending' && payLink(pending.id, t)) action = el('a', { className: 'btn' + (t === 'platinum' ? ' gold' : ''), href: payLink(pending.id, t) }, 'Pay to activate');
       else if (pending) action = el('span', { className: 'badge pending' }, 'Requested');
       else if (higher) action = el('button', { className: 'btn' + (t === 'platinum' ? ' gold' : ''), type: 'button', onclick: function (ev) { requestUpgrade(c, t, ev.currentTarget); } }, cfg.stripeLinks[t] ? 'Upgrade and pay' : 'Request ' + info[0].split(' ·')[0]);
       var parts = info[0].split(' · '), amt = (parts[1] || '').split('/');
@@ -309,14 +312,32 @@
     }
     $('upgradePanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+  // Stripe checkout for an upgrade request. The webhook makes the level live once payment is confirmed.
+  function payLink(requestId, tier) {
+    var link = cfg.stripeLinks[tier];
+    return link ? link + (link.indexOf('?') > -1 ? '&' : '?') + 'client_reference_id=' + encodeURIComponent(requestId) + '&prefilled_email=' + encodeURIComponent(user.email || '') : '';
+  }
+  // After a claim or new business is approved automatically, send paid levels straight to checkout.
+  function finishApproved(claimId, name, box) {
+    sb.from('listing_upgrade_requests').select('id,tier').eq('claim_id', claimId).eq('status', 'pending').order('created_at', { ascending: false }).limit(1).then(function (u) {
+      var up = u && u.data && u.data[0], link = up && payLink(up.id, up.tier);
+      if (link) {
+        P.msg(box, 'ok', name + ' is now linked to your account. Taking you to payment for ' + LEVELS[up.tier][0] + '...');
+        setTimeout(function () { location.href = link; }, 900);
+        return;
+      }
+      P.msg(box, 'ok', "You're all set! " + name + ' is now linked to your account at Bronze. You can manage it or upgrade any time from My businesses.');
+      loadClaims();
+    });
+  }
   function requestUpgrade(c, tier, btn) {
     btn.disabled = true;
     sb.from('listing_upgrade_requests').insert({ user_id: user.id, claim_id: c.id, tier: tier }).select('id').single().then(function (r) {
       btn.disabled = false;
       if (r.error) { P.msg($('upgradeMsg'), 'err', 'Could not request the upgrade: ' + r.error.message); return; }
-      var link = cfg.stripeLinks[tier];
+      var link = payLink(r.data.id, tier);
       if (link) {
-        location.href = link + (link.indexOf('?') > -1 ? '&' : '?') + 'client_reference_id=' + encodeURIComponent(r.data.id) + '&prefilled_email=' + encodeURIComponent(user.email || '');
+        location.href = link;
       } else {
         P.msg($('upgradeMsg'), 'ok', 'Upgrade requested! We will contact you to complete payment, and your new tier goes live once it is confirmed.');
         loadClaims();
@@ -331,7 +352,7 @@
   function addTypeChanged() {
     var t = $('aType').value;
     var needsSite = t === 'hotels' || t === 'restaurants' || t === 'bars';
-    $('aWebsiteLabel').firstChild.textContent = t === 'hostels' ? 'Hostelworld page for your hostel' : 'Website, Instagram or Facebook page';
+    $('aWebsiteLabel').firstChild.textContent = t === 'hostels' ? 'Hostelworld page for your hostel' : 'Website or Facebook page';
     $('aWebsite').required = needsSite || t === 'hostels';
     $('aWebsiteHint').textContent = t === 'hostels' ? 'Required: the Hostel Finder only shows hostels with a Hostelworld booking page.' : needsSite ? 'Required so travelers can reach you.' : 'Optional for street food stands.';
     $('aCuisineLabel').textContent = t === 'bars' ? 'Drinks you are known for' : (t === 'restaurants' || t === 'street-food') ? 'Cuisine or food' : 'Category (optional)';
@@ -367,19 +388,30 @@
       contact_name: $('aName2').value.trim(), role: $('aRole').value.trim(),
       evidence_notes: (wa ? 'Verify by WhatsApp: ' : 'Verify by email: ') + $('aVerify').value.trim(),
       requested_tier: $('aLevel').value
-    }).then(function (r) {
+    }).select('id').single().then(function (r) {
       if (btn) btn.disabled = false;
       if (r.error) { P.msg($('addMsg'), 'err', 'Could not send your business: ' + r.error.message); return; }
       var name = $('aName').value.trim();
+      sb.from('listing_submissions').select('status,created_listing_id').eq('id', r.data.id).single().then(function (q) {
+        var sub = q && q.data;
+        if (!sub || sub.status !== 'approved') return addSentForReview(name, wa);
+        $('addForm').reset(); if (plan) $('aLevel').value = plan; addTypeChanged();
+        sb.from('listing_claims').select('id').eq('user_id', user.id).eq('listing_id', sub.created_listing_id).limit(1).then(function (c) {
+          var claim = c && c.data && c.data[0];
+          if (claim) finishApproved(claim.id, name, $('addMsg')); else { P.msg($('addMsg'), 'ok', name + ' is now live in the Finder.'); loadClaims(); }
+        });
+      });
+    });
+  });
+  function addSentForReview(name, wa) {
       var hello = 'Hi Christopher, I just added ' + name + ' on the Good Gringo owner portal (' + (user.email || '') + '). Please verify me.';
       $('addMsg').replaceChildren(el('div', { className: 'msg ok' },
-        el('p', { style: 'margin:0 0 10px' }, 'Thanks! ' + name + " was sent for review. We'll contact you by " + (wa ? 'WhatsApp' : 'email') + ' to confirm. To speed things up, message us now:'),
+        el('p', { style: 'margin:0 0 10px' }, 'Thanks! ' + name + " was sent for review. We'll contact you by " + (wa ? 'WhatsApp' : 'email') + '. To speed things up, message us now:'),
         el('div', { className: 'actions', style: 'margin-top:0' },
           el('a', { className: 'btn', href: 'https://wa.me/13054405175?text=' + encodeURIComponent(hello), target: '_blank', rel: 'noopener' }, 'WhatsApp us'),
           el('a', { className: 'btn gold', href: 'mailto:christopher@christopherthegoodgringo.com?subject=' + encodeURIComponent('New business: ' + name) + '&body=' + encodeURIComponent(hello) }, 'Email us'))));
       $('addForm').reset(); if (plan) $('aLevel').value = plan; addTypeChanged(); loadClaims();
-    });
-  });
+  }
 
   // ---------- Claim a business ----------
   function renderResults() {
@@ -431,17 +463,24 @@
     }).then(function (r) {
       if (btn) btn.disabled = false;
       if (r.error) { P.msg($('claimMsg'), 'err', 'Could not submit your claim: ' + r.error.message); return; }
-      var name = chosen.name, wa = verifyMode() === 'whatsapp';
+      var name = chosen.name, wa = verifyMode() === 'whatsapp', lid = String(chosen.id || chosen.name), ltype = chosen.__type;
+      function resetClaimForm() { $('claimForm').reset(); $('verifyWhatsapp').hidden = false; $('verifyEmail').hidden = true; $('cPhone').required = true; $('cVerifyEmail').required = false;
+        $('claimForm').hidden = true; chosen = null; renderResults(); }
+      sb.from('listing_claims').select('id,status').eq('user_id', user.id).eq('listing_type', ltype).eq('listing_id', lid).order('created_at', { ascending: false }).limit(1).then(function (q) {
+        var claim = q && q.data && q.data[0];
+        if (claim && claim.status === 'approved') { $('claimForm').hidden = false; resetClaimForm(); finishApproved(claim.id, name, $('claimMsg')); return; }
+        claimSentForReview(name, wa); resetClaimForm(); loadClaims();
+      });
+    });
+  });
+  function claimSentForReview(name, wa) {
       var hello = 'Hi Christopher, I just claimed ' + name + ' on the Good Gringo owner portal (' + (user.email || '') + '). Please verify me.';
       $('claimMsg').replaceChildren(P.el('div', { className: 'msg ok' },
-        P.el('p', { style: 'margin:0 0 10px' }, "Claim sent! We'll contact you by " + (wa ? 'WhatsApp' : 'email') + " to confirm. To speed things up, you can message us now:"),
+        P.el('p', { style: 'margin:0 0 10px' }, "This business is already linked to another owner, so we'll review your claim and contact you by " + (wa ? 'WhatsApp' : 'email') + '. To speed things up, you can message us now:'),
         P.el('div', { className: 'actions', style: 'margin-top:0' },
           P.el('a', { className: 'btn', href: 'https://wa.me/13054405175?text=' + encodeURIComponent(hello), target: '_blank', rel: 'noopener' }, 'WhatsApp us'),
           P.el('a', { className: 'btn gold', href: 'mailto:christopher@christopherthegoodgringo.com?subject=' + encodeURIComponent('Business claim: ' + name) + '&body=' + encodeURIComponent(hello) }, 'Email us'))));
-      $('claimForm').reset(); $('verifyWhatsapp').hidden = false; $('verifyEmail').hidden = true; $('cPhone').required = true; $('cVerifyEmail').required = false;
-      $('claimForm').hidden = true; chosen = null; renderResults(); loadClaims();
-    });
-  });
+  }
 })();
 </script>
 </body>

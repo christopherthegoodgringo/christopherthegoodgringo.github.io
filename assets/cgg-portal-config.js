@@ -13,7 +13,7 @@ window.CGG_PORTAL = {
   },
   typeLabels: { hotels: 'Hotel', hostels: 'Hostel', restaurants: 'Restaurant', bars: 'Bar', 'street-food': 'Street Food' },
   // Fields owners may change. The database enforces the same list.
-  editableFields: ['description', 'address', 'phone', 'email', 'website', 'whatsapp', 'instagram', 'hours', 'priceRange', 'cuisine', 'drinks', 'features', 'photo'],
+  editableFields: ['description', 'address', 'phone', 'email', 'website', 'whatsapp', 'hours', 'priceRange', 'cuisine', 'drinks', 'features', 'photo'],
   // Payment links per tier. Leave empty until Stripe is set up.
   // Paid upgrades go live automatically through the "stripe-webhook" Supabase function.
   // TEST MODE links (Stripe sandbox). Swap for live links before taking real payments.

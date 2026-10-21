@@ -11,11 +11,12 @@
   function foodLabel(type) { return type === 'bars' ? 'Drinks you are known for' : type === 'hotels' || type === 'hostels' ? 'Category or style' : 'Cuisine or food'; }
 
   var SECTIONS = [
-    { title: 'Basics', tier: 'bronze', note: 'Shown on every level.', fields: [
-      ['address', 'Street address'], ['phone', 'Phone'], ['whatsapp', 'WhatsApp number'], ['email', 'Business email', 'email'],
-      ['website', 'Website or booking link', 'url'], ['instagram', 'Instagram'], ['hours', 'Opening hours', 'area']] },
-    { title: 'Your card and information page', tier: 'silver', note: 'Adds a photo, description and details to your Finder card, plus your own More Information page.', fields: [
+    { title: 'Basics', tier: 'bronze', note: 'Bronze shows your name, city and address in the Finder.', fields: [
+      ['address', 'Street address']] },
+    { title: 'Your card and information page', tier: 'silver', note: 'Adds a photo, star rating, description, contact details, website and booking buttons, plus your own More Information page.', fields: [
       ['photo', 'Main photo', 'photo'], ['description', 'Description', 'area'], ['priceRange', 'Price range', 'text', 'e.g. $$–$$$'],
+      ['phone', 'Phone'], ['whatsapp', 'WhatsApp number'], ['email', 'Business email', 'email'],
+      ['website', 'Website or booking link', 'url'], ['hours', 'Opening hours', 'area'],
       ['__food', ''], ['features', 'Highlights', 'text', 'Separate with commas, e.g. Rooftop, Live music, Ocean view']] },
     { title: 'Photo gallery', tier: 'platinum', note: 'Rotating photos on your Finder card and information page.', fields: [['photos', 'Gallery photos', 'gallery']] }
   ];
@@ -63,7 +64,7 @@
         : el('input', { name: k, value: val, maxLength: 300, placeholder: ph || '', type: kind === 'email' ? 'email' : kind === 'number' ? 'number' : 'text',
             inputMode: kind === 'url' ? 'url' : null, autocapitalize: (kind === 'url' || kind === 'email') ? 'off' : null,
             step: kind === 'number' ? '0.1' : null, min: kind === 'number' ? '0' : null, max: kind === 'number' ? '5' : null });
-      if (kind === 'url' && !ph) node.placeholder = 'e.g. mybusiness.com or instagram.com/mybusiness';
+      if (kind === 'url' && !ph) node.placeholder = 'e.g. mybusiness.com';
       inputs[k] = node;
       return [el('label', {}, label), node];
     }

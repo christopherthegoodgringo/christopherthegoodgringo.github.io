@@ -82,6 +82,56 @@
 
   window.cggClearOverrideCache = function () { cache = {}; newCache = {}; };
 
+  // ---------- Level limits ----------
+  // Every public page gets each listing trimmed to exactly what its level includes, so a listing
+  // can never show more than it pays for, whatever is in the data file or saved from the portal.
+  // Fields not named here are dropped, so new fields stay hidden until added on purpose.
+  // Instagram links are not shown on any level.
+  var LEVEL_FIELDS = {
+    // Bronze: listed in the Finder with name, city and address.
+    bronze: ['id', 'name', 'city', 'address', 'countryCode', 'countryName', 'country', 'membershipTier', 'verifiedOn', 'sample', 'hidden'],
+    // Silver and Gold: main photo, star rating, description, price range, highlights,
+    // More Information page, website, booking and contact details.
+    silver: ['photo', 'rating', 'ratingSource', 'description', 'priceRange', 'features', 'amenities', 'cuisine', 'drinks', 'category',
+      'operator', 'featured', 'website', 'officialWebsite', 'bookingUrl', 'affiliateUrl', 'affiliateBookingUrl', 'bookingAffiliateUrl',
+      'bookingUrlAffiliate', 'phone', 'email', 'whatsapp', 'hours'],
+    // Platinum: rotating photo gallery.
+    platinum: ['photos', 'photoUrls', 'images']
+  };
+  var PLAN_TO_LEVEL = { premium: 'platinum', featured: 'gold', silver: 'silver', free: 'bronze' };
+  function levelOf(h) {
+    var t = String((h && h.membershipTier) || '').toLowerCase();
+    if (!LEVEL_RANK.hasOwnProperty(t)) t = PLAN_TO_LEVEL[String((h && h.listingPlan) || '').toLowerCase()] || 'bronze';
+    return t;
+  }
+  var LEVEL_RANK = { bronze: 0, silver: 1, gold: 2, platinum: 3 };
+  function firstPhoto(h) {
+    var all = [h.photo].concat(Array.isArray(h.photoUrls) ? h.photoUrls : [], Array.isArray(h.images) ? h.images : [], Array.isArray(h.photos) ? h.photos : []);
+    for (var i = 0; i < all.length; i++) if (typeof all[i] === 'string' && /^https?:\/\//i.test(all[i])) return all[i];
+    return '';
+  }
+  window.cggLimitToLevel = function (h) {
+    if (!h || typeof h !== 'object') return h;
+    var level = levelOf(h), rank = LEVEL_RANK[level];
+    var keep = LEVEL_FIELDS.bronze.slice();
+    if (rank >= LEVEL_RANK.silver) keep = keep.concat(LEVEL_FIELDS.silver);
+    if (rank >= LEVEL_RANK.platinum) keep = keep.concat(LEVEL_FIELDS.platinum);
+    var out = {};
+    keep.forEach(function (k) { if (h[k] !== undefined) out[k] = h[k]; });
+    // Silver and Gold get one main photo, even if the listing only has a photo list.
+    if (rank >= LEVEL_RANK.silver && rank < LEVEL_RANK.platinum && !out.photo) {
+      var p = firstPhoto(h);
+      if (p) out.photo = p;
+    }
+    // Finders only list businesses that have a real website or booking page. Bronze cards
+    // don't show the link, so pass along just the fact that one exists.
+    if (rank < LEVEL_RANK.silver && ['website', 'officialWebsite', 'bookingUrl'].some(function (k) { return typeof h[k] === 'string' && /^https?:\/\//i.test(h[k]); })) out.hasWebsite = true;
+    if (rank < LEVEL_RANK.silver && ['website', 'bookingUrl'].some(function (k) { return typeof h[k] === 'string' && /hostelworld\.com/i.test(h[k]); })) out.hasHostelworld = true;
+    out.membershipTier = level;
+    return out;
+  };
+  window.cggLevelOf = levelOf;
+
   window.fetch = function (input, init) {
     var url = typeof input === 'string' ? input : (input && input.url) || '';
     var m = url.match(/\/data\/([a-z-]+\.json)(\?|$)/);
@@ -100,6 +150,8 @@
         return base.then(function (merged) { return window.cggApplyOverrides(hit[0], merged); }).then(function (list) {
           // Businesses removed from the site by the admin stay visible only on the admin page.
           data[hit[1]] = isAdmin ? list : list.filter(function (h) { return !(h && h.hidden); });
+          // Public pages only ever receive what each listing's level includes.
+          if (!/^\/(owner|admin)\//.test(location.pathname)) data[hit[1]] = data[hit[1]].map(window.cggLimitToLevel);
           return new Response(JSON.stringify(data), { status: 200, headers: { 'Content-Type': 'application/json' } });
         });
       }).catch(function () { return res; });

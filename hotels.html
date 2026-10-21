@@ -97,7 +97,7 @@ article[class*="-card"] .restaurant-city,article[class*="-card"] .hotel-city,art
 article[class*="-card"] .links{margin-top:7px!important;gap:6px!important}
 @media(max-width:560px){article[class*="-card"] h3{font-size:1rem!important;letter-spacing:-.04em!important}}
 </style>
-<script src="/assets/cgg-portal-config.js?v=1"></script><script src="/assets/cgg-overrides.js?v=3"></script></head>
+<script src="/assets/cgg-portal-config.js?v=4"></script><script src="/assets/cgg-overrides.js?v=5"></script></head>
 <body>
 <header class="cgg-global-header"><a class="cgg-global-brand" href="/" aria-label="Christopher the Good Gringo home"><img src="/assets/cgg-home-emblem.svg" alt=""><span>CHRISTOPHER THE GOOD GRINGO™</span></a><nav class="cgg-global-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/hotels.html">Hotel Finder</a><a href="/hostels.html">Hostel Finder</a><a href="/restaurants.html">Restaurant Finder</a><a href="/bars.html">Bar Finder</a><a href="/street-food-finder.html">Street Food Finder</a><a href="/team/">Meet the Team</a><a href="/social-media.html">Social Media &amp; Contact</a><a href="/merch.html">Merch</a><a href="/ebooks.html">Ebooks</a><a href="/business-sponsorship.html">Business &amp; Sponsorship</a></nav></header>
 
@@ -183,7 +183,7 @@ function render(){
 }
 function renderShortcuts(){}
 document.getElementById('hotelSearch').addEventListener('submit',e=>{e.preventDefault();render()});query.addEventListener('input',render);countryFilter.addEventListener('change',()=>{cityFilter.value='';renderCityOptions();render();renderShortcuts()});cityFilter.addEventListener('change',render);
-fetch('/data/hotels.json?v=20261021-silverfix',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Could not load hotel data');return r.json()}).then(d=>{hotels=(Array.isArray(d.hotels)?d.hotels:[]).filter(h=>hasExpediaOrOfficialSite(h));countries=Array.isArray(d.countries)?d.countries:[];renderCountryOptions();renderCityOptions();setLanguage()}).catch(()=>{hotels=(Array.isArray(fallbackData.hotels)?fallbackData.hotels:[]).filter(h=>hasExpediaOrOfficialSite(h));countries=Array.isArray(fallbackData.countries)?fallbackData.countries:[];renderCountryOptions();renderCityOptions();setLanguage()});
+fetch('/data/hotels.json?v=20261021-silverfix',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Could not load hotel data');return r.json()}).then(d=>{hotels=(Array.isArray(d.hotels)?d.hotels:[]).filter(h=>h.hasWebsite||hasExpediaOrOfficialSite(h));countries=Array.isArray(d.countries)?d.countries:[];renderCountryOptions();renderCityOptions();setLanguage()}).catch(()=>{hotels=(Array.isArray(fallbackData.hotels)?fallbackData.hotels:[]).filter(h=>h.hasWebsite||hasExpediaOrOfficialSite(h));countries=Array.isArray(fallbackData.countries)?fallbackData.countries:[];renderCountryOptions();renderCityOptions();setLanguage()});
 })();
 </script>
 </body>
