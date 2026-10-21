@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-21",
-  "scope": "Initial live Santa Marta boutique hotel directory. Four tier designs are enabled for layout testing; tier labels are sample placement and do not imply that the property purchased or endorsed a paid listing. Only official hotel website links are currently verified; affiliate booking links will be added only after approval and tracking verification.",
+  "scope": "Initial Santa Marta boutique hotel directory. Four tier designs are enabled for layout testing; tier labels are sample placement and do not imply that a property purchased or endorsed a paid listing. Official hotel website links are verified; affiliate booking links will be added only after approval and tracking verification.",
   "countries": [
     {
       "code": "BZ",
@@ -97,7 +97,7 @@
         "Spa",
         "Restaurant"
       ],
-      "membershipTier": "bronze",
+      "membershipTier": "platinum",
       "verifiedOn": "2026-10-21"
     },
     {
@@ -165,7 +165,7 @@
         "Spa",
         "Restaurant"
       ],
-      "membershipTier": "bronze",
+      "membershipTier": "gold",
       "verifiedOn": "2026-10-21"
     },
     {
