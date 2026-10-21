@@ -1,26 +1,7 @@
 {
   "updatedAt": "2026-10-20",
-  "scope": "Restored from the hostel directory records embedded in the site's page; Hostelworld-linked records only.",
+  "scope": "Santa Marta, Colombia pilot only. Country selector retains all 18 countries; add other cities and listings as they are researched and approved.",
   "hostels": [
-    {
-      "id": "paid-spotty-hostel-bogota",
-      "name": "Spotty Hostel",
-      "city": "Bogotá",
-      "countryCode": "CO",
-      "address": "Calle 21 #5-31, Santa Fe, Bogotá, Colombia",
-      "lat": 4.60603,
-      "lon": -74.06971,
-      "osm": "https://www.openstreetmap.org/node/9558320117",
-      "website": "https://www.hostelworld.com/hostels/p/305222/spotty-hostels/",
-      "description": "Modern hostel in central Bogotá with a rooftop pool, terrace, bar, games area and spaces to connect with fellow travelers.",
-      "listingPlan": "premium",
-      "paidListing": true,
-      "phone": "+57 322 234 8055",
-      "email": "info@thespotforliving.com",
-      "photoUrls": [
-        "https://visitbogota.co/sites/default/files/2025-12/5.TERRAZA%20BBQ%203_11zon.jpg"
-      ]
-    },
     {
       "id": "free-baboon-hostal-santa-marta",
       "name": "Mr Baboon Hostal",
@@ -37,40 +18,6 @@
       "website": "https://www.hostelworld.com/hostels/p/285100/mr-baboon-hostel/",
       "membershipTier": "bronze",
       "description": "Social, centrally located hostel with a pool, rooftop terrace, and communal kitchen."
-    },
-    {
-      "id": "paid-2600-hostel-dc-bogota",
-      "name": "2600 Hostel DC",
-      "city": "Bogotá",
-      "countryCode": "CO",
-      "listingPlan": "featured",
-      "paidListing": true,
-      "address": "Carrera 1 Este #12D-17, La Candelaria, Bogotá, Colombia",
-      "lat": 4.5925,
-      "lon": -74.0678,
-      "website": "https://www.hostelworld.com/hostels/p/282662/2600-hostel-dc/",
-      "phone": "+57 311 556 8491",
-      "description": "A welcoming hostel in Bogotá’s La Candelaria neighborhood, with views over the city and easy access to historic sights and cultural attractions.",
-      "photoUrls": [
-        "https://cf.bstatic.com/xdata/images/hotel/max1280x900/383334259.jpg?hp=1&k=b9db3cc5974edcecff7d5125e82eaa7368a6ba56358e2a5f314c784f0780d8ff&o="
-      ]
-    },
-    {
-      "id": "free-82-hostel-bogota",
-      "name": "82 Hostel",
-      "city": "Bogotá",
-      "countryCode": "CO",
-      "address": "Carrera 19 #80-14, 110221 Bogotá, Colombia",
-      "website": "https://www.hostelworld.com/hostels/p/77871/82hostel/",
-      "phone": "+57 315 643 3355",
-      "lat": 4.665,
-      "lon": -74.055,
-      "description": "Hostel in Bogotá with private rooms and shared dormitories, a lounge, kitchen and garden.",
-      "listingPlan": "free",
-      "paidListing": false,
-      "photoUrls": [
-        "https://img1.wsimg.com/isteam/ip/f1f8de7c-ccb2-4fb5-b694-fec323c915bb/image00012.jpeg/:/rs=w:1240,h:620,cg:true,m/cr=w:1240,h:620"
-      ]
     },
     {
       "id": "directory-cacao-hostel-santa-marta",
