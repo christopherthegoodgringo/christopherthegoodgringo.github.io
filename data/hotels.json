@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-21",
-  "scope": "Curated independent and boutique hotels in the 18-country directory. Santa Marta is the initial city. Listings require a verified official hotel website or exact Expedia property listing; major international chains excluded. Ratings are indicative public ratings and may change.",
+  "scope": "Initial live Santa Marta boutique hotel directory. Four tier designs are enabled for layout testing; tier labels are sample placement and do not imply that the property purchased or endorsed a paid listing. Only official hotel website links are currently verified; affiliate booking links will be added only after approval and tracking verification.",
   "countries": [
     {
       "code": "BZ",
@@ -141,7 +141,7 @@
         "Rooftop pool",
         "Historic-center location"
       ],
-      "membershipTier": "bronze",
+      "membershipTier": "silver",
       "verifiedOn": "2026-10-21"
     },
     {
