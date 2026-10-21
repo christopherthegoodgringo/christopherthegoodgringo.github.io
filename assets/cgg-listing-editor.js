@@ -120,7 +120,10 @@
       var lvl = el('select', { name: 'membershipTier' });
       ['platinum', 'gold', 'silver', 'bronze'].forEach(function (t) { lvl.appendChild(el('option', { value: t, selected: tier === t }, NAMES[t])); });
       inputs.membershipTier = lvl;
-      var sec = el('fieldset', { className: 'editor-section' }, el('legend', {}, 'Admin only'), el('label', {}, 'Level'), lvl);
+      form.appendChild(el('div', { className: 'editor-section level-pick', style: 'background:#fff8e6;border-color:#d6a84f' },
+        el('label', { style: 'margin-top:0' }, 'Level'), lvl,
+        el('p', { className: 'meta', style: 'margin:6px 0 0' }, 'The fields below match this level. To edit more, change the level here first.')));
+      var sec = el('fieldset', { className: 'editor-section' }, el('legend', {}, 'Admin only'));
       ADMIN_FIELDS.forEach(function (f) { input(f[0], f[1], f[2]).forEach(function (n) { sec.appendChild(n); }); });
       form.appendChild(sec);
     }
