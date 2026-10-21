@@ -104,6 +104,7 @@
     function render() {
       box.replaceChildren();
       if (view === 'forgot' && opts.contact) return renderContact();
+      if (view === 'forgot' && opts.adminHelp) return renderAdminHelp();
       var out = el('div');
       var emailInput = el('input', { id: 'authEmail', type: 'email', required: true, autocomplete: 'email', placeholder: 'you@yourbusiness.com', value: (P._lastEmail || '') });
       emailInput.addEventListener('input', function () { P._lastEmail = emailInput.value; });
@@ -168,6 +169,23 @@
         el('a', { className: 'btn gold', href: 'mailto:' + c.email + '?subject=' + encodeURIComponent('Password reset for my owner account') + '&body=' + encodeURIComponent(text + '\n\nBusiness name:\nPhone:') }, 'Email us'),
         link('Back to sign in', 'signin')));
       box.appendChild(el('p', { className: 'meta', style: 'margin-top:14px' }, 'Please contact us from the phone number or email address linked to your business so we can verify you quickly.'));
+    }
+    function renderAdminHelp() {
+      var sql = "update auth.users\nset encrypted_password = extensions.crypt('YOUR-NEW-PASSWORD', extensions.gen_salt('bf'))\nwhere email = 'YOUR-ADMIN-EMAIL';";
+      var pre = el('pre', { style: 'white-space:pre-wrap;overflow-wrap:anywhere;background:#fff;border:1px solid #c9cfc6;border-radius:10px;padding:12px 14px;font-size:.86rem;margin:10px 0 0' }, sql);
+      var copy = el('button', { className: 'btn light', type: 'button', onclick: function () { if (navigator.clipboard) navigator.clipboard.writeText(sql).then(function () { copy.textContent = 'Copied'; }); } }, 'Copy');
+      var steps = el('ol', { style: 'margin:0;padding-left:20px;color:var(--ink)' },
+        el('li', {}, 'Sign in to your Supabase account and open this project.'),
+        el('li', {}, 'Click SQL Editor, then New query.'),
+        el('li', {}, 'Paste the text below, put your new password and your admin email in place of the capital letters (keep the quotes), and click Run.'),
+        el('li', {}, 'Come back here and sign in with your new password. Then clear the query in Supabase.'));
+      box.appendChild(el('h2', {}, 'Forgot your admin password?'));
+      box.appendChild(el('p', { className: 'sub' }, 'For security, admin passwords are reset from your Supabase account, not by email.'));
+      box.appendChild(steps);
+      box.appendChild(pre);
+      box.appendChild(el('div', { className: 'actions' },
+        el('a', { className: 'btn', href: opts.adminHelp.sqlUrl, target: '_blank', rel: 'noopener' }, 'Open Supabase SQL Editor'),
+        copy, link('Back to sign in', 'signin')));
     }
     render();
     return { show: function (v) { view = v || 'signin'; render(); } };
