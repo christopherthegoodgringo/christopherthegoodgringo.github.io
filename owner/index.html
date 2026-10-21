@@ -36,6 +36,7 @@
         <div class="actions" style="margin-top:0"><button class="btn light" id="setpwBtn" type="button">Set or change password</button><button class="btn light" id="signout" type="button">Sign out</button></div>
       </div>
       <div class="list" id="myClaims"><p class="muted">Loading…</p></div>
+      <p class="meta" id="moreBiz" hidden style="margin:14px 0 0">Have another business? <a href="#claimPanel" style="color:var(--green);font-weight:700">Claim one</a> or <a href="#addPanel" style="color:var(--green);font-weight:700">add a new one</a>.</p>
     </section>
 
     <section class="panel" id="editPanel" hidden>
@@ -211,9 +212,19 @@
   }
   function renderClaims(edits, upgrades) {
     var box = $('myClaims'); box.replaceChildren();
+    $('moreBiz').hidden = !(claims.length || submissions.length);
     renderSubmissions(box);
     if (!claims.length && submissions.length) return;
-    if (!claims.length) { box.appendChild(el('p', { className: 'muted' }, "You haven't claimed a business yet. Find yours below.")); return; }
+    if (!claims.length) {
+      var go = function (id) { return function () { $(id).scrollIntoView({ behavior: 'smooth', block: 'start' }); }; };
+      box.appendChild(el('div', { className: 'item', style: 'background:#fff8e6;border-color:#d6a84f' },
+        el('h3', {}, "Let's get your business on the map"),
+        el('p', { className: 'muted', style: 'margin:0' }, 'Is your business already in our Finders? Claim it. Not listed yet? Add it. Either way, we confirm it with you before it goes live.'),
+        el('div', { className: 'actions', style: 'margin-top:10px' },
+          el('button', { className: 'btn', type: 'button', onclick: go('claimPanel') }, 'Claim my business'),
+          el('button', { className: 'btn gold', type: 'button', onclick: go('addPanel') }, 'Add a new business'))));
+      return;
+    }
     P.loadListings().then(function (list) {
       claims.forEach(function (c) {
         var h = P.findListing(list, c.listing_type, c.listing_id);
