@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-21",
-  "scope": "Curated independent and boutique hotels in the 18-country directory. Santa Marta is the initial city. Listings require a verified official hotel website or Expedia property listing; major international chains excluded. Ratings are indicative public ratings and may change.",
+  "scope": "Curated independent and boutique hotels in the 18-country directory. Santa Marta is the initial city. Listings require a verified official hotel website or exact Expedia property listing; major international chains excluded. Ratings are indicative public ratings and may change.",
   "countries": [
     {
       "code": "BZ",
@@ -188,26 +188,6 @@
       ],
       "membershipTier": "bronze",
       "verifiedOn": "2026-10-21"
-    },
-    {
-      "id": "hotel-boutique-el-cactus-santa-marta",
-      "name": "Hotel Boutique El Cactus",
-      "city": "Santa Marta",
-      "address": "Calle 18 #6-85, Centro Histórico, Santa Marta, Magdalena, Colombia",
-      "description": "Small boutique-style property in the historic center with suite-style accommodations.",
-      "countryCode": "CO",
-      "countryName": "Colombia",
-      "bookingUrl": "https://www.expedia.com/Santa-Marta-Hotels.d3221.Travel-Guide-Hotels",
-      "rating": 4.9,
-      "ratingSource": "Public business listing; checked October 2026",
-      "priceRange": "$$–$$$",
-      "amenities": [
-        "Historic-center location",
-        "Suite-style accommodation"
-      ],
-      "membershipTier": "bronze",
-      "verifiedOn": "2026-10-21",
-      "bookingLinkNote": "Expedia city/property search link; replace with the exact hotel property URL before using as a booking link."
     }
   ]
 }
