@@ -12,7 +12,8 @@
     'paid-listings.json': ['hostels', 'hostels'],
     'hostels-clean.json': ['hostels', 'hostels']
   };
-  var allowed = cfg.editableFields.concat(['membershipTier', 'photos']);
+  // Owner edits are limited by the database; admin edits may also change these.
+  var allowed = cfg.editableFields.concat(['membershipTier', 'photos', 'name', 'city', 'rating', 'ratingSource', 'hidden']);
   var cache = {};
   var nativeFetch = window.fetch.bind(window);
 
@@ -60,6 +61,7 @@
       if (allowed.indexOf(k) === -1) return;
       var v = changes[k];
       if (v === null || v === undefined || v === '') return;
+      if (k === 'hidden') { if (v === true) out.hidden = true; return; }
       if (k === 'membershipTier' && ['platinum', 'gold', 'silver', 'bronze'].indexOf(String(v)) === -1) return;
       out[k] = v;
     });
@@ -78,6 +80,8 @@
     });
   };
 
+  window.cggClearOverrideCache = function () { cache = {}; newCache = {}; };
+
   window.fetch = function (input, init) {
     var url = typeof input === 'string' ? input : (input && input.url) || '';
     var m = url.match(/\/data\/([a-z-]+\.json)(\?|$)/);
@@ -88,12 +92,14 @@
       return res.clone().json().then(function (data) {
         if (!data || !Array.isArray(data[hit[1]])) return res;
         // Practice listings (sample: true) only show in the owner portal, admin and their own information page.
+        var isAdmin = /^\/admin\//.test(location.pathname);
         if (!/^\/(owner|admin)\/|^\/listing-information\.html/.test(location.pathname)) {
           data[hit[1]] = data[hit[1]].filter(function (h) { return !(h && h.sample); });
         }
         var base = (addTo[m[1]] === false) ? Promise.resolve(data[hit[1]]) : withNewListings(hit[0], data[hit[1]]);
         return base.then(function (merged) { return window.cggApplyOverrides(hit[0], merged); }).then(function (list) {
-          data[hit[1]] = list;
+          // Businesses removed from the site by the admin stay visible only on the admin page.
+          data[hit[1]] = isAdmin ? list : list.filter(function (h) { return !(h && h.hidden); });
           return new Response(JSON.stringify(data), { status: 200, headers: { 'Content-Type': 'application/json' } });
         });
       }).catch(function () { return res; });

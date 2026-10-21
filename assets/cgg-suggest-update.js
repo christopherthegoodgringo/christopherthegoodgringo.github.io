@@ -25,7 +25,7 @@
     '<form class="cgg-form" hidden>' +
     '<label for="sgWhat">What should we change?</label><textarea id="sgWhat" maxlength="2000" required placeholder="e.g. New opening hours, new phone number, closed permanently…"></textarea>' +
     '<div class="cgg-two"><div><label for="sgPhone">Correct phone <small>(optional)</small></label><input id="sgPhone" maxlength="60"></div>' +
-    '<div><label for="sgSite">Correct website <small>(optional)</small></label><input id="sgSite" type="url" maxlength="300" placeholder="https://"></div></div>' +
+    '<div><label for="sgSite">Correct website <small>(optional)</small></label><input id="sgSite" type="text" inputmode="url" autocapitalize="off" spellcheck="false" maxlength="300" placeholder="e.g. mybar.com"></div></div>' +
     '<label for="sgHours">Correct opening hours <small>(optional)</small></label><input id="sgHours" maxlength="300">' +
     '<div class="cgg-two"><div><label for="sgName">Your name <small>(optional)</small></label><input id="sgName" maxlength="120" autocomplete="name"></div>' +
     '<div><label for="sgEmail">Your email <small>(optional, so we can follow up)</small></label><input id="sgEmail" type="email" maxlength="200" autocomplete="email"></div></div>' +
@@ -51,7 +51,7 @@
     var v = function (sel) { return box.querySelector(sel).value.trim(); };
     var changes = {};
     if (v('#sgPhone')) changes.phone = v('#sgPhone');
-    if (v('#sgSite')) changes.website = v('#sgSite');
+    if (v('#sgSite')) { var site = v('#sgSite'); changes.website = /^https?:\/\//i.test(site) ? site : 'https://' + site.replace(/^\/+/, ''); }
     if (v('#sgHours')) changes.hours = v('#sgHours');
     var heading = document.querySelector('#content h1');
     var body = {

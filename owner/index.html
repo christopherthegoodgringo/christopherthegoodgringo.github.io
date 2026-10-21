@@ -11,8 +11,8 @@
 <link rel="stylesheet" href="/assets/cgg-portal.css?v=4">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/assets/cgg-portal-config.js?v=1"></script>
-<script src="/assets/cgg-overrides.js?v=2"></script>
-<script src="/assets/cgg-portal.js?v=6"></script>
+<script src="/assets/cgg-overrides.js?v=3"></script>
+<script src="/assets/cgg-portal.js?v=7"></script>
 <style id="cgg-global-header-css">.cgg-global-header{box-sizing:border-box;width:100%;min-height:84px;padding:0 14px;background:#103e2f;border-bottom:1px solid #f5bd3e;display:flex;align-items:center;gap:28px;position:relative;z-index:20;font-family:Arial,sans-serif;color:#fffdf8}.cgg-global-header *{box-sizing:border-box}.cgg-global-brand{display:flex;align-items:center;gap:12px;flex:0 0 auto;white-space:nowrap;text-decoration:none;color:#fffdf8;font-size:15px;font-weight:800;line-height:1;letter-spacing:0}.cgg-global-brand img{display:block;width:46px;height:46px;object-fit:contain;flex:0 0 46px}.cgg-global-nav{display:flex;align-items:center;justify-content:space-between;gap:clamp(10px,1.25vw,20px);flex:1 1 auto;min-width:0;white-space:nowrap;overflow-x:auto;scrollbar-width:thin}.cgg-global-nav a{display:block;flex:0 0 auto;padding:8px 0;margin:0;color:#fffdf8;text-decoration:none;font-family:Arial,sans-serif;font-size:13px;font-weight:700;line-height:1.2;white-space:nowrap}.cgg-global-nav a:hover{color:#f5bd3e}@media(max-width:1120px){.cgg-global-header{min-height:84px;align-items:flex-start;flex-direction:column;gap:8px;padding:10px 14px}.cgg-global-nav{width:100%;flex:0 0 auto;justify-content:flex-start;gap:22px}.cgg-global-brand{font-size:14px}.cgg-global-brand img{width:40px;height:40px;flex-basis:40px}}@media(max-width:560px){.cgg-global-header{padding:10px 12px}.cgg-global-brand{font-size:12px;gap:9px}.cgg-global-brand img{width:36px;height:36px;flex-basis:36px}.cgg-global-nav{gap:18px}.cgg-global-nav a{font-size:13px}}</style><style id="cgg-nav-hover-polish">.cgg-global-nav{gap:clamp(6px,.75vw,12px)!important}.cgg-global-nav a{font-weight:800!important;border-radius:999px!important;padding:9px 11px!important;transition:background-color .18s ease,color .18s ease!important}.cgg-global-nav a:hover,.cgg-global-nav a:focus-visible{background:#f5bd3e!important;color:#103e2f!important;outline:none!important}@media(max-width:1120px){.cgg-global-nav{gap:8px!important}.cgg-global-nav a{padding:8px 11px!important}}@media(max-width:560px){.cgg-global-nav{gap:5px!important}.cgg-global-nav a{padding:8px 10px!important}}</style>
 </head>
 <body>
@@ -95,7 +95,7 @@
           <div><label for="aCity">City or town</label><input id="aCity" required minlength="2" maxlength="120"></div>
         </div>
         <label for="aAddress">Street address</label><input id="aAddress" maxlength="300" autocomplete="street-address">
-        <label for="aWebsite" id="aWebsiteLabel">Website, Instagram or Facebook page</label><input id="aWebsite" type="url" maxlength="300" placeholder="https://">
+        <label for="aWebsite" id="aWebsiteLabel">Website, Instagram or Facebook page</label><input id="aWebsite" type="text" inputmode="url" autocapitalize="off" spellcheck="false" maxlength="300" placeholder="e.g. mybar.com or instagram.com/mybar">
         <p class="meta" id="aWebsiteHint" style="margin:4px 0 0"></p>
         <label for="aPhone">Business phone or WhatsApp</label><input id="aPhone" type="tel" maxlength="60">
         <label for="aCuisine" id="aCuisineLabel">Cuisine or food</label><input id="aCuisine" maxlength="200">
@@ -276,7 +276,7 @@
       var id = 'f_' + k;
       var input = (k === 'description' || k === 'hours')
         ? el('textarea', { id: id, name: k, maxLength: 1500, value: val })
-        : el('input', { id: id, name: k, maxLength: k === 'features' ? 300 : 300, value: val, type: (k === 'website' || k === 'photo') ? 'url' : (k === 'email' ? 'email' : 'text') });
+        : el('input', { id: id, name: k, maxLength: k === 'features' ? 300 : 300, value: val, type: k === 'email' ? 'email' : 'text', inputMode: (k === 'website' || k === 'photo') ? 'url' : null, autocapitalize: (k === 'website' || k === 'photo' || k === 'email') ? 'off' : null });
       if (k === 'features') input.placeholder = 'Separate with · or commas, e.g. Rooftop · Live music';
       if (k === 'priceRange') input.placeholder = 'e.g. $$–$$$';
       form.appendChild(el('label', { htmlFor: id }, P.fieldLabels[k]));
@@ -296,7 +296,7 @@
       var raw = form.elements[k].value.trim();
       var before = P.show(current.listing[k]).trim();
       if (raw === before) return;
-      changes[k] = k === 'features' ? raw.split(/\s*[·,;]\s*/).filter(Boolean).slice(0, 8) : raw;
+      changes[k] = k === 'features' ? raw.split(/\s*[·,;]\s*/).filter(Boolean).slice(0, 8) : (k === 'website' || k === 'photo') ? P.normalizeUrl(raw) : raw;
     });
     var note = $('f_note').value.trim();
     if (!Object.keys(changes).length && !note) { P.msg($('editMsg'), 'info', "You haven't changed anything yet."); return; }
@@ -389,7 +389,7 @@
     sb.from('listing_submissions').insert({
       user_id: user.id, owner_email: user.email, listing_type: $('aType').value, name: $('aName').value.trim(),
       country_code: country[0], country_name: country[1], city: $('aCity').value.trim(), address: v('aAddress'),
-      website: v('aWebsite'), phone: v('aPhone'), description: v('aDesc'), cuisine: v('aCuisine'),
+      website: P.normalizeUrl($('aWebsite').value) || null, phone: v('aPhone'), description: v('aDesc'), cuisine: v('aCuisine'),
       contact_name: $('aName2').value.trim(), role: $('aRole').value.trim(),
       evidence_notes: (wa ? 'Verify by WhatsApp: ' : 'Verify by email: ') + $('aVerify').value.trim(),
       requested_tier: $('aLevel').value

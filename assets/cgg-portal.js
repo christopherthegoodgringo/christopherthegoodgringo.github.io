@@ -16,6 +16,7 @@
   P.el = function (tag, props) {
     var node = document.createElement(tag);
     Object.keys(props || {}).forEach(function (k) {
+      if (props[k] === null || props[k] === undefined) return;
       if (k === 'dataset') Object.assign(node.dataset, props[k]);
       else if (k.indexOf('on') === 0) node.addEventListener(k.slice(2), props[k]);
       else if (k === 'attrs') Object.keys(props[k]).forEach(function (a) { node.setAttribute(a, props[k][a]); });
@@ -79,6 +80,15 @@
     membershipTier: 'Tier'
   };
 
+  // Accept web addresses typed any way (mybar.com, www.mybar.com, instagram.com/mybar) and store them with https://.
+  P.normalizeUrl = function (v) {
+    v = String(v || '').trim();
+    if (!v) return '';
+    if (/^https?:\/\//i.test(v)) return v;
+    if (/^\/\//.test(v)) return 'https:' + v;
+    if (/^@[A-Za-z0-9._]+$/.test(v)) return 'https://instagram.com/' + v.slice(1);
+    return 'https://' + v.replace(/^\/+/, '');
+  };
   P.show = function (v) { return Array.isArray(v) ? v.join(' · ') : (v === undefined || v === null ? '' : String(v)); };
 
   // ---------- Sign-in box: password, create account, forgot password, email link ----------

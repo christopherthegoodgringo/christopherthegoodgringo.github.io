@@ -10,8 +10,8 @@
 <link rel="stylesheet" href="/assets/cgg-portal.css?v=4">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/assets/cgg-portal-config.js?v=1"></script>
-<script src="/assets/cgg-overrides.js?v=2"></script>
-<script src="/assets/cgg-portal.js?v=6"></script>
+<script src="/assets/cgg-overrides.js?v=3"></script>
+<script src="/assets/cgg-portal.js?v=7"></script>
 <style id="cgg-global-header-css">.cgg-global-header{box-sizing:border-box;width:100%;min-height:84px;padding:0 14px;background:#103e2f;border-bottom:1px solid #f5bd3e;display:flex;align-items:center;gap:28px;position:relative;z-index:20;font-family:Arial,sans-serif;color:#fffdf8}.cgg-global-header *{box-sizing:border-box}.cgg-global-brand{display:flex;align-items:center;gap:12px;flex:0 0 auto;white-space:nowrap;text-decoration:none;color:#fffdf8;font-size:15px;font-weight:800;line-height:1;letter-spacing:0}.cgg-global-brand img{display:block;width:46px;height:46px;object-fit:contain;flex:0 0 46px}.cgg-global-nav{display:flex;align-items:center;justify-content:space-between;gap:clamp(10px,1.25vw,20px);flex:1 1 auto;min-width:0;white-space:nowrap;overflow-x:auto;scrollbar-width:thin}.cgg-global-nav a{display:block;flex:0 0 auto;padding:8px 0;margin:0;color:#fffdf8;text-decoration:none;font-family:Arial,sans-serif;font-size:13px;font-weight:700;line-height:1.2;white-space:nowrap}.cgg-global-nav a:hover{color:#f5bd3e}@media(max-width:1120px){.cgg-global-header{min-height:84px;align-items:flex-start;flex-direction:column;gap:8px;padding:10px 14px}.cgg-global-nav{width:100%;flex:0 0 auto;justify-content:flex-start;gap:22px}.cgg-global-brand{font-size:14px}.cgg-global-brand img{width:40px;height:40px;flex-basis:40px}}@media(max-width:560px){.cgg-global-header{padding:10px 12px}.cgg-global-brand{font-size:12px;gap:9px}.cgg-global-brand img{width:36px;height:36px;flex-basis:36px}.cgg-global-nav{gap:18px}.cgg-global-nav a{font-size:13px}}</style><style id="cgg-nav-hover-polish">.cgg-global-nav{gap:clamp(6px,.75vw,12px)!important}.cgg-global-nav a{font-weight:800!important;border-radius:999px!important;padding:9px 11px!important;transition:background-color .18s ease,color .18s ease!important}.cgg-global-nav a:hover,.cgg-global-nav a:focus-visible{background:#f5bd3e!important;color:#103e2f!important;outline:none!important}@media(max-width:1120px){.cgg-global-nav{gap:8px!important}.cgg-global-nav a{padding:8px 11px!important}}@media(max-width:560px){.cgg-global-nav{gap:5px!important}.cgg-global-nav a{padding:8px 10px!important}}</style>
 </head>
 <body>
@@ -35,18 +35,45 @@
     <div class="item-head" style="margin-bottom:14px"><p class="muted" id="who" style="margin:0"></p><div class="actions" style="margin-top:0"><button class="btn light" id="setpwBtn" type="button">Set or change password</button><button class="btn light" id="signout" type="button">Sign out</button></div></div>
     <div class="tabs" role="tablist">
       <button role="tab" data-tab="claims" aria-selected="true">Claims <span id="nClaims"></span></button>
+      <button role="tab" data-tab="businesses" aria-selected="false">Businesses</button>
       <button role="tab" data-tab="newbiz" aria-selected="false">New businesses <span id="nNew"></span></button>
       <button role="tab" data-tab="edits" aria-selected="false">Updates <span id="nEdits"></span></button>
       <button role="tab" data-tab="upgrades" aria-selected="false">Upgrades <span id="nUpgrades"></span></button>
-      <button role="tab" data-tab="passwords" aria-selected="false">Owner passwords</button>
+      <button role="tab" data-tab="passwords" aria-selected="false">Owners</button>
       <button role="tab" data-tab="history" aria-selected="false">History</button>
     </div>
     <section class="panel" id="tab-claims"><h2>Ownership claims</h2><p class="sub">Confirm the person really runs the business (call or message the business's official number or email) before approving.</p><div class="list" id="claimsList"></div></section>
+    <section class="panel" id="tab-businesses" hidden>
+      <h2>All businesses</h2>
+      <p class="sub">Search every business on the site. Edit details or the level directly (your changes go live right away), remove a business from the site, or remove its owner.</p>
+      <div class="row">
+        <div><label for="bizSearch">Search name, city or owner email</label><input id="bizSearch" type="search" placeholder="e.g. La Puerta, Cartagena, ana@…"></div>
+        <div><label for="bizType">Type</label><select id="bizType"><option value="">All types</option></select></div>
+      </div>
+      <div class="row">
+        <div><label for="bizTier">Level</label><select id="bizTier"><option value="">All levels</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select></div>
+        <div><label for="bizShow">Show</label><select id="bizShow"><option value="">Everything</option><option value="owned">With an owner</option><option value="unowned">Without an owner</option><option value="hidden">Removed from site</option><option value="owner-added">Added by owners</option></select></div>
+      </div>
+      <p class="meta" id="bizCount" style="margin:12px 0 8px"></p>
+      <div class="list" id="bizList"></div>
+      <div class="actions"><button class="btn light" type="button" id="bizMore" hidden>Show more</button></div>
+    </section>
     <section class="panel" id="tab-newbiz" hidden><h2>New businesses</h2><p class="sub">Businesses owners added that aren't listed yet. Confirm the person runs it, then approve: it goes live as Bronze in the right Finder, is linked to their account, and any paid level they chose appears under Upgrades.</p><div class="list" id="newList"></div></section>
     <section class="panel" id="tab-edits" hidden><h2>Listing updates</h2><p class="sub">From verified owners and from public "suggest an update" forms. Approving publishes the new values to the site.</p><div class="list" id="editsList"></div></section>
     <section class="panel" id="tab-upgrades" hidden><h2>Tier upgrades</h2><p class="sub">Approve once payment is confirmed. Approving changes the listing's tier on the site.</p><div class="list" id="upgradesList"></div></section>
     <section class="panel" id="tab-passwords" hidden>
-      <h2>Reset an owner's password</h2>
+      <h2>Owners</h2>
+      <p class="sub">Every business owner account, with their businesses. Give a temporary password, remove them from a business, or delete their account. Admin accounts aren't listed.</p>
+      <div class="row">
+        <div><label for="ownSearch">Search email, name, phone or business</label><input id="ownSearch" type="search"></div>
+        <div><label for="ownShow">Show</label><select id="ownShow"><option value="">All owners</option><option value="verified">Verified owners</option><option value="waiting">Waiting for review</option><option value="none">No business yet</option></select></div>
+      </div>
+      <p class="meta" id="ownCount" style="margin:12px 0 8px"></p>
+      <div class="list" id="ownList"><p class="muted">Loading…</p></div>
+      <div class="actions"><button class="btn light" type="button" id="ownReload">Refresh list</button></div>
+    </section>
+    <section class="panel" id="tab-passwords-form" hidden>
+      <h2>Reset a password by email</h2>
       <p class="sub">Use this when an owner WhatsApps or emails you because they forgot their password. First confirm it's really them, for example by calling the business's official number. They'll be asked to choose their own password the next time they sign in.</p>
       <form id="tempPwForm">
         <label for="tempEmail">Owner's account email</label>
@@ -85,7 +112,9 @@
   document.querySelectorAll('[role=tab]').forEach(function (b) {
     b.addEventListener('click', function () {
       document.querySelectorAll('[role=tab]').forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
-      ['claims', 'newbiz', 'edits', 'upgrades', 'passwords', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
+      ['claims', 'businesses', 'newbiz', 'edits', 'upgrades', 'passwords', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
+      $('tab-passwords-form').hidden = b.dataset.tab !== 'passwords';
+      if (b.dataset.tab === 'passwords' && !owners) loadOwners();
     });
   });
 
@@ -117,6 +146,7 @@
       var bad = res.slice(0, 3).find(function (r) { return r.error; });
       if (bad) { P.msg($('claimsList'), 'err', bad.error.message); return; }
       var claims = res[0].data, edits = res[1].data, ups = res[2].data, subs = (res[3] && !res[3].error && res[3].data) || [];
+      allClaims = claims; allSubs = subs; renderBusinesses(); if (owners) renderOwners();
       var dl = $('ownerEmails'); dl.replaceChildren(); [...new Set(claims.map(function (c) { return c.owner_email; }).filter(Boolean))].sort().forEach(function (e) { dl.appendChild(el('option', { value: e })); });
       var pend = function (rows) { return rows.filter(function (r) { return r.status === 'pending' || r.status === 'paid'; }); };
       renderClaims(pend(claims)); renderNew(pend(subs)); renderEdits(pend(edits)); renderUpgrades(pend(ups), claims);
@@ -166,6 +196,122 @@
         note, el('div', { className: 'actions' }, ok, no));
       box.appendChild(card);
     });
+  }
+
+  // ---------- All businesses ----------
+  var allClaims = [], bizLimit = 30, editing = null;
+  Object.keys(cfg.typeLabels).forEach(function (t) { $('bizType').appendChild(el('option', { value: t }, cfg.typeLabels[t])); });
+  ['bizSearch', 'bizType', 'bizTier', 'bizShow'].forEach(function (id) { $(id).addEventListener(id === 'bizSearch' ? 'input' : 'change', function () { bizLimit = 30; renderBusinesses(); }); });
+  $('bizMore').addEventListener('click', function () { bizLimit += 30; renderBusinesses(); });
+  function ownerOf(h) {
+    return allClaims.find(function (c) { return c.listing_type === h.__type && c.listing_id === String(h.id || h.name) && c.status === 'approved'; });
+  }
+  function reloadListings() {
+    if (window.cggClearOverrideCache) window.cggClearOverrideCache();
+    P._listings = null;
+    return P.loadListings().then(function (l) { listings = l; renderBusinesses(); });
+  }
+  function saveOverride(h, changes) {
+    var type = h.__type, id = String(h.id || h.name);
+    return sb.from('published_listing_overrides').select('changes').eq('listing_type', type).eq('listing_id', id).then(function (r) {
+      if (r.error) return r;
+      var current = (r.data && r.data[0] && r.data[0].changes) || {};
+      var merged = Object.assign({}, current, changes);
+      Object.keys(merged).forEach(function (k) { if (merged[k] === null) delete merged[k]; });
+      var row = { listing_type: type, listing_id: id, changes: merged, approved_by: user.id, updated_at: new Date().toISOString() };
+      return (r.data && r.data.length)
+        ? sb.from('published_listing_overrides').update({ changes: merged, approved_by: user.id, updated_at: row.updated_at }).eq('listing_type', type).eq('listing_id', id)
+        : sb.from('published_listing_overrides').insert(row);
+    });
+  }
+  function renderBusinesses() {
+    var box = $('bizList'); if (!box) return;
+    var q = $('bizSearch').value.trim().toLowerCase(), t = $('bizType').value, tier = $('bizTier').value, show = $('bizShow').value;
+    var rows = listings.filter(function (h) {
+      var o = ownerOf(h);
+      if (t && h.__type !== t) return false;
+      if (tier && P.tierOf(h) !== tier) return false;
+      if (show === 'owned' && !o) return false;
+      if (show === 'unowned' && o) return false;
+      if (show === 'hidden' && !h.hidden) return false;
+      if (show === 'owner-added' && !h.ownerSubmitted) return false;
+      if (q && [h.name, h.city, h.countryName, h.address, o && o.owner_email].join(' ').toLowerCase().indexOf(q) === -1) return false;
+      return true;
+    });
+    $('bizCount').textContent = rows.length + ' business' + (rows.length === 1 ? '' : 'es');
+    box.replaceChildren();
+    rows.slice(0, bizLimit).forEach(function (h) { box.appendChild(bizCard(h)); });
+    $('bizMore').hidden = rows.length <= bizLimit;
+    if (!rows.length) box.appendChild(el('p', { className: 'muted' }, 'No businesses match.'));
+  }
+  function bizCard(h) {
+    var o = ownerOf(h), tier = P.tierOf(h), id = String(h.id || h.name);
+    var out = el('div');
+    var card = el('article', { className: 'item' + (h.hidden ? ' is-hidden' : ''), style: h.hidden ? 'opacity:.75;border-style:dashed' : '' },
+      el('div', { className: 'item-head' }, el('h3', {}, h.name),
+        el('span', {}, el('span', { className: 'badge tier' }, tier), ' ', el('span', { className: 'badge pending' }, cfg.typeLabels[h.__type]),
+          h.hidden ? el('span', { className: 'badge rejected', style: 'margin-left:4px' }, 'Removed from site') : null,
+          h.sample ? el('span', { className: 'badge pending', style: 'margin-left:4px' }, 'Sample') : null)),
+      el('p', { className: 'meta' }, [h.city, h.countryName].filter(Boolean).join(', ') + (h.ownerSubmitted ? ' · Added by owner' : '') + ' · ' +
+        (o ? 'Owner: ' + (o.owner_email || '') + (o.contact_name ? ' (' + o.contact_name + ')' : '') : 'No owner yet')));
+    var editBtn = el('button', { className: 'btn', type: 'button', onclick: function () { editing = editing === id ? null : id; renderBusinesses(); } }, editing === id ? 'Close' : 'Edit');
+    var hideBtn = el('button', { className: h.hidden ? 'btn light' : 'btn danger', type: 'button', onclick: function () {
+      if (!h.hidden && hideBtn.dataset.confirm !== '1') { hideBtn.dataset.confirm = '1'; hideBtn.textContent = 'Click again to remove'; return; }
+      hideBtn.disabled = true;
+      saveOverride(h, { hidden: h.hidden ? null : true }).then(function (r) { if (r && r.error) { hideBtn.disabled = false; P.msg(out, 'err', r.error.message); } else reloadListings(); });
+    } }, h.hidden ? 'Put back on site' : 'Remove from site');
+    var ownerBtn = o ? el('button', { className: 'btn light', type: 'button', onclick: function () {
+      if (ownerBtn.dataset.confirm !== '1') { ownerBtn.dataset.confirm = '1'; ownerBtn.textContent = 'Click again to remove owner'; return; }
+      ownerBtn.disabled = true;
+      sb.from('listing_claims').update({ status: 'rejected', reviewed_by: user.id, reviewed_at: new Date().toISOString(), admin_notes: 'Owner removed by admin' }).eq('id', o.id).then(function (r) {
+        if (r.error) { ownerBtn.disabled = false; P.msg(out, 'err', r.error.message); } else refresh();
+      });
+    } }, 'Remove owner') : null;
+    card.appendChild(el('div', { className: 'actions', style: 'margin-top:6px' }, editBtn,
+      el('a', { className: 'btn light', href: '/listing-information.html?type=' + encodeURIComponent(h.__type) + '&id=' + encodeURIComponent(id), target: '_blank' }, 'View'),
+      hideBtn, ownerBtn));
+    if (editing === id) card.appendChild(editForm(h, out));
+    card.appendChild(out);
+    return card;
+  }
+  function editForm(h, out) {
+    var f = el('form', { style: 'margin-top:10px;border-top:1px solid var(--line);padding-top:6px' });
+    var fields = ['name', 'description', 'address', 'city', 'phone', 'email', 'website', 'whatsapp', 'instagram', 'hours', 'priceRange',
+      h.__type === 'bars' ? 'drinks' : 'cuisine', 'features', 'photo', 'rating', 'ratingSource'];
+    var labels = Object.assign({ name: 'Business name', city: 'City', rating: 'Rating (0–5)', ratingSource: 'Rating source' }, P.fieldLabels);
+    var tierSel = el('select', { name: 'membershipTier' });
+    ['platinum', 'gold', 'silver', 'bronze'].forEach(function (t) { tierSel.appendChild(el('option', { value: t, selected: P.tierOf(h) === t }, t.charAt(0).toUpperCase() + t.slice(1))); });
+    f.appendChild(el('label', {}, 'Level')); f.appendChild(tierSel);
+    fields.forEach(function (k) {
+      var v = P.show(h[k]);
+      f.appendChild(el('label', {}, labels[k] || k));
+      f.appendChild(k === 'description' || k === 'hours'
+        ? el('textarea', { name: k, value: v, maxLength: 1500 })
+        : el('input', { name: k, value: v, maxLength: 300, type: k === 'rating' ? 'number' : 'text', step: k === 'rating' ? '0.1' : null, min: k === 'rating' ? '0' : null, max: k === 'rating' ? '5' : null }));
+    });
+    var save = el('button', { className: 'btn', type: 'submit' }, 'Save and publish');
+    f.appendChild(el('div', { className: 'actions' }, save));
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var changes = {};
+      if (tierSel.value !== P.tierOf(h)) changes.membershipTier = tierSel.value;
+      fields.forEach(function (k) {
+        var raw = f.elements[k].value.trim();
+        if (raw === P.show(h[k]).trim()) return;
+        if (k === 'features') changes[k] = raw ? raw.split(/\s*[·,;]\s*/).filter(Boolean).slice(0, 8) : null;
+        else if (k === 'rating') changes[k] = raw === '' ? null : Math.max(0, Math.min(5, Number(raw)));
+        else if (k === 'website' || k === 'photo') changes[k] = P.normalizeUrl(raw) || null;
+        else changes[k] = raw || null;
+      });
+      if (!Object.keys(changes).length) return P.msg(out, 'info', 'Nothing changed.');
+      save.disabled = true;
+      saveOverride(h, changes).then(function (r) {
+        save.disabled = false;
+        if (r && r.error) return P.msg(out, 'err', r.error.message);
+        editing = null; reloadListings().then(function () { });
+      });
+    });
+    return f;
   }
 
   function renderNew(rows) {
@@ -256,7 +402,15 @@
   }
   $('tempPwForm').addEventListener('submit', function (e) {
     e.preventDefault();
-    var email = $('tempEmail').value.trim(), out = $('tempPwOut'), btn = e.submitter;
+    issueTempPassword($('tempEmail').value.trim(), $('tempPwOut'), e.submitter, function () { $('tempPwForm').reset(); });
+  });
+  function fnError(r, out, fallback) {
+    var ctx = r.error && r.error.context;
+    var done = function (m) { P.msg(out, 'err', m || fallback); };
+    if (ctx && typeof ctx.json === 'function') ctx.json().then(function (j) { done(j && j.error); }).catch(function () { done(); });
+    else done(r.error && r.error.message);
+  }
+  function issueTempPassword(email, out, btn, after) {
     var temp = P.tempPassword();
     if (btn) btn.disabled = true;
     P.msg(out, 'info', 'Setting a temporary password…');
@@ -275,9 +429,87 @@
       out.replaceChildren(el('div', { className: 'msg ok' },
         el('p', { style: 'margin:0 0 8px' }, 'Temporary password set for ' + email + '. Give it to the owner privately. It is shown only once:'),
         el('div', { className: 'actions', style: 'margin-top:0;align-items:center' }, code, copy, wa)));
-      $('tempPwForm').reset();
+      if (after) after();
     });
-  });
+  }
+
+  // ---------- Owners ----------
+  var owners = null, allSubs = [];
+  $('ownSearch').addEventListener('input', function () { renderOwners(); });
+  $('ownShow').addEventListener('change', function () { renderOwners(); });
+  $('ownReload').addEventListener('click', function () { loadOwners(); });
+  function loadOwners() {
+    P.msg($('ownList'), 'info', 'Loading owner accounts…');
+    sb.functions.invoke('admin-set-owner-password', { body: { action: 'list' } }).then(function (r) {
+      if (r.error) return fnError(r, $('ownList'), 'Could not load owner accounts.');
+      owners = (r.data && r.data.owners) || [];
+      var dl = $('ownerEmails'); dl.replaceChildren(); owners.map(function (o) { return o.email; }).filter(Boolean).sort().forEach(function (e) { dl.appendChild(el('option', { value: e })); });
+      renderOwners();
+    });
+  }
+  function renderOwners() {
+    if (!owners) return;
+    var q = $('ownSearch').value.trim().toLowerCase(), show = $('ownShow').value, box = $('ownList');
+    var rows = owners.map(function (o) {
+      var cl = allClaims.filter(function (c) { return c.user_id === o.id; });
+      var su = allSubs.filter(function (x) { return x.user_id === o.id && x.status === 'pending'; });
+      return { o: o, claims: cl, subs: su };
+    }).filter(function (r) {
+      var verified = r.claims.some(function (c) { return c.status === 'approved'; });
+      var waiting = r.claims.some(function (c) { return c.status === 'pending'; }) || r.subs.length;
+      if (show === 'verified' && !verified) return false;
+      if (show === 'waiting' && !waiting) return false;
+      if (show === 'none' && (r.claims.length || r.subs.length)) return false;
+      if (q) {
+        var hay = [r.o.email].concat(r.claims.map(function (c) { return [c.listing_name, c.contact_name, c.contact_phone].join(' '); }), r.subs.map(function (x) { return x.name; })).join(' ').toLowerCase();
+        if (hay.indexOf(q) === -1) return false;
+      }
+      return true;
+    }).sort(function (a, b) { return String(b.o.created_at).localeCompare(String(a.o.created_at)); });
+    $('ownCount').textContent = rows.length + ' owner' + (rows.length === 1 ? '' : 's');
+    box.replaceChildren();
+    if (!rows.length) box.appendChild(el('p', { className: 'muted' }, 'No owners match.'));
+    rows.forEach(function (r) { box.appendChild(ownerCard(r)); });
+  }
+  function ownerCard(r) {
+    var o = r.o, out = el('div');
+    var name = (r.claims.find(function (c) { return c.contact_name; }) || {}).contact_name || '';
+    var phone = (r.claims.find(function (c) { return c.contact_phone; }) || {}).contact_phone || '';
+    var biz = el('div', { style: 'display:grid;gap:6px;margin-top:4px' });
+    r.claims.forEach(function (c) {
+      var rm = c.status === 'approved' ? el('button', { className: 'btn light', type: 'button', style: 'padding:6px 10px;font-size:.82rem', onclick: function () {
+        if (rm.dataset.confirm !== '1') { rm.dataset.confirm = '1'; rm.textContent = 'Click again to remove'; return; }
+        rm.disabled = true;
+        sb.from('listing_claims').update({ status: 'rejected', reviewed_by: user.id, reviewed_at: new Date().toISOString(), admin_notes: 'Owner removed by admin' }).eq('id', c.id).then(function (x) { if (x.error) { rm.disabled = false; P.msg(out, 'err', x.error.message); } else refresh(); });
+      } }, 'Remove from business') : null;
+      biz.appendChild(el('div', { style: 'display:flex;gap:8px;align-items:center;flex-wrap:wrap' },
+        el('span', { className: 'badge ' + c.status }, c.status === 'approved' ? 'Owner' : c.status), el('strong', {}, c.listing_name || c.listing_id),
+        el('span', { className: 'meta' }, cfg.typeLabels[c.listing_type] + (c.requested_tier && c.requested_tier !== 'bronze' ? ' · wants ' + c.requested_tier : '')), rm));
+    });
+    r.subs.forEach(function (x) {
+      biz.appendChild(el('div', { style: 'display:flex;gap:8px;align-items:center;flex-wrap:wrap' }, el('span', { className: 'badge pending' }, 'New business'), el('strong', {}, x.name), el('span', { className: 'meta' }, cfg.typeLabels[x.listing_type] + ' · ' + x.city)));
+    });
+    if (!r.claims.length && !r.subs.length) biz.appendChild(el('p', { className: 'muted', style: 'margin:0' }, 'No business claimed or added yet.'));
+    var tp = el('button', { className: 'btn', type: 'button', onclick: function () { issueTempPassword(o.email, out, tp); } }, 'Give temporary password');
+    var wa = phone ? el('a', { className: 'btn light', href: 'https://wa.me/' + phone.replace(/[^\d]/g, ''), target: '_blank', rel: 'noopener' }, 'WhatsApp') : null;
+    var mail = el('a', { className: 'btn light', href: 'mailto:' + o.email }, 'Email');
+    var del = el('button', { className: 'btn danger', type: 'button', onclick: function () {
+      if (del.dataset.confirm !== '1') { del.dataset.confirm = '1'; del.textContent = 'Click again to delete this account'; return; }
+      del.disabled = true;
+      sb.functions.invoke('admin-set-owner-password', { body: { action: 'delete', user_id: o.id } }).then(function (x) {
+        if (x.error) { del.disabled = false; return fnError(x, out, 'Could not delete the account.'); }
+        owners = owners.filter(function (y) { return y.id !== o.id; }); refresh(); renderOwners();
+      });
+    } }, 'Delete account');
+    return el('article', { className: 'item' },
+      el('div', { className: 'item-head' }, el('h3', {}, o.email),
+        el('span', {}, o.temp_password ? el('span', { className: 'badge pending' }, 'Temporary password') : null, !o.confirmed ? el('span', { className: 'badge rejected', style: 'margin-left:4px' }, 'Email not confirmed') : null)),
+      el('p', { className: 'meta' }, [name, phone].filter(Boolean).join(' · ') + (name || phone ? ' · ' : '') + 'Joined ' + P.fmtDate(o.created_at) + ' · ' + (o.last_sign_in_at ? 'Last signed in ' + P.fmtDate(o.last_sign_in_at) : 'Never signed in')),
+      biz,
+      el('div', { className: 'actions', style: 'margin-top:8px' }, tp, wa, mail, del),
+      el('p', { className: 'meta', style: 'margin:4px 0 0' }, 'Deleting an account removes its claims and requests. Its businesses stay on the site.'),
+      out);
+  }
   function verifyButtons(c) {
     var notes = c.evidence_notes || '', phone = (c.contact_phone || '').replace(/[^\d]/g, '');
     var m = notes.match(/Verify by email:\s*(\S+@\S+)/i), mail = m ? m[1] : '';
