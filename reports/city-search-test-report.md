@@ -1,7 +1,7 @@
 # Automated Hostel Directory Quality Report
 
 - Clean hostel records: **0**
-- Owner-managed listings: **9**
+- Owner-managed listings: **0**
 - Source database updated: **2026-10-20**
 - Scope: structural data checks; OpenStreetMap coverage may be incomplete and listings are not independently verified.
 
@@ -15,7 +15,7 @@
 | Clean records have names and valid coordinates | PASS | 0 invalid records |
 | No exact normalized name/city duplicates remain | PASS | 0 duplicate groups |
 | Page loads compact cleaned data | FAIL | clean data endpoint found |
-| Paid and free owner listings are merged separately | FAIL | 9 owner listings available |
+| Paid and free owner listings are merged separately | FAIL | 0 owner listings available |
 | Country and city filters are present | PASS | both selectors found |
 | English/Spanish toggle is wired | FAIL | bilingual toggle found |
 | Booking buttons only link to Hostelworld | FAIL | Hostelworld-only booking link logic found |
