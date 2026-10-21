@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-20",
-  "scope": "Santa Marta, Colombia pilot only. Country selector retains all 18 countries; add other cities and listings as they are researched and approved.",
+  "scope": "The 18 countries in the hostel directory. Boutique and independent properties only; major international chains excluded.",
   "countries": [
     {
       "code": "BZ",
@@ -77,6 +77,238 @@
   ],
   "hotels": [
     {
+      "id": "ar-legado-mitico-buenos-aires",
+      "name": "Legado Mitico Buenos Aires",
+      "city": "Buenos Aires",
+      "countryCode": "AR",
+      "countryName": "Argentina",
+      "description": "Small boutique hotel with rooms themed around Argentine culture and history.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.legadomitico.com/"
+    },
+    {
+      "id": "ar-las-balsas",
+      "name": "Las Balsas",
+      "city": "Villa La Angostura",
+      "countryCode": "AR",
+      "countryName": "Argentina",
+      "description": "Intimate lakeside hotel in Patagonia with a strong sense of place.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.lasbalsas.com/"
+    },
+    {
+      "id": "bo-atix-hotel",
+      "name": "Atix Hotel",
+      "city": "La Paz",
+      "countryCode": "BO",
+      "countryName": "Bolivia",
+      "description": "Contemporary design hotel showcasing Bolivian art, materials, and food.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.atixhotel.com/"
+    },
+    {
+      "id": "bo-hotel-rosario-la-paz",
+      "name": "Hotel Rosario La Paz",
+      "city": "La Paz",
+      "countryCode": "BO",
+      "countryName": "Bolivia",
+      "description": "Locally rooted hotel in a traditional colonial-style building near the historic center.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.hotelrosario.com/"
+    },
+    {
+      "id": "cl-hotel-magnolia",
+      "name": "Hotel Magnolia",
+      "city": "Santiago",
+      "countryCode": "CL",
+      "countryName": "Chile",
+      "description": "Independent boutique hotel in a restored historic mansion near Santiago's city center.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.hotelmagnolia.cl/"
+    },
+    {
+      "id": "cl-tierra-patagonia",
+      "name": "Tierra Patagonia",
+      "city": "Torres del Paine",
+      "countryCode": "CL",
+      "countryName": "Chile",
+      "description": "Architecturally distinctive lodge overlooking Lake Sarmiento and Patagonia's landscapes.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.tierrapatagonia.com/"
+    },
+    {
+      "id": "click-clack-bogota",
+      "name": "The Click Clack Hotel Bogotá",
+      "city": "Bogotá",
+      "address": "Carrera 11 #93-77, Bogotá",
+      "description": "Design-forward hotel near Parque de la 93, with dining and a rooftop bar.",
+      "amenities": [
+        "Design hotel",
+        "Restaurant",
+        "Rooftop bar"
+      ],
+      "website": "https://www.clickclackhotel.com/en/",
+      "countryCode": "CO",
+      "countryName": "Colombia"
+    },
+    {
+      "id": "hotel-boutique-san-antonio-cali",
+      "name": "Hotel Boutique San Antonio",
+      "city": "Cali",
+      "address": "Carrera 6 #2-51, Cali",
+      "description": "Colonial-style boutique hotel in Cali's San Antonio neighborhood, with breakfast and a solarium terrace.",
+      "amenities": [
+        "Boutique",
+        "Breakfast",
+        "Terrace",
+        "Wi-Fi"
+      ],
+      "website": "https://en.hotelboutiquesanantonio.com/",
+      "countryCode": "CO",
+      "countryName": "Colombia"
+    },
+    {
+      "id": "ananda-cartagena",
+      "name": "Anandá Hotel Boutique",
+      "city": "Cartagena",
+      "address": "Calle del Cuartel #36-77, Cartagena",
+      "description": "Boutique hotel in a restored colonial house in Cartagena's historic center.",
+      "amenities": [
+        "Boutique",
+        "Historic center",
+        "Pool"
+      ],
+      "website": "https://www.anandahotelboutique.com/",
+      "countryCode": "CO",
+      "countryName": "Colombia"
+    },
+    {
+      "id": "berthas-collection",
+      "name": "Bertha's Collection",
+      "city": "Cartagena",
+      "address": "Carrera 3 #4-23, Bocagrande, Cartagena",
+      "description": "Boutique hotel in Bocagrande, steps from the Caribbean Sea.",
+      "amenities": [
+        "Boutique",
+        "Near beach",
+        "Direct booking"
+      ],
+      "website": "https://www.berthascollection.com/",
+      "countryCode": "CO",
+      "countryName": "Colombia"
+    },
+    {
+      "id": "casa-santiago-botero",
+      "name": "Casa Santiago Botero",
+      "city": "Cartagena",
+      "address": "Calle Santo Domingo #3-72, Cartagena",
+      "description": "Small historic boutique hotel with original Colombian art in the heart of the walled city.",
+      "amenities": [
+        "Boutique",
+        "Art",
+        "Historic center"
+      ],
+      "website": "https://casasantiagobotero.com/en/",
+      "countryCode": "CO",
+      "countryName": "Colombia"
+    },
+    {
+      "id": "madisson-cartagena",
+      "name": "Madisson Boutique Hotel",
+      "city": "Cartagena",
+      "address": "Carrera 2 #7-135, Cartagena",
+      "description": "Boutique hotel near Bocagrande beach, with a pool, terrace, and on-site restaurant.",
+      "amenities": [
+        "Boutique",
+        "Pool",
+        "Restaurant"
+      ],
+      "website": "https://www.madissonboutiquehotel.com/en/",
+      "countryCode": "CO",
+      "countryName": "Colombia"
+    },
+    {
+      "id": "santa-alejandria-cartagena",
+      "name": "Santa Alejandría Hotel — Cartagena",
+      "city": "Cartagena",
+      "description": "Boutique stay in Cartagena's historic walled city, combining colonial architecture with contemporary comfort.",
+      "amenities": [
+        "Boutique",
+        "Historic center"
+      ],
+      "website": "https://www.santalejandriahotels.com/?lang=en",
+      "countryCode": "CO",
+      "countryName": "Colombia"
+    },
+    {
+      "id": "sophia-cartagena",
+      "name": "Sophia Hotel Boutique",
+      "city": "Cartagena",
+      "address": "Calle 32 #4-45, Plaza de la Aduana, Cartagena",
+      "description": "Boutique hotel in Cartagena's walled city, close to plazas, museums, and historic landmarks.",
+      "amenities": [
+        "Boutique",
+        "Historic center",
+        "Rooftop"
+      ],
+      "website": "https://www.sophiahotel.com.co/es/",
+      "countryCode": "CO",
+      "countryName": "Colombia"
+    },
+    {
+      "id": "santa-alejandria-medellin",
+      "name": "Santa Alejandría Hotel — Medellín",
+      "city": "Medellín",
+      "description": "Boutique hotel in Medellín with a personalized, design-led hospitality experience.",
+      "amenities": [
+        "Boutique",
+        "Design hotel"
+      ],
+      "website": "https://www.santalejandriahotels.com/?lang=en",
+      "countryCode": "CO",
+      "countryName": "Colombia"
+    },
+    {
+      "id": "click-clack-medellin",
+      "name": "The Click Clack Hotel Medellín",
+      "city": "Medellín",
+      "address": "Carrera 37 #10A-29, Medellín",
+      "description": "Contemporary design hotel in Provenza, surrounded by restaurants and city life.",
+      "amenities": [
+        "Design hotel",
+        "Restaurant",
+        "Provenza"
+      ],
+      "website": "https://www.clickclackhotel.com/en/",
+      "countryCode": "CO",
+      "countryName": "Colombia"
+    },
+    {
+      "id": "san-luis-beach-house",
+      "name": "Hotel San Luis Beach House",
+      "city": "San Andrés",
+      "description": "Island hotel with a relaxed beach-house atmosphere and direct booking through its official site.",
+      "amenities": [
+        "Island stay",
+        "Near beach"
+      ],
+      "website": "https://www.hotelsanluis.com.co/en/",
+      "countryCode": "CO",
+      "countryName": "Colombia"
+    },
+    {
       "id": "casa-de-leda-santa-marta",
       "name": "Casa de Leda, a Kali Hotel",
       "city": "Santa Marta",
@@ -140,6 +372,329 @@
       "countryCode": "CO",
       "countryName": "Colombia",
       "membershipTier": "gold"
+    },
+    {
+      "id": "cr-hotel-belmar",
+      "name": "Hotel Belmar",
+      "city": "Monteverde",
+      "countryCode": "CR",
+      "countryName": "Costa Rica",
+      "description": "Family-owned mountain hotel known for sustainability, local food, and forest views.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.hotelbelmar.net/"
+    },
+    {
+      "id": "cr-hotel-grano-de-oro",
+      "name": "Hotel Grano de Oro",
+      "city": "San José",
+      "countryCode": "CR",
+      "countryName": "Costa Rica",
+      "description": "Independent boutique hotel in a restored Victorian mansion with a garden courtyard.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.granodeoro.com/"
+    },
+    {
+      "id": "cu-la-rosa-de-ortega",
+      "name": "La Rosa de Ortega",
+      "city": "Havana",
+      "countryCode": "CU",
+      "countryName": "Cuba",
+      "description": "Small guesthouse in Havana with individually styled rooms and a residential atmosphere.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.larosadeortega.com/"
+    },
+    {
+      "id": "cu-hostal-del-rijo",
+      "name": "Hostal del Rijo",
+      "city": "Sancti Spíritus",
+      "countryCode": "CU",
+      "countryName": "Cuba",
+      "description": "Historic small hotel in a restored colonial building in the old town.",
+      "amenities": [
+        "Boutique / independent"
+      ]
+    },
+    {
+      "id": "do-sublime-samana",
+      "name": "Sublime Samana",
+      "city": "Las Terrenas",
+      "countryCode": "DO",
+      "countryName": "Dominican Republic",
+      "description": "Low-rise boutique property on the Samaná peninsula with a relaxed coastal setting.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.sublimesamana.com/"
+    },
+    {
+      "id": "do-casas-del-xvi",
+      "name": "Casas del XVI",
+      "city": "Santo Domingo",
+      "countryCode": "DO",
+      "countryName": "Dominican Republic",
+      "description": "Collection of restored colonial homes operating as an intimate boutique hotel experience.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.casasdelxvi.com/"
+    },
+    {
+      "id": "ec-hotel-del-parque",
+      "name": "Hotel del Parque",
+      "city": "Guayaquil",
+      "countryCode": "EC",
+      "countryName": "Ecuador",
+      "description": "Small luxury hotel in a restored historic building within Parque Histórico Guayaquil.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.hoteldelparquehistorico.com/"
+    },
+    {
+      "id": "ec-casa-gangotena",
+      "name": "Casa Gangotena",
+      "city": "Quito",
+      "countryCode": "EC",
+      "countryName": "Ecuador",
+      "description": "Boutique hotel in a restored mansion on Quito's historic Plaza San Francisco.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.casagangotena.com/"
+    },
+    {
+      "id": "sv-casa-de-mar-hotel-villas",
+      "name": "Casa de Mar Hotel & Villas",
+      "city": "El Sunzal",
+      "countryCode": "SV",
+      "countryName": "El Salvador",
+      "description": "Independent coastal hotel with ocean views and access to El Sunzal's surf break.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.casademarhotel.com/"
+    },
+    {
+      "id": "sv-puro-surf-hotel-performance-academy",
+      "name": "Puro Surf Hotel & Performance Academy",
+      "city": "El Zonte",
+      "countryCode": "SV",
+      "countryName": "El Salvador",
+      "description": "Design-focused surf hotel and training academy on El Salvador's Pacific coast.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.purosurf.com/"
+    },
+    {
+      "id": "gt-casa-santo-domingo",
+      "name": "Casa Santo Domingo",
+      "city": "Antigua Guatemala",
+      "countryCode": "GT",
+      "countryName": "Guatemala",
+      "description": "Historic hotel and cultural complex in a former convent, with local art and gardens.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.casasantodomingo.com.gt/"
+    },
+    {
+      "id": "gt-casa-palopo",
+      "name": "Casa Palopó",
+      "city": "Lake Atitlán",
+      "countryCode": "GT",
+      "countryName": "Guatemala",
+      "description": "Small design-led lakeside hotel with views across Lake Atitlán and surrounding volcanoes.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.casapalopo.com/"
+    },
+    {
+      "id": "hn-the-lodge-at-pico-bonito",
+      "name": "The Lodge at Pico Bonito",
+      "city": "La Ceiba",
+      "countryCode": "HN",
+      "countryName": "Honduras",
+      "description": "Nature lodge on the edge of Pico Bonito National Park, surrounded by rainforest.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.picobonito.com/"
+    },
+    {
+      "id": "hn-ibagari-boutique-hotel",
+      "name": "Ibagari Boutique Hotel",
+      "city": "Roatán",
+      "countryCode": "HN",
+      "countryName": "Honduras",
+      "description": "Small boutique property on Roatán with contemporary design and Caribbean views.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.ibagari.com/"
+    },
+    {
+      "id": "mx-hotel-secreto",
+      "name": "Hotel Secreto",
+      "city": "Isla Mujeres",
+      "countryCode": "MX",
+      "countryName": "Mexico",
+      "description": "Intimate design hotel with a quiet oceanfront setting and a small-property feel.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.hotelsecreto.com/"
+    },
+    {
+      "id": "mx-casa-habita",
+      "name": "Casa Habita",
+      "city": "Mexico City",
+      "countryCode": "MX",
+      "countryName": "Mexico",
+      "description": "Contemporary boutique hotel in a restored residential building in the Condesa area.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.casahabita.com/"
+    },
+    {
+      "id": "mx-la-casa-que-canta",
+      "name": "La Casa Que Canta",
+      "city": "Zihuatanejo",
+      "countryCode": "MX",
+      "countryName": "Mexico",
+      "description": "Cliffside independent luxury hotel overlooking Zihuatanejo Bay.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.lacasaquecanta.com/"
+    },
+    {
+      "id": "ni-hotel-plaza-colon",
+      "name": "Hotel Plaza Colón",
+      "city": "Granada",
+      "countryCode": "NI",
+      "countryName": "Nicaragua",
+      "description": "Independent colonial-style hotel overlooking Granada's central plaza.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.hotelplazacolon.com/"
+    },
+    {
+      "id": "ni-tribal-hotel",
+      "name": "Tribal Hotel",
+      "city": "Granada",
+      "countryCode": "NI",
+      "countryName": "Nicaragua",
+      "description": "Small design hotel in Granada with a courtyard pool and locally inspired interiors.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.tribalhotel.com/"
+    },
+    {
+      "id": "pa-isla-palenque",
+      "name": "Isla Palenque",
+      "city": "Bocas del Toro",
+      "countryCode": "PA",
+      "countryName": "Panama",
+      "description": "Private-island eco-retreat focused on nature, conservation, and low-impact stays.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.islapalenque.com/"
+    },
+    {
+      "id": "pa-american-trade-hotel",
+      "name": "American Trade Hotel",
+      "city": "Panama City",
+      "countryCode": "PA",
+      "countryName": "Panama",
+      "description": "Design-led hotel in a restored historic building in Casco Viejo.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.americantradehotel.com/"
+    },
+    {
+      "id": "py-factoria-hotel",
+      "name": "Factoria Hotel",
+      "city": "Asunción",
+      "countryCode": "PY",
+      "countryName": "Paraguay",
+      "description": "Small design-forward hotel in a converted industrial building in Asunción.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.factoriahotel.com.py/"
+    },
+    {
+      "id": "py-la-mision-hotel-boutique",
+      "name": "La Misión Hotel Boutique",
+      "city": "Asunción",
+      "countryCode": "PY",
+      "countryName": "Paraguay",
+      "description": "Independent boutique hotel with a residential atmosphere and locally inspired design.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.lamision.com.py/"
+    },
+    {
+      "id": "pe-titilaka",
+      "name": "Titilaka",
+      "city": "Lake Titicaca",
+      "countryCode": "PE",
+      "countryName": "Peru",
+      "description": "Remote lodge on Lake Titicaca with local excursions and lake views.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.titilaka.pe/"
+    },
+    {
+      "id": "pe-atemporal",
+      "name": "Atemporal",
+      "city": "Lima",
+      "countryCode": "PE",
+      "countryName": "Peru",
+      "description": "Small boutique hotel in a restored 1940s mansion in Lima's Miraflores district.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.atemporal.pe/"
+    },
+    {
+      "id": "uy-charco-hotel",
+      "name": "Charco Hotel",
+      "city": "Colonia del Sacramento",
+      "countryCode": "UY",
+      "countryName": "Uruguay",
+      "description": "Small independent hotel in Colonia's historic quarter, facing the Río de la Plata.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.charcohotel.com/"
+    },
+    {
+      "id": "uy-las-cumbres",
+      "name": "Las Cumbres",
+      "city": "Punta Ballena",
+      "countryCode": "UY",
+      "countryName": "Uruguay",
+      "description": "Distinctive small hotel on a hilltop with broad views of the coast and countryside.",
+      "amenities": [
+        "Boutique / independent"
+      ],
+      "website": "https://www.lascumbres.com.uy/"
     },
     {
       "id": "hotel-boutique-el-cactus-santa-marta",
