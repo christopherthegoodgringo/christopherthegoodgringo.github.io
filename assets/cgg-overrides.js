@@ -28,6 +28,32 @@
     return cache[type];
   }
 
+  // Businesses added by owners and approved in the admin page.
+  var newCache = {};
+  function newListingsFor(type) {
+    if (!newCache[type]) {
+      var url = cfg.supabaseUrl + '/rest/v1/published_new_listings?select=listing_id,data&listing_type=eq.' + encodeURIComponent(type);
+      var request = nativeFetch(url, { headers: { apikey: cfg.supabaseKey, Accept: 'application/json' }, cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : []; })
+        .catch(function () { return []; });
+      var timeout = new Promise(function (resolve) { setTimeout(function () { resolve([]); }, 1500); });
+      newCache[type] = Promise.race([request, timeout]);
+    }
+    return newCache[type];
+  }
+  function withNewListings(type, list) {
+    return newListingsFor(type).then(function (rows) {
+      if (!Array.isArray(rows) || !rows.length) return list;
+      var have = {};
+      list.forEach(function (h) { if (h && h.id) have[h.id] = 1; });
+      var added = rows.map(function (r) { return Object.assign({}, r.data || {}, { id: r.listing_id }); })
+        .filter(function (h) { return h.name && !have[h.id]; });
+      return list.concat(added);
+    });
+  }
+  // The hostel page loads two files; add new hostels to only one of them.
+  var addTo = { 'hostels-clean.json': false, 'paid-listings.json': true };
+
   function clean(changes) {
     var out = {};
     Object.keys(changes || {}).forEach(function (k) {
@@ -65,7 +91,8 @@
         if (!/^\/(owner|admin)\/|^\/listing-information\.html/.test(location.pathname)) {
           data[hit[1]] = data[hit[1]].filter(function (h) { return !(h && h.sample); });
         }
-        return window.cggApplyOverrides(hit[0], data[hit[1]]).then(function (list) {
+        var base = (addTo[m[1]] === false) ? Promise.resolve(data[hit[1]]) : withNewListings(hit[0], data[hit[1]]);
+        return base.then(function (merged) { return window.cggApplyOverrides(hit[0], merged); }).then(function (list) {
           data[hit[1]] = list;
           return new Response(JSON.stringify(data), { status: 200, headers: { 'Content-Type': 'application/json' } });
         });
