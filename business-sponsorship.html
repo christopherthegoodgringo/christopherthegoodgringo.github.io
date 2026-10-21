@@ -56,6 +56,15 @@ h1,h2,h3{font-family:var(--display);line-height:1.08;letter-spacing:-.035em}h1{f
 @media(min-width:900px){.tier>p{min-height:3.2em}}
 .tier .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
+<style id="start-css">
+.start-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:18px}
+.start-card{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:24px;display:flex;flex-direction:column;gap:6px}
+.start-card h3{margin:0;color:var(--green);font-size:1.3rem}
+.start-card p{margin:0 0 14px;color:var(--muted)}
+.start-card .button{align-self:flex-start;margin-top:auto;text-decoration:none}
+.start-note{color:var(--muted);margin-top:14px}.start-note a{color:var(--green);font-weight:700}
+@media(max-width:700px){.start-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <header class="cgg-global-header"><a class="cgg-global-brand" href="/" aria-label="Christopher the Good Gringo home"><img src="/assets/cgg-home-emblem.svg" alt=""><span>CHRISTOPHER THE GOOD GRINGO™</span></a><nav class="cgg-global-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/hotels.html">Hotel Finder</a><a href="/hostels.html">Hostel Finder</a><a href="/restaurants.html">Restaurant Finder</a><a href="/bars.html">Bar Finder</a><a href="/street-food-finder.html">Street Food Finder</a><a href="/team/">Meet the Team</a><a href="/social-media.html">Social Media &amp; Contact</a><a href="/merch.html">Merch</a><a href="/ebooks.html">Ebooks</a><a href="/business-sponsorship.html">Business &amp; Sponsorship</a></nav></header>
@@ -78,28 +87,14 @@ h1,h2,h3{font-family:var(--display);line-height:1.08;letter-spacing:-.035em}h1{f
 </tbody></table></div>
 <p class="compare-note">Already listed? <a href="/owner/">Sign in to the Business Owner Portal</a> to claim your business, update details or request an upgrade.</p>
 </section>
-<section class="section" id="claim-form"><h2>Claim a listing or request sponsorship</h2><p class="section-intro">Tell us about your business and select the option you want. Street food vendors and food carts are eligible for every sponsorship level shown above. If your business is already listed, include the current listing name and URL if you have it. Submitting this form opens an email draft for you to review and send.</p>
-<div class="form-panel"><form id="claimForm">
-<div class="form-grid">
-<div class="field"><label for="businessName">Business name *</label><input id="businessName" name="Business name" required autocomplete="organization"></div>
-<div class="field"><label for="businessType">Business type *</label><select id="businessType" name="Business type" required><option value="">Choose one</option><option>Hotel / boutique stay</option><option>Hostel</option><option>Restaurant</option><option>Bar</option><option>Street food vendor / food cart</option><option>Other</option></select></div>
-<div class="field"><label for="country">Country *</label><input id="country" name="Country" required autocomplete="country-name"></div>
-<div class="field"><label for="city">City *</label><input id="city" name="City" required autocomplete="address-level2"></div>
-<div class="field full"><label for="address">Street address</label><input id="address" name="Street address" autocomplete="street-address"></div>
-<div class="field"><label for="contactName">Your name *</label><input id="contactName" name="Contact name" required autocomplete="name"></div>
-<div class="field"><label for="role">Your role at the business</label><input id="role" name="Role"></div>
-<div class="field"><label for="email">Email address *</label><input id="email" name="Email" type="email" required autocomplete="email"></div>
-<div class="field"><label for="phone">Phone / WhatsApp</label><input id="phone" name="Phone or WhatsApp" type="tel" autocomplete="tel"></div>
-<div class="field full"><label for="website">Official website or booking link</label><input id="website" name="Website or booking link" type="url" placeholder="https://"></div>
-<div class="field full"><label for="listingUrl">Existing directory listing URL (if already listed)</label><input id="listingUrl" name="Existing listing URL" type="url" placeholder="https://christopherthegoodgringo.com/..."></div>
-<div class="field"><label for="requestType">What would you like to do? *</label><select id="requestType" name="Request type" required><option value="Bronze — Free">Claim Bronze — Free</option><option value="Silver — $9.99/month">Request Silver — $9.99/month</option><option value="Gold — $19.99/month">Request Gold — $19.99/month</option><option value="Platinum — $49.99/month">Request Platinum — $49.99/month</option><option value="Correct an existing listing">Correct an existing listing</option></select></div>
-<div class="field"><label for="preferredContact">Preferred contact method</label><select id="preferredContact" name="Preferred contact method"><option>Email</option><option>Phone</option><option>WhatsApp</option></select></div>
-<div class="field full"><label for="details">Anything else we should know?</label><textarea id="details" name="Additional details" placeholder="Share corrections, photo links, social media links, or questions about sponsorship."></textarea></div>
-<div class="field full"><label class="checkrow"><input id="authorization" type="checkbox" required><span>I confirm I am authorized to submit this request for the business and that the information provided is accurate. *</span></label></div>
+<section class="section" id="claim-form">
+<h2>Claim or add your business</h2>
+<p class="section-intro">Everything happens in the free Business Owner Portal. Create your account, then claim your listing or add a new business. Choose any level above, or start with Bronze and upgrade later. We confirm every business with the owner by WhatsApp or email before it goes live, and no payment is taken until your level is confirmed.</p>
+<div class="start-grid">
+<article class="start-card"><h3>My business is already listed</h3><p>Find it in the portal and claim it. Once we verify you, you can update your details, photos and level yourself.</p><a class="button" href="/owner/#claimPanel">Claim my business</a></article>
+<article class="start-card"><h3>My business isn't listed yet</h3><p>Add your hotel, hostel, restaurant, bar or street food stand. Street food vendors and food carts can choose any level.</p><a class="button gold" href="/owner/?add=1#addPanel">Add my business</a></article>
 </div>
-<div class="form-actions"><button class="button" type="submit">Prepare my request email</button><span class="fineprint">No payment is collected by this form. Paid sponsorships are reviewed and confirmed with you before activation.</span></div>
-<div class="notice" id="formNotice" role="status">Your email draft should open in your email app. Review it and press Send to submit your request.</div>
-</form></div>
+<p class="start-note">Already have an account? <a href="/owner/">Sign in to the Business Owner Portal</a>.</p>
 </section>
 </main>
 <footer><div class="wrap" style="display:flex;align-items:center;justify-content:center;gap:10px 18px;flex-wrap:wrap;text-align:center;padding-top:22px;padding-bottom:22px"><span id="footerText">Good places. Good people. Good stories.</span><span>© 2026 Christopher The Good Gringo™. All rights reserved.</span><nav aria-label="Footer navigation" style="display:flex;align-items:center;justify-content:center;gap:8px 18px;flex-wrap:wrap">
@@ -115,7 +110,16 @@ h1,h2,h3{font-family:var(--display);line-height:1.08;letter-spacing:-.035em}h1{f
 <a href="/terms-of-use.html"><span>Terms of Use</span></a>
 </nav></div></footer>
 <script>
-(()=>{const form=document.getElementById('claimForm'),plan=document.getElementById('requestType'),notice=document.getElementById('formNotice');document.querySelectorAll('[data-plan]').forEach(btn=>btn.addEventListener('click',()=>{plan.value=btn.dataset.plan;document.getElementById('claim-form').scrollIntoView({behavior:'smooth'});document.getElementById('businessName').focus({preventScroll:true})}));form.addEventListener('submit',e=>{e.preventDefault();if(!form.reportValidity())return;const data=new FormData(form);const lines=[];for(const [key,value] of data.entries())lines.push(key+': '+value);lines.push('Authorized to submit: Yes');const subject=encodeURIComponent('Business listing request — '+data.get('Business name'));const body=encodeURIComponent(lines.join('\n'));notice.style.display='block';window.location.href='mailto:help@christopherthegoodgringo.com?subject='+subject+'&body='+body;});})();
+(function () {
+  // Level buttons take owners into the portal with the chosen level remembered.
+  var slug = { Bronze: 'bronze', Silver: 'silver', Gold: 'gold', Platinum: 'platinum' };
+  document.querySelectorAll('[data-plan]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var level = slug[String(btn.dataset.plan).split(' ')[0]] || 'bronze';
+      location.href = '/owner/?plan=' + level;
+    });
+  });
+})();
 </script>
 <script id="site-language-persistence">document.documentElement.lang='en';try{localStorage.setItem('gg-lang','en')}catch(e){}</script>
 </body>

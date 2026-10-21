@@ -35,12 +35,14 @@
     <div class="item-head" style="margin-bottom:14px"><p class="muted" id="who" style="margin:0"></p><div class="actions" style="margin-top:0"><button class="btn light" id="setpwBtn" type="button">Set or change password</button><button class="btn light" id="signout" type="button">Sign out</button></div></div>
     <div class="tabs" role="tablist">
       <button role="tab" data-tab="claims" aria-selected="true">Claims <span id="nClaims"></span></button>
+      <button role="tab" data-tab="newbiz" aria-selected="false">New businesses <span id="nNew"></span></button>
       <button role="tab" data-tab="edits" aria-selected="false">Updates <span id="nEdits"></span></button>
       <button role="tab" data-tab="upgrades" aria-selected="false">Upgrades <span id="nUpgrades"></span></button>
       <button role="tab" data-tab="passwords" aria-selected="false">Owner passwords</button>
       <button role="tab" data-tab="history" aria-selected="false">History</button>
     </div>
     <section class="panel" id="tab-claims"><h2>Ownership claims</h2><p class="sub">Confirm the person really runs the business (call or message the business's official number or email) before approving.</p><div class="list" id="claimsList"></div></section>
+    <section class="panel" id="tab-newbiz" hidden><h2>New businesses</h2><p class="sub">Businesses owners added that aren't listed yet. Confirm the person runs it, then approve: it goes live as Bronze in the right Finder, is linked to their account, and any paid level they chose appears under Upgrades.</p><div class="list" id="newList"></div></section>
     <section class="panel" id="tab-edits" hidden><h2>Listing updates</h2><p class="sub">From verified owners and from public "suggest an update" forms. Approving publishes the new values to the site.</p><div class="list" id="editsList"></div></section>
     <section class="panel" id="tab-upgrades" hidden><h2>Tier upgrades</h2><p class="sub">Approve once payment is confirmed. Approving changes the listing's tier on the site.</p><div class="list" id="upgradesList"></div></section>
     <section class="panel" id="tab-passwords" hidden>
@@ -83,7 +85,7 @@
   document.querySelectorAll('[role=tab]').forEach(function (b) {
     b.addEventListener('click', function () {
       document.querySelectorAll('[role=tab]').forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
-      ['claims', 'edits', 'upgrades', 'passwords', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
+      ['claims', 'newbiz', 'edits', 'upgrades', 'passwords', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
     });
   });
 
@@ -109,19 +111,22 @@
     Promise.all([
       sb.from('listing_claims').select('*').order('created_at', { ascending: false }).limit(200),
       sb.from('listing_edit_requests').select('*').order('created_at', { ascending: false }).limit(200),
-      sb.from('listing_upgrade_requests').select('*').order('created_at', { ascending: false }).limit(200)
+      sb.from('listing_upgrade_requests').select('*').order('created_at', { ascending: false }).limit(200),
+      sb.from('listing_submissions').select('*').order('created_at', { ascending: false }).limit(200)
     ]).then(function (res) {
-      var bad = res.find(function (r) { return r.error; });
+      var bad = res.slice(0, 3).find(function (r) { return r.error; });
       if (bad) { P.msg($('claimsList'), 'err', bad.error.message); return; }
-      var claims = res[0].data, edits = res[1].data, ups = res[2].data;
+      var claims = res[0].data, edits = res[1].data, ups = res[2].data, subs = (res[3] && !res[3].error && res[3].data) || [];
       var dl = $('ownerEmails'); dl.replaceChildren(); [...new Set(claims.map(function (c) { return c.owner_email; }).filter(Boolean))].sort().forEach(function (e) { dl.appendChild(el('option', { value: e })); });
       var pend = function (rows) { return rows.filter(function (r) { return r.status === 'pending' || r.status === 'paid'; }); };
-      renderClaims(pend(claims)); renderEdits(pend(edits)); renderUpgrades(pend(ups), claims);
+      renderClaims(pend(claims)); renderNew(pend(subs)); renderEdits(pend(edits)); renderUpgrades(pend(ups), claims);
+      $('nNew').textContent = count(pend(subs));
       $('nClaims').textContent = count(pend(claims)); $('nEdits').textContent = count(pend(edits)); $('nUpgrades').textContent = count(pend(ups));
       var done = [].concat(
         claims.filter(function (r) { return r.reviewed_at; }).map(function (r) { return { when: r.reviewed_at, text: 'Claim · ' + (r.listing_name || r.listing_id) + ' · ' + r.owner_email, status: r.status }; }),
         edits.filter(function (r) { return r.reviewed_at; }).map(function (r) { return { when: r.reviewed_at, text: 'Update · ' + (r.listing_name || r.listing_id), status: r.status }; }),
-        ups.filter(function (r) { return r.reviewed_at; }).map(function (r) { return { when: r.reviewed_at, text: r.tier + ' upgrade', status: r.status }; })
+        ups.filter(function (r) { return r.reviewed_at; }).map(function (r) { return { when: r.reviewed_at, text: r.tier + ' upgrade', status: r.status }; }),
+        subs.filter(function (r) { return r.reviewed_at; }).map(function (r) { return { when: r.reviewed_at, text: 'New business · ' + r.name + ' · ' + (r.owner_email || ''), status: r.status }; })
       ).sort(function (a, b) { return a.when < b.when ? 1 : -1; }).slice(0, 40);
       var h = $('historyList'); h.replaceChildren();
       if (!done.length) h.appendChild(el('p', { className: 'muted' }, 'Nothing reviewed yet.'));
@@ -141,7 +146,10 @@
       var note = noteBox(), ok, no;
       var act = function (status) {
         busy([ok, no], true);
-        sb.from('listing_claims').update({ status: status, reviewed_by: user.id, reviewed_at: new Date().toISOString(), admin_notes: note.value.trim() || null }).eq('id', c.id).then(function (r) {
+        var job = status === 'approved'
+          ? sb.rpc('admin_approve_listing_claim', { p_claim_id: c.id, p_admin_notes: note.value.trim() || null })
+          : sb.from('listing_claims').update({ status: status, reviewed_by: user.id, reviewed_at: new Date().toISOString(), admin_notes: note.value.trim() || null }).eq('id', c.id);
+        job.then(function (r) {
           busy([ok, no], false);
           if (r.error) alertIn(card, /duplicate|unique/i.test(r.error.message) ? 'This business already has an approved owner.' : r.error.message); else refresh();
         });
@@ -150,6 +158,7 @@
       no = el('button', { className: 'btn danger', type: 'button', onclick: function () { act('rejected'); } }, 'Reject');
       var card = el('article', { className: 'item' },
         el('div', { className: 'item-head' }, el('h3', {}, c.listing_name || c.listing_id), el('span', { className: 'badge pending' }, cfg.typeLabels[c.listing_type])),
+        c.requested_tier && c.requested_tier !== 'bronze' ? el('p', {}, el('span', { className: 'badge tier' }, 'Wants ' + c.requested_tier), ' Approving also adds a ' + c.requested_tier + ' upgrade request under Upgrades.') : null,
         el('p', { className: 'meta' }, 'From ' + (c.contact_name || '') + (c.role ? ' (' + c.role + ')' : '') + ' · ' + (c.owner_email || '') + (c.contact_phone ? ' · ' + c.contact_phone : '') + ' · ' + P.fmtDate(c.created_at)),
         c.evidence_notes ? el('p', { style: 'white-space:pre-line' }, c.evidence_notes) : null,
         verifyButtons(c),
@@ -159,6 +168,36 @@
     });
   }
 
+  function renderNew(rows) {
+    var box = $('newList'); box.replaceChildren();
+    if (!rows.length) return empty(box, 'No new businesses waiting.');
+    rows.forEach(function (n) {
+      var note = noteBox(), ok, no;
+      ok = el('button', { className: 'btn', type: 'button', onclick: function () {
+        busy([ok, no], true);
+        sb.rpc('admin_approve_listing_submission', { p_submission_id: n.id, p_admin_notes: note.value.trim() || null }).then(function (r) {
+          busy([ok, no], false);
+          if (r.error) return alertIn(card, r.error.message);
+          P._listings = null; P.loadListings().then(function (l) { listings = l; refresh(); });
+        });
+      } }, 'Approve and publish');
+      no = el('button', { className: 'btn danger', type: 'button', onclick: function () {
+        busy([ok, no], true);
+        sb.from('listing_submissions').update({ status: 'rejected', reviewed_by: user.id, reviewed_at: new Date().toISOString(), admin_notes: note.value.trim() || null }).eq('id', n.id).then(function (r) { busy([ok, no], false); if (r.error) alertIn(card, r.error.message); else refresh(); });
+      } }, 'Reject');
+      var line = function (label, v) { return v ? el('p', { style: 'margin:2px 0' }, el('b', {}, label + ': '), String(v)) : null; };
+      var card = el('article', { className: 'item' },
+        el('div', { className: 'item-head' }, el('h3', {}, n.name), el('span', { className: 'badge pending' }, cfg.typeLabels[n.listing_type])),
+        n.requested_tier !== 'bronze' ? el('p', {}, el('span', { className: 'badge tier' }, 'Wants ' + n.requested_tier), ' Approving also adds a ' + n.requested_tier + ' upgrade request under Upgrades.') : null,
+        el('p', { className: 'meta' }, 'From ' + (n.contact_name || '') + (n.role ? ' (' + n.role + ')' : '') + ' · ' + (n.owner_email || '') + ' · ' + P.fmtDate(n.created_at)),
+        line('Location', [n.address, n.city, n.country_name].filter(Boolean).join(', ')),
+        line('Website', n.website), line('Phone', n.phone), line(n.listing_type === 'bars' ? 'Drinks' : 'Food', n.cuisine), line('Description', n.description),
+        n.evidence_notes ? el('p', { style: 'white-space:pre-line;margin:6px 0 0' }, n.evidence_notes) : null,
+        verifyButtons({ contact_name: n.contact_name, listing_name: n.name, evidence_notes: n.evidence_notes, contact_phone: /Verify by WhatsApp:\s*(.+)/i.test(n.evidence_notes || '') ? RegExp.$1 : '' }),
+        note, el('div', { className: 'actions' }, ok, no));
+      box.appendChild(card);
+    });
+  }
   function renderEdits(rows) {
     var box = $('editsList'); box.replaceChildren();
     if (!rows.length) return empty(box, 'No updates waiting.');

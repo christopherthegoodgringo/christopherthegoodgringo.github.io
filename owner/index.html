@@ -22,6 +22,7 @@
     <h1>Business Owner Portal</h1>
     <p>Claim your business, keep your listing up to date, and upgrade your tier. Every change is reviewed by our team before it goes live.</p>
   </section>
+  <section class="panel" id="planBanner" hidden style="border-color:#d6a84f;background:#fff8e6"></section>
 
   <!-- Signed out -->
   <section class="panel" id="signin" hidden></section>
@@ -77,6 +78,46 @@
         <div class="actions"><button class="btn" type="submit">Submit claim</button><button class="btn light" type="button" id="claimCancel">Cancel</button></div>
       </form>
       <div id="claimMsg"></div>
+      <p class="meta" style="margin-top:14px">Can't find your business? <a href="#addPanel" id="toAdd" style="color:var(--green);font-weight:700">Add it as a new business</a>.</p>
+    </section>
+
+    <section class="panel" id="addPanel">
+      <h2>Add a new business</h2>
+      <p class="sub">Not listed yet? Tell us about it. Once we confirm you run it, it goes live in the right Finder and is linked to your account automatically.</p>
+      <form id="addForm">
+        <div class="row">
+          <div><label for="aType">Type of business</label><select id="aType" required><option value="">Choose one</option></select></div>
+          <div><label for="aName">Business name</label><input id="aName" required minlength="2" maxlength="160"></div>
+        </div>
+        <div class="row">
+          <div><label for="aCountry">Country</label><select id="aCountry" required><option value="">Choose a country</option></select></div>
+          <div><label for="aCity">City or town</label><input id="aCity" required minlength="2" maxlength="120"></div>
+        </div>
+        <label for="aAddress">Street address</label><input id="aAddress" maxlength="300" autocomplete="street-address">
+        <label for="aWebsite" id="aWebsiteLabel">Website, Instagram or Facebook page</label><input id="aWebsite" type="url" maxlength="300" placeholder="https://">
+        <p class="meta" id="aWebsiteHint" style="margin:4px 0 0"></p>
+        <label for="aPhone">Business phone or WhatsApp</label><input id="aPhone" type="tel" maxlength="60">
+        <label for="aCuisine" id="aCuisineLabel">Cuisine or food</label><input id="aCuisine" maxlength="200">
+        <label for="aDesc">Short description <small>(what makes it special?)</small></label><textarea id="aDesc" maxlength="1500"></textarea>
+        <div class="row">
+          <div><label for="aName2">Your name</label><input id="aName2" required maxlength="120" autocomplete="name"></div>
+          <div><label for="aRole">Your role <small>(owner, manager…)</small></label><input id="aRole" required maxlength="80"></div>
+        </div>
+        <fieldset style="border:0;padding:0;margin:14px 0 0">
+          <legend style="font-weight:700;font-size:.9rem;color:var(--green);margin-bottom:6px">How should we confirm you run this business?</legend>
+          <label style="display:flex;align-items:center;gap:8px;font-weight:600;margin:6px 0"><input type="radio" name="aVerifyBy" value="whatsapp" checked style="width:auto"> WhatsApp</label>
+          <label style="display:flex;align-items:center;gap:8px;font-weight:600;margin:6px 0"><input type="radio" name="aVerifyBy" value="email" style="width:auto"> Email</label>
+        </fieldset>
+        <label for="aVerify" id="aVerifyLabel">Your WhatsApp number <small>(with country code)</small></label><input id="aVerify" type="tel" required maxlength="200">
+        <label for="aLevel">Level</label>
+        <select id="aLevel" required>
+          <option value="bronze">Bronze · Free</option><option value="silver">Silver · $9.99/month</option>
+          <option value="gold">Gold · $19.99/month</option><option value="platinum">Platinum · $49.99/month</option>
+        </select>
+        <p class="meta" style="margin:4px 0 0">No payment now. We'll confirm your level with you before it starts. <a href="/business-sponsorship.html#compareTitle" style="color:var(--green)">Compare levels</a></p>
+        <div class="actions"><button class="btn" type="submit">Send for review</button></div>
+      </form>
+      <div id="addMsg"></div>
     </section>
   </div>
 </main>
@@ -100,6 +141,15 @@
   var params = new URLSearchParams(location.search);
   var sb = P.client(), user = null, listings = [], claims = [], chosen = null;
   var $ = function (id) { return document.getElementById(id); };
+  var LEVELS = { bronze: ['Bronze', 'Free'], silver: ['Silver', '$9.99/month'], gold: ['Gold', '$19.99/month'], platinum: ['Platinum', '$49.99/month'] };
+  var plan = LEVELS[String(params.get('plan') || '').toLowerCase()] ? String(params.get('plan')).toLowerCase() : '';
+  if (plan) {
+    $('planBanner').hidden = false;
+    $('planBanner').replaceChildren(
+      el('h2', { style: 'margin:0 0 4px' }, 'You chose ' + LEVELS[plan][0] + ' · ' + LEVELS[plan][1]),
+      el('p', { className: 'sub', style: 'margin:0' }, (user ? '' : 'Sign in or create a free account below. ') + 'Then claim your business if it is already listed, or add it as a new business. We\'ll set up ' + LEVELS[plan][0] + ' after we confirm you run it' + (plan === 'bronze' ? '.' : ', and no payment is taken until then.')));
+  }
+  var COUNTRIES = [['AR','Argentina'],['BZ','Belize'],['BO','Bolivia'],['CL','Chile'],['CO','Colombia'],['CR','Costa Rica'],['CU','Cuba'],['DO','Dominican Republic'],['EC','Ecuador'],['SV','El Salvador'],['GT','Guatemala'],['HN','Honduras'],['MX','Mexico'],['NI','Nicaragua'],['PA','Panama'],['PY','Paraguay'],['PE','Peru'],['UY','Uruguay']];
 
   Object.keys(cfg.typeLabels).forEach(function (t) { $('claimType').appendChild(el('option', { value: t }, cfg.typeLabels[t])); });
 
@@ -129,6 +179,8 @@
       renderResults();
       var t = params.get('type'), id = params.get('id');
       if (t && id) { var h = P.findListing(listings, t, id); if (h) choose(h); }
+      if (params.get('add') === '1' || location.hash === '#addPanel') setTimeout(function () { $('addPanel').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
+      else if (location.hash === '#claimPanel') setTimeout(function () { $('claimPanel').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
     });
     loadClaims();
   }
@@ -138,16 +190,29 @@
     Promise.all([
       sb.from('listing_claims').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
       sb.from('listing_edit_requests').select('id,claim_id,status,created_at,admin_notes').eq('user_id', user.id).order('created_at', { ascending: false }),
-      sb.from('listing_upgrade_requests').select('id,claim_id,tier,status,created_at').eq('user_id', user.id).order('created_at', { ascending: false })
+      sb.from('listing_upgrade_requests').select('id,claim_id,tier,status,created_at').eq('user_id', user.id).order('created_at', { ascending: false }),
+      sb.from('listing_submissions').select('id,name,listing_type,city,requested_tier,status,created_at,admin_notes').eq('user_id', user.id).neq('status', 'approved').order('created_at', { ascending: false })
     ]).then(function (res) {
-      var err = res.find(function (r) { return r.error; });
+      var err = res.slice(0, 3).find(function (r) { return r.error; });
       if (err) { P.msg($('myClaims'), 'err', 'Could not load your businesses: ' + err.error.message); return; }
-      claims = res[0].data; renderClaims(res[1].data, res[2].data);
+      claims = res[0].data; submissions = (res[3] && !res[3].error && res[3].data) || []; renderClaims(res[1].data, res[2].data);
     });
   }
 
+  var submissions = [];
+  function renderSubmissions(box) {
+    submissions.forEach(function (s) {
+      box.appendChild(el('article', { className: 'item' },
+        el('div', { className: 'item-head' }, el('h3', {}, s.name), el('span', { className: 'badge ' + s.status }, s.status === 'pending' ? 'New business · in review' : s.status)),
+        el('p', { className: 'meta' }, cfg.typeLabels[s.listing_type] + ' · ' + s.city + ' · Level requested: ' + (LEVELS[s.requested_tier] || LEVELS.bronze)[0] + ' · Sent ' + P.fmtDate(s.created_at)),
+        s.status === 'pending' ? el('p', { className: 'muted' }, "We'll contact you to confirm, then it goes live and appears here as your business.") :
+          el('p', { className: 'muted' }, 'This business was not added.' + (s.admin_notes ? ' Note: ' + s.admin_notes : ''))));
+    });
+  }
   function renderClaims(edits, upgrades) {
     var box = $('myClaims'); box.replaceChildren();
+    renderSubmissions(box);
+    if (!claims.length && submissions.length) return;
     if (!claims.length) { box.appendChild(el('p', { className: 'muted' }, "You haven't claimed a business yet. Find yours below.")); return; }
     P.loadListings().then(function (list) {
       claims.forEach(function (c) {
@@ -159,7 +224,7 @@
             el('h3', {}, c.listing_name || (h && h.name) || c.listing_id),
             el('span', { className: 'badge ' + c.status }, c.status === 'approved' ? 'Verified owner' : c.status)),
           el('p', { className: 'meta' }, cfg.typeLabels[c.listing_type] + (h && h.city ? ' · ' + h.city : '') + (h ? ' · Current tier: ' + P.tierOf(h) : '') + ' · Claimed ' + P.fmtDate(c.created_at)));
-        if (c.status === 'pending') card.appendChild(el('p', { className: 'muted' }, "We're reviewing your claim and will contact you to confirm."));
+        if (c.status === 'pending') card.appendChild(el('p', { className: 'muted' }, "We're reviewing your claim and will contact you to confirm." + (c.requested_tier && LEVELS[c.requested_tier] ? ' Level requested: ' + LEVELS[c.requested_tier][0] + '.' : '')));
         if (c.status === 'rejected') card.appendChild(el('p', { className: 'muted' }, 'This claim was not approved.' + (c.admin_notes ? ' Note: ' + c.admin_notes : '')));
         if (c.status === 'approved') {
           card.appendChild(el('div', { className: 'actions' },
@@ -271,6 +336,55 @@
     });
   }
 
+  // ---------- Add a new business ----------
+  Object.keys(cfg.typeLabels).forEach(function (t) { $('aType').appendChild(el('option', { value: t }, cfg.typeLabels[t])); });
+  COUNTRIES.forEach(function (c) { $('aCountry').appendChild(el('option', { value: c[0] }, c[1])); });
+  if (plan) $('aLevel').value = plan;
+  function addTypeChanged() {
+    var t = $('aType').value;
+    var needsSite = t === 'hotels' || t === 'restaurants' || t === 'bars';
+    $('aWebsiteLabel').firstChild.textContent = t === 'hostels' ? 'Hostelworld page for your hostel' : 'Website, Instagram or Facebook page';
+    $('aWebsite').required = needsSite || t === 'hostels';
+    $('aWebsiteHint').textContent = t === 'hostels' ? 'Required: the Hostel Finder only shows hostels with a Hostelworld booking page.' : needsSite ? 'Required so travelers can reach you.' : 'Optional for street food stands.';
+    $('aCuisineLabel').textContent = t === 'bars' ? 'Drinks you are known for' : (t === 'restaurants' || t === 'street-food') ? 'Cuisine or food' : 'Category (optional)';
+  }
+  $('aType').addEventListener('change', addTypeChanged); addTypeChanged();
+  document.querySelectorAll('input[name=aVerifyBy]').forEach(function (r) {
+    r.addEventListener('change', function () {
+      var wa = document.querySelector('input[name=aVerifyBy]:checked').value === 'whatsapp';
+      $('aVerifyLabel').replaceChildren(wa ? 'Your WhatsApp number ' : 'Business email address ', el('small', {}, wa ? '(with country code)' : '(ideally the one on your website)'));
+      $('aVerify').type = wa ? 'tel' : 'email';
+      if (!wa && !$('aVerify').value && user) $('aVerify').value = user.email || '';
+    });
+  });
+  $('toAdd').addEventListener('click', function (e) { e.preventDefault(); $('addPanel').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+  $('addForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var wa = document.querySelector('input[name=aVerifyBy]:checked').value === 'whatsapp';
+    var country = COUNTRIES.find(function (c) { return c[0] === $('aCountry').value; });
+    var btn = e.submitter; if (btn) btn.disabled = true;
+    var v = function (id) { return $(id).value.trim() || null; };
+    sb.from('listing_submissions').insert({
+      user_id: user.id, owner_email: user.email, listing_type: $('aType').value, name: $('aName').value.trim(),
+      country_code: country[0], country_name: country[1], city: $('aCity').value.trim(), address: v('aAddress'),
+      website: v('aWebsite'), phone: v('aPhone'), description: v('aDesc'), cuisine: v('aCuisine'),
+      contact_name: $('aName2').value.trim(), role: $('aRole').value.trim(),
+      evidence_notes: (wa ? 'Verify by WhatsApp: ' : 'Verify by email: ') + $('aVerify').value.trim(),
+      requested_tier: $('aLevel').value
+    }).then(function (r) {
+      if (btn) btn.disabled = false;
+      if (r.error) { P.msg($('addMsg'), 'err', 'Could not send your business: ' + r.error.message); return; }
+      var name = $('aName').value.trim();
+      var hello = 'Hi Christopher, I just added ' + name + ' on the Good Gringo owner portal (' + (user.email || '') + '). Please verify me.';
+      $('addMsg').replaceChildren(el('div', { className: 'msg ok' },
+        el('p', { style: 'margin:0 0 10px' }, 'Thanks! ' + name + " was sent for review. We'll contact you by " + (wa ? 'WhatsApp' : 'email') + ' to confirm. To speed things up, message us now:'),
+        el('div', { className: 'actions', style: 'margin-top:0' },
+          el('a', { className: 'btn', href: 'https://wa.me/13054405175?text=' + encodeURIComponent(hello), target: '_blank', rel: 'noopener' }, 'WhatsApp us'),
+          el('a', { className: 'btn gold', href: 'mailto:christopher@christopherthegoodgringo.com?subject=' + encodeURIComponent('New business: ' + name) + '&body=' + encodeURIComponent(hello) }, 'Email us'))));
+      $('addForm').reset(); if (plan) $('aLevel').value = plan; addTypeChanged(); loadClaims();
+    });
+  });
+
   // ---------- Claim a business ----------
   function renderResults() {
     var q = $('claimSearch').value.trim().toLowerCase(), t = $('claimType').value, box = $('claimResults');
@@ -309,7 +423,7 @@
     if (already) { P.msg($('claimMsg'), 'info', 'You have already claimed this business.'); return; }
     var btn = e.submitter; if (btn) btn.disabled = true;
     sb.from('listing_claims').insert({
-      user_id: user.id, owner_email: user.email, listing_type: chosen.__type, listing_id: String(chosen.id || chosen.name), listing_name: chosen.name,
+      user_id: user.id, owner_email: user.email, listing_type: chosen.__type, listing_id: String(chosen.id || chosen.name), listing_name: chosen.name, requested_tier: plan || null,
       contact_name: $('cName').value.trim(), role: $('cRole').value.trim(),
       contact_phone: verifyMode() === 'whatsapp' ? ($('cPhone').value.trim() || null) : null,
       evidence_notes: (verifyMode() === 'whatsapp' ? 'Verify by WhatsApp: ' + $('cPhone').value.trim() : 'Verify by email: ' + $('cVerifyEmail').value.trim())
