@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-10-20",
-  "scope": "The 18 countries in the hostel directory. Boutique and independent properties only; major international chains excluded.",
+  "updatedAt": "2026-10-21",
+  "scope": "Curated independent and boutique hotels in the 18-country directory. Santa Marta is the initial city. Listings require a verified official hotel website or Expedia property listing; major international chains excluded. Ratings are indicative public ratings and may change.",
   "countries": [
     {
       "code": "BZ",
@@ -75,5 +75,139 @@
       "name": "Dominican Republic"
     }
   ],
-  "hotels": []
+  "hotels": [
+    {
+      "id": "casa-carolina-santa-marta",
+      "name": "Hotel Boutique Casa Carolina",
+      "city": "Santa Marta",
+      "address": "Calle 12 #3-40, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "Family-owned boutique hotel in a restored historic property, with pools, rooftop terraces, spa, and on-site dining.",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://www.hotelcasacarolina.com/en/",
+      "officialWebsite": "https://www.hotelcasacarolina.com/en/",
+      "phone": "+57 320 519 9288",
+      "email": "info@hotelcasacarolina.com",
+      "rating": 4.8,
+      "ratingSource": "Public business listing; checked October 2026",
+      "priceRange": "$$$–$$$$",
+      "amenities": [
+        "Historic-center location",
+        "Pools and rooftop terraces",
+        "Spa",
+        "Restaurant"
+      ],
+      "membershipTier": "bronze",
+      "verifiedOn": "2026-10-21"
+    },
+    {
+      "id": "casa-verde-santa-marta",
+      "name": "Casa Verde Boutique Hotel",
+      "city": "Santa Marta",
+      "address": "Calle 18 #4-70, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "Independent boutique hotel in a restored historic house with a leafy courtyard and individually styled rooms.",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://casaverdesantamarta.com/en/",
+      "officialWebsite": "https://casaverdesantamarta.com/en/",
+      "phone": "+57 313 420 7502",
+      "rating": 4.6,
+      "ratingSource": "Public business listing; checked October 2026",
+      "priceRange": "$$–$$$",
+      "amenities": [
+        "Historic house",
+        "Courtyard",
+        "Breakfast"
+      ],
+      "membershipTier": "bronze",
+      "verifiedOn": "2026-10-21"
+    },
+    {
+      "id": "casa-de-leda-santa-marta",
+      "name": "Casa de Leda, a Kali Hotel",
+      "city": "Santa Marta",
+      "address": "Calle 18 #4-38, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "Boutique spa hotel in the historic center with colonial architecture, rooftop pool, terrace, and wellness facilities.",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://kalihotels.com/en/casa-leda/",
+      "officialWebsite": "https://kalihotels.com/en/casa-leda/",
+      "phone": "+57 315 233 2594",
+      "rating": 4.7,
+      "ratingSource": "Public business listing; checked October 2026",
+      "priceRange": "$$$–$$$$",
+      "amenities": [
+        "Spa",
+        "Rooftop pool",
+        "Historic-center location"
+      ],
+      "membershipTier": "bronze",
+      "verifiedOn": "2026-10-21"
+    },
+    {
+      "id": "don-pepe-santa-marta",
+      "name": "Hotel Boutique Don Pepe",
+      "city": "Santa Marta",
+      "address": "Calle 16 #1C-92, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "Independent upscale boutique hotel in a restored colonial property, with pools, spa, restaurant, and terrace.",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://hotelboutiquedonpepe.com/?lang=en",
+      "officialWebsite": "https://hotelboutiquedonpepe.com/?lang=en",
+      "phone": "+57 321 829 1777",
+      "email": "reservas@hotelboutiquedonpepe.com",
+      "rating": 4.8,
+      "ratingSource": "Public business listing; checked October 2026",
+      "priceRange": "$$$–$$$$",
+      "amenities": [
+        "Colonial architecture",
+        "Pools",
+        "Spa",
+        "Restaurant"
+      ],
+      "membershipTier": "bronze",
+      "verifiedOn": "2026-10-21"
+    },
+    {
+      "id": "casa-de-isabella-santa-marta",
+      "name": "Casa de Isabella, a Kali Hotel",
+      "city": "Santa Marta",
+      "address": "Carrera 2 #19-20, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "Small colonial-style boutique hotel with personalized service in Santa Marta's historic center.",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "website": "https://kalihotels.com/en/casa-isabella/",
+      "officialWebsite": "https://kalihotels.com/en/casa-isabella/",
+      "rating": 4.8,
+      "ratingSource": "Public business listing; checked October 2026",
+      "priceRange": "$$$–$$$$",
+      "amenities": [
+        "Historic-center location",
+        "Boutique rooms",
+        "Walkable to marina"
+      ],
+      "membershipTier": "bronze",
+      "verifiedOn": "2026-10-21"
+    },
+    {
+      "id": "hotel-boutique-el-cactus-santa-marta",
+      "name": "Hotel Boutique El Cactus",
+      "city": "Santa Marta",
+      "address": "Calle 18 #6-85, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "Small boutique-style property in the historic center with suite-style accommodations.",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "bookingUrl": "https://www.expedia.com/Santa-Marta-Hotels.d3221.Travel-Guide-Hotels",
+      "rating": 4.9,
+      "ratingSource": "Public business listing; checked October 2026",
+      "priceRange": "$$–$$$",
+      "amenities": [
+        "Historic-center location",
+        "Suite-style accommodation"
+      ],
+      "membershipTier": "bronze",
+      "verifiedOn": "2026-10-21",
+      "bookingLinkNote": "Expedia city/property search link; replace with the exact hotel property URL before using as a booking link."
+    }
+  ]
 }
