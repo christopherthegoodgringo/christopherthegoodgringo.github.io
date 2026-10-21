@@ -15,5 +15,9 @@ window.CGG_PORTAL = {
   // Fields owners may change. The database enforces the same list.
   editableFields: ['description', 'address', 'phone', 'email', 'website', 'whatsapp', 'instagram', 'hours', 'priceRange', 'cuisine', 'drinks', 'features', 'photo'],
   // Payment links per tier. Leave empty until Stripe is set up.
-  stripeLinks: { silver: '', gold: '', platinum: '' }
+  // Paid upgrades go live automatically through the "stripe-webhook" Supabase function.
+  stripeLinks: { silver: '', gold: '', platinum: '' },
+  // Stripe customer portal login link (Settings > Billing > Customer portal), for owners
+  // to update their card or cancel. Leave empty to hide the link.
+  stripeManageLink: ''
 };

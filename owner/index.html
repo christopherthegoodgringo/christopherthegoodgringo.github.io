@@ -302,6 +302,10 @@
       boxes.appendChild(el('div', { className: 'tier-box ' + t }, el('h4', {}, info[0]),
         el('ul', {}, info[1].map(function (x) { return el('li', {}, x); }).reduce(function (f, li) { f.appendChild(li); return f; }, document.createDocumentFragment())), action));
     });
+    if (now !== 'bronze' && cfg.stripeManageLink) {
+      boxes.appendChild(el('p', { className: 'meta' }, 'Need to update your card or cancel? ',
+        el('a', { href: cfg.stripeManageLink + '?prefilled_email=' + encodeURIComponent(user.email || ''), target: '_blank', rel: 'noopener' }, 'Manage your subscription')));
+    }
     $('upgradePanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   function requestUpgrade(c, tier, btn) {
