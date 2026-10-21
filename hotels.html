@@ -105,7 +105,7 @@ function setLanguage(){lang='en';document.documentElement.lang='en';try{localSto
 
 const normalize=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 function renderCountryOptions(){const selected='';countryFilter.innerHTML='';const all=document.createElement('option');all.value='';all.textContent=false?'Todos los países':'All countries';countryFilter.appendChild(all);[...countries].sort((a,b)=>a.name.localeCompare(b.name,'en')).forEach(c=>{const o=document.createElement('option');o.value=c.code;o.textContent=c.name;countryFilter.appendChild(o)});countryFilter.value='';}
-function renderCityOptions(){cityFilter.innerHTML='';const all=document.createElement('option');all.value='';all.textContent=false?'Todas las ciudades':'All cities';cityFilter.appendChild(all);cityFilter.value='';}
+function renderCityOptions(){const selectedCode=countryFilter.value;const previous=cityFilter.value;const cityNames=[...new Set(hotels.filter(h=>(!selectedCode||h.countryCode===selectedCode)&&h.city).map(h=>h.city))].sort((a,b)=>a.localeCompare(b,'en'));cityFilter.innerHTML='';const all=document.createElement('option');all.value='';all.textContent='All cities';cityFilter.appendChild(all);cityNames.forEach(name=>{const option=document.createElement('option');option.value=name;option.textContent=name;cityFilter.appendChild(option)});cityFilter.value=cityNames.includes(previous)?previous:'';}
 window.__platinumSlideshowTimers=window.__platinumSlideshowTimers||[];
 function clearPlatinumSlideshowTimers(){window.__platinumSlideshowTimers.forEach(t=>clearInterval(t));window.__platinumSlideshowTimers=[];}
 function addPlatinumSlideshow(card,h,primary,tier){
@@ -155,11 +155,11 @@ function render(){
  count.textContent=found.length+' stays found';empty.hidden=found.length>0;
  const selected=countries.find(c=>c.code===code);
  document.getElementById('resultsTitle').textContent=selected?'Boutique & independent hotels in '+selected.name:'Boutique & independent hotels across Latin America';
- document.getElementById('resultsTitleEs').textContent=selected?'Hoteles boutique e independientes en '+selected.name:'Hoteles boutique e independientes en Latinoamérica';
+ 
 }
-function renderShortcuts(){shortcuts.innerHTML='';[...countries].sort((a,b)=>a.name.localeCompare(b.name,'en')).forEach(c=>{const b=document.createElement('button');b.className='city';b.dataset.country=c.code;b.setAttribute('aria-pressed',countryFilter.value===c.code?'true':'false');b.textContent=c.name;const small=document.createElement('small');small.textContent=hotels.filter(h=>h.countryCode===c.code).length+(false?' alojamientos':' stays');b.appendChild(small);b.addEventListener('click',()=>{countryFilter.value=c.code;cityFilter.value='';renderCityOptions();render();renderShortcuts();document.getElementById('searchTitle').scrollIntoView({behavior:'smooth',block:'start'})});shortcuts.appendChild(b)});}
+function renderShortcuts(){}
 document.getElementById('hotelSearch').addEventListener('submit',e=>{e.preventDefault();render()});query.addEventListener('input',render);countryFilter.addEventListener('change',()=>{cityFilter.value='';renderCityOptions();render();renderShortcuts()});cityFilter.addEventListener('change',render);
-fetch('/data/hotels.json?v=20261020-6',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Could not load hotel data');return r.json()}).then(d=>{hotels=(Array.isArray(d.hotels)?d.hotels:[]).filter(h=>hasExpediaOrOfficialSite(h));countries=Array.isArray(d.countries)?d.countries:[];renderCountryOptions();renderCityOptions();setLanguage()}).catch(()=>{hotels=(Array.isArray(fallbackData.hotels)?fallbackData.hotels:[]).filter(h=>hasExpediaOrOfficialSite(h));countries=Array.isArray(fallbackData.countries)?fallbackData.countries:[];renderCountryOptions();renderCityOptions();setLanguage()});
+fetch('/data/hotels.json?v=20261021-7',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Could not load hotel data');return r.json()}).then(d=>{hotels=(Array.isArray(d.hotels)?d.hotels:[]).filter(h=>hasExpediaOrOfficialSite(h));countries=Array.isArray(d.countries)?d.countries:[];renderCountryOptions();renderCityOptions();setLanguage()}).catch(()=>{hotels=(Array.isArray(fallbackData.hotels)?fallbackData.hotels:[]).filter(h=>hasExpediaOrOfficialSite(h));countries=Array.isArray(fallbackData.countries)?fallbackData.countries:[];renderCountryOptions();renderCityOptions();setLanguage()});
 })();
 </script>
 </body>
