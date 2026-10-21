@@ -170,6 +170,25 @@
       ],
       "membershipTier": "bronze",
       "verifiedOn": "2026-10-20"
+    },
+    {
+      "id": "sample-good-gringo-test-cafe",
+      "name": "Sample Business – Good Gringo Test Café",
+      "sample": true,
+      "city": "Santa Marta",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "address": "Sample address – this is not a real business",
+      "description": "Practice listing for trying the business owner portal: claim it, edit it, request an upgrade and approve it. It is hidden from the public Finders.",
+      "cuisine": "Sample café",
+      "priceRange": "$$",
+      "features": [
+        "Practice listing",
+        "Not shown to visitors"
+      ],
+      "website": "https://christopherthegoodgringo.com/",
+      "membershipTier": "bronze",
+      "verifiedOn": "2026-10-21"
     }
   ]
 }

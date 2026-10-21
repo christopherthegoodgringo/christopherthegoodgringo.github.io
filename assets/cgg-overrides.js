@@ -61,6 +61,10 @@
       if (!res.ok) return res;
       return res.clone().json().then(function (data) {
         if (!data || !Array.isArray(data[hit[1]])) return res;
+        // Practice listings (sample: true) only show in the owner portal, admin and their own information page.
+        if (!/^\/(owner|admin)\/|^\/listing-information\.html/.test(location.pathname)) {
+          data[hit[1]] = data[hit[1]].filter(function (h) { return !(h && h.sample); });
+        }
         return window.cggApplyOverrides(hit[0], data[hit[1]]).then(function (list) {
           data[hit[1]] = list;
           return new Response(JSON.stringify(data), { status: 200, headers: { 'Content-Type': 'application/json' } });
