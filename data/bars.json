@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-10-20",
-  "scope": "Initial researched batch of independent and distinctive bars. Listings must have an official website or direct OpenTable listing and a currently sourced rating of at least 4.0/5. Ratings and sources should be rechecked periodically. The directory covers 18 Latin American countries; additional countries remain to be researched.",
+  "updatedAt": "2026-10-21",
+  "scope": "Initial researched batch of independent and distinctive bars. Listings must have an official website or direct OpenTable listing and a currently sourced rating of at least 4.0/5. Ratings and sources should be rechecked periodically. The directory covers 18 Latin American countries; additional countries remain to be researched. Santa Marta listings added October 2026 show one business per tier; tier labels are sample placements for layout testing and do not imply that a business purchased or endorsed a paid listing.",
   "countries": [
     {
       "code": "BZ",
@@ -75,5 +75,95 @@
       "name": "Dominican Republic"
     }
   ],
-  "bars": []
+  "bars": [
+    {
+      "city": "Santa Marta",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "verifiedOn": "2026-10-21",
+      "id": "la-puerta-santa-marta",
+      "name": "La Puerta",
+      "membershipTier": "platinum",
+      "address": "Calle 17 #2-29, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "Long-running old-town bar and dance spot in a historic building, known for Caribbean music, dancing and a big cocktail list.",
+      "drinks": "Cocktails, rum, beer",
+      "features": [
+        "Dancing",
+        "Caribbean and Latin music",
+        "Historic center"
+      ],
+      "rating": 4.6,
+      "ratingSource": "Google, 1,160 reviews (checked October 2026)",
+      "website": "https://www.instagram.com/ohlalalapuerta/",
+      "photo": "https://images.unsplash.com/photo-1569924995012-c4c706bfcd51?auto=format&fit=crop&w=1200&q=85",
+      "photos": [
+        "https://images.unsplash.com/photo-1569924995012-c4c706bfcd51?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1556855810-ac404aa91e85?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1200&q=85"
+      ]
+    },
+    {
+      "city": "Santa Marta",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "verifiedOn": "2026-10-21",
+      "id": "crabs-bar-santa-marta",
+      "name": "Crab's Bar",
+      "membershipTier": "gold",
+      "address": "Calle 18 #3-69, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "Rock-themed bar with eclectic decor, rock and blues on the speakers, and pool and table games.",
+      "drinks": "Beer, cocktails",
+      "features": [
+        "Rock and blues",
+        "Pool table",
+        "Historic center"
+      ],
+      "rating": 4.8,
+      "ratingSource": "Google, 1,034 reviews (checked October 2026)",
+      "website": "https://www.facebook.com/crabsbar",
+      "photo": "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1200&q=85"
+    },
+    {
+      "city": "Santa Marta",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "verifiedOn": "2026-10-21",
+      "id": "viajero-terraza-bar-santa-marta",
+      "name": "Viajero Terraza Bar",
+      "membershipTier": "silver",
+      "address": "Viajero Santa Marta Hostel, Calle 26 #4-100, Santa Marta, Magdalena, Colombia",
+      "description": "Rooftop bar with ocean views, cocktails and social nights like karaoke.",
+      "drinks": "Cocktails, beer",
+      "features": [
+        "Rooftop",
+        "Ocean views",
+        "Karaoke nights"
+      ],
+      "rating": 4.9,
+      "ratingSource": "Google, 774 reviews (checked October 2026)",
+      "website": "https://viajerohostels.com/es/destinos-colombia/santa-marta",
+      "photo": "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?auto=format&fit=crop&w=1200&q=85"
+    },
+    {
+      "city": "Santa Marta",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "verifiedOn": "2026-10-21",
+      "id": "caribbean-team-santa-marta",
+      "name": "Caribbean Team",
+      "membershipTier": "bronze",
+      "address": "Carrera 1C, waterfront between the beach and the port, Santa Marta, Magdalena, Colombia",
+      "description": "Bar and grill on the waterfront known for sunset views, cocktails and music.",
+      "drinks": "Cocktails, beer",
+      "features": [
+        "Sunset views",
+        "Waterfront",
+        "Music"
+      ],
+      "rating": 4.5,
+      "ratingSource": "Google, 1,199 reviews (checked October 2026)",
+      "website": "https://www.facebook.com/ElCaribbeanTeam"
+    }
+  ]
 }

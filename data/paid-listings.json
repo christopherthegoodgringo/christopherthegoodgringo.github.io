@@ -1,4 +1,94 @@
 {
-  "updatedAt": "2026-10-20",
-  "hostels": []
+  "updatedAt": "2026-10-21",
+  "hostels": [
+    {
+      "city": "Santa Marta",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "verifiedOn": "2026-10-21",
+      "id": "masaya-santa-marta",
+      "name": "Masaya Santa Marta",
+      "membershipTier": "platinum",
+      "address": "Calle 14 #4-80, Centro, Santa Marta, Magdalena, Colombia",
+      "description": "Social hostel with two pools, a rooftop bar and daily cultural activities like salsa classes and empanada-making.",
+      "features": [
+        "Two pools",
+        "Rooftop bar",
+        "Salsa classes"
+      ],
+      "rating": 4.6,
+      "ratingSource": "Hostelworld 9.1/10 from 2,400 reviews (checked October 2026)",
+      "website": "https://masaya-experience.com/",
+      "bookingUrl": "https://www.hostelworld.com/hostels/p/80944/masaya-santa-marta/",
+      "photo": "https://images.unsplash.com/photo-1709805619372-40de3f158e83?auto=format&fit=crop&w=1200&q=85",
+      "photos": [
+        "https://images.unsplash.com/photo-1709805619372-40de3f158e83?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1781415980730-bfcf192e38bc?auto=format&fit=crop&w=1200&q=85"
+      ]
+    },
+    {
+      "city": "Santa Marta",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "verifiedOn": "2026-10-21",
+      "id": "la-brisa-loca-santa-marta",
+      "name": "La Brisa Loca",
+      "membershipTier": "gold",
+      "address": "Calle 14 #3-58, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "Lively party hostel in a restored 100-year-old mansion with colonial Caribbean style and a rooftop terrace.",
+      "features": [
+        "Historic mansion",
+        "Rooftop terrace",
+        "Nightlife"
+      ],
+      "rating": 4.5,
+      "ratingSource": "Hostelworld 9.0/10 from 2,847 reviews (checked October 2026)",
+      "website": "https://masaya-experience.com/brisa-loca",
+      "bookingUrl": "https://www.hostelworld.com/hostels/p/37192/la-brisa-loca/",
+      "photo": "https://images.unsplash.com/photo-1783254877023-f27a32c7e8bb?auto=format&fit=crop&w=1200&q=85"
+    },
+    {
+      "city": "Santa Marta",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "verifiedOn": "2026-10-21",
+      "id": "mr-baboon-hostel-santa-marta",
+      "name": "Mr. Baboon Hostel",
+      "membershipTier": "silver",
+      "address": "Calle 17 #3-99, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "description": "Laid-back social hostel for travelers heading to Tayrona, Minca and Palomino, with large dorm beds and air conditioning.",
+      "features": [
+        "Pool and rooftop",
+        "Shared kitchen",
+        "Tour help"
+      ],
+      "rating": 4.9,
+      "ratingSource": "Hostelworld 9.7/10 from 2,030 reviews (checked October 2026)",
+      "website": "https://www.hostelworld.com/hostels/p/285100/mr-baboon-hostel/",
+      "bookingUrl": "https://www.hostelworld.com/hostels/p/285100/mr-baboon-hostel/",
+      "photo": "https://images.unsplash.com/photo-1781415980730-bfcf192e38bc?auto=format&fit=crop&w=1200&q=85"
+    },
+    {
+      "city": "Santa Marta",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "verifiedOn": "2026-10-21",
+      "id": "cacao-hostel-santa-marta",
+      "name": "Cacao Hostel Santa Marta",
+      "membershipTier": "bronze",
+      "address": "Carrera 11 #17-49, Santa Marta, Magdalena, Colombia",
+      "description": "Budget-friendly hostel with a pool, free breakfast, hammocks and a bar, about a 10-minute walk from the center.",
+      "features": [
+        "Free breakfast",
+        "Pool",
+        "Coworking"
+      ],
+      "rating": 4.8,
+      "ratingSource": "Hostelworld 9.5/10 from 1,665 reviews (checked October 2026)",
+      "website": "https://www.hostelworld.com/hostels/p/279357/cacao-hostel-santa-marta/",
+      "bookingUrl": "https://www.hostelworld.com/hostels/p/279357/cacao-hostel-santa-marta/"
+    }
+  ]
 }

@@ -114,31 +114,78 @@ function escapeText(s){return String(s||'')}
 function makeLink(label,url,secondary=false){if(!url)return null;const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=label;if(secondary)a.className='secondary';return a}
 window.__platinumSlideshowTimers=window.__platinumSlideshowTimers||[];
 function clearPlatinumSlideshowTimers(){window.__platinumSlideshowTimers.forEach(t=>clearInterval(t));window.__platinumSlideshowTimers=[];}
-function addPlatinumSlideshow(card,h,primary,tier){const photos=[...(Array.isArray(h.photos)?h.photos:[]),...(Array.isArray(h.photoUrls)?h.photoUrls:[]),...(Array.isArray(h.images)?h.images:[]),h.photo,primary].filter((u)=>typeof u==='string'&&/^https?:\/\//i.test(u));const unique=[...new Set(photos)];const isPlatinum=String(tier||h.membershipTier||'').toLowerCase()==='platinum'||String(h.listingPlan||'').toLowerCase()==='premium';if(!primary&&!unique.length)return;if(!isPlatinum||unique.length<2){const src=primary||unique[0];if(src){const img=document.createElement('img');img.src=src;img.alt=h.name||'Listing photo';img.loading='lazy';img.className='listing-photo';img.referrerPolicy='no-referrer';card.appendChild(img)}return;}let index=Math.max(0,unique.indexOf(primary||unique[0]));const img=document.createElement('img');img.src=unique[index];img.alt=(h.name||'Platinum listing')+' photo '+(index+1);img.loading='lazy';img.className='listing-photo platinum-slideshow-image';img.referrerPolicy='no-referrer';card.appendChild(img);const timer=setInterval(()=>{if(!img.isConnected){clearInterval(timer);return;}index=(index+1)%unique.length;img.style.opacity='0.15';setTimeout(()=>{if(!img.isConnected)return;img.src=unique[index];img.alt=(h.name||'Platinum listing')+' photo '+(index+1);img.style.opacity='1';},350);},3500);window.__platinumSlideshowTimers.push(timer);}
+function addPlatinumSlideshow(card,h,primary,tier){
+  const candidates=[...(Array.isArray(h.photos)?h.photos:[]),...(Array.isArray(h.photoUrls)?h.photoUrls:[]),...(Array.isArray(h.images)?h.images:[]),h.photo,primary].filter((u)=>typeof u==='string'&&/^https?:\/\//i.test(u));
+  const unique=[...new Set(candidates)];
+  const isPlatinum=String(tier||h.membershipTier||'').toLowerCase()==='platinum'||String(h.listingPlan||'').toLowerCase()==='premium';
+  if(!unique.length)return;
+  const img=document.createElement('img');img.alt=(h.name||'Listing')+' photo';img.loading='lazy';img.className='listing-photo'+(isPlatinum?' platinum-slideshow-image':'');img.referrerPolicy='no-referrer';card.appendChild(img);
+  const verify=(url)=>new Promise(resolve=>{const probe=new Image();probe.onload=()=>resolve(url);probe.onerror=()=>resolve(null);probe.src=url;});
+  Promise.all(unique.map(verify)).then(results=>{
+    if(!img.isConnected)return;
+    const working=results.filter(Boolean);
+    if(!working.length){img.remove();return;}
+    let index=Math.max(0,working.indexOf(primary||h.photo));
+    img.src=working[index];img.alt=(h.name||'Listing')+' photo '+(index+1);
+    if(!isPlatinum||working.length<2)return;
+    const timer=setInterval(()=>{
+      if(!img.isConnected){clearInterval(timer);return;}
+      const next=(index+1)%working.length;
+      const probe=new Image();
+      probe.onload=()=>{if(!img.isConnected)return;index=next;img.style.opacity='0.15';setTimeout(()=>{if(!img.isConnected)return;img.src=working[index];img.alt=(h.name||'Platinum listing')+' photo '+(index+1);img.style.opacity='1';},250);};
+      probe.onerror=()=>{working.splice(next,1);if(!working.length){clearInterval(timer);return;}index=index%working.length;};
+      probe.src=working[next];
+    },2000);
+    window.__platinumSlideshowTimers.push(timer);
+  });
+ }
+function buildTierCard(h,o){const tier=o.tier||String(h.membershipTier||'bronze').toLowerCase();const isBronze=tier==='bronze';const card=document.createElement('article');card.className=o.cardClass+' tier-'+tier+'-card';const ribbon=document.createElement('span');ribbon.className='tier-ribbon';ribbon.textContent=tier==='platinum'?'♛ PLATINUM':tier==='gold'?'★ GOLD':tier==='silver'?'◆ SILVER':'● BRONZE';card.appendChild(ribbon);if(!isBronze)addPlatinumSlideshow(card,h,(Array.isArray(h.photoUrls)&&h.photoUrls[0])||h.photo,tier);const tag=document.createElement('span');tag.className=o.cityClass;tag.textContent=(h.city?h.city+', ':'')+(o.country||h.countryName||'');card.appendChild(tag);const title=document.createElement('h3');title.textContent=h.name;card.appendChild(title);if(!isBronze&&h.rating!==undefined&&h.rating!==null&&Number.isFinite(Number(h.rating))){const rating=Number(h.rating);const line=document.createElement('p');line.className='listing-rating';line.setAttribute('aria-label','Rating '+rating.toFixed(1)+' out of 5');const stars=document.createElement('span');stars.className='rating-stars';stars.setAttribute('aria-hidden','true');const rounded=Math.max(0,Math.min(5,Math.round(rating)));stars.textContent='★'.repeat(rounded)+'☆'.repeat(5-rounded);line.appendChild(stars);const score=document.createElement('strong');score.textContent=' '+rating.toFixed(1)+'/5';line.appendChild(score);if(h.ratingSource){const source=document.createElement('small');source.className='rating-source';source.textContent='Rating source: '+h.ratingSource;line.appendChild(source)}card.appendChild(line)}if(!isBronze&&h.priceRange){const price=document.createElement('p');price.className='listing-price';price.innerHTML='<span aria-hidden="true">Cost</span> <strong></strong>';price.querySelector('strong').textContent=h.priceRange;card.appendChild(price)}if(!isBronze&&o.detail){const p=document.createElement('p');p.textContent=o.detail;card.appendChild(p)}if(h.address){const p=document.createElement('p');p.textContent=h.address;card.appendChild(p)}if(!isBronze&&h.description){const p=document.createElement('p');p.textContent=h.description;card.appendChild(p)}const feats=Array.isArray(h.features)&&h.features.length?h.features:(Array.isArray(h.amenities)?h.amenities:[]);if(!isBronze&&feats.length){const p=document.createElement('p');p.textContent=feats.join(' · ');card.appendChild(p)}if(!isBronze){const more=document.createElement('a');more.href='/listing-information.html?type='+o.type+'&id='+encodeURIComponent(h.id||h.name);more.className='button listing-more';more.textContent='More Information';more.setAttribute('aria-label','More information about '+h.name);more.style.cssText='display:flex;align-items:center;justify-content:center;box-sizing:border-box;margin-top:12px;width:100%;padding:12px 16px;border-radius:10px;background:#103e2f;color:#fffdf8;font-weight:800;text-decoration:none;text-align:center;border:1px solid #f5bd3e';card.appendChild(more)}return card}
 function render(){clearPlatinumSlideshowTimers();const code=countryFilter.value,city=cityFilter.value,q=norm(query.value);const approved=new Set(countryNames.map(x=>x[0]));const all=hostels.concat(paid).filter(h=>!(h.id||'').startsWith('TEST-')&&approved.has(h.countryCode)&&((h.website&&/hostelworld\.com/i.test(h.website))||(h.bookingUrl&&/hostelworld\.com/i.test(h.bookingUrl))));const found=all.filter(h=>(!code||h.countryCode===code)&&(!city||norm(h.city)===norm(city))&&(!q||norm([h.name,h.city,countryName(h.countryCode),h.address,h.description,h.operator,h.phone,h.email].join(' ')).includes(q)));
 const unique=dedupe(found).sort((a,b)=>{const tier=x=>String(x.membershipTier||({premium:'platinum',featured:'gold',silver:'silver',free:'bronze'}[x.listingPlan]||'bronze')).toLowerCase();const rank={platinum:0,gold:1,silver:2,bronze:3};return (rank[tier(a)]??3)-(rank[tier(b)]??3)||String(a.name).localeCompare(String(b.name))});
-results.replaceChildren();unique.slice(0,shownLimit).forEach(h=>{const card=document.createElement('article');const plan=h.listingPlan||'directory';const tier=String(h.membershipTier||({premium:'platinum',featured:'gold',silver:'silver',free:'bronze'}[plan]||'bronze')).toLowerCase();card.className='hotel-card tier-'+tier+'-card'+(plan==='featured'?' hostel-featured':plan==='premium'?' hostel-premium':plan==='free'?' hostel-free':'');
-const photo=(h.photoUrls&&h.photoUrls[0])||h.photo;addPlatinumSlideshow(card,h,photo,tier);
-const tag=document.createElement('span');tag.className='hotel-city';tag.textContent=(h.city?h.city+', ':'')+countryName(h.countryCode);card.appendChild(tag);
-const title=document.createElement('h3');title.textContent=h.name;card.appendChild(title);
-const ribbon=document.createElement('span');ribbon.className='tier-ribbon';ribbon.textContent=tier==='platinum'?'♛ PLATINUM':tier==='gold'?'★ GOLD':tier==='silver'?'◆ SILVER':'● BRONZE';card.appendChild(ribbon);
-if(h.address){const p=document.createElement('p');p.textContent=h.address;card.appendChild(p)}
-if(h.description){const p=document.createElement('p');p.textContent=h.description;card.appendChild(p)}
-const contacts=[h.phone,h.email].filter(Boolean);if(contacts.length){const p=document.createElement('p');p.textContent=contacts.join(' · ');card.appendChild(p)}
-const more=document.createElement('a');more.href='/listing-information.html?type=hostels&id='+encodeURIComponent(h.id||h.name);more.className='button listing-more';more.textContent='More Information';more.setAttribute('aria-label','More information about '+h.name);more.style.cssText='display:flex;align-items:center;justify-content:center;box-sizing:border-box;margin-top:12px;width:100%;padding:12px 16px;border-radius:10px;background:#103e2f;color:#fffdf8;font-weight:800;text-decoration:none;text-align:center;border:1px solid #f5bd3e';card.appendChild(more);results.appendChild(card)});
+results.replaceChildren();unique.slice(0,shownLimit).forEach(h=>{const tier=String(h.membershipTier||({premium:'platinum',featured:'gold',silver:'silver',free:'bronze'}[h.listingPlan||'']||'bronze')).toLowerCase();results.appendChild(buildTierCard(h,{type:'hostels',tier,cardClass:'hotel-card',cityClass:'hotel-city',country:countryName(h.countryCode)}))});
 count.textContent=false?(Math.min(shownLimit,unique.length)+' de '+unique.length+' hostales encontrados'):(Math.min(shownLimit,unique.length)+' of '+unique.length+' hostels found');
 loadMore.hidden=unique.length<=shownLimit;
 empty.hidden=unique.length>0;
 const selected=countries.find(c=>c.code===code);const titleText=selected?(false?'Hostales en ':'Hostels in ')+(false?(countryNamesEs[code]||selected.name):selected.name):(false?'Hostales en Latinoamérica':'Hostels across Latin America');
-document.getElementById('resultsTitle').textContent=titleText;document.getElementById('resultsTitleEs').textContent=false?titleText:titleText;
+document.getElementById('resultsTitle').textContent=titleText;
 }
-function renderShortcuts(){shortcuts.innerHTML='';[...countries].sort((a,b)=>(false?(countryNamesEs[a.code]||a.name):a.name).localeCompare(false?(countryNamesEs[b.code]||b.name):b.name,false?'es':'en')).forEach(c=>{const b=document.createElement('button');b.className='city';b.setAttribute('aria-pressed',countryFilter.value===c.code?'true':'false');b.textContent=false?(countryNamesEs[c.code]||c.name):c.name;const small=document.createElement('small');const n=dedupe(hostels.concat(paid).filter(h=>h.countryCode===c.code)).length;small.textContent=n+(false?' hostales':' hostels');b.appendChild(small);b.addEventListener('click',()=>{shownLimit=PAGE_SIZE;countryFilter.value=c.code;cityFilter.value='';renderCityOptions();render();renderShortcuts();document.getElementById('searchTitle').scrollIntoView({behavior:'smooth',block:'start'})});shortcuts.appendChild(b)})}
+function renderShortcuts(){if(!shortcuts)return;shortcuts.innerHTML='';[...countries].sort((a,b)=>(false?(countryNamesEs[a.code]||a.name):a.name).localeCompare(false?(countryNamesEs[b.code]||b.name):b.name,false?'es':'en')).forEach(c=>{const b=document.createElement('button');b.className='city';b.setAttribute('aria-pressed',countryFilter.value===c.code?'true':'false');b.textContent=false?(countryNamesEs[c.code]||c.name):c.name;const small=document.createElement('small');const n=dedupe(hostels.concat(paid).filter(h=>h.countryCode===c.code)).length;small.textContent=n+(false?' hostales':' hostels');b.appendChild(small);b.addEventListener('click',()=>{shownLimit=PAGE_SIZE;countryFilter.value=c.code;cityFilter.value='';renderCityOptions();render();renderShortcuts();document.getElementById('searchTitle').scrollIntoView({behavior:'smooth',block:'start'})});shortcuts.appendChild(b)})}
 document.getElementById('hotelSearch').addEventListener('submit',e=>{e.preventDefault();shownLimit=PAGE_SIZE;render();});
 loadMore.addEventListener('click',()=>{shownLimit+=PAGE_SIZE;render()});
 countryFilter.addEventListener('change',()=>{shownLimit=PAGE_SIZE;cityFilter.value='';renderCityOptions();render();renderShortcuts();});cityFilter.addEventListener('change',()=>{shownLimit=PAGE_SIZE;render();});
 query.addEventListener('input',()=>{shownLimit=PAGE_SIZE;render()});
-Promise.allSettled([fetch('/data/hostels-clean.json?v=20261020-7',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Hostel database unavailable');return r.json()}),fetch('/data/paid-listings.json?v=20261020-7',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Paid listing data unavailable');return r.json()})]).then(([cleanResult,paidResult])=>{hostels=cleanResult.status==='fulfilled'&&Array.isArray(cleanResult.value.hostels)?cleanResult.value.hostels:(Array.isArray(fallbackData.hostels)?fallbackData.hostels:[]);paid=paidResult.status==='fulfilled'&&Array.isArray(paidResult.value.hostels)?paidResult.value.hostels:(Array.isArray(fallbackData.paid)?fallbackData.paid:[]);countries=countryNames.map(([code,name])=>({code,name}));renderCountryOptions();renderCityOptions();setLanguage();});
+Promise.allSettled([fetch('/data/hostels-clean.json?v=20261021-tiers',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Hostel database unavailable');return r.json()}),fetch('/data/paid-listings.json?v=20261021-tiers',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Paid listing data unavailable');return r.json()})]).then(([cleanResult,paidResult])=>{hostels=cleanResult.status==='fulfilled'&&Array.isArray(cleanResult.value.hostels)?cleanResult.value.hostels:(Array.isArray(fallbackData.hostels)?fallbackData.hostels:[]);paid=paidResult.status==='fulfilled'&&Array.isArray(paidResult.value.hostels)?paidResult.value.hostels:(Array.isArray(fallbackData.paid)?fallbackData.paid:[]);countries=countryNames.map(([code,name])=>({code,name}));renderCountryOptions();renderCityOptions();setLanguage();});
 })();
 </script>
+<style id="tier-card-parity">/* Tier cards matched to the Restaurant and Hotel Finders. */
+.hotel-card{display:flex;flex-direction:column;min-height:100%;gap:0}
+.hotel-card .tier-ribbon{position:absolute;top:0;right:0;z-index:3;padding:7px 12px;border-radius:0 0 0 12px;font-size:.72rem;font-weight:900;letter-spacing:.05em;box-shadow:0 3px 10px #17271f18}
+.hotel-card.tier-platinum-card .tier-ribbon{background:#dfe5ed;color:#283747;border-bottom:1px solid #aab6c4}
+.hotel-card.tier-gold-card{border:2px solid #d6a84f;background:#fff8e6}
+.hotel-card.tier-gold-card .tier-ribbon{background:#f5bd3e;color:#4a3507}
+.hotel-card.tier-silver-card{border:2px solid #b8c0c9;background:#f7f8fa}
+.hotel-card.tier-silver-card .tier-ribbon{background:#e1e5ea;color:#374151;border-bottom:1px solid #b8c0c9}
+.hotel-card.tier-bronze-card{border:1px solid #c99a70;background:#fffaf5}
+.hotel-card.tier-bronze-card .tier-ribbon{background:#f0ddcc;color:#684329;border-bottom:1px solid #c99a70}
+.hotel-card .hotel-city{align-self:flex-start;margin:2px 0 8px}
+.hotel-card h3{min-height:2.5em}
+.hotel-card .listing-more{margin-top:auto!important}
+.hotel-card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:16px;min-width:0;overflow:hidden;position:relative}
+.hotel-card img{display:block;width:100%;height:190px;object-fit:cover;border-radius:11px;margin-bottom:12px}
+.hotel-card h3{font-size:1.25rem;color:var(--green);margin:5px 0 8px}
+.hotel-card p{color:var(--muted);font-size:.92rem;margin:5px 0;overflow-wrap:anywhere}
+.hotel-city{display:inline-block;padding:4px 10px;border-radius:99px;background:#f3eddd;color:#70521f;font-size:.76rem;font-weight:800}
+.hotel-card.tier-gold-card{background:#fff5d7;border:2px solid #d8aa31;box-shadow:0 10px 24px #9c741d18}
+.hotel-card.tier-silver-card{background:#f6f7f8;border:2px solid #b8c0c8;box-shadow:0 8px 20px #47556910}
+.hotel-card.tier-bronze-card{background:#fffaf3;border:2px solid #bd8b5a;box-shadow:0 8px 18px #85552e10}
+.hotel-card .listing-rating{display:flex;align-items:center;gap:5px;flex-wrap:wrap;color:var(--ink);font-size:.9rem;font-weight:600;margin:6px 0 2px}
+.hotel-card .rating-stars{color:#b9820b;letter-spacing:1px;font-size:1rem;white-space:nowrap}
+.hotel-card .rating-source{display:block;flex-basis:100%;font-size:.72rem;line-height:1.35;color:var(--muted);font-weight:500;margin-top:1px}
+.hotel-card .listing-price{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:.88rem;margin:2px 0 8px}
+.hotel-card .listing-price span{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;font-weight:800}
+.hotel-card .listing-price strong{color:var(--green);font-size:.95rem;font-weight:900}
+article.hotel-card h3{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;font-size:clamp(.82rem,1.05vw,1.08rem)!important;line-height:1.12!important;letter-spacing:-.045em!important;margin:3px 0 5px!important;padding-right:0!important;min-height:0!important;text-wrap:pretty}
+@media(max-width:560px){article.hotel-card h3{font-size:1rem!important;letter-spacing:-.04em!important}}
+</style>
 </body>
 </html>
