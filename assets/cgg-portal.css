@@ -61,3 +61,14 @@ footer .wrap{width:min(1120px,calc(100% - 36px));margin:auto}
 footer a{color:#f5bd3e;text-decoration:none}
 footer a:hover{text-decoration:underline}
 @media(max-width:560px){footer .wrap{width:calc(100% - 28px)}}
+.editor-section{border:1px solid var(--line);border-radius:14px;padding:14px 16px 16px;margin:0 0 14px;background:#fff}
+.editor-section legend{font:800 1rem 'Bricolage Grotesque',Arial,sans-serif;color:var(--green);padding:0 6px}
+.editor-section.locked{background:#f6f4ee;color:var(--muted)}
+.editor-section.locked legend{color:var(--muted)}
+.photo-box{border:1px dashed #c9cfc6;border-radius:12px;padding:12px;background:#fbfaf6}
+.photo-main{display:block;width:100%;max-width:420px;aspect-ratio:4/3;object-fit:cover;border-radius:10px;background:#eee}
+.photo-empty{padding:22px;text-align:center;color:var(--muted);font-size:.9rem;border-radius:10px;background:#f1efe8;grid-column:1/-1}
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.gallery-item{position:relative}
+.gallery-item img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;background:#eee}
+.gallery-x{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;border:0;background:#09291ecc;color:#fff;font-weight:900;cursor:pointer;line-height:26px;padding:0}
