@@ -125,16 +125,14 @@
       form.appendChild(sec);
     }
 
+    // Only the sections the level includes are shown. Owners never see higher-level sections;
+    // admins see the sections for the level picked in the editor, updating as it changes.
+    var sectionEls = [];
     SECTIONS.forEach(function (s) {
-      var open = admin || RANK[tier] >= RANK[s.tier];
-      var sec = el('fieldset', { className: 'editor-section' + (open ? '' : ' locked') }, el('legend', {}, s.title + (open ? '' : ' · ' + NAMES[s.tier] + ' and up')));
+      if (!admin && RANK[tier] < RANK[s.tier]) return;
+      var sec = el('fieldset', { className: 'editor-section' }, el('legend', {}, s.title));
       sec.appendChild(el('p', { className: 'meta', style: 'margin:0 0 4px' }, s.note));
-      if (!open) {
-        sec.appendChild(el('p', { style: 'margin:6px 0 0' }, '🔒 Available on ' + NAMES[s.tier] + (s.tier === 'platinum' ? '' : ' and higher') + '. '));
-        if (opts.onUpgrade) sec.appendChild(el('button', { type: 'button', className: 'btn gold', onclick: opts.onUpgrade }, 'Upgrade to unlock'));
-        form.appendChild(sec);
-        return;
-      }
+      sectionEls.push({ el: sec, tier: s.tier });
       s.fields.forEach(function (f) {
         if (f[0] === '__food') { input(foodField(type), foodLabel(type)).forEach(function (n) { sec.appendChild(n); }); return; }
         if (f[2] === 'photo') { sec.appendChild(el('label', {}, f[1])); sec.appendChild(photoBox()); return; }
@@ -143,6 +141,13 @@
       });
       form.appendChild(sec);
     });
+    function applyLevel(t) { sectionEls.forEach(function (x) { x.el.hidden = RANK[t] < RANK[x.tier]; }); }
+    if (admin) { applyLevel(tier); inputs.membershipTier.addEventListener('change', function () { applyLevel(inputs.membershipTier.value); }); }
+    if (!admin && tier !== 'platinum' && opts.onUpgrade) {
+      var nextUp = tier === 'bronze' ? 'Silver adds a main photo, description and your own information page.' : 'Platinum adds a rotating photo gallery and the top spot.';
+      form.appendChild(el('p', { className: 'meta', style: 'margin:0 0 14px' }, 'Want more? ' + nextUp + ' ',
+        el('a', { href: '#', style: 'color:var(--green);font-weight:700', onclick: function (e) { e.preventDefault(); opts.onUpgrade(); } }, 'See upgrade options')));
+    }
 
     var note = null;
     if (!admin) { form.appendChild(el('label', {}, 'Anything else we should know?')); note = el('textarea', { maxLength: 2000 }); form.appendChild(note); }
@@ -154,6 +159,8 @@
       e.preventDefault();
       var changes = {};
       Object.keys(inputs).forEach(function (k) {
+        var fs = inputs[k].closest && inputs[k].closest('fieldset');
+        if (fs && fs.hidden) return;
         var raw = inputs[k].value.trim();
         if (k === 'membershipTier') { if (raw !== tier) changes.membershipTier = raw; return; }
         if (raw === P.show(h[k]).trim()) return;
@@ -162,9 +169,10 @@
         else if (k === 'rating') changes[k] = raw === '' ? null : Math.max(0, Math.min(5, Number(raw)));
         else changes[k] = raw || null;
       });
-      if ((state.photo || '') !== (h.photo || '')) changes.photo = state.photo || null;
+      var level = admin ? inputs.membershipTier.value : tier;
+      if (RANK[level] >= RANK.silver && (state.photo || '') !== (h.photo || '')) changes.photo = state.photo || null;
       var before = (Array.isArray(h.photos) ? h.photos : []).join('|');
-      if (state.photos.join('|') !== before) changes.photos = state.photos.length ? state.photos.slice() : null;
+      if (RANK[level] >= RANK.platinum && state.photos.join('|') !== before) changes.photos = state.photos.length ? state.photos.slice() : null;
       var n = note ? note.value.trim() : '';
       if (!Object.keys(changes).length && !n) return P.msg(msg, 'info', "You haven't changed anything yet.");
       submit.disabled = true;
