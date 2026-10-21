@@ -43,10 +43,13 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--gold);outline-of
 .result:hover,.result[aria-pressed=true]{background:#fbf3dc}
 .result:last-child{border-bottom:0}
 .tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:12px}
-.tier-box{border:2px solid var(--line);border-radius:14px;padding:14px;background:#fff;display:grid;gap:6px}
+.tier-box{border:2px solid var(--line);border-radius:14px;padding:16px;background:#fff;display:flex;flex-direction:column;gap:10px;min-width:0}
 .tier-box.platinum{border-color:#aeb8c2}.tier-box.gold{border-color:#d6a84f}.tier-box.silver{border-color:#b8c0c9}.tier-box.bronze{border-color:#c99a70}
 .tier-box h4{margin:0;font-family:'Bricolage Grotesque',Arial,sans-serif;color:var(--green);font-size:1.1rem}
-.tier-box ul{margin:0;padding-left:18px;color:var(--muted);font-size:.88rem}
+.tier-box ul{margin:0;padding-left:18px;color:var(--muted);font-size:.88rem;line-height:1.45;flex:1}
+.tier-box .price{margin:-6px 0 0;font-weight:800;color:var(--ink,#1f2a24);font-size:1rem}.tier-box .price small{font-weight:600;color:var(--muted);font-size:.8rem}
+.tier-box>.btn,.tier-box>.badge{margin-top:auto;width:100%;min-height:44px;padding:10px 14px;box-sizing:border-box}
+.tier-box>.badge{display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:.78rem}
 .diff{display:grid;grid-template-columns:140px 1fr 1fr;gap:6px 12px;font-size:.88rem;margin-top:6px}
 .diff b{color:var(--green)}
 .diff .old{color:var(--muted);text-decoration:line-through;overflow-wrap:anywhere}

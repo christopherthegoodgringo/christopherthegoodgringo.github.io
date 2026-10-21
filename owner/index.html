@@ -8,7 +8,7 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/cgg-portal.css?v=5">
+<link rel="stylesheet" href="/assets/cgg-portal.css?v=6">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/assets/cgg-portal-config.js?v=1"></script>
 <script src="/assets/cgg-overrides.js?v=3"></script>
@@ -299,7 +299,8 @@
       if (isNow) action = el('span', { className: 'badge approved' }, 'Your current tier');
       else if (pending) action = el('span', { className: 'badge pending' }, 'Requested');
       else if (higher) action = el('button', { className: 'btn' + (t === 'platinum' ? ' gold' : ''), type: 'button', onclick: function (ev) { requestUpgrade(c, t, ev.currentTarget); } }, cfg.stripeLinks[t] ? 'Upgrade and pay' : 'Request ' + info[0].split(' ·')[0]);
-      boxes.appendChild(el('div', { className: 'tier-box ' + t }, el('h4', {}, info[0]),
+      var parts = info[0].split(' · '), amt = (parts[1] || '').split('/');
+      boxes.appendChild(el('div', { className: 'tier-box ' + t }, el('h4', {}, parts[0]), el('p', { className: 'price' }, amt[0], amt[1] ? el('small', {}, ' / ' + amt[1]) : null),
         el('ul', {}, info[1].map(function (x) { return el('li', {}, x); }).reduce(function (f, li) { f.appendChild(li); return f; }, document.createDocumentFragment())), action));
     });
     if (now !== 'bronze' && cfg.stripeManageLink) {
