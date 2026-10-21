@@ -46,7 +46,7 @@
 
     <section class="panel" id="upgradePanel" hidden>
       <h2 id="upgradeTitle">Upgrade your listing</h2>
-      <p class="sub">Higher tiers add photos, ratings, a full information page and more visibility in the Finders.</p>
+      <p class="sub">Higher tiers add photos, ratings, a full information page and more visibility in the Finders. <a href="/business-sponsorship.html#compareTitle">Compare all levels</a>.</p>
       <div class="tiers" id="tierBoxes"></div>
       <div id="upgradeMsg"></div>
     </section>
@@ -234,10 +234,10 @@
 
   // ---------- Upgrade ----------
   var tierInfo = {
-    bronze: ['Bronze', ['Name and address in the Finder']],
-    silver: ['Silver', ['Photo, rating and description', 'More Information page']],
-    gold: ['Gold', ['Everything in Silver', 'Highlighted gold card', 'Shown above Silver']],
-    platinum: ['Platinum', ['Everything in Gold', 'Rotating photo gallery', 'Top placement in the Finder']]
+    bronze: ['Bronze · $0', ['Listed in the Finder', 'Name, city and address', 'Claim and update in this portal']],
+    silver: ['Silver · $9.99/month', ['Main photo and star rating', 'Description, price range and highlights', 'Your own More Information page', 'Website and booking buttons', 'Shown above Bronze']],
+    gold: ['Gold · $19.99/month', ['Everything in Silver', 'Gold-highlighted card', 'Shown above Silver and Bronze']],
+    platinum: ['Platinum · $29.99/month', ['Everything in Gold', 'First position in the Finder', 'Rotating photo gallery']]
   };
   function openUpgrade(c, h, ups) {
     $('editPanel').hidden = true; $('upgradePanel').hidden = false; $('upgradeMsg').replaceChildren();
@@ -250,7 +250,7 @@
       var action = null;
       if (isNow) action = el('span', { className: 'badge approved' }, 'Your current tier');
       else if (pending) action = el('span', { className: 'badge pending' }, 'Requested');
-      else if (higher) action = el('button', { className: 'btn' + (t === 'platinum' ? ' gold' : ''), type: 'button', onclick: function (ev) { requestUpgrade(c, t, ev.currentTarget); } }, cfg.stripeLinks[t] ? 'Upgrade and pay' : 'Request ' + info[0]);
+      else if (higher) action = el('button', { className: 'btn' + (t === 'platinum' ? ' gold' : ''), type: 'button', onclick: function (ev) { requestUpgrade(c, t, ev.currentTarget); } }, cfg.stripeLinks[t] ? 'Upgrade and pay' : 'Request ' + info[0].split(' ·')[0]);
       boxes.appendChild(el('div', { className: 'tier-box ' + t }, el('h4', {}, info[0]),
         el('ul', {}, info[1].map(function (x) { return el('li', {}, x); }).reduce(function (f, li) { f.appendChild(li); return f; }, document.createDocumentFragment())), action));
     });
