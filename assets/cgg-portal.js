@@ -103,6 +103,7 @@
     function link(text, to) { return el('button', { type: 'button', className: 'btn light', onclick: function () { view = to; render(); } }, text); }
     function render() {
       box.replaceChildren();
+      if (view === 'forgot' && opts.contact) return renderContact();
       var out = el('div');
       var emailInput = el('input', { id: 'authEmail', type: 'email', required: true, autocomplete: 'email', placeholder: 'you@yourbusiness.com', value: (P._lastEmail || '') });
       emailInput.addEventListener('input', function () { P._lastEmail = emailInput.value; });
@@ -157,19 +158,40 @@
       box.appendChild(el.apply(null, ['div', { className: 'actions' }].concat(extra)));
       box.appendChild(out);
     }
+    function renderContact() {
+      var c = opts.contact, email = (P._lastEmail || '').trim();
+      var text = 'Hi Christopher, I need a password reset for my Good Gringo business owner account' + (email ? ' (' + email + ')' : '') + '.';
+      box.appendChild(el('h2', {}, 'Forgot your password?'));
+      box.appendChild(el('p', { className: 'sub' }, "Message us on WhatsApp or send us an email. We'll confirm it's you and give you a temporary password, then you'll choose your own the next time you sign in."));
+      box.appendChild(el('div', { className: 'actions' },
+        el('a', { className: 'btn', href: 'https://wa.me/' + c.whatsapp + '?text=' + encodeURIComponent(text), target: '_blank', rel: 'noopener' }, 'WhatsApp us'),
+        el('a', { className: 'btn gold', href: 'mailto:' + c.email + '?subject=' + encodeURIComponent('Password reset for my owner account') + '&body=' + encodeURIComponent(text + '\n\nBusiness name:\nPhone:') }, 'Email us'),
+        link('Back to sign in', 'signin')));
+      box.appendChild(el('p', { className: 'meta', style: 'margin-top:14px' }, 'Please contact us from the phone number or email address linked to your business so we can verify you quickly.'));
+    }
     render();
     return { show: function (v) { view = v || 'signin'; render(); } };
   };
 
   // After a reset link: ask for the new password once the reset sign-in completes.
-  P.showRecovery = function (box) {
-    if (!P.recovery || P._recoveryShown) return;
+  P.showRecovery = function (box, user) {
+    var temp = !!(user && user.user_metadata && user.user_metadata.must_change_password);
+    if ((!P.recovery && !temp) || P._recoveryShown) return;
     P._recoveryShown = true;
-    P.mountSetPassword(box, { title: 'Choose a new password', onDone: function () {
+    P.mountSetPassword(box, { title: temp ? 'Choose your own password' : 'Choose a new password', required: temp,
+      intro: temp ? "You signed in with a temporary password. Please choose your own password now." : null, onDone: function () {
       P.recovery = false;
       try { var u = new URL(location.href); u.searchParams.delete('reset'); u.hash = ''; history.replaceState(null, '', u.pathname + u.search); } catch (e) {}
     } });
     box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  P.tempPassword = function () {
+    var words = ['Mango', 'Arepa', 'Coral', 'Palma', 'Sierra', 'Brisa', 'Lulo', 'Tayrona', 'Caribe', 'Ceiba'];
+    var abc = 'abcdefghjkmnpqrstuvwxyz23456789';
+    var r = new Uint32Array(9); crypto.getRandomValues(r);
+    var code = ''; for (var i = 3; i < 9; i++) code += abc[r[i] % abc.length];
+    return words[r[0] % words.length] + '-' + words[r[1] % words.length] + '-' + code + '-' + String(10 + (r[2] % 90));
   };
 
   // "Set or change password" panel for signed-in users (also used after a reset link).
@@ -180,22 +202,23 @@
     pwField('newPw', 'New password', 'new-password').concat(pwField('newPw2', 'Confirm new password', 'new-password')).forEach(function (f) { form.appendChild(f); });
     var submit = el('button', { className: 'btn', type: 'submit' }, 'Save password');
     form.appendChild(el('div', { className: 'actions' }, submit,
-      el('button', { className: 'btn light', type: 'button', onclick: function () { box.hidden = true; } }, 'Cancel')));
+      (opts && opts.required) ? null : el('button', { className: 'btn light', type: 'button', onclick: function () { box.hidden = true; } }, 'Cancel')));
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var a = form.querySelector('#newPw').value, b = form.querySelector('#newPw2').value;
       if (!goodPassword(a)) return P.msg(out, 'err', 'Please use at least 8 characters, including a letter and a number.');
       if (a !== b) return P.msg(out, 'err', "The two passwords don't match.");
       submit.disabled = true;
-      sb.auth.updateUser({ password: a }).then(function (r) {
+      sb.auth.updateUser({ password: a, data: { must_change_password: false } }).then(function (r) {
         submit.disabled = false;
         if (r.error) return P.msg(out, 'err', friendly(r.error));
         form.reset(); P.msg(out, 'ok', 'Password saved. Next time you can sign in with your email and this password.');
+        if (opts && opts.required) setTimeout(function () { box.hidden = true; }, 2500);
         if (opts && opts.onDone) opts.onDone();
       });
     });
     box.appendChild(el('h2', {}, (opts && opts.title) || 'Set your password'));
-    box.appendChild(el('p', { className: 'sub' }, 'At least 8 characters, including a letter and a number.'));
+    box.appendChild(el('p', { className: 'sub' }, ((opts && opts.intro) ? opts.intro + ' ' : '') + 'At least 8 characters, including a letter and a number.'));
     box.appendChild(form);
     box.appendChild(out);
     box.hidden = false;

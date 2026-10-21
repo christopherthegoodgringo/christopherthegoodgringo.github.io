@@ -11,7 +11,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/assets/cgg-portal-config.js?v=1"></script>
 <script src="/assets/cgg-overrides.js?v=1"></script>
-<script src="/assets/cgg-portal.js?v=3"></script>
+<script src="/assets/cgg-portal.js?v=4"></script>
 <style id="cgg-global-header-css">.cgg-global-header{box-sizing:border-box;width:100%;min-height:84px;padding:0 14px;background:#103e2f;border-bottom:1px solid #f5bd3e;display:flex;align-items:center;gap:28px;position:relative;z-index:20;font-family:Arial,sans-serif;color:#fffdf8}.cgg-global-header *{box-sizing:border-box}.cgg-global-brand{display:flex;align-items:center;gap:12px;flex:0 0 auto;white-space:nowrap;text-decoration:none;color:#fffdf8;font-size:15px;font-weight:800;line-height:1;letter-spacing:0}.cgg-global-brand img{display:block;width:46px;height:46px;object-fit:contain;flex:0 0 46px}.cgg-global-nav{display:flex;align-items:center;justify-content:space-between;gap:clamp(10px,1.25vw,20px);flex:1 1 auto;min-width:0;white-space:nowrap;overflow-x:auto;scrollbar-width:thin}.cgg-global-nav a{display:block;flex:0 0 auto;padding:8px 0;margin:0;color:#fffdf8;text-decoration:none;font-family:Arial,sans-serif;font-size:13px;font-weight:700;line-height:1.2;white-space:nowrap}.cgg-global-nav a:hover{color:#f5bd3e}@media(max-width:1120px){.cgg-global-header{min-height:84px;align-items:flex-start;flex-direction:column;gap:8px;padding:10px 14px}.cgg-global-nav{width:100%;flex:0 0 auto;justify-content:flex-start;gap:22px}.cgg-global-brand{font-size:14px}.cgg-global-brand img{width:40px;height:40px;flex-basis:40px}}@media(max-width:560px){.cgg-global-header{padding:10px 12px}.cgg-global-brand{font-size:12px;gap:9px}.cgg-global-brand img{width:36px;height:36px;flex-basis:36px}.cgg-global-nav{gap:18px}.cgg-global-nav a{font-size:13px}}</style><style id="cgg-nav-hover-polish">.cgg-global-nav{gap:clamp(6px,.75vw,12px)!important}.cgg-global-nav a{font-weight:800!important;border-radius:999px!important;padding:9px 11px!important;transition:background-color .18s ease,color .18s ease!important}.cgg-global-nav a:hover,.cgg-global-nav a:focus-visible{background:#f5bd3e!important;color:#103e2f!important;outline:none!important}@media(max-width:1120px){.cgg-global-nav{gap:8px!important}.cgg-global-nav a{padding:8px 11px!important}}@media(max-width:560px){.cgg-global-nav{gap:5px!important}.cgg-global-nav a{padding:8px 10px!important}}</style>
 </head>
 <body>
@@ -37,11 +37,24 @@
       <button role="tab" data-tab="claims" aria-selected="true">Claims <span id="nClaims"></span></button>
       <button role="tab" data-tab="edits" aria-selected="false">Updates <span id="nEdits"></span></button>
       <button role="tab" data-tab="upgrades" aria-selected="false">Upgrades <span id="nUpgrades"></span></button>
+      <button role="tab" data-tab="passwords" aria-selected="false">Owner passwords</button>
       <button role="tab" data-tab="history" aria-selected="false">History</button>
     </div>
     <section class="panel" id="tab-claims"><h2>Ownership claims</h2><p class="sub">Confirm the person really runs the business (call or message the business's official number or email) before approving.</p><div class="list" id="claimsList"></div></section>
     <section class="panel" id="tab-edits" hidden><h2>Listing updates</h2><p class="sub">From verified owners and from public "suggest an update" forms. Approving publishes the new values to the site.</p><div class="list" id="editsList"></div></section>
     <section class="panel" id="tab-upgrades" hidden><h2>Tier upgrades</h2><p class="sub">Approve once payment is confirmed. Approving changes the listing's tier on the site.</p><div class="list" id="upgradesList"></div></section>
+    <section class="panel" id="tab-passwords" hidden>
+      <h2>Reset an owner's password</h2>
+      <p class="sub">Use this when an owner WhatsApps or emails you because they forgot their password. First confirm it's really them, for example by calling the business's official number. They'll be asked to choose their own password the next time they sign in.</p>
+      <form id="tempPwForm">
+        <label for="tempEmail">Owner's account email</label>
+        <input id="tempEmail" type="email" list="ownerEmails" required autocomplete="off" placeholder="owner@business.com">
+        <datalist id="ownerEmails"></datalist>
+        <label><input type="checkbox" id="tempConfirm" required style="width:auto;margin-right:8px">I've confirmed this person runs the business</label>
+        <div class="actions"><button class="btn" type="submit">Create temporary password</button></div>
+      </form>
+      <div id="tempPwOut"></div>
+    </section>
     <section class="panel" id="tab-history" hidden><h2>Recently reviewed</h2><div class="list" id="historyList"></div></section>
   </div>
 </main>
@@ -70,16 +83,16 @@
   document.querySelectorAll('[role=tab]').forEach(function (b) {
     b.addEventListener('click', function () {
       document.querySelectorAll('[role=tab]').forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
-      ['claims', 'edits', 'upgrades', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
+      ['claims', 'edits', 'upgrades', 'passwords', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
     });
   });
 
   sb.auth.onAuthStateChange(function (event, s) {
     if (event === 'PASSWORD_RECOVERY') P.recovery = true;
     setUser(s ? s.user : null);
-    if (s) P.showRecovery($('setpw'));
+    if (s) P.showRecovery($('setpw'), s.user);
   });
-  sb.auth.getSession().then(function (r) { setUser(r.data.session ? r.data.session.user : null); if (r.data.session) P.showRecovery($('setpw')); });
+  sb.auth.getSession().then(function (r) { setUser(r.data.session ? r.data.session.user : null); if (r.data.session) P.showRecovery($('setpw'), r.data.session.user); });
 
   function setUser(u) {
     if (u && user && u.id === user.id) return;
@@ -101,6 +114,7 @@
       var bad = res.find(function (r) { return r.error; });
       if (bad) { P.msg($('claimsList'), 'err', bad.error.message); return; }
       var claims = res[0].data, edits = res[1].data, ups = res[2].data;
+      var dl = $('ownerEmails'); dl.replaceChildren(); [...new Set(claims.map(function (c) { return c.owner_email; }).filter(Boolean))].sort().forEach(function (e) { dl.appendChild(el('option', { value: e })); });
       var pend = function (rows) { return rows.filter(function (r) { return r.status === 'pending' || r.status === 'paid'; }); };
       renderClaims(pend(claims)); renderEdits(pend(edits)); renderUpgrades(pend(ups), claims);
       $('nClaims').textContent = count(pend(claims)); $('nEdits').textContent = count(pend(edits)); $('nUpgrades').textContent = count(pend(ups));
@@ -200,6 +214,30 @@
       box.appendChild(card);
     });
   }
+  $('tempPwForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = $('tempEmail').value.trim(), out = $('tempPwOut'), btn = e.submitter;
+    var temp = P.tempPassword();
+    if (btn) btn.disabled = true;
+    P.msg(out, 'info', 'Setting a temporary password…');
+    sb.functions.invoke('admin-set-owner-password', { body: { email: email, password: temp } }).then(function (r) {
+      if (btn) btn.disabled = false;
+      if (r.error) {
+        var ctx = r.error.context;
+        var done = function (m) { P.msg(out, 'err', m || 'Could not set the password. Please try again.'); };
+        if (ctx && typeof ctx.json === 'function') ctx.json().then(function (j) { done(j && j.error); }).catch(function () { done(); });
+        else done(r.error.message);
+        return;
+      }
+      var code = el('code', { style: 'font-size:1.15rem;font-weight:800;letter-spacing:.02em;background:#fff;border:1px solid #c9cfc6;border-radius:8px;padding:8px 12px;display:inline-block' }, temp);
+      var copy = el('button', { className: 'btn light', type: 'button', onclick: function () { navigator.clipboard && navigator.clipboard.writeText(temp).then(function () { copy.textContent = 'Copied'; }); } }, 'Copy');
+      var wa = el('a', { className: 'btn', target: '_blank', rel: 'noopener', href: 'https://wa.me/?text=' + encodeURIComponent('Your temporary password for christopherthegoodgringo.com/owner/ is: ' + temp + '\nSign in with ' + email + ' and you will be asked to choose your own password.') }, 'Send by WhatsApp');
+      out.replaceChildren(el('div', { className: 'msg ok' },
+        el('p', { style: 'margin:0 0 8px' }, 'Temporary password set for ' + email + '. Give it to the owner privately. It is shown only once:'),
+        el('div', { className: 'actions', style: 'margin-top:0;align-items:center' }, code, copy, wa)));
+      $('tempPwForm').reset();
+    });
+  });
   function alertIn(card, text) { var m = el('div'); card.appendChild(m); P.msg(m, 'err', text); }
 })();
 </script>
