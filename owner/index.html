@@ -65,9 +65,15 @@
           <div><label for="cName">Your name</label><input id="cName" required maxlength="120" autocomplete="name"></div>
           <div><label for="cRole">Your role <small>(owner, manager…)</small></label><input id="cRole" required maxlength="80"></div>
         </div>
-        <label for="cPhone">Phone or WhatsApp</label><input id="cPhone" maxlength="60" autocomplete="tel">
-        <label for="cNotes">How can we confirm you run this business? <small>(e.g. "call the front desk and ask for me")</small></label>
-        <textarea id="cNotes" maxlength="2000"></textarea>
+        <fieldset style="border:0;padding:0;margin:14px 0 0">
+          <legend style="font-weight:700;font-size:.9rem;color:var(--green);margin-bottom:6px">How should we confirm you run this business?</legend>
+          <label style="display:flex;align-items:center;gap:8px;font-weight:600;margin:6px 0"><input type="radio" name="verifyBy" value="whatsapp" checked style="width:auto"> WhatsApp</label>
+          <label style="display:flex;align-items:center;gap:8px;font-weight:600;margin:6px 0"><input type="radio" name="verifyBy" value="email" style="width:auto"> Email</label>
+        </fieldset>
+        <div id="verifyWhatsapp"><label for="cPhone">Your WhatsApp number <small>(with country code, e.g. +57 300 123 4567)</small></label><input id="cPhone" type="tel" maxlength="60" autocomplete="tel" required></div>
+        <div id="verifyEmail" hidden><label for="cVerifyEmail">Business email address <small>(ideally the one on your website)</small></label><input id="cVerifyEmail" type="email" maxlength="200" autocomplete="email"></div>
+        <label for="cNotes">Anything else that helps us verify? <small>(optional)</small></label>
+        <textarea id="cNotes" maxlength="1500"></textarea>
         <div class="actions"><button class="btn" type="submit">Submit claim</button><button class="btn light" type="button" id="claimCancel">Cancel</button></div>
       </form>
       <div id="claimMsg"></div>
@@ -287,6 +293,15 @@
     $('claimChosen').textContent = 'Claim ' + h.name + ' (' + cfg.typeLabels[h.__type] + ', ' + (h.city || '') + ')';
     $('claimForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
+  function verifyMode() { var r = document.querySelector('input[name=verifyBy]:checked'); return r ? r.value : 'whatsapp'; }
+  document.querySelectorAll('input[name=verifyBy]').forEach(function (r) {
+    r.addEventListener('change', function () {
+      var wa = verifyMode() === 'whatsapp';
+      $('verifyWhatsapp').hidden = !wa; $('verifyEmail').hidden = wa;
+      $('cPhone').required = wa; $('cVerifyEmail').required = !wa;
+      if (!wa && !$('cVerifyEmail').value && user) $('cVerifyEmail').value = user.email || '';
+    });
+  });
   $('claimCancel').addEventListener('click', function () { chosen = null; $('claimForm').hidden = true; renderResults(); });
   $('claimForm').addEventListener('submit', function (e) {
     e.preventDefault(); if (!chosen) return;
@@ -295,12 +310,22 @@
     var btn = e.submitter; if (btn) btn.disabled = true;
     sb.from('listing_claims').insert({
       user_id: user.id, owner_email: user.email, listing_type: chosen.__type, listing_id: String(chosen.id || chosen.name), listing_name: chosen.name,
-      contact_name: $('cName').value.trim(), role: $('cRole').value.trim(), contact_phone: $('cPhone').value.trim() || null, evidence_notes: $('cNotes').value.trim() || null
+      contact_name: $('cName').value.trim(), role: $('cRole').value.trim(),
+      contact_phone: verifyMode() === 'whatsapp' ? ($('cPhone').value.trim() || null) : null,
+      evidence_notes: (verifyMode() === 'whatsapp' ? 'Verify by WhatsApp: ' + $('cPhone').value.trim() : 'Verify by email: ' + $('cVerifyEmail').value.trim())
+        + ($('cNotes').value.trim() ? '\n' + $('cNotes').value.trim() : '')
     }).then(function (r) {
       if (btn) btn.disabled = false;
       if (r.error) { P.msg($('claimMsg'), 'err', 'Could not submit your claim: ' + r.error.message); return; }
-      P.msg($('claimMsg'), 'ok', "Claim sent! We'll verify it and email you. You'll be able to edit your listing once it's approved.");
-      $('claimForm').reset(); $('claimForm').hidden = true; chosen = null; renderResults(); loadClaims();
+      var name = chosen.name, wa = verifyMode() === 'whatsapp';
+      var hello = 'Hi Christopher, I just claimed ' + name + ' on the Good Gringo owner portal (' + (user.email || '') + '). Please verify me.';
+      $('claimMsg').replaceChildren(P.el('div', { className: 'msg ok' },
+        P.el('p', { style: 'margin:0 0 10px' }, "Claim sent! We'll contact you by " + (wa ? 'WhatsApp' : 'email') + " to confirm. To speed things up, you can message us now:"),
+        P.el('div', { className: 'actions', style: 'margin-top:0' },
+          P.el('a', { className: 'btn', href: 'https://wa.me/13054405175?text=' + encodeURIComponent(hello), target: '_blank', rel: 'noopener' }, 'WhatsApp us'),
+          P.el('a', { className: 'btn gold', href: 'mailto:christopher@christopherthegoodgringo.com?subject=' + encodeURIComponent('Business claim: ' + name) + '&body=' + encodeURIComponent(hello) }, 'Email us'))));
+      $('claimForm').reset(); $('verifyWhatsapp').hidden = false; $('verifyEmail').hidden = true; $('cPhone').required = true; $('cVerifyEmail').required = false;
+      $('claimForm').hidden = true; chosen = null; renderResults(); loadClaims();
     });
   });
 })();

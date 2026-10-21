@@ -151,7 +151,8 @@
       var card = el('article', { className: 'item' },
         el('div', { className: 'item-head' }, el('h3', {}, c.listing_name || c.listing_id), el('span', { className: 'badge pending' }, cfg.typeLabels[c.listing_type])),
         el('p', { className: 'meta' }, 'From ' + (c.contact_name || '') + (c.role ? ' (' + c.role + ')' : '') + ' · ' + (c.owner_email || '') + (c.contact_phone ? ' · ' + c.contact_phone : '') + ' · ' + P.fmtDate(c.created_at)),
-        c.evidence_notes ? el('p', {}, 'How to verify: ' + c.evidence_notes) : null,
+        c.evidence_notes ? el('p', { style: 'white-space:pre-line' }, c.evidence_notes) : null,
+        verifyButtons(c),
         el('p', { className: 'meta' }, listingLink(c.listing_type, c.listing_id)),
         note, el('div', { className: 'actions' }, ok, no));
       box.appendChild(card);
@@ -238,6 +239,15 @@
       $('tempPwForm').reset();
     });
   });
+  function verifyButtons(c) {
+    var notes = c.evidence_notes || '', phone = (c.contact_phone || '').replace(/[^\d]/g, '');
+    var m = notes.match(/Verify by email:\s*(\S+@\S+)/i), mail = m ? m[1] : '';
+    var hi = 'Hi ' + (c.contact_name || '') + ', this is Christopher from The Good Gringo. I am confirming your claim for ' + (c.listing_name || 'your business') + '.';
+    if (!phone && !mail) return null;
+    return el('div', { className: 'actions', style: 'margin-top:4px' },
+      phone ? el('a', { className: 'btn light', href: 'https://wa.me/' + phone + '?text=' + encodeURIComponent(hi), target: '_blank', rel: 'noopener' }, 'WhatsApp owner') : null,
+      mail ? el('a', { className: 'btn light', href: 'mailto:' + mail + '?subject=' + encodeURIComponent('Confirming your Good Gringo listing claim') + '&body=' + encodeURIComponent(hi) }, 'Email owner') : null);
+  }
   function alertIn(card, text) { var m = el('div'); card.appendChild(m); P.msg(m, 'err', text); }
 })();
 </script>
