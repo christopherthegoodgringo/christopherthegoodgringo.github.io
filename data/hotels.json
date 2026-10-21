@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-21",
-  "scope": "Initial Santa Marta boutique hotel directory. Four tier designs are enabled for layout testing; tier labels are sample placement and do not imply that a property purchased or endorsed a paid listing. Official hotel website links are verified; affiliate booking links will be added only after approval and tracking verification.",
+  "scope": "Initial Santa Marta boutique hotel directory. One example listing per tier is not guaranteed; only one Bronze listing is intentionally assigned. Tier labels are sample placements for layout testing and do not imply that a property purchased or endorsed a paid listing. Official hotel website links are verified; affiliate booking links will be added only after approval and tracking verification.",
   "countries": [
     {
       "code": "BZ",
@@ -186,7 +186,7 @@
         "Boutique rooms",
         "Walkable to marina"
       ],
-      "membershipTier": "bronze",
+      "membershipTier": "silver",
       "verifiedOn": "2026-10-21"
     }
   ]
