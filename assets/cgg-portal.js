@@ -2,6 +2,8 @@
 (function () {
   var cfg = window.CGG_PORTAL;
   var P = window.CGGPortal = {};
+  // Remember if we arrived from a "reset password" email, before Supabase tidies the address bar.
+  P.recovery = /type=recovery/.test(location.hash) || /[?&]reset=1(&|$)/.test(location.search);
 
   P.client = function () {
     if (!P._client) P._client = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey, {
@@ -137,7 +139,7 @@
         var job;
         if (view === 'signin') job = sb.auth.signInWithPassword({ email: email, password: pw.value });
         else if (view === 'signup') job = sb.auth.signUp({ email: email, password: pw.value, options: { emailRedirectTo: redirect } });
-        else if (view === 'forgot') job = sb.auth.resetPasswordForEmail(email, { redirectTo: redirect });
+        else if (view === 'forgot') job = sb.auth.resetPasswordForEmail(email, { redirectTo: redirect + (redirect.indexOf('?') > -1 ? '&' : '?') + 'reset=1' });
         else job = sb.auth.signInWithOtp({ email: email, options: { emailRedirectTo: redirect, shouldCreateUser: !!opts.allowSignup } });
         job.then(function (r) {
           submit.disabled = false;
@@ -157,6 +159,17 @@
     }
     render();
     return { show: function (v) { view = v || 'signin'; render(); } };
+  };
+
+  // After a reset link: ask for the new password once the reset sign-in completes.
+  P.showRecovery = function (box) {
+    if (!P.recovery || P._recoveryShown) return;
+    P._recoveryShown = true;
+    P.mountSetPassword(box, { title: 'Choose a new password', onDone: function () {
+      P.recovery = false;
+      try { var u = new URL(location.href); u.searchParams.delete('reset'); u.hash = ''; history.replaceState(null, '', u.pathname + u.search); } catch (e) {}
+    } });
+    box.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   // "Set or change password" panel for signed-in users (also used after a reset link).
