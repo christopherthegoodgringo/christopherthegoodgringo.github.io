@@ -121,3 +121,12 @@ Checklist for every change:
 - A trigger on `listing_upgrade_requests` records `agent_commissions` when a paid level goes live; payable 14 days later and
   sent daily by pg_cron (`agent-payouts`) through Stripe Connect Express transfers (`agents` function, action pay_now).
   Needs STRIPE_SECRET_KEY with Connect + Transfers permissions and Connect enabled in Stripe. Database: supabase/016_agents.sql.
+
+## Automatic prospecting emails
+
+- `prospect-mailer` Edge Function sends from Christopher's own mailbox (domain.com: smtp.domain.com:465, imap.domain.com:993;
+  secret EMAIL_PASSWORD). pg_cron `prospect-mailer` runs every 10 minutes 14:00-15:50 UTC (9-11 am Colombia), up to 8 per run,
+  `prospect_mailer.daily_limit` per Colombia day (Christopher chose 75). It checks the inbox for replies first (marks Replied),
+  then sends follow-ups due, then first messages, to Prospecting rows with an email, no agent and status New/WhatsApped/Emailed/Both.
+  Every email gets a "reply STOP" line, is saved to the Sent folder and logged in `prospect_emails`.
+- Admin Prospecting tab: "Automatic emails" box (on/pause, daily limit, send now, recently sent). Database: supabase/017_prospect_mailer.sql.
