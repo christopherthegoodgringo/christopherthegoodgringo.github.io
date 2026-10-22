@@ -1,13 +1,13 @@
 // Automatic prospecting emails from Christopher's own mailbox (Network Solutions / Open-Xchange; servers in prospect_mailer).
 // Deployed as "prospect-mailer" with JWT verification OFF; callers are checked here:
-//   the scheduled job (header x-mailer-token, every 10 minutes 9:00-10:50 am Colombia), or an admin ("Run now" button).
+//   the scheduled job (header x-mailer-token, every 10 minutes, all day), or an admin ("Send what's due now" button).
 // Each run:
 //   1. Inbox check: any business waiting for a reply that has written back (From = their email, since we last wrote)
 //      is marked Replied, which stops its follow-ups.
 //   2. Sends what's due, oldest first: follow-up 1 (4 days after the first message), follow-up 2 (7 days after that),
 //      then first messages to businesses not contacted yet. Only Prospecting rows with an email, no agent, and status
 //      New / WhatsApped / Emailed / Both. Businesses that now have an owner are marked Claimed instead.
-//      At most prospect_mailer.daily_limit per Colombia day, up to 8 per run, a few seconds apart.
+//      At most prospect_mailer.per_hour in any hour (spread over the 10-minute runs) and daily_limit per Colombia day.
 //   3. Each email is saved to the mailbox's Sent folder and logged in prospect_emails.
 // Templates: prospect_templates (email_es / email_en, f1_email_*, f2_email_*), same placeholders as the admin page.
 // Secret: EMAIL_PASSWORD. Optional: EMAIL_USER (default christopher@christopherthegoodgringo.com).
@@ -337,13 +337,17 @@ Deno.serve(async (req: Request) => {
   const parts = Math.max(1, Math.min(10, Number(body.parts) || 1)), part = Math.max(0, Number(body.part) || 0) % parts;
   let work = body.firstOnly ? due.filter((d) => d.round === 1) : due;
   if (parts > 1) work = work.filter((d) => Math.abs([...(d.p.listing_type + "|" + d.p.listing_id)].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) | 0, 7)) % parts === part);
-  const perRun = Math.max(1, Math.min(40, Number(body.batch) || PER_RUN)), gap = body.batch ? 1500 : GAP_MS;
+  // Regular runs (every 10 minutes, all day): spread prospect_mailer.per_hour evenly, never more than that in any hour.
+  const perHour = Math.max(1, Number(settings?.per_hour) || 20);
+  const { count: sentLastHour } = await db.from("prospect_emails").select("id", { count: "exact", head: true }).eq("ok", true).gte("sent_at", new Date(now - 3600000).toISOString());
+  const perRun = body.batch ? Math.max(1, Math.min(40, Number(body.batch))) : Math.max(0, Math.min(Math.ceil(perHour / 6), perHour - (sentLastHour ?? 0)));
+  const gap = body.batch ? 1500 : GAP_MS;
 
   const { count: sentToday } = await db.from("prospect_emails").select("id", { count: "exact", head: true }).eq("ok", true).gte("sent_at", colombiaMidnight().toISOString());
   const room = Math.max(0, Math.min(perRun, (settings?.daily_limit ?? 75) - (sentToday ?? 0)));
   if (!work.length || !room) {
     if (imap) await imap.close();
-    return finish(!work.length ? "Nothing due" : "Daily limit reached", imapError, { replied, sent: 0, due: work.length });
+    return finish(!work.length ? "Nothing due" : (perRun === 0 ? "Hourly limit reached" : "Daily limit reached"), imapError, { replied, sent: 0, due: work.length });
   }
 
   const { data: tpls } = await db.from("prospect_templates").select("*");

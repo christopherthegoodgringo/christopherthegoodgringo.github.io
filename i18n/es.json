@@ -1191,5 +1191,7 @@
   "An email template is empty. Fill in your messages in Prospecting.": "Una plantilla de correo está vacía. Completa tus mensajes en Prospección.",
   "Email sent": "Correo enviado",
   "Email not sent": "Correo no enviado",
-  "Checking replies and sending everything that's due… this can take up to two minutes.": "Revisando respuestas y enviando todo lo pendiente… puede tardar hasta dos minutos."
+  "Checking replies and sending everything that's due… this can take up to two minutes.": "Revisando respuestas y enviando todo lo pendiente… puede tardar hasta dos minutos.",
+  "All day, spread evenly every hour, businesses in this list that have an email get your first message, then the follow-ups when they're due, sent from your own mailbox (christopher@christopherthegoodgringo.com). When a business replies, it's marked Replied and gets no more follow-ups. Agents' leads are left to the agents.": "Todo el día, repartidos de forma pareja cada hora, los negocios de esta lista que tienen correo reciben tu primer mensaje y luego los seguimientos cuando corresponden, enviados desde tu propio buzón (christopher@christopherthegoodgringo.com). Cuando un negocio responde, queda como Respondió y no recibe más seguimientos. Los contactos de los agentes quedan en manos de los agentes.",
+  "Most emails per hour": "Máximo de correos por hora"
 }
