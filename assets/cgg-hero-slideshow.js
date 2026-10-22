@@ -1,4 +1,4 @@
-// Finder pages: the hero photo cycles through five photos, two per second.
+// Finder pages: the hero photo cycles through five photos, one every 4 seconds.
 // Each page sets data-slides on this script tag: "url|alt;;url|alt;;..." (the first photo is the one already in the page).
 // Visitors who ask their device for reduced motion see the first photo only.
 (function () {
@@ -21,7 +21,7 @@
       imgs.push(im);
     });
     var css = document.createElement('style');
-    css.textContent = '.hero-image .cgg-hero-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}' +
+    css.textContent = '.hero-image .cgg-hero-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s ease}' +
       '.hero-image .cgg-hero-slide.on{opacity:1}';
     document.head.appendChild(css);
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -32,7 +32,7 @@
       if (next !== 0 && !(imgs[next].complete && imgs[next].naturalWidth)) next = 0; // skip a photo that hasn't loaded yet
       imgs.forEach(function (im, k) { if (k > 0) im.classList.toggle('on', k === next); });
       i = next;
-    }, 500);
+    }, 4000);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
