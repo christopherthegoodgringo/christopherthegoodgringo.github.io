@@ -1212,7 +1212,7 @@
       if(!sessionResult.data || !sessionResult.data.session) throw new Error('Your session has expired. Sign in again.');
       var result=await client.functions.invoke('agent-recruitment-mailer',{body:{action:'send_test'}});
       if(result.error) throw result.error;
-      if(!result.data || result.data.status!=='sent') throw new Error((result.data && result.data.message) || 'The server did not confirm that the test email was sent.');
+      if(!result.data || result.data.status!=='test_sent') throw new Error((result.data && result.data.message) || 'The server did not confirm that the test email was sent.');
       out.textContent='The server confirmed the test email was sent to christopher@christopherthegoodgringo.com. Check your inbox and spam folder.';
     } catch(e) {
       out.textContent='Test not confirmed: '+(e && e.message ? e.message : String(e));
