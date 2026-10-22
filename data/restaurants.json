@@ -95,9 +95,8 @@
         "Burgers and cocktails",
         "Historic center"
       ],
-      "featured": true,
       "verifiedOn": "2026-10-20",
-      "membershipTier": "platinum",
+      "membershipTier": "bronze",
       "photos": [
         "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=85",
         "https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=1200&q=85",
@@ -124,7 +123,7 @@
         "Local ingredients",
         "Historic center"
       ],
-      "membershipTier": "gold",
+      "membershipTier": "bronze",
       "verifiedOn": "2026-10-20"
     },
     {
@@ -146,7 +145,7 @@
         "Local tradition",
         "Historic center"
       ],
-      "membershipTier": "silver",
+      "membershipTier": "bronze",
       "verifiedOn": "2026-10-20"
     },
     {

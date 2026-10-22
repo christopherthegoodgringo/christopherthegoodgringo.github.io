@@ -8,7 +8,7 @@
       "verifiedOn": "2026-10-21",
       "id": "masaya-santa-marta",
       "name": "Masaya Santa Marta",
-      "membershipTier": "platinum",
+      "membershipTier": "bronze",
       "address": "Calle 14 #4-80, Centro, Santa Marta, Magdalena, Colombia",
       "description": "Social hostel with two pools, a rooftop bar and daily cultural activities like salsa classes and empanada-making.",
       "features": [
@@ -35,7 +35,7 @@
       "verifiedOn": "2026-10-21",
       "id": "la-brisa-loca-santa-marta",
       "name": "La Brisa Loca",
-      "membershipTier": "gold",
+      "membershipTier": "bronze",
       "address": "Calle 14 #3-58, Centro Histórico, Santa Marta, Magdalena, Colombia",
       "description": "Lively party hostel in a restored 100-year-old mansion with colonial Caribbean style and a rooftop terrace.",
       "features": [
@@ -56,7 +56,7 @@
       "verifiedOn": "2026-10-21",
       "id": "mr-baboon-hostel-santa-marta",
       "name": "Mr. Baboon Hostel",
-      "membershipTier": "silver",
+      "membershipTier": "bronze",
       "address": "Calle 17 #3-99, Centro Histórico, Santa Marta, Magdalena, Colombia",
       "description": "Laid-back social hostel for travelers heading to Tayrona, Minca and Palomino, with large dorm beds and air conditioning.",
       "features": [

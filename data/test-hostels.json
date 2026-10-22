@@ -25,7 +25,7 @@
       "lon": -74.201,
       "osm": "https://www.openstreetmap.org/?mlat=11.2420&mlon=-74.2010#map=16/11.2420/-74.2010",
       "isTest": true,
-      "listingPlan": "featured"
+      "listingPlan": "free"
     },
     {
       "id": "TEST-SANTA-MARTA-PREMIUM-001",
@@ -38,7 +38,7 @@
       "lon": -74.197,
       "osm": "https://www.openstreetmap.org/?mlat=11.2396&mlon=-74.1970#map=16/11.2396/-74.1970",
       "isTest": true,
-      "listingPlan": "premium"
+      "listingPlan": "free"
     }
   ]
 }
