@@ -44,6 +44,7 @@
     '@keyframes cggAppPop{from{transform:scale(.75);opacity:0}to{transform:scale(1);opacity:1}}.cgg-app-yay{animation:cggAppPop .4s cubic-bezier(.2,1.3,.4,1)}';
 
 
+  CSS +=
     '.cgg-agent-recruit-overlay{position:fixed;inset:0;z-index:2147482999;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:20px;background:rgba(9,41,30,.76)}' +
     '.cgg-agent-recruit-card{position:relative;width:min(510px,100%);padding:30px 30px 26px;border:1px solid #f5bd3e;border-radius:18px;background:#fbf5e8;color:#17271f;box-shadow:0 24px 80px #0005;text-align:center;font:16px/1.6 "DM Sans",system-ui,sans-serif}' +
     '.cgg-agent-recruit-close{position:absolute;top:10px;right:12px;width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:#103e2f;font:400 1.8rem/1 "DM Sans",sans-serif;cursor:pointer}' +
@@ -56,9 +57,9 @@
     '.cgg-agent-recruit-join{display:flex;align-items:center;justify-content:center;width:100%;padding:14px 18px;border:1px solid #103e2f;border-radius:10px;background:#103e2f;color:#fbf5e8;font-weight:800;text-decoration:none}' +
     '.cgg-agent-recruit-join:hover{background:#09291e;color:#f5bd3e}' +
     '.cgg-agent-recruit-later{border:0;background:transparent;padding:7px 12px;color:#657268;font:600 .9rem "DM Sans",sans-serif;cursor:pointer}' +
-    '@media(max-width:480px){.cgg-agent-recruit-card{padding:28px 20px 22px;border-radius:14px}.cgg-agent-recruit-logo{width:165px;margin-bottom:15px}}' +
+    '@media(max-width:480px){.cgg-agent-recruit-card{padding:28px 20px 22px;border-radius:14px}.cgg-agent-recruit-logo{width:165px;margin-bottom:15px}}' ;
 
-    var ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>';
+  var ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>';
 
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; }
 
