@@ -1190,5 +1190,6 @@
   "The mail server didn't say hello.": "El servidor de correo no respondió al conectarse.",
   "An email template is empty. Fill in your messages in Prospecting.": "Una plantilla de correo está vacía. Completa tus mensajes en Prospección.",
   "Email sent": "Correo enviado",
-  "Email not sent": "Correo no enviado"
+  "Email not sent": "Correo no enviado",
+  "Checking replies and sending everything that's due… this can take up to two minutes.": "Revisando respuestas y enviando todo lo pendiente… puede tardar hasta dos minutos."
 }

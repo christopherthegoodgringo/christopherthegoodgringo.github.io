@@ -240,7 +240,7 @@ Deno.serve(async (req: Request) => {
   let body: Record<string, unknown> = {};
   try { body = await req.json(); } catch { /* no body */ }
   const testOnly = body.action === "test" || body.action === "probe";
-  if (!settings?.enabled && !manual && !testOnly) return reply(200, { result: "Automatic emails are paused." });
+  if (!settings?.enabled && !manual && !testOnly && !body.batch) return reply(200, { result: "Automatic emails are paused." });
 
   const user = (Deno.env.get("EMAIL_USER") ?? "christopher@christopherthegoodgringo.com").trim();
   const pass = (Deno.env.get("EMAIL_PASSWORD") ?? "").replace(/^["']|["']$/g, "");
@@ -332,12 +332,18 @@ Deno.serve(async (req: Request) => {
     }
   }
   due.sort((a, b) => (a.round === 1 ? 1 : 0) - (b.round === 1 ? 1 : 0) || a.at - b.at || String(a.p.updated_at).localeCompare(String(b.p.updated_at)));
+  // Send-now mode (admin or schedule token): { batch, part, parts, firstOnly } splits the list so several runs can go side by side
+  // without anyone getting the same email twice.
+  const parts = Math.max(1, Math.min(10, Number(body.parts) || 1)), part = Math.max(0, Number(body.part) || 0) % parts;
+  let work = body.firstOnly ? due.filter((d) => d.round === 1) : due;
+  if (parts > 1) work = work.filter((d) => Math.abs([...(d.p.listing_type + "|" + d.p.listing_id)].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) | 0, 7)) % parts === part);
+  const perRun = Math.max(1, Math.min(40, Number(body.batch) || PER_RUN)), gap = body.batch ? 1500 : GAP_MS;
 
   const { count: sentToday } = await db.from("prospect_emails").select("id", { count: "exact", head: true }).eq("ok", true).gte("sent_at", colombiaMidnight().toISOString());
-  const room = Math.max(0, Math.min(PER_RUN, (settings?.daily_limit ?? 75) - (sentToday ?? 0)));
-  if (!due.length || !room) {
+  const room = Math.max(0, Math.min(perRun, (settings?.daily_limit ?? 75) - (sentToday ?? 0)));
+  if (!work.length || !room) {
     if (imap) await imap.close();
-    return finish(!due.length ? "Nothing due" : "Daily limit reached", imapError, { replied, sent: 0, due: due.length });
+    return finish(!work.length ? "Nothing due" : "Daily limit reached", imapError, { replied, sent: 0, due: work.length });
   }
 
   const { data: tpls } = await db.from("prospect_templates").select("*");
@@ -346,7 +352,7 @@ Deno.serve(async (req: Request) => {
   let sent = 0, failed = 0, lastErr: string | null = null;
   const smtp = new Smtp();
   try { await smtp.open(user, pass); } catch (e) { if (imap) await imap.close(); return finish("Not sent", String((e as Error).message || e), { replied }); }
-  for (const { p, round } of due.slice(0, room)) {
+  for (const { p, round } of work.slice(0, room)) {
     const lang = p.language === "en" ? "en" : "es";
     const t = T[(round === 2 ? "f1_" : round === 3 ? "f2_" : "") + "email_" + lang] || T["email_" + lang];
     if (!t || !t.body) { lastErr = "An email template is empty. Fill in your messages in Prospecting."; break; }
@@ -368,9 +374,9 @@ Deno.serve(async (req: Request) => {
       await db.from("prospect_emails").insert({ listing_type: p.listing_type, listing_id: p.listing_id, listing_name: h.name || p.listing_name, email: to, round, subject, ok: false, error: lastErr });
       if (/rate|limit|too many|quota/i.test(lastErr)) break;
     }
-    await sleep(GAP_MS);
+    await sleep(gap);
   }
   await smtp.close();
   if (imap) await imap.close();
-  return finish("Sent " + sent + (failed ? ", " + failed + " failed" : ""), lastErr || imapError, { replied, sent, failed, due: due.length });
+  return finish("Sent " + sent + (failed ? ", " + failed + " failed" : ""), lastErr || imapError, { replied, sent, failed, due: work.length });
 });

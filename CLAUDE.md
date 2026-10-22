@@ -126,7 +126,7 @@ Checklist for every change:
 
 - `prospect-mailer` Edge Function sends from Christopher's own mailbox (Network Solutions Cloud Mail / Open-Xchange: netsol-smtp-oxcs.hostingplatform.com:465, netsol-imap-oxcs.hostingplatform.com:993, stored in `prospect_mailer.smtp_host/imap_host`;
   secret EMAIL_PASSWORD). pg_cron `prospect-mailer` runs every 10 minutes 14:00-15:50 UTC (9-11 am Colombia), up to 8 per run,
-  `prospect_mailer.daily_limit` per Colombia day (Christopher chose 75). It checks the inbox for replies first (marks Replied),
+  `prospect_mailer.daily_limit` per Colombia day. "Send what's due now" (admin) and `{batch, parts, part, firstOnly}` send everything due at once in parallel parts. It checks the inbox for replies first (marks Replied),
   then sends follow-ups due, then first messages, to Prospecting rows with an email, no agent and status New/WhatsApped/Emailed/Both.
   Every email gets a "reply STOP" line, is saved to the Sent folder and logged in `prospect_emails`.
 - Admin Prospecting tab: "Automatic emails" box (on/pause, daily limit, send now, recently sent). Database: supabase/017_prospect_mailer.sql.
