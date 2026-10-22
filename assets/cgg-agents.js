@@ -95,6 +95,27 @@
     var list = $('agList'); if (!list) return;
     list.replaceChildren();
     list.appendChild(leaderboardBox());
+    // Recent account and email activity is fetched through the admin-only Edge Function.
+    var logBox = el('article', { className: 'item' });
+    var logHead = el('div', { className: 'item-head' }, el('h3', {}, 'Recent agent activity & email log'),
+      el('button', { type: 'button', className: 'btn light', onclick: function () { loadAdmin(); } }, 'Refresh'));
+    logBox.appendChild(logHead);
+    var logRows = el('div', { className: 'list' });
+    logRows.appendChild(el('p', { className: 'muted' }, 'Loading activity…'));
+    logBox.appendChild(logRows); list.appendChild(logBox);
+    call({ action: 'activity_log' }).then(function (r) {
+      logRows.replaceChildren();
+      var events = r.events || [];
+      if (!events.length) { logRows.appendChild(el('p', { className: 'muted' }, 'No activity logged yet. New signups and email events will appear here.')); return; }
+      var labels = { agent_signup: 'Agent registered', agent_created: 'Agent account created', welcome_email_sent: 'Welcome email sent', welcome_email_failed: 'Welcome email failed', password_setup_email_sent: 'Password setup email sent', password_setup_email_failed: 'Password setup email failed', password_reset_link_sent: 'Password reset link sent', password_reset_link_failed: 'Password reset link failed' };
+      events.forEach(function (ev) {
+        var detail = ev.details && ev.details.error ? ' · ' + ev.details.error : '';
+        var when = ev.occurred_at ? new Date(ev.occurred_at).toLocaleString() : '';
+        logRows.appendChild(el('div', { className: 'item' },
+          el('div', { className: 'item-head' }, el('strong', {}, labels[ev.event_type] || ev.event_type), el('span', { className: 'meta' }, when)),
+          el('p', { className: 'meta ag-link' }, data(ev.agent_name || 'Unknown agent'), ' · ', data(ev.agent_email || ''), detail ? el('span', { style: 'color:#a2462f' }, detail) : '')));
+      });
+    }).catch(function (e) { logRows.replaceChildren(el('p', { className: 'meta', style: 'color:#a2462f' }, 'Could not load activity log: ' + (e.message || 'Unknown error'))); });
     if (!agents.length) list.appendChild(el('p', { className: 'muted' }, 'No agents yet. Add your first one above.'));
     agents.forEach(function (a) {
       var s = summaries[a.id] || {};
@@ -104,7 +125,7 @@
         el('div', { className: 'item-head' }, el('h3', {}, data(a.name)),
           el('span', {}, a.status === 'active' ? badge('approved', 'Active') : badge('rejected', 'Turned off'), ' ', payout)),
         el('p', { className: 'meta' }, data(a.email), a.phone ? ' · ' : '', a.phone ? data(a.phone) : '', ' · ', el('span', {}, 'Code'), ': ', el('strong', {}, data(a.code)), a.paypal_email ? ' · ' : '', a.paypal_email ? el('span', {}, 'PayPal') : '', a.paypal_email ? ': ' : '', a.paypal_email ? data(a.paypal_email) : ''),
-        el('div', { className: 'ag-tiles' }, tile(s.referrals || 0, 'Owners signed up'), tile(s.sales || 0, 'Paid sales'),
+        el('div', { className: 'ag-tiles' }, tile(s.referrals || 0, 'Verified referred signups'), tile((function () { var seen = {}; commissions.filter(function (k) { return k.agent_id === a.id && k.status !== 'cancelled'; }).forEach(function (k) { if (k.listing_name) seen[String(k.listing_name).toLowerCase()] = true; }); return Object.keys(seen).length; })(), 'Businesses with verified commissions'), tile(s.sales || 0, 'Paid sales / renewals'),
           tile(money(s.earned_cents), 'Earned'), tile(money(s.paid_cents), 'Paid out'), tile(money(s.waiting_cents), 'Waiting')),
         el('p', { className: 'meta ag-link' }, el('span', {}, 'Their link'), ': ', data(linkFor(a.code))),
         el('div', { className: 'actions' },
