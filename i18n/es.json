@@ -1450,10 +1450,18 @@
   "Your card images were downloaded. Send them on WhatsApp from your phone.": "Se descargaron las imágenes de tu tarjeta. Envíalas por WhatsApp desde tu celular.",
   "Make my business card": "Crear mi tarjeta de presentación",
   "Business card": "Tarjeta de presentación",
-  "Make your own business card with a QR code to your personal link. Share it on WhatsApp or print 10 per page.": "Crea tu propia tarjeta de presentación con un código QR a tu enlace personal. Compártela por WhatsApp o imprime 10 por página.",
   "Make my card": "Crear mi tarjeta",
   "María López": "María López",
   "maria@example.com": "maria@example.com",
   "MARIA": "MARIA",
-  "+57 300 123 4567": "+57 300 123 4567"
+  "+57 300 123 4567": "+57 300 123 4567",
+  "Once you’re signed in, make your own business card in Spanish or English with a QR code to your personal link. Share it on WhatsApp or print 10 per page.": "Cuando inicies sesión, crea tu propia tarjeta de presentación en español o inglés con un código QR a tu enlace personal. Compártela por WhatsApp o imprime 10 por página.",
+  "Checking your sign-in...": "Revisando tu sesión...",
+  "Sign in to make your card": "Inicia sesión para crear tu tarjeta",
+  "The business card maker is for Good Gringo agents. Sign in to your agent account to use it.": "El creador de tarjetas es para los agentes de Good Gringo. Inicia sesión en tu cuenta de agente para usarlo.",
+  "The business card maker is for Good Gringo agents. Sign in to your agent account, then tap “Make my business card” in My earnings.": "El creador de tarjetas es para los agentes de Good Gringo. Inicia sesión en tu cuenta de agente y luego toca “Crear mi tarjeta de presentación” en Mis ganancias.",
+  "Agent not found": "Agente no encontrado",
+  "No agent has that code.": "Ningún agente tiene ese código.",
+  "Agents only": "Solo para agentes",
+  "This account isn’t an active agent account. Sign in with your agent account to make your card.": "Esta cuenta no es una cuenta de agente activa. Inicia sesión con tu cuenta de agente para crear tu tarjeta."
 }
