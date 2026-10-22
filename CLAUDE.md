@@ -36,3 +36,6 @@ Checklist for every change:
   automatically when Stripe confirms payment (Supabase `stripe-webhook` function). Verified owners'
   edits to their listing details go live automatically (Supabase trigger, 007_auto_publish_owner_edits.sql).
 - Christopher does not want to review anything: keep every flow automated.
+  - A claim on a business that already has an owner is turned down automatically (the person is told to message us).
+  - Payments made with a discount code go live automatically.
+  - There is no public "suggest an update" form; only a listing's verified owner can change it.

@@ -82,6 +82,7 @@
     [/^Current tier: (.+)$/, function (m) { return 'Nivel actual: ' + tr(m[1]); }],
     [/^Wants (.+)$/, function (m) { return 'Quiere ' + tr(m[1]); }],
     [/^Approve (bronze|silver|gold|platinum)$/i, function (m) { return 'Aprobar ' + tr(m[1]); }],
+    [/^This claim was not approved\. Note: (.+)$/, function (m) { return 'Esta solicitud no fue aprobada. Nota: ' + tr(m[1]); }],
     [/^Switch to (Bronze|Silver|Gold|Platinum)$/, function (m) { return 'Cambiar a ' + tr(m[1]); }],
     [/^Upgrade (.+)$/, function (m) { return m[1] === 'your listing' ? 'Sube de nivel tu listado' : 'Subir de nivel: ' + m[1]; }],
     [/^Request (Bronze|Silver|Gold|Platinum)$/, function (m) { return 'Solicitar ' + tr(m[1]); }],

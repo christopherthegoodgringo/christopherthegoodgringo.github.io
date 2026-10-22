@@ -485,9 +485,9 @@
     });
   });
   function claimSentForReview(name, wa) {
-      var hello = 'Hi Christopher, I just claimed ' + name + ' on the Good Gringo owner portal (' + (user.email || '') + '). Please verify me.';
+      var hello = 'Hi Christopher, I tried to claim ' + name + ' on the Good Gringo owner portal (' + (user.email || '') + '), but it is linked to another owner. I believe it is my business.';
       $('claimMsg').replaceChildren(P.el('div', { className: 'msg ok' },
-        P.el('p', { style: 'margin:0 0 10px' }, "This business is already linked to another owner, so we'll review your claim and contact you by " + (wa ? 'WhatsApp' : 'email') + '. To speed things up, you can message us now:'),
+        P.el('p', { style: 'margin:0 0 10px' }, 'This business is already linked to another owner, so it could not be added to your account. If you believe it belongs to you, message us:'),
         P.el('div', { className: 'actions', style: 'margin-top:0' },
           P.el('a', { className: 'btn', href: 'https://wa.me/13054405175?text=' + encodeURIComponent(hello), target: '_blank', rel: 'noopener' }, 'WhatsApp us'),
           P.el('a', { className: 'btn gold', href: 'mailto:christopher@christopherthegoodgringo.com?subject=' + encodeURIComponent('Business claim: ' + name) + '&body=' + encodeURIComponent(hello) }, 'Email us'))));
