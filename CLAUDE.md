@@ -32,7 +32,8 @@ Checklist for every change:
 
 - Levels: Bronze (free), Silver $9.99/mo, Gold $19.99/mo, Platinum $49.99/mo.
 - Listings only get the features of their current level. No Instagram links on listings.
-- Payment is by card only (no Cash App or Klarna).
+- Payments are moving from Stripe to PayPal (Christopher, Oct 2026): PayPal account or card through PayPal; no Cash App or Klarna.
+  See "PayPal payments" below. Stripe stays on until PayPal is tested.
 - Free (Bronze) claims and new businesses go live without admin approval. Paid levels go live
   automatically when Stripe confirms payment (Supabase `stripe-webhook` function). Verified owners'
   edits to their listing details go live automatically (Supabase trigger, 007_auto_publish_owner_edits.sql).
@@ -141,6 +142,19 @@ Checklist for every change:
   then sends follow-ups due, then first messages, to Prospecting rows with an email, no agent and status New/WhatsApped/Emailed/Both.
   Every email gets a "reply STOP" line, is saved to the Sent folder and logged in `prospect_emails`.
 - Admin Prospecting tab: "Automatic emails" box (on/pause, daily limit, send now, recently sent). Database: supabase/017_prospect_mailer.sql.
+
+## PayPal payments (listings and ebooks)
+
+- Switch: `payments` in `assets/cgg-portal-config.js` ('stripe' now; set to 'paypal' after testing). One device can test PayPal first with
+  localStorage `gg-pay-test` = 'paypal'. Secrets PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET / PAYPAL_MODE ('sandbox' to test; anything else = live).
+- `paypal` Edge Function (JWT off): setup (admin or `ebook_import_token`: creates product, Silver/Gold/Platinum monthly plans and the webhook,
+  ids in `paypal_config` keyed `<mode>:<name>`; run again after switching mode), subscribe (owner, returns PayPal approval link, custom_id =
+  upgrade request id), change_plan (revise to another plan, or bronze = cancel; level stays until `ends_at`), ebook_order, capture_ebook
+  (called by ebook-download.html when PayPal returns `?token=`; order saved as session_id `PP-<order id>`, then the download email).
+- `paypal-webhook` (JWT off, signature checked with PayPal): SUBSCRIPTION.ACTIVATED -> stripe_activate_upgrade (live automatically),
+  PAYMENT.SALE.COMPLETED -> paypal_sale (first payment, then 15% renewals for agents), UPDATED -> stripe_change_subscription_tier,
+  CANCELLED -> ends_at, EXPIRED/SUSPENDED -> stripe_end_subscription. Hourly pg_cron `paypal-end-due`. The `stripe_*` columns hold PayPal ids
+  when `listing_upgrade_requests.provider` = 'paypal'. Database: supabase/021_paypal.sql. Discount codes aren't supported with PayPal yet.
 
 ## Ebook store (Stripe)
 

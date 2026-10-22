@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script src="/assets/cgg-i18n.js?v=20261022zi"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/assets/app/apple-touch-icon-180.png?v=1"><link rel="manifest" href="/owner/manifest.webmanifest"><meta name="theme-color" content="#103e2f"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Christopher The Good Gringo Business"><meta name="apple-mobile-web-app-status-bar-style" content="black"><script src="/assets/cgg-app.js?v=20261022d" defer></script>
+<head><script src="/assets/cgg-i18n.js?v=20261022zj"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/assets/app/apple-touch-icon-180.png?v=1"><link rel="manifest" href="/owner/manifest.webmanifest"><meta name="theme-color" content="#103e2f"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Christopher The Good Gringo Business"><meta name="apple-mobile-web-app-status-bar-style" content="black"><script src="/assets/cgg-app.js?v=20261022d" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Business Owner Portal | Christopher the Good Gringo</title><meta property="og:site_name" content="Christopher The Good Gringo"><meta property="og:type" content="website"><meta property="og:title" content="Business Owner Portal | Christopher the Good Gringo"><meta property="og:url" content="https://christopherthegoodgringo.com/owner/"><meta property="og:image" content="https://christopherthegoodgringo.com/assets/cgg-share.png?v=1"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/cgg-portal.css?v=6">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/assets/cgg-portal-config.js?v=4"></script>
+<script src="/assets/cgg-portal-config.js?v=20261022p"></script>
 <script src="/assets/cgg-overrides.js?v=5"></script>
 <script src="/assets/cgg-portal.js?v=7"></script>
 <script src="/assets/cgg-listing-editor.js?v=4"></script>
@@ -60,7 +60,7 @@
     <section class="panel" id="upgradePanel" hidden>
       <h2 id="upgradeTitle">Upgrade your listing</h2>
       <p class="sub">Higher tiers add photos, ratings, a full information page and more visibility in the Finders. <a href="/business-sponsorship.html#compareTitle">Compare all levels</a>.</p>
-      <p class="sub">Paying from Colombia? You can use your Nequi or Bancolombia card. Any Visa or Mastercard debit or credit card works, as long as it allows international online purchases.</p>
+      <p class="sub"><span data-pay="stripe">Paying from Colombia? You can use your Nequi or Bancolombia card. Any Visa or Mastercard debit or credit card works, as long as it allows international online purchases.</span><span data-pay="paypal" hidden>Pay with your PayPal account, or with a debit or credit card through PayPal (no PayPal account needed). The same amount is charged every month until you cancel.</span></p>
       <div class="tiers" id="tierBoxes"></div>
       <div id="upgradeMsg"></div>
     </section>
@@ -153,6 +153,7 @@
 <script>
 (function () {
   var cfg = window.CGG_PORTAL, P = window.CGGPortal, el = P.el;
+  document.querySelectorAll('[data-pay]').forEach(function (n) { n.hidden = n.getAttribute('data-pay') !== (cfg.payments === 'paypal' ? 'paypal' : 'stripe'); });
   var params = new URLSearchParams(location.search);
   var sb = P.client(), user = null, listings = [], claims = [], chosen = null;
   var $ = function (id) { return document.getElementById(id); };
@@ -223,7 +224,7 @@
       return true;
     });
   }
-  // Right after paying, Stripe's confirmation can take a few seconds: check again a few times.
+  // Right after paying, the payment confirmation can take a few seconds: check again a few times.
   var upgradeChecks = 0;
   function waitForPayment(upgrades) {
     var recent = upgrades.some(function (up) { return (up.status === 'pending' || up.status === 'paid') && Date.now() - Date.parse(up.created_at) < 3600e3; });
@@ -288,7 +289,7 @@
     Promise.all([
       sb.from('listing_claims').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
       sb.from('listing_edit_requests').select('id,claim_id,status,created_at,admin_notes').eq('user_id', user.id).order('created_at', { ascending: false }),
-      sb.from('listing_upgrade_requests').select('id,claim_id,tier,status,created_at,stripe_subscription_id').eq('user_id', user.id).order('created_at', { ascending: false }),
+      sb.from('listing_upgrade_requests').select('id,claim_id,tier,status,created_at,stripe_subscription_id,provider,ends_at').eq('user_id', user.id).order('created_at', { ascending: false }),
       sb.from('listing_submissions').select('id,name,listing_type,city,requested_tier,status,created_at,admin_notes').eq('user_id', user.id).neq('status', 'approved').order('created_at', { ascending: false })
     ]).then(function (res) {
       var err = res.slice(0, 3).find(function (r) { return r.error; });
@@ -344,9 +345,10 @@
           card.appendChild(el('p', { className: 'meta' }, 'Update sent ' + P.fmtDate(e.created_at) + ' · ', el('span', { className: 'badge ' + e.status }, e.status), e.admin_notes ? ' ' + e.admin_notes : ''));
         });
         myUps.slice(0, 2).forEach(function (u) {
-          var pay = u.status === 'pending' && payLink(u.id, u.tier);
+          var pay = u.status === 'pending' && canPay(u.tier);
           card.appendChild(el('p', { className: 'meta' }, u.tier + ' upgrade requested ' + P.fmtDate(u.created_at) + ' · ', el('span', { className: 'badge ' + u.status }, pay ? 'waiting for payment' : u.status),
-            pay ? el('a', { href: pay, style: 'margin-left:8px;color:var(--green);font-weight:800' }, 'Pay now') : null));
+            pay ? el('a', { href: payLink(u.id, u.tier) || '#', style: 'margin-left:8px;color:var(--green);font-weight:800', onclick: function (ev) { ev.preventDefault(); goPay(u.id, u.tier, null); } }, 'Pay now') : null,
+            u.status === 'approved' && u.ends_at ? ' Ends ' + P.fmtDate(u.ends_at) + ', then your listing moves to Bronze.' : null));
         });
         box.appendChild(card);
       });
@@ -390,43 +392,85 @@
     // Owners already paying through Stripe change plans in Stripe's "Manage my plan" page, so they are
     // never billed twice: moving up starts right away and costs only the difference for this month;
     // moving down or cancelling takes effect when the month they paid for ends.
-    var sub = cfg.stripeManageLink && ups.find(function (u) { return u.status === 'approved' && u.stripe_subscription_id; });
+    var active = ups.find(function (u) { return u.status === 'approved' && u.stripe_subscription_id; });
+    var ppSub = active && active.provider === 'paypal' ? active : null;
+    var sub = ppSub || (cfg.stripeManageLink && active && active.provider !== 'paypal' ? active : null);
     var manage = cfg.stripeManageLink + '?prefilled_email=' + encodeURIComponent(user.email || '');
     order.forEach(function (t) {
       var info = tierInfo[t], isNow = t === now, higher = order.indexOf(t) > order.indexOf(now);
       var pending = ups.find(function (u) { return u.tier === t && (u.status === 'pending' || u.status === 'paid'); });
       var action = null;
       if (isNow) action = el('span', { className: 'badge approved' }, 'Your current tier');
+      else if (ppSub && ppSub.ends_at) action = null;
+      else if (ppSub) action = el('button', { className: 'btn' + (t === 'platinum' ? ' gold' : '') + (higher ? '' : ' secondary'), type: 'button', onclick: function (ev) { changePlan(c, t, ev.currentTarget); } },
+        t === 'bronze' ? 'Cancel my plan' : 'Switch to ' + info[0].split(' ·')[0]);
       else if (sub) action = el('a', { className: 'btn' + (t === 'platinum' ? ' gold' : '') + (higher ? '' : ' secondary'), href: manage, target: '_blank', rel: 'noopener' },
         t === 'bronze' ? 'Cancel my plan' : 'Switch to ' + info[0].split(' ·')[0]);
-      else if (pending && pending.status === 'pending' && payLink(pending.id, t)) action = el('a', { className: 'btn' + (t === 'platinum' ? ' gold' : ''), href: payLink(pending.id, t) }, 'Pay to activate');
+      else if (pending && pending.status === 'pending' && canPay(t)) action = el('button', { className: 'btn' + (t === 'platinum' ? ' gold' : ''), type: 'button', onclick: function (ev) { goPay(pending.id, t, ev.currentTarget); } }, 'Pay to activate');
       else if (pending) action = el('span', { className: 'badge pending' }, 'Requested');
-      else if (higher) action = el('button', { className: 'btn' + (t === 'platinum' ? ' gold' : ''), type: 'button', onclick: function (ev) { requestUpgrade(c, t, ev.currentTarget); } }, cfg.stripeLinks[t] ? 'Upgrade and pay' : 'Request ' + info[0].split(' ·')[0]);
+      else if (higher) action = el('button', { className: 'btn' + (t === 'platinum' ? ' gold' : ''), type: 'button', onclick: function (ev) { requestUpgrade(c, t, ev.currentTarget); } }, canPay(t) ? 'Upgrade and pay' : 'Request ' + info[0].split(' ·')[0]);
       var parts = info[0].split(' · '), amt = (parts[1] || '').split('/');
       boxes.appendChild(el('div', { className: 'tier-box ' + t }, el('h4', {}, parts[0]), el('p', { className: 'price' }, amt[0], amt[1] ? el('small', {}, ' / ' + amt[1]) : null),
         el('ul', {}, info[1].map(function (x) { return el('li', {}, x); }).reduce(function (f, li) { f.appendChild(li); return f; }, document.createDocumentFragment())), action));
     });
-    if (sub) {
+    if (ppSub && ppSub.ends_at) {
+      boxes.appendChild(el('p', { className: 'meta' }, 'Your plan is cancelled. Your level stays until ' + P.fmtDate(ppSub.ends_at) + ', then your listing moves to Bronze (free).'));
+    } else if (ppSub) {
+      boxes.appendChild(el('p', { className: 'meta' }, 'Switching levels changes your monthly PayPal payment from your next bill. Cancelling keeps your level until the month you already paid for ends.'));
+    } else if (sub) {
       boxes.appendChild(el('p', { className: 'meta' }, 'Switching to a higher level starts right away, and you only pay the difference for the rest of this month. Switching to a lower level or cancelling takes effect when the month you already paid for ends.'));
     }
-    if (now !== 'bronze' && cfg.stripeManageLink) {
+    if (ppSub) {
+      boxes.appendChild(el('p', { className: 'meta' }, 'To change the card or account your plan is paid from, open ',
+        el('a', { href: 'https://www.paypal.com/myaccount/autopay/', target: '_blank', rel: 'noopener' }, 'your PayPal automatic payments'), '.'));
+    } else if (now !== 'bronze' && cfg.stripeManageLink) {
       boxes.appendChild(el('p', { className: 'meta' }, 'Need to update your card or cancel? ',
         el('a', { href: cfg.stripeManageLink + '?prefilled_email=' + encodeURIComponent(user.email || ''), target: '_blank', rel: 'noopener' }, 'Manage your subscription')));
     }
     $('upgradePanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-  // Stripe checkout for an upgrade request. The webhook makes the level live once payment is confirmed.
+  // Payment for an upgrade request: PayPal (cfg.payments = 'paypal') or Stripe Payment Links.
+  // The webhook (paypal-webhook / stripe-webhook) makes the level live once payment is confirmed.
+  var usePayPal = cfg.payments === 'paypal';
+  function canPay(tier) { return usePayPal ? !!tierInfo[tier] && tier !== 'bronze' : !!(cfg.stripeLinks && cfg.stripeLinks[tier]); }
+  function callPayPal(payload) {
+    return sb.auth.getSession().then(function (s) {
+      var tok = s && s.data && s.data.session && s.data.session.access_token;
+      return fetch(cfg.supabaseUrl + '/functions/v1/paypal', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok }, body: JSON.stringify(payload) })
+        .then(function (r) { return r.json(); });
+    });
+  }
+  function payError(msg, box) { P.msg(box || $('upgradeMsg'), 'err', 'Could not open PayPal: ' + (msg || 'please try again.')); }
+  function goPay(requestId, tier, btn, box) {
+    if (!usePayPal) { var l = payLink(requestId, tier); if (l) location.href = l; return; }
+    if (btn) btn.disabled = true;
+    callPayPal({ action: 'subscribe', request_id: requestId }).then(function (j) {
+      if (j && j.url) { location.href = j.url; return; }
+      if (btn) btn.disabled = false; payError(j && j.error, box);
+    }).catch(function () { if (btn) btn.disabled = false; payError(null, box); });
+  }
+  function changePlan(c, tier, btn) {
+    if (tier === 'bronze' && !confirm((window.CGGI18N && CGGI18N.t ? CGGI18N.t : String)('Cancel your plan? Your level stays until the month you already paid for ends, then your listing moves to Bronze (free).'))) return;
+    btn.disabled = true;
+    callPayPal({ action: 'change_plan', claim_id: c.id, tier: tier }).then(function (j) {
+      btn.disabled = false;
+      if (j && j.url) { location.href = j.url; return; }
+      if (j && j.cancelled) { P.msg($('upgradeMsg'), 'ok', 'Your plan is cancelled. Your level stays until ' + P.fmtDate(j.ends_at) + ', then your listing moves to Bronze (free).'); loadClaims(); return; }
+      payError(j && j.error);
+    }).catch(function () { btn.disabled = false; payError(null); });
+  }
   function payLink(requestId, tier) {
+    if (usePayPal) return '';
     var link = cfg.stripeLinks[tier];
     return link ? link + (link.indexOf('?') > -1 ? '&' : '?') + 'client_reference_id=' + encodeURIComponent(requestId) + '&prefilled_email=' + encodeURIComponent(user.email || '') : '';
   }
   // After a claim or new business is approved automatically, send paid levels straight to checkout.
   function finishApproved(claimId, name, box) {
     sb.from('listing_upgrade_requests').select('id,tier').eq('claim_id', claimId).eq('status', 'pending').order('created_at', { ascending: false }).limit(1).then(function (u) {
-      var up = u && u.data && u.data[0], link = up && payLink(up.id, up.tier);
-      if (link) {
+      var up = u && u.data && u.data[0];
+      if (up && canPay(up.tier)) {
         P.msg(box, 'ok', name + ' is now linked to your account. Taking you to payment for ' + LEVELS[up.tier][0] + '...');
-        setTimeout(function () { location.href = link; }, 900);
+        setTimeout(function () { goPay(up.id, up.tier, null, box); }, 900);
         return;
       }
       P.msg(box, 'ok', "You're all set! " + name + ' is now linked to your account at Bronze. You can manage it or upgrade any time from My businesses.');
@@ -438,9 +482,8 @@
     sb.from('listing_upgrade_requests').insert({ user_id: user.id, claim_id: c.id, tier: tier }).select('id').single().then(function (r) {
       btn.disabled = false;
       if (r.error) { P.msg($('upgradeMsg'), 'err', 'Could not request the upgrade: ' + r.error.message); return; }
-      var link = payLink(r.data.id, tier);
-      if (link) {
-        location.href = link;
+      if (canPay(tier)) {
+        goPay(r.data.id, tier, btn);
       } else {
         P.msg($('upgradeMsg'), 'ok', 'Upgrade requested! We will contact you to complete payment, and your new tier goes live once it is confirmed.');
         loadClaims();

@@ -2,7 +2,7 @@
 // Actions (POST JSON):
 //   { action: "download", session_id }  -> public. Looks up the paid order and returns 24-hour signed links to the
 //                                          English and Spanish PDFs in the private "ebooks" bucket.
-//   { action: "email", session_id }     -> called by stripe-webhook with the service role key. Emails the buyer
+//   { action: "email", session_id }     -> called by stripe-webhook / paypal with the service role key. Emails the buyer
 //                                          the download link (bilingual) from christopher@christopherthegoodgringo.com.
 //   { action: "sales" }                 -> admins only (their sign-in token). Returns recent orders and totals.
 //   { action: "import", token, key, items:[{url,path,type}] } -> publishing: fetch AES-GCM encrypted files from
@@ -100,9 +100,9 @@ Deno.serve(async (req: Request) => {
   const sessionId = String(body.session_id || "");
 
   if (action === "download") {
-    if (!/^cs_(live|test)_[A-Za-z0-9]{10,}$/.test(sessionId)) return json({ error: "That download link isn't valid." }, 400);
+    if (!/^(cs_(live|test)_[A-Za-z0-9]{10,}|PP-[A-Z0-9]{10,25})$/.test(sessionId)) return json({ error: "That download link isn't valid." }, 400);
     const { data: order } = await db.from("ebook_orders").select("id, ebook_id, downloads").eq("session_id", sessionId).maybeSingle();
-    if (!order) return json({ error: "pending" }, 404); // Stripe may still be confirming the payment: the page retries.
+    if (!order) return json({ error: "pending" }, 404); // Stripe/PayPal may still be confirming the payment: the page retries.
     const { data: book } = await db.from("ebooks").select("id, title, title_es, file_en, file_es").eq("id", order.ebook_id).single();
     const files: Record<string, string> = {};
     for (const [lang, path] of [["en", book?.file_en], ["es", book?.file_es]] as const) {
