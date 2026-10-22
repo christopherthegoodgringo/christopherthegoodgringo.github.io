@@ -981,5 +981,21 @@
   "e.g. Make it shorter, change the first line, use English, brighter colors": "ej. Hazlo más corto, cambia la primera frase, en inglés, colores más vivos",
   "Send to Claude": "Enviar a Claude",
   "Sent. Tell Claude in your chat, or it picks up change requests when it checks in.": "Enviado. Avísale a Claude en tu chat, o lo verá cuando revise los pedidos de cambios.",
-  "The video file couldn't be downloaded (404). Ask Claude to make it again.": "No se pudo descargar el archivo de video (404). Pídele a Claude que lo haga de nuevo."
+  "The video file couldn't be downloaded (404). Ask Claude to make it again.": "No se pudo descargar el archivo de video (404). Pídele a Claude que lo haga de nuevo.",
+  "Tap the Share button (the square with an arrow).": "Toca el botón Compartir (el cuadrado con una flecha).",
+  "Scroll down and tap “Add to Home Screen”.": "Desliza hacia abajo y toca “Agregar a inicio”.",
+  "Tap “Add”.": "Toca “Agregar”.",
+  "Open your browser menu (⋮ or ⋯).": "Abre el menú de tu navegador (⋮ o ⋯).",
+  "Choose “Install app” or “Add to Home screen”.": "Elige “Instalar app” o “Agregar a la pantalla principal”.",
+  "Confirm.": "Confirma.",
+  "It opens full screen like any other app, and pages you have already opened still work without internet.": "Se abre en pantalla completa como cualquier otra app, y las páginas que ya abriste siguen funcionando sin internet.",
+  "You're offline": "Estás sin conexión",
+  "Check your internet connection and try again. Pages you have already opened still work.": "Revisa tu conexión a internet e inténtalo de nuevo. Las páginas que ya abriste siguen funcionando.",
+  "Try again": "Intentar de nuevo",
+  "Install the Christopher The Good Gringo app": "Instala la app de Christopher The Good Gringo",
+  "Install the Christopher The Good Gringo business app": "Instala la app para negocios de Christopher The Good Gringo",
+  "Install the Christopher The Good Gringo admin app": "Instala la app de administración de Christopher The Good Gringo",
+  "Add Christopher The Good Gringo to your home screen": "Agrega Christopher The Good Gringo a tu pantalla de inicio",
+  "Loading listings…": "Cargando negocios…",
+  "Offline | Christopher The Good Gringo": "Sin conexión | Christopher The Good Gringo"
 }

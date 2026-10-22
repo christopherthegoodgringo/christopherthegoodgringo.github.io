@@ -1,0 +1,44 @@
+{
+  "display": "standalone",
+  "background_color": "#09291e",
+  "theme_color": "#103e2f",
+  "orientation": "any",
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/assets/app/icon-any-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/app/icon-any-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/app/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/assets/app/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": [
+    "business",
+    "productivity"
+  ],
+  "id": "/admin/",
+  "name": "Christopher The Good Gringo Admin",
+  "short_name": "Christopher The Good Gringo Admin",
+  "start_url": "/admin/?source=app",
+  "scope": "/admin/",
+  "description": "Admin for Christopher The Good Gringo: claims, businesses, prospecting, mailing list and social media."
+}

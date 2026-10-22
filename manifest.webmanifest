@@ -1,0 +1,96 @@
+{
+  "display": "standalone",
+  "background_color": "#09291e",
+  "theme_color": "#103e2f",
+  "orientation": "any",
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/assets/app/icon-any-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/app/icon-any-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/app/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/assets/app/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": [
+    "travel",
+    "lifestyle"
+  ],
+  "id": "/",
+  "name": "Christopher The Good Gringo",
+  "short_name": "Christopher The Good Gringo",
+  "start_url": "/?source=app",
+  "scope": "/",
+  "description": "Independent hostels, hotels, restaurants, bars and street food across 18 Latin American countries. In English and Spanish.",
+  "shortcuts": [
+    {
+      "name": "Hostel Finder",
+      "url": "/hostels.html",
+      "icons": [
+        {
+          "src": "/assets/app/icon-any-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Hotel Finder",
+      "url": "/hotels.html",
+      "icons": [
+        {
+          "src": "/assets/app/icon-any-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Restaurant Finder",
+      "url": "/restaurants.html",
+      "icons": [
+        {
+          "src": "/assets/app/icon-any-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Bar Finder",
+      "url": "/bars.html",
+      "icons": [
+        {
+          "src": "/assets/app/icon-any-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Street Food Finder",
+      "url": "/street-food-finder.html",
+      "icons": [
+        {
+          "src": "/assets/app/icon-any-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

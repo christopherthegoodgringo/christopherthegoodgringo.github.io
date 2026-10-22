@@ -57,8 +57,10 @@ Checklist for every change:
 
 - The site logo everywhere (header banner, language and welcome popups, placeholder photos, portrait badges) is the
   full "Christopher the Good Gringo™" sticker: `assets/cgg-wordmark.svg`. Use it for any new logo spot.
+- The installed apps' icons (home screen, app list, iPhone) also use the full logo: `assets/app/icon-*.png` and
+  `assets/app/apple-touch-icon-180.png` (Christopher's choice).
 - The square "GG" sticker (`assets/cgg-home-emblem.svg`, `assets/cgg-logo.svg`, `/favicon.svg`, `/favicon-32.png`,
-  `/apple-touch-icon.png`) is only for the browser tab and phone home-screen icons, where the full logo is too small to read.
+  `/apple-touch-icon.png`) is only for the browser tab icon, where the full logo is too small to read.
 - No gold line under the header banner.
 - Regenerate them with `scripts/make_logo.py` (lettering is converted to shapes; needs the Fredoka font file).
 
@@ -81,3 +83,15 @@ Checklist for every change:
   music, 1080x1920). The finished file goes in `media/shorts/` (hidden from search via robots.txt) and a `social_posts` row is
   added with `made_by = 'claude'`, `video_url`, status `review`. Christopher approves or taps Request changes
   (status `changes`, his note in `change_request`); Claude makes version + 1 and sets it back to `review`.
+
+## Installable apps (phone, tablet, computer)
+
+- Three apps from the one site, each named with "Christopher The Good Gringo": travelers (`/manifest.webmanifest`, start `/`),
+  business owners (`/owner/manifest.webmanifest`, "... for Business"), admin (`/admin/manifest.webmanifest`, "... Admin").
+- Every page has, right after the apple-touch-icon link: the manifest link, theme-color #103e2f, the apple/mobile app meta tags
+  and `<script src="/assets/cgg-app.js?v=..." defer></script>`. Add these to any new page (owner/admin pages use their own manifest).
+- `assets/cgg-app.js` registers `/sw.js` and adds the bilingual "Install the ... app" button under the footer language toggle
+  (browser install prompt on Android/computer, "Share -> Add to Home Screen" guide on iPhone/iPad; hidden inside the app).
+- `/sw.js`: pages and `/data/` network first (saved copy offline, else `/offline.html`); scripts/styles/images saved copy first.
+  Never caches `/media/`, Supabase, Stripe or other sites. Bump `VERSION` in sw.js when changing it.
+- Inside the app the language popup only asks once (the footer toggle still switches language).

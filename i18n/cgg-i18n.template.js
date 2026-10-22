@@ -348,6 +348,11 @@
   function showChooser() {
     if (document.querySelector('.cgg-lang-overlay')) return;
     if (!isHome() && chosenThisVisit()) return;
+    // Inside the installed app (and on the offline screen) only ask once: the footer toggle still changes it.
+    try {
+      var app = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+      if (stored() && (app || document.documentElement.hasAttribute('data-cgg-offline'))) return;
+    } catch (e) {}
     try { if (/^(es|en)$/.test(new URLSearchParams(location.search).get('lang') || '')) return; } catch (e) {}
     var o = document.createElement('div');
     o.className = 'cgg-lang-overlay';
