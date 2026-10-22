@@ -52,7 +52,15 @@ Checklist for every change:
 
 ## Logo
 
-- The site logo everywhere is the "GG" sticker icon: `assets/cgg-home-emblem.svg` (same art in `assets/cgg-logo.svg`,
-  `/favicon.svg`, `/favicon-32.png`, `/apple-touch-icon.png`). Use it for any new logo spot.
-- `assets/cgg-wordmark.svg` is the full "Christopher the Good Gringo™" sticker, kept for print and merch.
+- The site logo everywhere (header banner, language and welcome popups, placeholder photos, portrait badges) is the
+  full "Christopher the Good Gringo™" sticker: `assets/cgg-wordmark.svg`. Use it for any new logo spot.
+- The square "GG" sticker (`assets/cgg-home-emblem.svg`, `assets/cgg-logo.svg`, `/favicon.svg`, `/favicon-32.png`,
+  `/apple-touch-icon.png`) is only for the browser tab and phone home-screen icons, where the full logo is too small to read.
+- No gold line under the header banner.
 - Regenerate them with `scripts/make_logo.py` (lettering is converted to shapes; needs the Fredoka font file).
+
+## Team portraits
+
+- Michael Giacona shows the logo until his real photo is added.
+- AI personas (executives and the 108 country team members) are lifelike cartoon portraits drawn by
+  `scripts/make_country_avatars.py`; every one is different and matches the person's name (woman or man).
