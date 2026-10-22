@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head>
+<head><script src="/assets/cgg-i18n.js?v=20261021"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Street Food Finder | Christopher The Good Gringo™</title>
@@ -101,7 +101,7 @@ document.getElementById('streetSearch').addEventListener('submit',e=>{e.preventD
 fetch('/data/street-food.json?v=20261021-tiers',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Street food data unavailable');return r.json()}).then(d=>{listings=Array.isArray(d.streetFood)?d.streetFood:[];countries=Array.isArray(d.countries)?d.countries:[];renderCountryOptions();renderCityOptions();render();renderShortcuts()}).catch(()=>{listings=[];countries=[{code:'AR',name:'Argentina'},{code:'BZ',name:'Belize'},{code:'BO',name:'Bolivia'},{code:'CL',name:'Chile'},{code:'CO',name:'Colombia'},{code:'CR',name:'Costa Rica'},{code:'CU',name:'Cuba'},{code:'DO',name:'Dominican Republic'},{code:'EC',name:'Ecuador'},{code:'SV',name:'El Salvador'},{code:'GT',name:'Guatemala'},{code:'HN',name:'Honduras'},{code:'MX',name:'Mexico'},{code:'NI',name:'Nicaragua'},{code:'PA',name:'Panama'},{code:'PY',name:'Paraguay'},{code:'PE',name:'Peru'},{code:'UY',name:'Uruguay'}];renderCountryOptions();renderCityOptions();render();renderShortcuts();count.textContent='Street food listings are being added'});
 })();
 </script>
-<script id="site-language-persistence">document.documentElement.lang='en';try{localStorage.setItem('gg-lang','en')}catch(e){}</script>
+
 <style id="tier-card-parity">/* Tier cards matched to the Restaurant and Hotel Finders. */
 .street-card{display:flex;flex-direction:column;min-height:100%;gap:0}
 .street-card .tier-ribbon{position:absolute;top:0;right:0;z-index:3;padding:7px 12px;border-radius:0 0 0 12px;font-size:.72rem;font-weight:900;letter-spacing:.05em;box-shadow:0 3px 10px #17271f18}

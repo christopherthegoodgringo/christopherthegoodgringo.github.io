@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head>
+<head><script src="/assets/cgg-i18n.js?v=20261021"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Latin America Boutique restaurant Finder | Christopher the Good Gringo</title>
@@ -127,7 +127,7 @@ let restaurants=fallbackData.restaurants.filter(h=>h.hasWebsite||hasOpenTableOrS
 function openTableUrl(h){return [h.bookingUrl,h.website].find(u=>typeof u==='string'&&/^https?:\/\//i.test(u)&&/opentable\./i.test(u))||'';}
 function restaurantSite(h){return [h.website,h.bookingUrl].find(u=>typeof u==='string'&&/^https?:\/\//i.test(u)&&!/(opentable\.|google\.[^/]+\/maps\/search|maps\.google\.)/i.test(u))||'';}
 function hasOpenTableOrSite(h){return !!(openTableUrl(h)||restaurantSite(h));}
-function setLanguage(){lang='en';document.documentElement.lang='en';try{localStorage.setItem('gg-lang',lang)}catch(e){};query.placeholder=query.dataset['placeholder'+(false?'Es':'En')];renderCountryOptions();renderCityOptions();render();renderShortcuts();}
+function setLanguage(){lang='en';query.placeholder=query.dataset['placeholder'+(false?'Es':'En')];renderCountryOptions();renderCityOptions();render();renderShortcuts();}
 
 const normalize=s=>(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 function renderCountryOptions(){const selected=countryFilter.value||params.get('country')||'';countryFilter.innerHTML='';const all=document.createElement('option');all.value='';all.textContent=false?'Todos los países':'All countries';countryFilter.appendChild(all);[...countries].sort((a,b)=>a.name.localeCompare(b.name,'en')).forEach(c=>{const o=document.createElement('option');o.value=c.code;o.textContent=c.name;countryFilter.appendChild(o)});countryFilter.value=countries.some(c=>c.code===selected)?selected:'';}
