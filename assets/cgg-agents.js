@@ -91,9 +91,97 @@
     return box;
   }
 
+  // Separate prospective-agent recruitment queue. Sending remains deliberately disabled.
+  function renderRecruitmentCampaign(list) {
+    var box = el('article', { className: 'item' });
+    box.appendChild(el('div', { className: 'item-head' },
+      el('h3', {}, 'Prospective-Agent Recruitment Campaign'),
+      badge('pending', 'Email sending disabled')));
+    box.appendChild(el('p', { className: 'meta' }, 'Separate from registered-agent welcome emails. Add prospective agents here, review each contact, and approve them before the first email. The five-message sequence is saved, but this panel cannot activate or send the campaign.'));
+    var status = el('div', { className: 'ag-tiles' },
+      tile('5', 'Saved email templates'),
+      tile('1, 3, 6, 10, 15', 'Planned send days'),
+      tile('Manual', 'Approval required'));
+    box.appendChild(status);
+    var form = el('form', { className: 'ag-edit', style: 'display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;margin:12px 0' });
+    var nm = el('input', { attrs: { type: 'text', placeholder: 'Prospect name', maxlength: '120' } });
+    var em = el('input', { attrs: { type: 'email', placeholder: 'Prospect email', required: 'required', maxlength: '254' } });
+    var add = el('button', { type: 'submit', className: 'btn' }, 'Add prospect for review');
+    form.appendChild(el('label', {}, el('span', {}, 'Name (optional)'), nm));
+    form.appendChild(el('label', {}, el('span', {}, 'Email address'), em));
+    form.appendChild(add);
+    var notice = el('div');
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var email = em.value.trim().toLowerCase(), name = nm.value.trim();
+      if (!/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(email)) { P.msg(notice, 'err', 'Enter a valid email address.'); return; }
+      add.disabled = true;
+      sb.from('agent_recruitment_prospects').insert({ full_name: name || null, email: email, source: 'agent_portal', approval_status: 'pending', current_step: 0, next_send_at: null })
+        .select('id').single().then(function (r) {
+          add.disabled = false;
+          if (r.error) { P.msg(notice, 'err', /duplicate key|unique/i.test(r.error.message) ? 'This email is already in the recruitment list.' : r.error.message); return; }
+          nm.value = ''; em.value = ''; P.msg(notice, 'ok', 'Prospect added. Review and approve before any recruitment email can be sent.'); loadRecruitmentRows(rows, notice);
+        });
+    });
+    box.appendChild(form); box.appendChild(notice);
+    var rows = el('div', { className: 'list' });
+    rows.appendChild(el('p', { className: 'muted' }, 'Loading prospective agents…'));
+    box.appendChild(el('h4', { className: 'ag-h' }, 'Prospects awaiting review and campaign status'));
+    box.appendChild(rows);
+    list.appendChild(box);
+    loadRecruitmentRows(rows, notice);
+  }
+  function loadRecruitmentRows(rows, notice) {
+    Promise.all([
+      sb.from('agent_recruitment_prospects').select('*').order('created_at', { ascending: false }).limit(250),
+      sb.from('agent_recruitment_templates').select('step,send_day,subject,active').order('step')
+    ]).then(function (results) {
+      rows.replaceChildren();
+      if (results[0].error) { rows.appendChild(el('p', { className: 'meta', style: 'color:#a2462f' }, 'Could not load recruitment prospects: ' + results[0].error.message)); return; }
+      if (results[1].error) { rows.appendChild(el('p', { className: 'meta', style: 'color:#a2462f' }, 'Could not load email templates: ' + results[1].error.message)); return; }
+      var prospects = results[0].data || [], templates = results[1].data || [];
+      var tpl = el('details', { className: 'item' }, el('summary', {}, 'Review saved email subjects'));
+      templates.forEach(function (t) {
+        tpl.appendChild(el('p', { className: 'meta' }, 'Email ' + t.step + ' · Day ' + (t.send_day + 1) + ' · ' + t.subject));
+      });
+      rows.appendChild(tpl);
+      if (!prospects.length) { rows.appendChild(el('p', { className: 'muted' }, 'No prospective agents added yet.')); return; }
+      prospects.forEach(function (p) {
+        var state = p.opted_out_at ? badge('rejected', 'Opted out') :
+          p.registered_agent_id ? badge('approved', 'Registered — stop sequence') :
+          p.approval_status === 'approved' ? badge('approved', 'Approved') :
+          p.approval_status === 'rejected' ? badge('rejected', 'Rejected') : badge('pending', 'Awaiting your approval');
+        var card = el('article', { className: 'item' },
+          el('div', { className: 'item-head' }, el('strong', {}, data(p.full_name || p.email)), state),
+          el('p', { className: 'meta ag-link' }, data(p.email), ' · Added ', day(p.created_at)),
+          el('p', { className: 'meta' }, 'Recruitment emails sent: ', data(p.current_step || 0), ' / 5. No emails are being sent while the campaign is disabled.'));
+        if (!p.opted_out_at && !p.registered_agent_id && p.approval_status === 'pending') {
+          var actions = el('div', { className: 'actions' });
+          actions.appendChild(el('button', { type: 'button', className: 'btn', onclick: function (ev) {
+            var b = ev.currentTarget; b.disabled = true;
+            sb.from('agent_recruitment_prospects').update({ approval_status: 'approved', approved_at: new Date().toISOString(), next_send_at: null, updated_at: new Date().toISOString() }).eq('id', p.id).then(function (r) {
+              if (r.error) { b.disabled = false; P.msg(notice, 'err', r.error.message); return; }
+              P.msg(notice, 'ok', 'Prospect approved. Sending remains disabled pending your separate activation authorization.'); loadRecruitmentRows(rows, notice);
+            });
+          } }, 'Approve prospect'));
+          actions.appendChild(el('button', { type: 'button', className: 'btn light', onclick: function (ev) {
+            var b = ev.currentTarget; b.disabled = true;
+            sb.from('agent_recruitment_prospects').update({ approval_status: 'rejected', next_send_at: null, updated_at: new Date().toISOString() }).eq('id', p.id).then(function (r) {
+              if (r.error) { b.disabled = false; P.msg(notice, 'err', r.error.message); return; }
+              P.msg(notice, 'ok', 'Prospect rejected. No email will be sent.'); loadRecruitmentRows(rows, notice);
+            });
+          } }, 'Reject'));
+          card.appendChild(actions);
+        }
+        rows.appendChild(card);
+      });
+    }).catch(function (e) { rows.replaceChildren(el('p', { className: 'meta', style: 'color:#a2462f' }, e.message || 'Could not load campaign data.')); });
+  }
+
   function renderAdmin() {
     var list = $('agList'); if (!list) return;
     list.replaceChildren();
+    renderRecruitmentCampaign(list);
     list.appendChild(leaderboardBox());
     // Recent account and email activity is fetched through the admin-only Edge Function.
     var logBox = el('article', { className: 'item' });
