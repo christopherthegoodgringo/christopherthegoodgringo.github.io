@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script src="/assets/cgg-i18n.js?v=20261022g"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
+<head><script src="/assets/cgg-i18n.js?v=20261022h"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Business Owner Portal | Christopher the Good Gringo</title><meta property="og:site_name" content="Christopher The Good Gringo"><meta property="og:type" content="website"><meta property="og:title" content="Business Owner Portal | Christopher the Good Gringo"><meta property="og:url" content="https://christopherthegoodgringo.com/owner/"><meta property="og:image" content="https://christopherthegoodgringo.com/assets/cgg-share.png?v=1"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
@@ -15,6 +15,16 @@
 <script src="/assets/cgg-portal.js?v=7"></script>
 <script src="/assets/cgg-listing-editor.js?v=4"></script>
 <style id="cgg-global-header-css">.cgg-global-header{box-sizing:border-box;width:100%;min-height:84px;padding:0 14px;background:#103e2f;display:flex;align-items:center;gap:28px;position:relative;z-index:20;font-family:Arial,sans-serif;color:#fffdf8}.cgg-global-header *{box-sizing:border-box}.cgg-global-brand{display:flex;align-items:center;gap:12px;flex:0 0 auto;white-space:nowrap;text-decoration:none;color:#fffdf8;font-size:15px;font-weight:800;line-height:1;letter-spacing:0}.cgg-global-brand img{display:block;width:100px;height:73px;object-fit:contain;flex:0 0 100px}.cgg-global-nav{display:flex;align-items:center;justify-content:space-between;gap:clamp(10px,1.25vw,20px);flex:1 1 auto;min-width:0;white-space:nowrap;overflow-x:auto;scrollbar-width:thin}.cgg-global-nav a{display:block;flex:0 0 auto;padding:8px 0;margin:0;color:#fffdf8;text-decoration:none;font-family:Arial,sans-serif;font-size:13px;font-weight:700;line-height:1.2;white-space:nowrap}.cgg-global-nav a:hover{color:#f5bd3e}@media(max-width:1120px){.cgg-global-header{min-height:84px;align-items:flex-start;flex-direction:column;gap:8px;padding:10px 14px}.cgg-global-nav{width:100%;flex:0 0 auto;justify-content:flex-start;gap:22px}.cgg-global-brand{font-size:14px}.cgg-global-brand img{width:88px;height:64px;flex-basis:88px}}@media(max-width:560px){.cgg-global-header{padding:10px 12px}.cgg-global-brand{font-size:12px;gap:9px}.cgg-global-brand img{width:80px;height:58px;flex-basis:80px}.cgg-global-nav{gap:18px}.cgg-global-nav a{font-size:13px}}</style><style id="cgg-nav-hover-polish">.cgg-global-nav{gap:clamp(6px,.75vw,12px)!important}.cgg-global-nav a{font-weight:800!important;border-radius:999px!important;padding:9px 11px!important;transition:background-color .18s ease,color .18s ease!important}.cgg-global-nav a:hover,.cgg-global-nav a:focus-visible{background:#f5bd3e!important;color:#103e2f!important;outline:none!important}@media(max-width:1120px){.cgg-global-nav{gap:8px!important}.cgg-global-nav a{padding:8px 11px!important}}@media(max-width:560px){.cgg-global-nav{gap:5px!important}.cgg-global-nav a{padding:8px 10px!important}}</style>
+<style>
+.gg-welcome{position:fixed;inset:0;z-index:2147482000;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(9,41,30,.6)}
+.gg-confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+.gg-welcome-card{position:relative;width:min(420px,100%);background:#fffdf8;color:#17271f;border:2px solid #f5bd3e;border-radius:18px;padding:28px 22px 24px;text-align:center;box-shadow:0 25px 90px rgba(0,0,0,.35);animation:ggPop .45s cubic-bezier(.2,1.4,.4,1)}
+.gg-welcome-card h2{margin:4px 0 8px;font:800 1.7rem/1.1 "Bricolage Grotesque","DM Sans",system-ui,sans-serif;color:#09291e}
+.gg-welcome-card p{margin:0 0 18px;color:#4d5a51}
+.gg-welcome-icon{font-size:2.6rem;line-height:1}
+@keyframes ggPop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.gg-welcome-card{animation:none}}
+</style>
 </head>
 <body>
 <header class="cgg-global-header"><a class="cgg-global-brand" href="/" aria-label="Christopher the Good Gringo home"><img src="/assets/cgg-wordmark.svg?v=1" alt=""></a><nav class="cgg-global-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/hotels.html">Hotel Finder</a><a href="/hostels.html">Hostel Finder</a><a href="/restaurants.html">Restaurant Finder</a><a href="/bars.html">Bar Finder</a><a href="/street-food-finder.html">Street Food Finder</a><a href="/team/">Meet the Team</a><a href="/social-media.html">Social Media &amp; Contact</a><a href="/merch.html">Merch</a><a href="/ebooks.html">Ebooks</a><a href="/business-sponsorship.html">Business &amp; Sponsorship</a></nav></header>
@@ -176,7 +186,78 @@
     if ((u && user && u.id === user.id) || (!u && !user && !$('signin').hidden)) return;
     user = u;
     $('signin').hidden = !!u; $('dash').hidden = !u;
-    if (u) { $('who').textContent = 'Signed in as ' + (u.email || ''); start(); }
+    if (u) { $('who').textContent = 'Signed in as ' + (u.email || ''); start(); welcomeOnce(u); }
+  }
+
+  // ---------- First-time welcome: confetti + congratulations, shown once per new account ----------
+  function welcomeOnce(u) {
+    var key = 'gg-welcomed-' + u.id;
+    try { if (localStorage.getItem(key)) return; localStorage.setItem(key, '1'); } catch (e) { return; }
+    // Only brand-new accounts (created in the last 3 days), so existing owners on a new device don't see it.
+    if (!u.created_at || Date.now() - Date.parse(u.created_at) > 3 * 864e5) return;
+    celebrate('Congratulations!', "Your business account is ready. Now find your business to claim it, or add it if it isn't listed yet.");
+  }
+  // Paid level just went live: celebrate once per upgrade in this browser.
+  var celebrating = false;
+  function celebrateUpgrades(upgrades) {
+    if (celebrating) return;
+    upgrades.some(function (up) {
+      if (up.status !== 'approved' || !LEVELS[up.tier] || up.tier === 'bronze') return false;
+      if (Date.now() - Date.parse(up.created_at) > 14 * 864e5) return false;
+      var key = 'gg-celebrated-upgrade-' + up.id;
+      try { if (localStorage.getItem(key)) return false; localStorage.setItem(key, '1'); } catch (e) { return false; }
+      var c = claims.find(function (x) { return x.id === up.claim_id; });
+      var name = (c && c.listing_name) || 'Your business';
+      celebrate('Congratulations!', name + ' is now ' + LEVELS[up.tier][0] + '. Your new level is live in the Finder.');
+      return true;
+    });
+  }
+  // Right after paying, Stripe's confirmation can take a few seconds: check again a few times.
+  var upgradeChecks = 0;
+  function waitForPayment(upgrades) {
+    var recent = upgrades.some(function (up) { return (up.status === 'pending' || up.status === 'paid') && Date.now() - Date.parse(up.created_at) < 3600e3; });
+    if (recent && upgradeChecks < 8) { upgradeChecks++; setTimeout(loadClaims, 5000); }
+  }
+  function celebrate(title, text) {
+    celebrating = true;
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var wrap = el('div', { className: 'gg-welcome', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'ggWelcomeTitle' });
+    var canvas = el('canvas', { className: 'gg-confetti', 'aria-hidden': 'true' });
+    var close = el('button', { className: 'btn', type: 'button' }, "Let's go");
+    var card = el('div', { className: 'gg-welcome-card' },
+      el('div', { className: 'gg-welcome-icon', 'aria-hidden': 'true' }, '🎉'),
+      el('h2', { id: 'ggWelcomeTitle' }, title),
+      el('p', {}, text),
+      close);
+    wrap.appendChild(canvas); wrap.appendChild(card); document.body.appendChild(wrap);
+    close.focus();
+    var stop = false;
+    function done() { stop = true; celebrating = false; wrap.remove(); }
+    close.addEventListener('click', done);
+    wrap.addEventListener('click', function (e) { if (e.target === wrap || e.target === canvas) done(); });
+    document.addEventListener('keydown', function esc(e) { if (e.key === 'Escape') { done(); document.removeEventListener('keydown', esc); } });
+    if (reduce) return;
+    var ctx = canvas.getContext('2d'), W, H, dpr = window.devicePixelRatio || 1;
+    function size() { W = innerWidth; H = innerHeight; canvas.width = W * dpr; canvas.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+    size(); addEventListener('resize', size);
+    var colors = ['#f5bd3e', '#103e2f', '#e85d3f', '#2f9e6e', '#fffdf8', '#5aa9e6'], bits = [];
+    for (var i = 0; i < 180; i++) bits.push({
+      x: W / 2 + (Math.random() - .5) * 80, y: H * .45,
+      vx: (Math.random() - .5) * 16, vy: -Math.random() * 16 - 6,
+      w: 6 + Math.random() * 6, h: 8 + Math.random() * 8, r: Math.random() * 6, vr: (Math.random() - .5) * .3,
+      c: colors[i % colors.length] });
+    var t0 = performance.now();
+    (function frame(t) {
+      if (stop) return;
+      ctx.clearRect(0, 0, W, H);
+      var alive = false;
+      bits.forEach(function (b) {
+        b.vy += .35; b.vx *= .99; b.x += b.vx; b.y += b.vy; b.r += b.vr;
+        if (b.y < H + 20) alive = true;
+        ctx.save(); ctx.translate(b.x, b.y); ctx.rotate(b.r); ctx.fillStyle = b.c; ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h * Math.abs(Math.cos(b.r * 2)) + 1); ctx.restore();
+      });
+      if (alive && t - t0 < 6000) requestAnimationFrame(frame); else ctx.clearRect(0, 0, W, H);
+    })(t0);
   }
 
   function start() {
@@ -201,7 +282,7 @@
     ]).then(function (res) {
       var err = res.slice(0, 3).find(function (r) { return r.error; });
       if (err) { P.msg($('myClaims'), 'err', 'Could not load your businesses: ' + err.error.message); return; }
-      claims = res[0].data; submissions = (res[3] && !res[3].error && res[3].data) || []; renderClaims(res[1].data, res[2].data);
+      claims = res[0].data; submissions = (res[3] && !res[3].error && res[3].data) || []; renderClaims(res[1].data, res[2].data); celebrateUpgrades(res[2].data); waitForPayment(res[2].data);
     });
   }
 

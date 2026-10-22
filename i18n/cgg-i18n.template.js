@@ -105,6 +105,7 @@
     [/^Could not request the upgrade: (.+)$/, function (m) { return 'No se pudo solicitar el cambio de nivel: ' + m[1]; }],
     [/^Could not send your business: (.+)$/, function (m) { return 'No se pudo enviar tu negocio: ' + m[1]; }],
     [/^Could not submit your claim: (.+)$/, function (m) { return 'No se pudo enviar tu solicitud: ' + m[1]; }],
+    [/^(.+) is now (Silver|Gold|Platinum)\. Your new level is live in the Finder\.$/, function (m) { return (m[1] === 'Your business' ? 'Tu negocio' : m[1]) + ' ahora es ' + ({ Silver: 'Plata', Gold: 'Oro', Platinum: 'Platino' })[m[2]] + '. Tu nuevo nivel ya está activo en el buscador.'; }],
     [/^(.+) is now linked to your account at Bronze\. You can manage it or upgrade any time from My businesses\.$/, function (m) { return m[1] + ' ya está vinculado a tu cuenta como Bronce. Puedes administrarlo o subir de nivel cuando quieras desde Mis negocios.'; }],
     [/^New business · (.+)$/, function (m) { return 'Negocio nuevo · ' + m[1]; }],
     [/^(.+) \| Christopher [Tt]he Good Gringo(™?)$/, function (m) { var t = lookup(m[1]); return t ? t + ' | Christopher The Good Gringo' + m[2] : null; }],
