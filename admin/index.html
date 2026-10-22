@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script src="/assets/cgg-i18n.js?v=20261022o"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/assets/app/apple-touch-icon-180.png?v=1"><link rel="manifest" href="/admin/manifest.webmanifest"><meta name="theme-color" content="#103e2f"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Christopher The Good Gringo Admin"><meta name="apple-mobile-web-app-status-bar-style" content="black"><script src="/assets/cgg-app.js?v=20261022b" defer></script>
+<head><script src="/assets/cgg-i18n.js?v=20261022p"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/assets/app/apple-touch-icon-180.png?v=1"><link rel="manifest" href="/admin/manifest.webmanifest"><meta name="theme-color" content="#103e2f"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Christopher The Good Gringo Admin"><meta name="apple-mobile-web-app-status-bar-style" content="black"><script src="/assets/cgg-app.js?v=20261022c" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Listing Admin | Christopher the Good Gringo</title><meta property="og:site_name" content="Christopher The Good Gringo"><meta property="og:type" content="website"><meta property="og:title" content="Listing Admin | Christopher the Good Gringo"><meta property="og:url" content="https://christopherthegoodgringo.com/admin/"><meta property="og:image" content="https://christopherthegoodgringo.com/assets/cgg-share.png?v=1"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
@@ -14,6 +14,7 @@
 <script src="/assets/cgg-portal.js?v=7"></script>
 <script src="/assets/cgg-listing-editor.js?v=4"></script>
 <script src="/assets/cgg-social.js?v=20261022b"></script>
+<script src="/assets/cgg-stats-admin.js?v=20261022b"></script>
 <style id="cgg-global-header-css">.cgg-global-header{box-sizing:border-box;width:100%;min-height:84px;padding:0 14px;background:#103e2f;display:flex;align-items:center;gap:28px;position:relative;z-index:20;font-family:Arial,sans-serif;color:#fffdf8}.cgg-global-header *{box-sizing:border-box}.cgg-global-brand{display:flex;align-items:center;gap:12px;flex:0 0 auto;white-space:nowrap;text-decoration:none;color:#fffdf8;font-size:15px;font-weight:800;line-height:1;letter-spacing:0}.cgg-global-brand img{display:block;width:100px;height:73px;object-fit:contain;flex:0 0 100px}.cgg-global-nav{display:flex;align-items:center;justify-content:space-between;gap:clamp(10px,1.25vw,20px);flex:1 1 auto;min-width:0;white-space:nowrap;overflow-x:auto;scrollbar-width:thin}.cgg-global-nav a{display:block;flex:0 0 auto;padding:8px 0;margin:0;color:#fffdf8;text-decoration:none;font-family:Arial,sans-serif;font-size:13px;font-weight:700;line-height:1.2;white-space:nowrap}.cgg-global-nav a:hover{color:#f5bd3e}@media(max-width:1120px){.cgg-global-header{min-height:84px;align-items:flex-start;flex-direction:column;gap:8px;padding:10px 14px}.cgg-global-nav{width:100%;flex:0 0 auto;justify-content:flex-start;gap:22px}.cgg-global-brand{font-size:14px}.cgg-global-brand img{width:88px;height:64px;flex-basis:88px}}@media(max-width:560px){.cgg-global-header{padding:10px 12px}.cgg-global-brand{font-size:12px;gap:9px}.cgg-global-brand img{width:80px;height:58px;flex-basis:80px}.cgg-global-nav{gap:18px}.cgg-global-nav a{font-size:13px}}</style><style id="cgg-nav-hover-polish">.cgg-global-nav{gap:clamp(6px,.75vw,12px)!important}.cgg-global-nav a{font-weight:800!important;border-radius:999px!important;padding:9px 11px!important;transition:background-color .18s ease,color .18s ease!important}.cgg-global-nav a:hover,.cgg-global-nav a:focus-visible{background:#f5bd3e!important;color:#103e2f!important;outline:none!important}@media(max-width:1120px){.cgg-global-nav{gap:8px!important}.cgg-global-nav a{padding:8px 11px!important}}@media(max-width:560px){.cgg-global-nav{gap:5px!important}.cgg-global-nav a{padding:8px 10px!important}}</style>
 <style>
 .so-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px}
@@ -34,6 +35,26 @@
 .so-bar-track{display:block;height:12px;border-radius:999px;background:#ece7da;overflow:hidden}
 .so-bar-fill{display:block;height:100%;border-radius:999px;background:var(--green)}
 .so-bar-value{font-weight:800;color:var(--green);min-width:3ch;text-align:right}
+#stRange{display:flex;gap:6px;flex-wrap:wrap}
+#stRange button{padding:9px 14px;border-radius:999px;border:1px solid #c3cbc2;background:#fff;color:var(--green);font:800 .88rem/1 inherit;font-family:inherit;cursor:pointer}
+#stRange button[aria-pressed=true]{background:var(--green);color:var(--cream);border-color:var(--gold)}
+.st-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 14px}
+.st-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:10px;margin:0 0 16px}
+.st-cmp{font-size:.76rem;color:var(--muted);font-weight:600}.st-cmp.up{color:#1d7a4f}.st-cmp.down{color:#a2462f}
+.st-card{align-content:start}
+.st-card .so-bar{grid-template-columns:minmax(0,1.25fr) minmax(50px,1fr) auto}
+.st-card .so-bar-label{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.3}
+.st-card h3{margin:0;font:800 1.08rem/1.2 'Bricolage Grotesque','DM Sans',sans-serif;color:var(--green)}
+.st-card .meta{margin:0 0 4px}
+.st-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-top:12px}
+.st-chart svg{display:block;width:100%;height:180px}
+.st-axis{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-top:4px}
+.st-key{display:flex;gap:16px;font-size:.82rem;color:var(--muted);margin-top:6px}.st-key>span{display:inline-flex;align-items:center;gap:6px}
+.st-dot{display:inline-block;width:12px;height:12px;border-radius:3px}
+.st-sub{margin:-4px 0 8px!important;font-size:.78rem}
+.st-note{background:#fff8df;border:1px solid #f0d58a;border-radius:12px;padding:12px 14px;margin:0 0 12px;color:#5b4a1c}
+.st-mine{display:flex;gap:8px;align-items:center;font-size:.88rem;color:var(--muted);margin-top:16px}.st-mine input{width:auto}
+@media(max-width:560px){.st-grid{grid-template-columns:1fr}.st-chart svg{height:140px}}
 </style>
 </head>
 <body>
@@ -57,6 +78,7 @@
     <div class="item-head" style="margin-bottom:14px"><p class="muted" id="who" style="margin:0"></p><div class="actions" style="margin-top:0"><button class="btn light" id="setpwBtn" type="button">Set or change password</button><button class="btn light" id="signout" type="button">Sign out</button></div></div>
     <div class="tabs" role="tablist">
       <button role="tab" data-tab="claims" aria-selected="true">Claims <span id="nClaims"></span></button>
+      <button role="tab" data-tab="stats" aria-selected="false">Statistics</button>
       <button role="tab" data-tab="businesses" aria-selected="false">Businesses</button>
       <button role="tab" data-tab="prospects" aria-selected="false">Prospecting</button>
       <button role="tab" data-tab="members" aria-selected="false">Mailing list <span id="nMembers"></span></button>
@@ -68,6 +90,22 @@
       <button role="tab" data-tab="history" aria-selected="false">History</button>
     </div>
     <section class="panel" id="tab-claims"><h2>Ownership claims</h2><p class="sub">Confirm the person really runs the business (call or message the business's official number or email) before approving.</p><div class="list" id="claimsList"></div></section>
+    <section class="panel" id="tab-stats" hidden>
+      <h2>Statistics</h2>
+      <p class="sub">How many people visit the site and what they do: page views, visitors, searches in the Finders, clicks to businesses, app installs and new members. No names or emails are collected for this.</p>
+      <div class="st-top">
+        <div id="stRange" role="group" aria-label="Period">
+          <button type="button" data-days="1" aria-pressed="false">Today</button>
+          <button type="button" data-days="7" aria-pressed="false">7 days</button>
+          <button type="button" data-days="30" aria-pressed="true">30 days</button>
+          <button type="button" data-days="90" aria-pressed="false">90 days</button>
+          <button type="button" data-days="365" aria-pressed="false">12 months</button>
+        </div>
+        <button class="btn light" type="button" id="stRefresh">Refresh</button>
+      </div>
+      <div id="stOut"></div>
+      <label class="st-mine"><input type="checkbox" id="stMine"> <span>Count my own visits on this phone or computer</span></label>
+    </section>
     <section class="panel" id="tab-businesses" hidden>
       <h2>All businesses</h2>
       <p class="sub">Every business on the site. Pick a country and city to narrow the list. Edit details or the level directly (your changes go live right away), remove a business from the site, or remove its owner.</p>
@@ -245,12 +283,13 @@
   document.querySelectorAll('[role=tab]').forEach(function (b) {
     b.addEventListener('click', function () {
       document.querySelectorAll('[role=tab]').forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
-      ['claims', 'businesses', 'prospects', 'members', 'social', 'newbiz', 'edits', 'upgrades', 'passwords', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
+      ['claims', 'stats', 'businesses', 'prospects', 'members', 'social', 'newbiz', 'edits', 'upgrades', 'passwords', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
       $('tab-passwords-form').hidden = b.dataset.tab !== 'passwords';
       if (b.dataset.tab === 'passwords' && !owners) loadOwners();
       if (b.dataset.tab === 'prospects') { if (!prospects) loadProspects(); else renderProspects(); }
       if (b.dataset.tab === 'members') { if (!members) loadMembers(); else renderMembers(); }
       if (b.dataset.tab === 'social') window.CGGSocial.show();
+      if (b.dataset.tab === 'stats') window.CGGStats.show();
     });
   });
 
@@ -267,7 +306,7 @@
     $('signin').hidden = !!u; $('dash').hidden = true; $('denied').hidden = true;
     if (!u) return;
     sb.rpc('is_portal_admin').then(function (r) {
-      if (r.data === true) { $('dash').hidden = false; $('who').textContent = 'Signed in as ' + u.email; P.loadListings().then(function (l) { listings = l; refresh(); }); loadMembers(); if (location.hash === '#social') { var st = document.querySelector('[data-tab=social]'); if (st) st.click(); } }
+      if (r.data === true) { window.CGGStats.adminSignedIn(); $('dash').hidden = false; $('who').textContent = 'Signed in as ' + u.email; P.loadListings().then(function (l) { listings = l; refresh(); }); loadMembers(); if (location.hash === '#social' || location.hash === '#stats') { var st = document.querySelector('[data-tab=' + location.hash.slice(1) + ']'); if (st) st.click(); } }
       else { $('denied').hidden = false; $('deniedWho').textContent = u.email + ' is not set up as an admin.'; }
     });
   }
@@ -976,6 +1015,6 @@
 
 })();
 </script>
-<script>window.CGGSocial && window.CGGSocial.init();</script>
+<script>window.CGGSocial && window.CGGSocial.init(); window.CGGStats && window.CGGStats.init();</script>
 </body>
 </html>

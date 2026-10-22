@@ -1,7 +1,7 @@
 // Service worker for the installable apps (travelers "/", business owners "/owner/", admin "/admin/").
 // Pages and listing data: network first, so visitors always get the latest; the saved copy is used when offline.
 // Scripts, styles, images: saved copy first, refreshed in the background. Videos, Supabase, Stripe and other sites: never touched.
-const VERSION = 'gg-2026-10-22c';
+const VERSION = 'gg-2026-10-22d';
 const CORE = VERSION + '-core', PAGES = VERSION + '-pages', FILES = VERSION + '-files';
 const PRECACHE = ['/offline.html', '/assets/cgg-wordmark.svg?v=1', '/assets/app/icon-any-192.png', '/assets/app/apple-touch-icon-180.png?v=1'];
 

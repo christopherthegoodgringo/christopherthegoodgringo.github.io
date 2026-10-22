@@ -95,3 +95,15 @@ Checklist for every change:
 - `/sw.js`: pages and `/data/` network first (saved copy offline, else `/offline.html`); scripts/styles/images saved copy first.
   Never caches `/media/`, Supabase, Stripe or other sites. Bump `VERSION` in sw.js when changing it.
 - Inside the app the language popup only asks once (the footer toggle still switches language).
+
+## Statistics (admin page) and app congratulations
+
+- `assets/cgg-app.js` (on every page) also sends site statistics to `public.track_event()`: page views, Finder searches
+  (`form.filters` values), clicks to a business (website, booking, WhatsApp, email, phone, map, More information; not in
+  header/footer/nav) and app installs. No names, emails or IPs: a random id in localStorage `gg-visitor`; country comes from the
+  device time zone. Only counts on the live domain; admin pages and devices with localStorage `gg-no-stats` = '1' aren't counted
+  (set automatically the first time Christopher signs in to admin; checkbox in the Statistics tab). Database:
+  supabase/015_site_stats.sql (`site_events`, `site_stats()` admin-only, nightly delete after 400 days).
+- Admin tab "Statistics" (`assets/cgg-stats-admin.js`, open directly with /admin/#stats): Today / 7 / 30 / 90 days / 12 months.
+- Confetti + "Congratulations!" when the app is installed (Android/computer `appinstalled`) or first opened from the home screen
+  (iPhone/iPad), once per app (localStorage `gg-app-celebrated-<site|owner|admin>`).
