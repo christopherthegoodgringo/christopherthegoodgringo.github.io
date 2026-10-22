@@ -43,7 +43,22 @@
     '.cgg-app-confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}' +
     '@keyframes cggAppPop{from{transform:scale(.75);opacity:0}to{transform:scale(1);opacity:1}}.cgg-app-yay{animation:cggAppPop .4s cubic-bezier(.2,1.3,.4,1)}';
 
-  var ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>';
+
+    '.cgg-agent-recruit-overlay{position:fixed;inset:0;z-index:2147482999;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:20px;background:rgba(9,41,30,.76)}' +
+    '.cgg-agent-recruit-card{position:relative;width:min(510px,100%);padding:30px 30px 26px;border:1px solid #f5bd3e;border-radius:18px;background:#fbf5e8;color:#17271f;box-shadow:0 24px 80px #0005;text-align:center;font:16px/1.6 "DM Sans",system-ui,sans-serif}' +
+    '.cgg-agent-recruit-close{position:absolute;top:10px;right:12px;width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:#103e2f;font:400 1.8rem/1 "DM Sans",sans-serif;cursor:pointer}' +
+    '.cgg-agent-recruit-logo{display:block;width:190px;max-width:72%;height:auto;max-height:70px;object-fit:contain;margin:2px auto 20px}' +
+    '.cgg-agent-recruit-eyebrow{color:#9a6a0b;font-size:.7rem;font-weight:800;letter-spacing:.16em}' +
+    '.cgg-agent-recruit-card h2{margin:9px 0 12px;color:#103e2f;font:700 clamp(1.8rem,5vw,2.35rem)/1.12 "Bricolage Grotesque","DM Sans",sans-serif;letter-spacing:-.03em}' +
+    '.cgg-agent-recruit-rule{height:2px;width:64px;background:#f5bd3e;margin:0 auto 16px}' +
+    '.cgg-agent-recruit-card p{margin:0 auto 22px;max-width:410px;color:#657268;font-size:.98rem}' +
+    '.cgg-agent-recruit-actions{display:flex;flex-direction:column;align-items:center;gap:10px}' +
+    '.cgg-agent-recruit-join{display:flex;align-items:center;justify-content:center;width:100%;padding:14px 18px;border:1px solid #103e2f;border-radius:10px;background:#103e2f;color:#fbf5e8;font-weight:800;text-decoration:none}' +
+    '.cgg-agent-recruit-join:hover{background:#09291e;color:#f5bd3e}' +
+    '.cgg-agent-recruit-later{border:0;background:transparent;padding:7px 12px;color:#657268;font:600 .9rem "DM Sans",sans-serif;cursor:pointer}' +
+    '@media(max-width:480px){.cgg-agent-recruit-card{padding:28px 20px 22px;border-radius:14px}.cgg-agent-recruit-logo{width:165px;margin-bottom:15px}}' +
+
+    var ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>';
 
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; }
 
@@ -146,6 +161,60 @@
     o.addEventListener('click', function (ev) { if (ev.target === o) close(); });
     c.appendChild(go); o.appendChild(c); document.body.appendChild(o);
     stop = confetti(o); go.focus();
+  }
+
+
+  // ---------- Agent recruitment popup (public site only) ----------
+  function maybeRecruitAgents() {
+    if (area !== 'site' || standalone() || /\/agents\.html$|\/admin\/|\/owner\//i.test(path)) return;
+    var key = 'cgg-agent-recruit-dismissed';
+    try {
+      var dismissed = Number(localStorage.getItem(key) || 0);
+      if (dismissed && Date.now() - dismissed < 7 * 864e5) return;
+    } catch (e) {}
+    // Let visitors settle in before inviting them to join the agent team.
+    setTimeout(function () {
+      if (!document.body || document.querySelector('.cgg-agent-recruit-overlay')) return;
+      try {
+        var last = Number(localStorage.getItem(key) || 0);
+        if (last && Date.now() - last < 7 * 864e5) return;
+      } catch (e) {}
+      var es = (document.documentElement.lang || 'en').toLowerCase().indexOf('es') === 0;
+      var overlay = el('div', 'cgg-agent-recruit-overlay');
+      overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-modal', 'true');
+      overlay.setAttribute('aria-labelledby', 'cgg-agent-recruit-title');
+      var card = el('section', 'cgg-agent-recruit-card');
+      var close = el('button', 'cgg-agent-recruit-close', '×');
+      close.type = 'button'; close.setAttribute('aria-label', es ? 'Cerrar' : 'Close');
+      var logo = el('img', 'cgg-agent-recruit-logo');
+      logo.src = '/assets/cgg-wordmark.svg?v=1'; logo.alt = 'Christopher the Good Gringo';
+      var eyebrow = el('div', 'cgg-agent-recruit-eyebrow', es ? 'ÚNETE A NUESTRO EQUIPO' : 'JOIN OUR TEAM');
+      var heading = el('h2', '', es ? 'Conviértete en agente' : 'Become a CGG Agent');
+      heading.id = 'cgg-agent-recruit-title';
+      var rule = el('div', 'cgg-agent-recruit-rule');
+      var copy = el('p', '', es
+        ? 'Ayuda a los viajeros a descubrir excelentes negocios independientes en Latinoamérica y gana comisiones elegibles.'
+        : 'Help travelers discover outstanding independent businesses across Latin America and earn eligible commissions.');
+      var actions = el('div', 'cgg-agent-recruit-actions');
+      var join = el('a', 'cgg-agent-recruit-join', es ? 'Conviértete en agente' : 'Become an Agent');
+      join.href = '/agents.html';
+      var later = el('button', 'cgg-agent-recruit-later', es ? 'Quizás más tarde' : 'Maybe later');
+      later.type = 'button';
+      function dismiss() {
+        try { localStorage.setItem(key, String(Date.now())); } catch (e) {}
+        overlay.remove();
+      }
+      close.addEventListener('click', dismiss);
+      later.addEventListener('click', dismiss);
+      overlay.addEventListener('click', function (ev) { if (ev.target === overlay) dismiss(); });
+      function esc(ev) { if (ev.key === 'Escape' && document.body.contains(overlay)) { dismiss(); document.removeEventListener('keydown', esc); } }
+      document.addEventListener('keydown', esc);
+      actions.appendChild(join); actions.appendChild(later);
+      card.appendChild(close); card.appendChild(logo); card.appendChild(eyebrow);
+      card.appendChild(heading); card.appendChild(rule); card.appendChild(copy); card.appendChild(actions);
+      overlay.appendChild(card); document.body.appendChild(overlay);
+      join.focus();
+    }, 10000);
   }
 
   // ---------- Statistics (admin page, Statistics tab) ----------
@@ -251,6 +320,7 @@
   function start() {
     var st = el('style'); st.textContent = CSS; document.head.appendChild(st);
     setTimeout(place, 0);
+    maybeRecruitAgents();
     // The language popup comes first if it's showing; the welcome waits until it's closed.
     if (standalone() && !celebrated()) {
       track('app_open');
