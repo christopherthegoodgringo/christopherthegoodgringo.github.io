@@ -155,7 +155,7 @@
 
     var note = null;
     if (!admin) { form.appendChild(el('label', {}, 'Anything else we should know?')); note = el('textarea', { maxLength: 2000 }); form.appendChild(note); }
-    var submit = el('button', { className: 'btn', type: 'submit' }, opts.submitLabel || (admin ? 'Save and publish' : 'Send for review'));
+    var submit = el('button', { className: 'btn', type: 'submit' }, opts.submitLabel || 'Save and publish');
     form.appendChild(el('div', { className: 'actions' }, submit, opts.onCancel ? el('button', { type: 'button', className: 'btn light', onclick: opts.onCancel }, 'Cancel') : null));
     form.appendChild(msg);
 
@@ -183,7 +183,7 @@
       Promise.resolve(opts.onSubmit(changes, n)).then(function (r) {
         submit.disabled = false;
         if (r && r.error) return P.msg(msg, 'err', (r.error.message || r.error));
-        P.msg(msg, 'ok', admin ? 'Saved. Your changes are live.' : 'Thanks! Your changes were sent for review. They will appear on the site once approved.');
+        P.msg(msg, 'ok', 'Saved. Your changes are live.');
         if (note) note.value = '';
       }).catch(function (err) { submit.disabled = false; P.msg(msg, 'err', err.message || String(err)); });
     });

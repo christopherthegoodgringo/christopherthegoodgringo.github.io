@@ -21,7 +21,7 @@
 <main>
   <section class="hero">
     <h1>Business Owner Portal</h1>
-    <p>Claim your business, keep your listing up to date, and upgrade your tier. Bronze goes live right away, paid levels go live as soon as your payment is confirmed, and listing edits are reviewed by our team.</p>
+    <p>Claim your business, keep your listing up to date, and upgrade your tier. Bronze goes live right away, paid levels go live as soon as your payment is confirmed, and listing changes go live as soon as you save them.</p>
   </section>
   <section class="panel" id="planBanner" hidden style="border-color:#d6a84f;background:#fff8e6"></section>
 
@@ -279,7 +279,7 @@
         }).then(function (r) { if (!r.error) loadClaims(); return r; });
       }
     });
-    $('editForm').replaceChildren(el('p', { className: 'meta', style: 'margin:0 0 12px' }, 'Your level: ', el('span', { className: 'badge tier' }, tier), ' · Every change is reviewed by our team before it appears on the site.'), editor);
+    $('editForm').replaceChildren(el('p', { className: 'meta', style: 'margin:0 0 12px' }, 'Your level: ', el('span', { className: 'badge tier' }, tier), ' · Your changes go live on the site as soon as you save them.'), editor);
     $('editPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 

@@ -33,5 +33,6 @@ Checklist for every change:
 - Listings only get the features of their current level. No Instagram links on listings.
 - Payment is by card only (no Cash App or Klarna).
 - Free (Bronze) claims and new businesses go live without admin approval. Paid levels go live
-  automatically when Stripe confirms payment (Supabase `stripe-webhook` function). Owner edits to
-  listing details wait for admin approval.
+  automatically when Stripe confirms payment (Supabase `stripe-webhook` function). Verified owners'
+  edits to their listing details go live automatically (Supabase trigger, 007_auto_publish_owner_edits.sql).
+- Christopher does not want to review anything: keep every flow automated.
