@@ -11,9 +11,20 @@
   var P = window.CGGPortal, el = P.el, sb = P.client();
   var $ = function (id) { return document.getElementById(id); };
   var SITE = 'https://christopherthegoodgringo.com';
-  var COUNTRIES = [['AR', 'Argentina'], ['BZ', 'Belize'], ['BO', 'Bolivia'], ['BR', 'Brazil'], ['CL', 'Chile'], ['CO', 'Colombia'], ['CR', 'Costa Rica'],
+  // Every country in the world (agents can be anywhere), named in the page's language.
+  var COUNTRY_CODES = 'AF AX AL DZ AS AD AO AI AQ AG AR AM AW AU AT AZ BS BH BD BB BY BE BZ BJ BM BT BO BQ BA BW BR IO VG BN BG BF BI CV KH CM CA KY CF TD CL CN CX CC CO KM CG CD CK CR CI HR CU CW CY CZ DK DJ DM DO EC EG SV GQ ER EE SZ ET FK FO FJ FI FR GF PF GA GM GE DE GH GI GR GL GD GP GU GT GG GN GW GY HT HN HK HU IS IN ID IR IQ IE IM IL IT JM JP JE JO KZ KE KI XK KW KG LA LV LB LS LR LY LI LT LU MO MG MW MY MV ML MT MH MQ MR MU YT MX FM MD MC MN ME MS MA MZ MM NA NR NP NL NC NZ NI NE NG NU NF KP MK MP NO OM PK PW PS PA PG PY PE PH PN PL PT PR QA RE RO RU RW BL SH KN LC MF PM VC WS SM ST SA SN RS SC SL SG SX SK SI SB SO ZA GS KR SS ES LK SD SR SJ SE CH SY TW TJ TZ TH TL TG TK TO TT TN TR TM TC TV UG UA AE GB US UM UY VI UZ VU VA VE VN WF EH YE ZM ZW'.split(' ');
+  var COUNTRIES = [];
+  function buildCountries() {
+    var l = (document.documentElement.lang || 'en').slice(0, 2) === 'es' ? 'es' : 'en', dn;
+    try { dn = new Intl.DisplayNames([l], { type: 'region' }); } catch (e) { dn = { of: function (c) { return c; } }; }
+    COUNTRIES = COUNTRY_CODES.map(function (c) { var n; try { n = dn.of(c); } catch (e) { n = c; } return [c, n || c]; })
+      .sort(function (x, y) { return x[1].localeCompare(y[1], l); });
+  }
+  buildCountries();
+  // Countries the site lists businesses in (English names are stored with the listing).
+  var BUSINESS_COUNTRIES = [['AR', 'Argentina'], ['BZ', 'Belize'], ['BO', 'Bolivia'], ['BR', 'Brazil'], ['CL', 'Chile'], ['CO', 'Colombia'], ['CR', 'Costa Rica'],
     ['DO', 'Dominican Republic'], ['EC', 'Ecuador'], ['SV', 'El Salvador'], ['GT', 'Guatemala'], ['HN', 'Honduras'], ['MX', 'Mexico'], ['NI', 'Nicaragua'],
-    ['PA', 'Panama'], ['PY', 'Paraguay'], ['PE', 'Peru'], ['UY', 'Uruguay'], ['VE', 'Venezuela'], ['US', 'United States'], ['CA', 'Canada']];
+    ['PA', 'Panama'], ['PY', 'Paraguay'], ['PE', 'Peru'], ['UY', 'Uruguay'], ['VE', 'Venezuela']];
   var TIER = { silver: 'Silver', gold: 'Gold', platinum: 'Platinum', bronze: 'Bronze' };
   var agents = [], summaries = {}, commissions = [], me = null, ctx = {};
 
@@ -137,7 +148,7 @@
     var email = field('Email (they sign in with it)', el('input', { type: 'email', value: a.email || '', required: true }));
     var phone = field('WhatsApp / phone (with country code)', el('input', { type: 'tel', value: a.phone || '' }));
     var country = el('select'); country.appendChild(el('option', { value: '' }, '—'));
-    COUNTRIES.forEach(function (c) { country.appendChild(el('option', { value: c[0], selected: c[0] === a.country }, c[1])); });
+    COUNTRIES.forEach(function (c) { country.appendChild(el('option', { value: c[0], selected: c[0] === a.country, attrs: { 'data-no-translate': '' } }, c[1])); });
     field('Country', country);
     var language = el('select'); language.appendChild(el('option', { value: 'es', selected: a.language !== 'en' }, 'Spanish')); language.appendChild(el('option', { value: 'en', selected: a.language === 'en' }, 'English'));
     field('Language', language);
@@ -191,7 +202,7 @@
 
   function initAdmin() {
     var form = $('agForm'); if (!form) return;
-    var cs = $('agCountry'); COUNTRIES.forEach(function (c) { cs.appendChild(el('option', { value: c[0], selected: c[0] === 'CO' }, c[1])); });
+    var cs = $('agCountry'); COUNTRIES.forEach(function (c) { cs.appendChild(el('option', { value: c[0], selected: c[0] === 'CO', attrs: { 'data-no-translate': '' } }, c[1])); });
     $('agName').addEventListener('input', function () { if (!$('agCode').dataset.touched) $('agCode').value = codeFrom($('agName').value); });
     $('agCode').addEventListener('input', function () { $('agCode').dataset.touched = '1'; $('agCode').value = $('agCode').value.toUpperCase().replace(/[^A-Z0-9]/g, ''); });
     form.addEventListener('submit', function (e) {
@@ -275,11 +286,11 @@
   function initAdd() {
     var form = $('aaForm'); if (!form) return;
     Object.keys(window.CGG_PORTAL.typeLabels).forEach(function (t) { $('aaType').appendChild(el('option', { value: t }, window.CGG_PORTAL.typeLabels[t])); });
-    COUNTRIES.filter(function (c) { return c[0] !== 'US' && c[0] !== 'CA'; }).forEach(function (c) { $('aaCountry').appendChild(el('option', { value: c[0], selected: c[0] === 'CO' }, c[1])); });
+    BUSINESS_COUNTRIES.forEach(function (c) { $('aaCountry').appendChild(el('option', { value: c[0], selected: c[0] === 'CO' }, c[1])); });
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var btn = e.submitter; if (btn) btn.disabled = true;
-      var c = COUNTRIES.find(function (x) { return x[0] === $('aaCountry').value; }) || [];
+      var c = BUSINESS_COUNTRIES.find(function (x) { return x[0] === $('aaCountry').value; }) || [];
       var v = function (id) { return $(id).value.trim() || null; };
       var name = $('aaName').value.trim();
       sb.rpc('agent_add_business', { p_type: $('aaType').value, p_name: name, p_country_code: c[0], p_country_name: c[1], p_city: $('aaCity').value.trim(),

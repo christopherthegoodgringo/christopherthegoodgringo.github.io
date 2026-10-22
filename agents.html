@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script src="/assets/cgg-i18n.js?v=20261022zf"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/assets/app/apple-touch-icon-180.png?v=1"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#103e2f"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Christopher The Good Gringo"><meta name="apple-mobile-web-app-status-bar-style" content="black"><script src="/assets/cgg-app.js?v=20261022d" defer></script>
+<head><script src="/assets/cgg-i18n.js?v=20261022zg"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/assets/app/apple-touch-icon-180.png?v=1"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#103e2f"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Christopher The Good Gringo"><meta name="apple-mobile-web-app-status-bar-style" content="black"><script src="/assets/cgg-app.js?v=20261022d" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Become an Agent | Christopher The Good Gringo™</title><meta property="og:site_name" content="Christopher The Good Gringo"><meta property="og:type" content="website"><meta property="og:title" content="Become an Agent | Christopher The Good Gringo™"><meta property="og:url" content="https://christopherthegoodgringo.com/agents.html"><meta property="og:image" content="https://christopherthegoodgringo.com/assets/cgg-share.png?v=1"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
@@ -52,6 +52,7 @@ main{display:block;min-height:auto;padding:0 0 30px}
 .ag-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:18px;overflow:hidden;border:1px solid var(--line)}
 .ag-table th{background:var(--green);color:#fffdf8;text-align:left;padding:12px 14px}.ag-table td{padding:12px 14px;border-top:1px solid var(--line)}.ag-table td:nth-child(n+3){font-weight:800;color:var(--green)}
 .ag-note{color:var(--muted);font-size:.9rem;margin:10px 0 0;text-align:center}
+.ag-facts{list-style:none;margin:14px 0 0;padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:18px;display:grid;gap:10px}.ag-facts li{position:relative;padding-left:26px;color:var(--ink);font-size:.95rem;line-height:1.5;text-align:left}.ag-facts li:before{content:"✓";position:absolute;left:0;top:0;width:18px;height:18px;border-radius:50%;background:var(--gold);color:var(--green);font-size:.7rem;font-weight:800;display:grid;place-items:center;margin-top:2px}
 .ag-list{margin:0;padding-left:20px;color:var(--ink)}.ag-list li{margin:0 0 8px}
 .ag-forms{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;align-items:start}
 .ag-form label{display:block;margin:0 0 12px}.ag-form label>span{display:block;font-weight:700;font-size:.9rem;margin-bottom:5px}
@@ -94,7 +95,7 @@ main{display:block;min-height:auto;padding:0 0 30px}
 <section class="ag-sec"><h2>What you earn</h2>
 <table class="ag-table"><thead><tr><th>Plan the business picks</th><th>They pay per month</th><th>First month (30%)</th><th>Every renewal (15%)</th></tr></thead><tbody>
 <tr><td>Silver</td><td>$9.99</td><td>$3.00</td><td>$1.50</td></tr><tr><td>Gold</td><td>$19.99</td><td>$6.00</td><td>$3.00</td></tr><tr><td>Platinum</td><td>$49.99</td><td>$15.00</td><td>$7.50</td></tr></tbody></table>
-<p class="ag-note" style="text-align:left">Bronze listings are free, so they don’t earn a commission. Renewal commissions keep coming every month for as long as the business stays on a paid plan. If a discount code was used, you earn your share of what the business actually paid. Each commission is paid 14 days after the payment (in case of a refund), straight to your bank through Stripe.</p></section>
+<ul class="ag-facts"><li>Bronze listings are free, so they don’t earn a commission.</li><li>Renewal commissions keep coming every month for as long as the business stays on a paid plan.</li><li>If a discount code was used, you earn your share of what the business actually paid.</li><li>Each commission is paid 14 days after the payment (in case of a refund), straight to your bank through Stripe.</li></ul></section>
 
 <section class="ag-sec"><h2>Your agent tools</h2>
 <div class="ag-steps">
@@ -110,7 +111,7 @@ main{display:block;min-height:auto;padding:0 0 30px}
 <label><span>Your name</span><input id="sName" type="text" autocomplete="name" required maxlength="120"></label>
 <label><span>Email</span><input id="sEmail" type="email" autocomplete="email" required></label>
 <label><span>WhatsApp (with country code)</span><input id="sPhone" type="tel" autocomplete="tel" placeholder="+57 300 123 4567"></label>
-<label><span>Country</span><select id="sCountry"><option value="AR">Argentina</option><option value="BZ">Belize</option><option value="BO">Bolivia</option><option value="BR">Brazil</option><option value="CL">Chile</option><option value="CO" selected>Colombia</option><option value="CR">Costa Rica</option><option value="DO">Dominican Republic</option><option value="EC">Ecuador</option><option value="SV">El Salvador</option><option value="GT">Guatemala</option><option value="HN">Honduras</option><option value="MX">Mexico</option><option value="NI">Nicaragua</option><option value="PA">Panama</option><option value="PY">Paraguay</option><option value="PE">Peru</option><option value="UY">Uruguay</option><option value="VE">Venezuela</option><option value="US">United States</option><option value="CA">Canada</option></select></label>
+<label><span>Country</span><select id="sCountry"></select></label>
 <label><span>Language</span><select id="sLang"><option value="es">Spanish</option><option value="en">English</option></select></label>
 <label><span>Choose a password</span><input id="sPass" type="password" autocomplete="new-password" minlength="8" required placeholder="At least 8 characters"></label>
 <div class="ag-hp" aria-hidden="true"><label>Website<input id="sWebsite" type="text" tabindex="-1" autocomplete="off"></label></div>
@@ -147,6 +148,14 @@ main{display:block;min-height:auto;padding:0 0 30px}
 </div></main>
 <script>
 (function(){
+
+  // Every country in the world, named in the visitor's language.
+  var CC="AF AX AL DZ AS AD AO AI AQ AG AR AM AW AU AT AZ BS BH BD BB BY BE BZ BJ BM BT BO BQ BA BW BR IO VG BN BG BF BI CV KH CM CA KY CF TD CL CN CX CC CO KM CG CD CK CR CI HR CU CW CY CZ DK DJ DM DO EC EG SV GQ ER EE SZ ET FK FO FJ FI FR GF PF GA GM GE DE GH GI GR GL GD GP GU GT GG GN GW GY HT HN HK HU IS IN ID IR IQ IE IM IL IT JM JP JE JO KZ KE KI XK KW KG LA LV LB LS LR LY LI LT LU MO MG MW MY MV ML MT MH MQ MR MU YT MX FM MD MC MN ME MS MA MZ MM NA NR NP NL NC NZ NI NE NG NU NF KP MK MP NO OM PK PW PS PA PG PY PE PH PN PL PT PR QA RE RO RU RW BL SH KN LC MF PM VC WS SM ST SA SN RS SC SL SG SX SK SI SB SO ZA GS KR SS ES LK SD SR SJ SE CH SY TW TJ TZ TH TL TG TK TO TT TN TR TM TC TV UG UA AE GB US UM UY VI UZ VU VA VE VN WF EH YE ZM ZW".split(' ');
+  function fillCountries(){var sel=document.getElementById('sCountry'),cur=sel.value||'CO',l=(document.documentElement.lang||'en').slice(0,2)==='es'?'es':'en',dn;
+    try{dn=new Intl.DisplayNames([l],{type:'region'});}catch(e){dn={of:function(c){return c;}};}
+    var list=CC.map(function(c){var n;try{n=dn.of(c);}catch(e){n=c;}return [c,n||c];}).sort(function(a,b){return a[1].localeCompare(b[1],l);});
+    sel.replaceChildren();list.forEach(function(x){var o=document.createElement('option');o.value=x[0];o.textContent=x[1];o.setAttribute('data-no-translate','');if(x[0]===cur)o.selected=true;sel.appendChild(o);});}
+  fillCountries();document.addEventListener('cgg:language',fillCountries);
   var f=document.getElementById('agSignup'),msg=document.getElementById('sMsg'),btn=document.getElementById('sBtn');
   function t(s){return (window.CGGI18N&&window.CGGI18N.t)?window.CGGI18N.t(s):s;}
   function show(kind,text){msg.replaceChildren();var d=document.createElement('div');d.className='ag-msg '+kind;d.textContent=text;msg.appendChild(d);return d;}
