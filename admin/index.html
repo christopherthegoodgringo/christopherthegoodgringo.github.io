@@ -1000,7 +1000,7 @@
   });
   $('maRun').addEventListener('click', function (ev) {
     var b = ev.currentTarget; b.disabled = true;
-    P.msg($('maMsg'), 'info', 'Checking replies and sending everything that's due… this can take up to two minutes.');
+    P.msg($('maMsg'), 'info', "Checking replies and sending everything that's due… this can take up to two minutes.");
     // Everything that's due, now: 4 runs side by side, each with its own share of the list (no one gets an email twice).
     Promise.all([0, 1, 2, 3].map(function (i) {
       return sb.functions.invoke('prospect-mailer', { body: { source: 'manual', batch: 40, parts: 4, part: i } });
