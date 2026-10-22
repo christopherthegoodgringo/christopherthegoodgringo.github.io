@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script src="/assets/cgg-i18n.js?v=20261022h"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
+<head><script src="/assets/cgg-i18n.js?v=20261022j"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Listing Admin | Christopher the Good Gringo</title><meta property="og:site_name" content="Christopher The Good Gringo"><meta property="og:type" content="website"><meta property="og:title" content="Listing Admin | Christopher the Good Gringo"><meta property="og:url" content="https://christopherthegoodgringo.com/admin/"><meta property="og:image" content="https://christopherthegoodgringo.com/assets/cgg-share.png?v=1"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
@@ -38,6 +38,7 @@
       <button role="tab" data-tab="claims" aria-selected="true">Claims <span id="nClaims"></span></button>
       <button role="tab" data-tab="businesses" aria-selected="false">Businesses</button>
       <button role="tab" data-tab="prospects" aria-selected="false">Prospecting</button>
+      <button role="tab" data-tab="members" aria-selected="false">Mailing list <span id="nMembers"></span></button>
       <button role="tab" data-tab="newbiz" aria-selected="false">New businesses <span id="nNew"></span></button>
       <button role="tab" data-tab="edits" aria-selected="false">Updates <span id="nEdits"></span></button>
       <button role="tab" data-tab="upgrades" aria-selected="false">Upgrades <span id="nUpgrades"></span></button>
@@ -87,6 +88,38 @@
       <p class="meta" id="prCount" style="margin:12px 0 8px"></p>
       <div class="list" id="prList"><p class="muted">Loading…</p></div>
       <div class="actions"><button class="btn light" type="button" id="prMore" hidden>Show more</button></div>
+    </section>
+    <section class="panel" id="tab-members" hidden>
+      <h2>Mailing list</h2>
+      <p class="sub">Travelers who joined as free members from the popup in the Finders. Copy the emails or download the list to send a newsletter, add someone by hand, unsubscribe anyone who asks, or delete them.</p>
+      <div class="row">
+        <div><label for="mbSearch">Search</label><input id="mbSearch" type="search" placeholder="Name or email"></div>
+        <div><label for="mbStatus">Status</label><select id="mbStatus"><option value="subscribed">Subscribed</option><option value="unsubscribed">Unsubscribed</option><option value="">Everyone</option></select></div>
+      </div>
+      <div class="row">
+        <div><label for="mbLang">Language</label><select id="mbLang"><option value="">All languages</option><option value="en">English</option><option value="es">Spanish</option></select></div>
+        <div></div>
+      </div>
+      <div class="actions" style="margin:12px 0 4px">
+        <button class="btn" type="button" id="mbCopy">Copy emails</button>
+        <button class="btn light" type="button" id="mbCsv">Download list (CSV)</button>
+        <button class="btn gold" type="button" id="mbAddBtn">Add a member</button>
+      </div>
+      <form id="mbAdd" class="item" hidden style="margin:10px 0">
+        <div class="row">
+          <div><label for="mbAddName">Name</label><input id="mbAddName" type="text" maxlength="120" required></div>
+          <div><label for="mbAddEmail">Email</label><input id="mbAddEmail" type="email" maxlength="254" required></div>
+        </div>
+        <div class="row">
+          <div><label for="mbAddLang">Language</label><select id="mbAddLang"><option value="es">Spanish</option><option value="en">English</option></select></div>
+          <div></div>
+        </div>
+        <div class="actions"><button class="btn" type="submit">Save member</button><button class="btn light" type="button" id="mbAddCancel">Cancel</button></div>
+      </form>
+      <div id="mbMsg"></div>
+      <p class="meta" id="mbCount" style="margin:12px 0 8px"></p>
+      <div class="list" id="mbList"><p class="muted">Loading…</p></div>
+      <div class="actions"><button class="btn light" type="button" id="mbMore" hidden>Show more</button></div>
     </section>
     <section class="panel" id="tab-newbiz" hidden><h2>New businesses</h2><p class="sub">Businesses owners added that aren't listed yet. Confirm the person runs it, then approve: it goes live as Bronze in the right Finder, is linked to their account, and any paid level they chose appears under Upgrades.</p><div class="list" id="newList"></div></section>
     <section class="panel" id="tab-edits" hidden><h2>Listing updates</h2><p class="sub">Suggestions from the public "suggest an update" forms. Changes from verified owners go live automatically and don't appear here. Approving publishes the new values to the site.</p><div class="list" id="editsList"></div></section>
@@ -142,10 +175,11 @@
   document.querySelectorAll('[role=tab]').forEach(function (b) {
     b.addEventListener('click', function () {
       document.querySelectorAll('[role=tab]').forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
-      ['claims', 'businesses', 'prospects', 'newbiz', 'edits', 'upgrades', 'passwords', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
+      ['claims', 'businesses', 'prospects', 'members', 'newbiz', 'edits', 'upgrades', 'passwords', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
       $('tab-passwords-form').hidden = b.dataset.tab !== 'passwords';
       if (b.dataset.tab === 'passwords' && !owners) loadOwners();
       if (b.dataset.tab === 'prospects') { if (!prospects) loadProspects(); else renderProspects(); }
+      if (b.dataset.tab === 'members') { if (!members) loadMembers(); else renderMembers(); }
     });
   });
 
@@ -162,7 +196,7 @@
     $('signin').hidden = !!u; $('dash').hidden = true; $('denied').hidden = true;
     if (!u) return;
     sb.rpc('is_portal_admin').then(function (r) {
-      if (r.data === true) { $('dash').hidden = false; $('who').textContent = 'Signed in as ' + u.email; P.loadListings().then(function (l) { listings = l; refresh(); }); }
+      if (r.data === true) { $('dash').hidden = false; $('who').textContent = 'Signed in as ' + u.email; P.loadListings().then(function (l) { listings = l; refresh(); }); loadMembers(); }
       else { $('denied').hidden = false; $('deniedWho').textContent = u.email + ' is not set up as an admin.'; }
     });
   }
@@ -633,6 +667,84 @@
   STATUS.forEach(function (s) { $('prStatus').appendChild(el('option', { value: s[0] }, s[1])); });
   ['prType', 'prCountry', 'prCity', 'prStatus', 'prHave', 'prFollow'].forEach(function (id) { $(id).addEventListener('change', function () { prLimit = 30; renderProspects(); }); });
   $('prMore').addEventListener('click', function () { prLimit += 30; renderProspects(); });
+
+  // ---------- Mailing list (free traveler members) ----------
+  var members = null, mbShown = 50;
+  function loadMembers() {
+    return sb.from('members').select('*').order('created_at', { ascending: false }).then(function (r) {
+      if (r.error) { P.msg($('mbList'), 'err', r.error.message); return; }
+      members = r.data; renderMembers();
+    });
+  }
+  function mbFiltered() {
+    var q = $('mbSearch').value.trim().toLowerCase(), st = $('mbStatus').value, lg = $('mbLang').value;
+    return (members || []).filter(function (m) {
+      return (!st || m.status === st) && (!lg || m.language === lg) && (!q || (m.name + ' ' + m.email).toLowerCase().indexOf(q) > -1);
+    });
+  }
+  function renderMembers() {
+    if (!members) return;
+    var subs = members.filter(function (m) { return m.status === 'subscribed'; }).length;
+    $('nMembers').textContent = subs ? '(' + subs + ')' : '';
+    var list = mbFiltered(), box = $('mbList'); box.replaceChildren();
+    $('mbCount').textContent = list.length + ' of ' + members.length + ' members';
+    if (!list.length) box.appendChild(el('p', { className: 'muted' }, members.length ? 'No members match these filters.' : 'No members yet. They appear here as soon as travelers join from the Finders.'));
+    list.slice(0, mbShown).forEach(function (m) {
+      var on = m.status === 'subscribed';
+      box.appendChild(el('article', { className: 'item' },
+        el('div', { className: 'item-head' }, el('h3', {}, m.name), el('span', { className: 'badge ' + (on ? 'approved' : 'rejected') }, on ? 'Subscribed' : 'Unsubscribed')),
+        el('p', { className: 'meta' }, el('a', { href: 'mailto:' + m.email }, m.email), ' · ', el('span', {}, m.language === 'es' ? 'Spanish' : 'English'), ' · ', el('span', {}, 'Joined ' + P.fmtDate(m.created_at)), m.source ? ' · ' : null, m.source ? el('span', {}, 'From: ' + m.source) : null),
+        el('div', { className: 'actions' },
+          el('button', { className: 'btn light', type: 'button', onclick: function () { mbUpdate(m, { status: on ? 'unsubscribed' : 'subscribed' }); } }, on ? 'Unsubscribe' : 'Subscribe again'),
+          el('button', { className: 'btn light', type: 'button', onclick: function () { mbUpdate(m, { language: m.language === 'es' ? 'en' : 'es' }); } }, m.language === 'es' ? 'Switch to English' : 'Switch to Spanish'),
+          el('button', { className: 'btn light', type: 'button', style: 'color:#b3261e', onclick: function () { mbDelete(m); } }, 'Delete'))));
+    });
+    $('mbMore').hidden = list.length <= mbShown;
+  }
+  function mbUpdate(m, fields) {
+    fields.updated_at = new Date().toISOString();
+    sb.from('members').update(fields).eq('id', m.id).then(function (r) {
+      if (r.error) return P.msg($('mbMsg'), 'err', r.error.message);
+      Object.assign(m, fields); renderMembers();
+    });
+  }
+  function mbDelete(m) {
+    if (!confirm('Delete ' + m.email + ' from your mailing list? This cannot be undone.')) return;
+    sb.from('members').delete().eq('id', m.id).then(function (r) {
+      if (r.error) return P.msg($('mbMsg'), 'err', r.error.message);
+      members = members.filter(function (x) { return x.id !== m.id; }); renderMembers();
+    });
+  }
+  ['mbSearch', 'mbStatus', 'mbLang'].forEach(function (id) { $(id).addEventListener(id === 'mbSearch' ? 'input' : 'change', function () { mbShown = 50; renderMembers(); }); });
+  $('mbMore').addEventListener('click', function () { mbShown += 50; renderMembers(); });
+  $('mbCopy').addEventListener('click', function () {
+    var emails = mbFiltered().filter(function (m) { return m.status === 'subscribed'; }).map(function (m) { return m.email; });
+    if (!emails.length) return P.msg($('mbMsg'), 'err', 'No subscribed members in this list to copy.');
+    var text = emails.join(', ');
+    (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function () {
+      P.msg($('mbMsg'), 'ok', emails.length + ' emails copied. Paste them into the BCC field of your email so members can\'t see each other\'s addresses.');
+    }, function () { window.prompt('Copy these emails:', text); });
+  });
+  $('mbCsv').addEventListener('click', function () {
+    var rows = [['Name', 'Email', 'Language', 'Status', 'Joined', 'From']].concat(mbFiltered().map(function (m) {
+      return [m.name, m.email, m.language === 'es' ? 'Spanish' : 'English', m.status, m.created_at.slice(0, 10), m.source || ''];
+    }));
+    var csv = rows.map(function (r) { return r.map(function (v) { v = String(v); return /[",\n]/.test(v) || /^[=+\-@]/.test(v) ? '"' + v.replace(/"/g, '""').replace(/^([=+\-@])/, "'$1") + '"' : v; }).join(','); }).join('\n');
+    var a = el('a', { href: URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv' })), download: 'good-gringo-members-' + new Date().toISOString().slice(0, 10) + '.csv' });
+    document.body.appendChild(a); a.click(); a.remove();
+  });
+  $('mbAddBtn').addEventListener('click', function () { $('mbAdd').hidden = false; $('mbAddName').focus(); });
+  $('mbAddCancel').addEventListener('click', function () { $('mbAdd').hidden = true; });
+  $('mbAdd').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var row = { name: $('mbAddName').value.trim(), email: $('mbAddEmail').value.trim().toLowerCase(), language: $('mbAddLang').value, source: 'added by admin' };
+    if (!row.name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(row.email)) return P.msg($('mbMsg'), 'err', 'Please enter a name and a valid email.');
+    sb.from('members').insert(row).select().then(function (r) {
+      if (r.error) return P.msg($('mbMsg'), 'err', /duplicate|unique/i.test(r.error.message) ? 'That email is already on your list.' : r.error.message);
+      members.unshift(r.data[0]); $('mbAdd').reset(); $('mbAdd').hidden = true; renderMembers();
+      P.msg($('mbMsg'), 'ok', 'Member added.');
+    });
+  });
 
   function loadProspects() {
     return Promise.all([sb.from('prospects').select('*'), sb.from('prospect_templates').select('*')]).then(function (res) {
