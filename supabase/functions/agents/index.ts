@@ -114,15 +114,72 @@ function commissionEmail(a: any, k: any) {
 
 function welcomeEmail(name: string, code: string, language: string, email = "", tempPass = "") {
   const es = language !== "en";
-  const first = String(name || "").trim().split(/\s+/)[0] || (es ? "agente" : "agent");
+  const first = String(name || "").trim().split(/\\s+/)[0] || (es ? "agente" : "agent");
   const link = SITE + "/owner/?agent=" + encodeURIComponent(code);
-  const subject = es ? "¡Bienvenido a Christopher The Good Gringo, " + first + "!" : "Welcome to Christopher The Good Gringo, " + first + "!";
+  const subject = es ? "¡Bienvenido al equipo de agentes de Christopher The Good Gringo!" : "Welcome to the Christopher The Good Gringo Agent Team!";
   const body = es
-    ? `¡Hola ${first}!\n\nYa eres agente de Christopher The Good Gringo. ¡Bienvenido al equipo!\n\nInicia sesión aquí: ${SITE}/admin/\n${email ? "Usuario (correo): " + email + "\n" : ""}${tempPass ? "Contraseña temporal: " + tempPass + "\n(al entrar te pedirá elegir tu propia contraseña)" : "Contraseña: la que elegiste al registrarte. ¿La olvidaste? Toca \"¿Olvidaste tu contraseña?\" en la página de inicio de sesión."}\n\nTu código de agente: ${code}\nTu enlace personal: ${link}\n\nPrimeros pasos:\n1. Entra a "Mis ganancias" y agrega tu correo de PayPal para recibir tus pagos.\n2. Toca el botón rojo "Crear mi tarjeta de presentación" para hacer tu tarjeta, y el botón azul "Crear mi volante" para tu volante, los dos con tu código QR: ${SITE}/agent-card.html\n3. En "Prospección" encontrarás negocios y mensajes listos para enviar por WhatsApp o correo. Cuando contactas un negocio, queda a tu nombre.\n4. Comparte tu enlace personal: todo negocio que se registre con él queda a tu nombre.\n\nGanas el 30% del primer mes de cada negocio que pague un plan Plata, Oro o Platino, y luego el 15% cada mes que renueve. Tus comisiones se envían a tu PayPal automáticamente 14 días después de cada pago, y te avisamos por correo cada vez que ganas una.\n\nMás información sobre el programa: ${SITE}/agents.html\n¿Preguntas? Responde a este correo o escríbenos por WhatsApp al +1 305 440 5175.\n\n¡Mucho éxito!\nChristopher Kesl\nChristopher The Good Gringo\n${SITE}\n`
-    : `Hi ${first}!\n\nYou're now a Christopher The Good Gringo agent. Welcome to the team!\n\nSign in here: ${SITE}/admin/\n${email ? "Username (email): " + email + "\n" : ""}${tempPass ? "Temporary password: " + tempPass + "\n(you'll be asked to choose your own password when you sign in)" : "Password: the one you chose when you signed up. Forgot it? Tap \"Forgot password?\" on the sign-in page."}\n\nYour agent code: ${code}\nYour personal link: ${link}\n\nFirst steps:\n1. Open "My earnings" and add your PayPal email so you can get paid.\n2. Tap the red "Make my business card" button for your card and the blue "Make my flyer" button for your flyer, both with your QR code: ${SITE}/agent-card.html\n3. In "Prospecting" you'll find businesses and ready-made messages to send by WhatsApp or email. Contacting a business makes it yours.\n4. Share your personal link: every business that signs up with it is credited to you.\n\nYou earn 30% of the first month of every business that pays for Silver, Gold or Platinum, then 15% every month it renews. Your commissions are sent to your PayPal automatically 14 days after each payment, and we email you every time you earn one.\n\nMore about the program: ${SITE}/agents.html\nQuestions? Reply to this email or WhatsApp us at +1 305 440 5175.\n\nGood luck!\nChristopher Kesl\nChristopher The Good Gringo\n${SITE}\n`;
+    ? `Hola ${first},
+
+¡Bienvenido al equipo de agentes de Christopher The Good Gringo! Nos alegra que te unas mientras ampliamos nuestro directorio de hoteles independientes, hostales, restaurantes y otros excelentes negocios locales de América Latina.
+
+TUS DATOS DE ACCESO
+Portal de agentes: ${SITE}/admin/
+Usuario (correo electrónico): ${email}
+${tempPass ? "Contraseña temporal: " + tempPass + "\\nPor seguridad, se te pedirá que elijas tu propia contraseña al iniciar sesión.\\n" : "Contraseña: la que elegiste al registrarte. Por seguridad, nunca te la enviaremos por correo.\\n"}
+Guarda estos datos en un lugar seguro.
+
+CÓMO EMPEZAR
+• Inicia sesión en tu Portal de Agentes: ${SITE}/admin/
+• Explora Prospección para encontrar negocios y usar los mensajes preparados para contactarlos.
+• Usa el botón rojo “Crear mi tarjeta de presentación y volante” para preparar tus materiales promocionales: ${SITE}/agent-card.html
+• Comparte tu enlace personal: ${link}
+• En “Mis ganancias”, agrega tu correo de PayPal para recibir comisiones.
+
+Ganas el 30% del primer mes pagado de cada negocio que elija Silver, Gold o Platinum, y el 15% de cada renovación mensual posterior mientras siga pagando. Las comisiones se pagan después del período de 14 días para posibles reembolsos.
+
+Consulta más información sobre el programa: ${SITE}/agents.html
+
+Si necesitas ayuda para entrar, responde a este correo o escríbenos a christopher@christopherthegoodgringo.com.
+
+¡Gracias por formar parte del equipo!
+
+Christopher Kesl
+Fundador y presidente
+Christopher The Good Gringo
+${SITE}
+`
+    : `Hi ${first},
+
+Welcome to the Christopher the Good Gringo Agent Team! We’re glad you’re joining us as we expand our directory of independent hotels, hostels, restaurants, and other great local businesses across Latin America.
+
+YOUR LOGIN DETAILS
+Agent Portal: ${SITE}/admin/
+Username (registration email): ${email}
+${tempPass ? "Temporary password: " + tempPass + "\\nFor security, you’ll be asked to choose your own password when you sign in.\\n" : "Password: the one you chose during registration. For your security, we never email your password.\\n"}
+Keep your login details in a safe place.
+
+GETTING STARTED
+• Sign in to your Agent Portal: ${SITE}/admin/
+• Open Prospecting to find businesses and use the ready-made messages to contact them.
+• Use the red “Make my business card and flyer” button to create your promotional materials: ${SITE}/agent-card.html
+• Share your personal referral link: ${link}
+• Add your PayPal email under “My earnings” so you can receive commissions.
+
+You earn 30% of the first paid month for each business that chooses Silver, Gold, or Platinum, then 15% of each monthly renewal for as long as it remains on a paid plan. Commissions are paid after the 14-day refund window.
+
+Learn more about the agent program: ${SITE}/agents.html
+
+If you need help signing in, reply to this email or contact christopher@christopherthegoodgringo.com.
+
+Thanks for being part of the team!
+
+Christopher Kesl
+Founder & President
+Christopher The Good Gringo
+${SITE}
+`;
   return { subject, body };
 }
-
 async function sendMail(db: any, to: string, subject: string, text: string) {
   const { data: cfg } = await db.from("prospect_mailer").select("smtp_host").eq("id", 1).maybeSingle();
   const user = (Deno.env.get("EMAIL_USER") ?? "christopher@christopherthegoodgringo.com").trim();
