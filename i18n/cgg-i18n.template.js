@@ -83,6 +83,8 @@
     [/^Wants (.+)$/, function (m) { return 'Quiere ' + tr(m[1]); }],
     [/^Approve (bronze|silver|gold|platinum)$/i, function (m) { return 'Aprobar ' + tr(m[1]); }],
     [/^This claim was not approved\. Note: (.+)$/, function (m) { return 'Esta solicitud no fue aprobada. Nota: ' + tr(m[1]); }],
+    [/^Last contacted (.+?)(?: \((\d+) times\))?$/, function (m) { return 'Último contacto: ' + m[1] + (m[2] ? ' (' + m[2] + ' veces)' : ''); }],
+    [/^(\d+) of (\d+) businesses · (\d+) messaged · (\d+) replied · (\d+) claimed$/, function (m) { return m[1] + ' de ' + m[2] + ' negocios · ' + m[3] + ' contactados · ' + m[4] + ' respondieron · ' + m[5] + ' reclamados'; }],
     [/^Switch to (Bronze|Silver|Gold|Platinum)$/, function (m) { return 'Cambiar a ' + tr(m[1]); }],
     [/^Upgrade (.+)$/, function (m) { return m[1] === 'your listing' ? 'Sube de nivel tu listado' : 'Subir de nivel: ' + m[1]; }],
     [/^Request (Bronze|Silver|Gold|Platinum)$/, function (m) { return 'Solicitar ' + tr(m[1]); }],

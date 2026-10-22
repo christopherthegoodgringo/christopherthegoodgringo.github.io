@@ -37,6 +37,7 @@
     <div class="tabs" role="tablist">
       <button role="tab" data-tab="claims" aria-selected="true">Claims <span id="nClaims"></span></button>
       <button role="tab" data-tab="businesses" aria-selected="false">Businesses</button>
+      <button role="tab" data-tab="prospects" aria-selected="false">Prospecting</button>
       <button role="tab" data-tab="newbiz" aria-selected="false">New businesses <span id="nNew"></span></button>
       <button role="tab" data-tab="edits" aria-selected="false">Updates <span id="nEdits"></span></button>
       <button role="tab" data-tab="upgrades" aria-selected="false">Upgrades <span id="nUpgrades"></span></button>
@@ -58,6 +59,26 @@
       <p class="meta" id="bizCount" style="margin:12px 0 8px"></p>
       <div class="list" id="bizList"></div>
       <div class="actions"><button class="btn light" type="button" id="bizMore" hidden>Show more</button></div>
+    </section>
+    <section class="panel" id="tab-prospects" hidden>
+      <h2>Prospecting</h2>
+      <p class="sub">Free (Bronze) businesses that nobody has claimed yet. Save each one's WhatsApp or email, then tap Send WhatsApp or Send email: your message opens already written, with their name, city and links filled in. The list keeps track of who you have contacted.</p>
+      <details class="panel" style="margin:0 0 16px;padding:14px 16px">
+        <summary style="cursor:pointer;font-weight:700">Edit your messages</summary>
+        <p class="meta" style="margin:10px 0 0">You can use these in any message: {name} business name · {city} city · {finder} link to their Finder · {finder_label} name of their Finder · {claim} link to claim their listing · {plans} link to the plans and prices.</p>
+        <div id="prTemplates"></div>
+      </details>
+      <div class="row">
+        <div><label for="prSearch">Search name, city, number or notes</label><input id="prSearch" type="search"></div>
+        <div><label for="prType">Type</label><select id="prType"><option value="">All types</option></select></div>
+      </div>
+      <div class="row">
+        <div><label for="prStatus">Status</label><select id="prStatus"><option value="">All statuses</option></select></div>
+        <div><label for="prHave">Contact details</label><select id="prHave"><option value="">Everything</option><option value="whatsapp">Has WhatsApp</option><option value="email">Has email</option><option value="none">No contact details yet</option></select></div>
+      </div>
+      <p class="meta" id="prCount" style="margin:12px 0 8px"></p>
+      <div class="list" id="prList"><p class="muted">Loading…</p></div>
+      <div class="actions"><button class="btn light" type="button" id="prMore" hidden>Show more</button></div>
     </section>
     <section class="panel" id="tab-newbiz" hidden><h2>New businesses</h2><p class="sub">Businesses owners added that aren't listed yet. Confirm the person runs it, then approve: it goes live as Bronze in the right Finder, is linked to their account, and any paid level they chose appears under Upgrades.</p><div class="list" id="newList"></div></section>
     <section class="panel" id="tab-edits" hidden><h2>Listing updates</h2><p class="sub">Suggestions from the public "suggest an update" forms. Changes from verified owners go live automatically and don't appear here. Approving publishes the new values to the site.</p><div class="list" id="editsList"></div></section>
@@ -113,9 +134,10 @@
   document.querySelectorAll('[role=tab]').forEach(function (b) {
     b.addEventListener('click', function () {
       document.querySelectorAll('[role=tab]').forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
-      ['claims', 'businesses', 'newbiz', 'edits', 'upgrades', 'passwords', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
+      ['claims', 'businesses', 'prospects', 'newbiz', 'edits', 'upgrades', 'passwords', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
       $('tab-passwords-form').hidden = b.dataset.tab !== 'passwords';
       if (b.dataset.tab === 'passwords' && !owners) loadOwners();
+      if (b.dataset.tab === 'prospects') { if (!prospects) loadProspects(); else renderProspects(); }
     });
   });
 
@@ -147,7 +169,7 @@
       var bad = res.slice(0, 3).find(function (r) { return r.error; });
       if (bad) { P.msg($('claimsList'), 'err', bad.error.message); return; }
       var claims = res[0].data, edits = res[1].data, ups = res[2].data, subs = (res[3] && !res[3].error && res[3].data) || [];
-      allClaims = claims; allSubs = subs; renderBusinesses(); if (owners) renderOwners();
+      allClaims = claims; allSubs = subs; renderBusinesses(); if (prospects) renderProspects(); if (owners) renderOwners();
       var dl = $('ownerEmails'); dl.replaceChildren(); [...new Set(claims.map(function (c) { return c.owner_email; }).filter(Boolean))].sort().forEach(function (e) { dl.appendChild(el('option', { value: e })); });
       var pend = function (rows) { return rows.filter(function (r) { return r.status === 'pending' || r.status === 'paid'; }); };
       renderClaims(pend(claims)); renderNew(pend(subs)); renderEdits(pend(edits)); renderUpgrades(pend(ups), claims);
@@ -530,6 +552,163 @@
       mail ? el('a', { className: 'btn light', href: 'mailto:' + mail + '?subject=' + encodeURIComponent('Confirming your Good Gringo listing claim') + '&body=' + encodeURIComponent(hi) }, 'Email owner') : null);
   }
   function alertIn(card, text) { var m = el('div'); card.appendChild(m); P.msg(m, 'err', text); }
+
+  // ---------- Prospecting ----------
+  // Unclaimed Bronze businesses, with a WhatsApp number and email the admin saves, message templates,
+  // and one-tap "Send WhatsApp" / "Send email" that open the message already written.
+  var SITE = 'https://christopherthegoodgringo.com';
+  var FINDER = {
+    hotels: ['/hotels.html', 'buscador de hoteles', 'hotel finder'],
+    hostels: ['/hostels.html', 'buscador de hostales', 'hostel finder'],
+    restaurants: ['/restaurants.html', 'buscador de restaurantes', 'restaurant finder'],
+    bars: ['/bars.html', 'buscador de bares', 'bar finder'],
+    'street-food': ['/street-food-finder.html', 'buscador de comida callejera', 'street food finder']
+  };
+  var STATUS = [['new', 'Not contacted'], ['messaged', 'Messaged'], ['replied', 'Replied'], ['claimed', 'Claimed'], ['not_interested', 'Not interested']];
+  var prospects = null, templates = {}, prLimit = 30;
+  function prKey(h) { return h.__type + '|' + String(h.id || h.name); }
+
+  Object.keys(cfg.typeLabels).forEach(function (t) { $('prType').appendChild(el('option', { value: t }, cfg.typeLabels[t])); });
+  STATUS.forEach(function (s) { $('prStatus').appendChild(el('option', { value: s[0] }, s[1])); });
+  ['prSearch', 'prType', 'prStatus', 'prHave'].forEach(function (id) { $(id).addEventListener(id === 'prSearch' ? 'input' : 'change', function () { prLimit = 30; renderProspects(); }); });
+  $('prMore').addEventListener('click', function () { prLimit += 30; renderProspects(); });
+
+  function loadProspects() {
+    return Promise.all([sb.from('prospects').select('*'), sb.from('prospect_templates').select('*')]).then(function (res) {
+      if (res[0].error) { P.msg($('prList'), 'err', res[0].error.message); return; }
+      prospects = {};
+      res[0].data.forEach(function (p) { prospects[p.listing_type + '|' + p.listing_id] = p; });
+      templates = {};
+      (res[1].data || []).forEach(function (t) { templates[t.id] = t; });
+      renderTemplates(); renderProspects();
+    });
+  }
+
+  function fill(text, h, lang) {
+    var f = FINDER[h.__type] || FINDER.hostels, id = String(h.id || h.name);
+    var vals = {
+      name: h.name || '', city: h.city || '',
+      finder: SITE + f[0], finder_label: lang === 'en' ? f[2] : f[1],
+      claim: SITE + '/owner/?type=' + encodeURIComponent(h.__type) + '&id=' + encodeURIComponent(id),
+      plans: SITE + '/business-sponsorship.html'
+    };
+    return String(text || '').replace(/\{(\w+)\}/g, function (m, k) { return Object.prototype.hasOwnProperty.call(vals, k) ? vals[k] : m; });
+  }
+  function digits(n) { return String(n || '').replace(/[^0-9]/g, ''); }
+
+  function renderTemplates() {
+    var box = $('prTemplates'); box.replaceChildren();
+    var fields = {};
+    [['whatsapp_es', 'WhatsApp message (Spanish)', false], ['whatsapp_en', 'WhatsApp message (English)', false],
+     ['email_es', 'Email (Spanish)', true], ['email_en', 'Email (English)', true]].forEach(function (d) {
+      var t = templates[d[0]] || {};
+      if (d[2]) {
+        fields[d[0] + ':subject'] = el('input', { value: t.subject || '', maxLength: 300 });
+        box.appendChild(el('label', {}, d[1] + ' · ' + 'Subject')); box.appendChild(fields[d[0] + ':subject']);
+      }
+      fields[d[0]] = el('textarea', { rows: 8, maxLength: 4000, value: t.body || '' });
+      fields[d[0]].value = t.body || '';
+      box.appendChild(el('label', {}, d[1])); box.appendChild(fields[d[0]]);
+    });
+    var msg = el('div');
+    var save = el('button', { className: 'btn', type: 'button', onclick: function () {
+      save.disabled = true;
+      var rows = ['whatsapp_es', 'whatsapp_en', 'email_es', 'email_en'].map(function (id) {
+        return { id: id, body: fields[id].value, subject: fields[id + ':subject'] ? fields[id + ':subject'].value : null, updated_at: new Date().toISOString() };
+      });
+      sb.from('prospect_templates').upsert(rows).then(function (r) {
+        save.disabled = false;
+        if (r.error) return P.msg(msg, 'err', r.error.message);
+        rows.forEach(function (x) { templates[x.id] = x; });
+        P.msg(msg, 'ok', 'Messages saved.');
+      });
+    } }, 'Save messages');
+    box.appendChild(el('div', { className: 'actions' }, save)); box.appendChild(msg);
+  }
+
+  function saveProspect(h, patch) {
+    var key = prKey(h), cur = prospects[key] || {};
+    var row = Object.assign({ listing_type: h.__type, listing_id: String(h.id || h.name), listing_name: h.name, language: 'es', status: 'new', contact_count: 0 }, cur, patch, { updated_at: new Date().toISOString() });
+    prospects[key] = row;
+    return sb.from('prospects').upsert(row);
+  }
+
+  function renderProspects() {
+    var box = $('prList'); if (!box || !prospects) return;
+    var q = $('prSearch').value.trim().toLowerCase(), t = $('prType').value, st = $('prStatus').value, have = $('prHave').value;
+    var all = listings.filter(function (h) { return P.tierOf(h) === 'bronze' && !h.hidden && !ownerOf(h); });
+    var rows = all.filter(function (h) {
+      var p = prospects[prKey(h)] || {};
+      if (t && h.__type !== t) return false;
+      if (st && (p.status || 'new') !== st) return false;
+      if (have === 'whatsapp' && !p.whatsapp) return false;
+      if (have === 'email' && !p.email) return false;
+      if (have === 'none' && (p.whatsapp || p.email)) return false;
+      if (q && [h.name, h.city, h.countryName, h.address, p.whatsapp, p.email, p.notes].join(' ').toLowerCase().indexOf(q) === -1) return false;
+      return true;
+    });
+    var count = function (s) { return all.filter(function (h) { return ((prospects[prKey(h)] || {}).status || 'new') === s; }).length; };
+    $('prCount').textContent = rows.length + ' of ' + all.length + ' businesses · ' + count('messaged') + ' messaged · ' + count('replied') + ' replied · ' + count('claimed') + ' claimed';
+    // Businesses with contact details first, then not contacted before contacted, then by name.
+    var rank = function (h) { var p = prospects[prKey(h)] || {}; return (p.whatsapp || p.email ? 0 : 2) + ((p.status || 'new') === 'new' ? 0 : 1); };
+    rows.sort(function (a, b) { return rank(a) - rank(b) || String(a.name).localeCompare(String(b.name)); });
+    box.replaceChildren();
+    rows.slice(0, prLimit).forEach(function (h) { box.appendChild(prospectCard(h)); });
+    $('prMore').hidden = rows.length <= prLimit;
+    if (!rows.length) box.appendChild(el('p', { className: 'muted' }, 'No businesses match.'));
+  }
+
+  function prospectCard(h) {
+    var p = prospects[prKey(h)] || {}, lang = p.language || 'es', status = p.status || 'new';
+    var out = el('div');
+    var wa = el('input', { type: 'tel', value: p.whatsapp || '', placeholder: '+57 300 123 4567', maxLength: 40 });
+    var em = el('input', { type: 'email', value: p.email || '', placeholder: 'info@hostel.com', maxLength: 200 });
+    var lg = el('select', {}, el('option', { value: 'es', selected: lang === 'es' }, 'Español'), el('option', { value: 'en', selected: lang === 'en' }, 'English'));
+    var ss = el('select', {}); STATUS.forEach(function (s) { ss.appendChild(el('option', { value: s[0], selected: s[0] === status }, s[1])); });
+    var notes = el('input', { value: p.notes || '', maxLength: 2000, placeholder: 'e.g. Spoke with Ana, call back Friday' });
+    function persist() {
+      saveProspect(h, { whatsapp: wa.value.trim() || null, email: em.value.trim() || null, language: lg.value, status: ss.value, notes: notes.value.trim() || null })
+        .then(function (r) { if (r.error) P.msg(out, 'err', r.error.message); else { out.replaceChildren(); renderProspects(); } });
+    }
+    [wa, em, lg, ss, notes].forEach(function (i) { i.addEventListener('change', persist); });
+
+    function contacted() {
+      var cur = prospects[prKey(h)] || {};
+      return saveProspect(h, {
+        whatsapp: wa.value.trim() || null, email: em.value.trim() || null, language: lg.value,
+        status: (cur.status && cur.status !== 'new') ? cur.status : 'messaged',
+        last_contacted_at: new Date().toISOString(), contact_count: (cur.contact_count || 0) + 1
+      }).then(function () { renderProspects(); });
+    }
+    var sendWa = el('a', { className: 'btn', target: '_blank', rel: 'noopener', href: '#', onclick: function (ev) {
+      var n = digits(wa.value);
+      if (!n) { ev.preventDefault(); return P.msg(out, 'err', 'Add a WhatsApp number first.'); }
+      sendWa.href = 'https://wa.me/' + n + '?text=' + encodeURIComponent(fill((templates['whatsapp_' + lg.value] || {}).body, h, lg.value));
+      contacted();
+    } }, 'Send WhatsApp');
+    var sendEm = el('a', { className: 'btn light', href: '#', onclick: function (ev) {
+      var to = em.value.trim();
+      if (!to) { ev.preventDefault(); return P.msg(out, 'err', 'Add an email address first.'); }
+      var t = templates['email_' + lg.value] || {};
+      sendEm.href = 'mailto:' + encodeURIComponent(to) + '?subject=' + encodeURIComponent(fill(t.subject, h, lg.value)) + '&body=' + encodeURIComponent(fill(t.body, h, lg.value));
+      contacted();
+    } }, 'Send email');
+    var maps = el('a', { className: 'btn light', target: '_blank', rel: 'noopener',
+      href: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([h.name, h.address || h.city, h.countryName].filter(Boolean).join(', ')) }, 'Find on Google Maps');
+
+    var last = p.last_contacted_at ? 'Last contacted ' + P.fmtDate(p.last_contacted_at) + (p.contact_count > 1 ? ' (' + p.contact_count + ' times)' : '') : 'Not contacted yet';
+    return el('article', { className: 'item' },
+      el('div', { className: 'item-head' }, el('h3', {}, h.name),
+        el('span', {}, el('span', { className: 'badge pending' }, cfg.typeLabels[h.__type]), ' ',
+          el('span', { className: 'badge ' + (status === 'claimed' ? 'approved' : status === 'not_interested' ? 'rejected' : status === 'new' ? 'tier' : 'pending') }, (STATUS.find(function (s) { return s[0] === status; }) || STATUS[0])[1]))),
+      el('p', { className: 'meta' }, el('span', {}, (h.address && h.countryName && h.address.indexOf(h.countryName) > -1) ? h.address : [h.address || h.city, h.countryName].filter(Boolean).join(', ')), ' · ', el('span', {}, last)),
+      el('div', { className: 'row' }, el('div', {}, el('label', {}, 'WhatsApp'), wa), el('div', {}, el('label', {}, 'Email'), em)),
+      el('div', { className: 'row' }, el('div', {}, el('label', {}, 'Message language'), lg), el('div', {}, el('label', {}, 'Status'), ss)),
+      el('label', {}, 'Notes'), notes,
+      el('div', { className: 'actions' }, sendWa, sendEm, maps),
+      out);
+  }
+
 })();
 </script>
 </body>
