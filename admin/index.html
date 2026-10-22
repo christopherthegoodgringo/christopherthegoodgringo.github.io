@@ -647,8 +647,14 @@
       if (q && [h.name, h.city, h.countryName, h.address, p.whatsapp, p.email, p.notes].join(' ').toLowerCase().indexOf(q) === -1) return false;
       return true;
     });
+    // A business you contacted that has since claimed its listing is marked Claimed automatically.
+    listings.forEach(function (h) {
+      var p = prospects[prKey(h)];
+      if (p && p.status !== 'claimed' && ownerOf(h)) saveProspect(h, { status: 'claimed' });
+    });
     var count = function (s) { return all.filter(function (h) { return ((prospects[prKey(h)] || {}).status || 'new') === s; }).length; };
-    $('prCount').textContent = rows.length + ' of ' + all.length + ' businesses · ' + count('messaged') + ' messaged · ' + count('replied') + ' replied · ' + count('claimed') + ' claimed';
+    var claimedCount = Object.keys(prospects).filter(function (k) { return prospects[k].status === 'claimed'; }).length;
+    $('prCount').textContent = rows.length + ' of ' + all.length + ' businesses · ' + count('messaged') + ' messaged · ' + count('replied') + ' replied · ' + claimedCount + ' claimed';
     // Businesses with contact details first, then not contacted before contacted, then by name.
     var rank = function (h) { var p = prospects[prKey(h)] || {}; return (p.whatsapp || p.email ? 0 : 2) + ((p.status || 'new') === 'new' ? 0 : 1); };
     rows.sort(function (a, b) { return rank(a) - rank(b) || String(a.name).localeCompare(String(b.name)); });
