@@ -40,7 +40,8 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return new Response("Method not allowed", { status: 405 });
-  const secret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
+  // Ignore stray spaces, line breaks or quotes from copy and paste.
+  const secret = (Deno.env.get("STRIPE_WEBHOOK_SECRET") ?? "").trim().replace(/^["']|["']$/g, "").trim();
   if (!secret) return new Response("Webhook secret not set", { status: 500 });
 
   const body = await req.text();
@@ -66,7 +67,7 @@ Deno.serve(async (req: Request) => {
       p_amount_cents: obj.amount_total ?? 0,
     });
     if (error) { console.error(error); return new Response("Database error", { status: 500 }); } // Stripe retries
-    const apiKey = Deno.env.get("STRIPE_SECRET_KEY");
+    const apiKey = (Deno.env.get("STRIPE_SECRET_KEY") ?? "").trim().replace(/^["']|["']$/g, "").trim();
     if (apiKey && Array.isArray(data?.cancel_subscriptions)) {
       for (const id of data.cancel_subscriptions) await cancelSubscription(id, apiKey);
     }
