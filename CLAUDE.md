@@ -32,8 +32,8 @@ Checklist for every change:
 
 - Levels: Bronze (free), Silver $9.99/mo, Gold $19.99/mo, Platinum $49.99/mo.
 - Listings only get the features of their current level. No Instagram links on listings.
-- Payments are moving from Stripe to PayPal (Christopher, Oct 2026): PayPal account or card through PayPal; no Cash App or Klarna.
-  See "PayPal payments" below. Stripe stays on until PayPal is tested.
+- Payments are by PayPal (Christopher, Oct 2026; live since Oct 22): PayPal account or card through PayPal; no Cash App or Klarna.
+  See "PayPal payments" below. The old Stripe code is still there but switched off.
 - Free (Bronze) claims and new businesses go live without admin approval. Paid levels go live
   automatically when Stripe confirms payment (Supabase `stripe-webhook` function). Verified owners'
   edits to their listing details go live automatically (Supabase trigger, 007_auto_publish_owner_edits.sql).
@@ -145,8 +145,8 @@ Checklist for every change:
 
 ## PayPal payments (listings and ebooks)
 
-- Switch: `payments` in `assets/cgg-portal-config.js` ('stripe' now; set to 'paypal' after testing). One device can test PayPal first with
-  localStorage `gg-pay-test` = 'paypal' (open any page with ?paytest=paypal; ?paytest=off). Secrets PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET / PAYPAL_MODE ('sandbox' to test; anything else = live).
+- Switch: `payments` in `assets/cgg-portal-config.js` = 'paypal' (live). Secrets PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET / PAYPAL_MODE
+  ('sandbox' to test; 'live' now). Sandbox was tested Oct 22, 2026 (ebook, Silver subscription, cancel).
 - `paypal` Edge Function (JWT off): setup (admin or `ebook_import_token`: creates product, Silver/Gold/Platinum monthly plans and the webhook,
   ids in `paypal_config` keyed `<mode>:<name>`; run again after switching mode), subscribe (owner, returns PayPal approval link, custom_id =
   upgrade request id), change_plan (revise to another plan, or bronze = cancel; level stays until `ends_at`), ebook_order, capture_ebook

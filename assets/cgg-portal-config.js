@@ -14,15 +14,8 @@ window.CGG_PORTAL = {
   typeLabels: { hotels: 'Hotel', hostels: 'Hostel', restaurants: 'Restaurant', bars: 'Bar', 'street-food': 'Street Food' },
   // Fields owners may change. The database enforces the same list.
   editableFields: ['description', 'address', 'phone', 'email', 'website', 'whatsapp', 'hours', 'priceRange', 'cuisine', 'drinks', 'features', 'photo'],
-  // Which payment system the owner portal and the ebooks page use: 'paypal' or 'stripe'.
-  // Stripe stays on until PayPal is tested. To test PayPal on one device first, run in the browser console:
-  //   localStorage.setItem('gg-pay-test', 'paypal')   (remove it with localStorage.removeItem('gg-pay-test'))
-  // Or open any page with ?paytest=paypal (turn it off with ?paytest=off).
-  payments: (function () { try {
-    var q = (location.search.match(/[?&]paytest=(\w+)/) || [])[1];
-    if (q === 'paypal') localStorage.setItem('gg-pay-test', 'paypal'); else if (q === 'off') localStorage.removeItem('gg-pay-test');
-    if (localStorage.getItem('gg-pay-test') === 'paypal') return 'paypal';
-  } catch (e) {} return 'stripe'; })(),
+  // Which payment system the owner portal and the ebooks page use: 'paypal' (live since Oct 22, 2026) or 'stripe'.
+  payments: 'paypal',
   // Payment links per tier. Leave empty until Stripe is set up.
   // Paid upgrades go live automatically through the "stripe-webhook" Supabase function.
   // LIVE links (real payments, cards only).
