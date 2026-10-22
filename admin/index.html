@@ -125,9 +125,9 @@
       <p class="sub">Commission-only agents. Each one gets a personal link; businesses that sign up through it are credited to them, and they earn 30% of each business's first paid month (Silver $3.00, Gold $6.00, Platinum $15.00), then 15% of every monthly renewal while the business keeps paying (Silver $1.50, Gold $3.00, Platinum $7.50). Commissions are recorded automatically and sent to the agent's PayPal 14 days after each payment. Agents sign in on this page and only see their own Prospecting leads, Add a business and My earnings.</p>
       <details class="panel" style="margin:0 0 16px;padding:14px 16px" open>
         <summary style="cursor:pointer;font-weight:700">Add an agent</summary>
-        <form id="agForm" style="margin-top:12px">
+        <form id="agForm" style="margin-top:12px" novalidate>
           <div class="row"><div><label for="agName">Name</label><input id="agName" required maxlength="120" autocomplete="off"></div>
-            <div><label for="agEmail">Email (they sign in with it)</label><input id="agEmail" type="email" required maxlength="254" autocomplete="off"></div></div>
+            <div><label for="agEmail">Email (they sign in with it)</label><input id="agEmail" type="text" inputmode="email" maxlength="254" autocomplete="off" autocapitalize="none" spellcheck="false"></div></div>
           <div class="row"><div><label for="agPhone">WhatsApp</label><input id="agPhone" type="tel" maxlength="40" placeholder="+57 300 123 4567"></div>
             <div><label for="agCountry">Country (where they get paid)</label><select id="agCountry"></select></div></div>
           <div class="row"><div><label for="agLang">Language</label><select id="agLang"><option value="es">Español</option><option value="en">English</option></select></div>
@@ -249,10 +249,10 @@
         <button class="btn light" type="button" id="mbCsv">Download list (CSV)</button>
         <button class="btn gold" type="button" id="mbAddBtn">Add a member</button>
       </div>
-      <form id="mbAdd" class="item" hidden style="margin:10px 0">
+      <form id="mbAdd" class="item" hidden style="margin:10px 0" novalidate>
         <div class="row">
           <div><label for="mbAddName">Name</label><input id="mbAddName" type="text" maxlength="120" required></div>
-          <div><label for="mbAddEmail">Email</label><input id="mbAddEmail" type="email" maxlength="254" required></div>
+          <div><label for="mbAddEmail">Email</label><input id="mbAddEmail" type="text" inputmode="email" maxlength="254" autocapitalize="none" spellcheck="false"></div>
         </div>
         <div class="row">
           <div><label for="mbAddLang">Language</label><select id="mbAddLang"><option value="es">Spanish</option><option value="en">English</option></select></div>
@@ -330,9 +330,9 @@
     <section class="panel" id="tab-passwords-form" hidden>
       <h2>Reset a password by email</h2>
       <p class="sub">Use this when an owner WhatsApps or emails you because they forgot their password. First confirm it's really them, for example by calling the business's official number. They'll be asked to choose their own password the next time they sign in.</p>
-      <form id="tempPwForm">
+      <form id="tempPwForm" novalidate>
         <label for="tempEmail">Owner's account email</label>
-        <input id="tempEmail" type="email" list="ownerEmails" required autocomplete="off" placeholder="owner@business.com">
+        <input id="tempEmail" type="text" inputmode="email" list="ownerEmails" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="owner@business.com">
         <datalist id="ownerEmails"></datalist>
         <label><input type="checkbox" id="tempConfirm" required style="width:auto;margin-right:8px">I've confirmed this person runs the business</label>
         <div class="actions"><button class="btn" type="submit">Create temporary password</button></div>
