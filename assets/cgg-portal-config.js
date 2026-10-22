@@ -24,5 +24,5 @@ window.CGG_PORTAL = {
   },
   // Stripe customer portal login link (Settings > Billing > Customer portal), for owners
   // to update their card or cancel. Leave empty to hide the link.
-  stripeManageLink: ''
+  stripeManageLink: 'https://billing.stripe.com/p/login/7sY9AUa6z3xjdQeaVE3oA00'
 };

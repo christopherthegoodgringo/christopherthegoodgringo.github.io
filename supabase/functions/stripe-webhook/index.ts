@@ -4,6 +4,7 @@
 //
 // Events to send from Stripe (Developers > Webhooks):
 //   checkout.session.completed      -> owner paid: listing goes live at the new tier
+//   customer.subscription.updated   -> plan changed in "Manage my plan": listing level follows it
 //   customer.subscription.deleted   -> subscription ended: listing drops back to free
 //
 // Secrets (Supabase > Edge Functions > Secrets):
@@ -35,6 +36,18 @@ async function cancelSubscription(id: string, apiKey: string) {
   });
   if (!r.ok && r.status !== 404) console.error("Could not cancel old subscription", id, r.status, await r.text());
 }
+
+// Live Stripe prices and products for each level.
+const TIER_BY_PRICE: Record<string, string> = {
+  "price_1UT9e9L2i5rxKga7cNRDlC3P": "silver",
+  "price_1UT9eDL2i5rxKga78DSYKOQl": "gold",
+  "price_1UT9eEL2i5rxKga7wA0ZUNya": "platinum",
+};
+const TIER_BY_PRODUCT: Record<string, string> = {
+  "prod_VU7tbm08GTV2hj": "silver",
+  "prod_VU7uuSYoEulcGS": "gold",
+  "prod_VU7u0T6DSfzmqm": "platinum",
+};
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -71,6 +84,18 @@ Deno.serve(async (req: Request) => {
     if (apiKey && Array.isArray(data?.cancel_subscriptions)) {
       for (const id of data.cancel_subscriptions) await cancelSubscription(id, apiKey);
     }
+    return Response.json(data);
+  }
+
+  if (event.type === "customer.subscription.updated") {
+    // The owner switched plans in Stripe's "Manage my plan" page. Upgrades arrive right away;
+    // downgrades arrive at the end of the paid month, when Stripe applies them.
+    const price = obj.items?.data?.[0]?.price ?? {};
+    const tier = TIER_BY_PRICE[String(price.id ?? "")] || TIER_BY_PRODUCT[String(typeof price.product === "string" ? price.product : price.product?.id ?? "")];
+    if (!tier) return Response.json({ ignored: "unknown plan" });
+    if (obj.status !== "active" && obj.status !== "trialing") return Response.json({ ignored: "plan not active" });
+    const { data, error } = await db.rpc("stripe_change_subscription_tier", { p_subscription_id: obj.id, p_tier: tier });
+    if (error) { console.error(error); return new Response("Database error", { status: 500 }); }
     return Response.json(data);
   }
 

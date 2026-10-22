@@ -196,7 +196,7 @@
     Promise.all([
       sb.from('listing_claims').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
       sb.from('listing_edit_requests').select('id,claim_id,status,created_at,admin_notes').eq('user_id', user.id).order('created_at', { ascending: false }),
-      sb.from('listing_upgrade_requests').select('id,claim_id,tier,status,created_at').eq('user_id', user.id).order('created_at', { ascending: false }),
+      sb.from('listing_upgrade_requests').select('id,claim_id,tier,status,created_at,stripe_subscription_id').eq('user_id', user.id).order('created_at', { ascending: false }),
       sb.from('listing_submissions').select('id,name,listing_type,city,requested_tier,status,created_at,admin_notes').eq('user_id', user.id).neq('status', 'approved').order('created_at', { ascending: false })
     ]).then(function (res) {
       var err = res.slice(0, 3).find(function (r) { return r.error; });
@@ -295,11 +295,18 @@
     $('upgradeTitle').textContent = 'Upgrade ' + (c.listing_name || (h && h.name) || 'your listing');
     var now = P.tierOf(h || {}), order = ['bronze', 'silver', 'gold', 'platinum'];
     var boxes = $('tierBoxes'); boxes.replaceChildren();
+    // Owners already paying through Stripe change plans in Stripe's "Manage my plan" page, so they are
+    // never billed twice: moving up starts right away and costs only the difference for this month;
+    // moving down or cancelling takes effect when the month they paid for ends.
+    var sub = cfg.stripeManageLink && ups.find(function (u) { return u.status === 'approved' && u.stripe_subscription_id; });
+    var manage = cfg.stripeManageLink + '?prefilled_email=' + encodeURIComponent(user.email || '');
     order.forEach(function (t) {
       var info = tierInfo[t], isNow = t === now, higher = order.indexOf(t) > order.indexOf(now);
       var pending = ups.find(function (u) { return u.tier === t && (u.status === 'pending' || u.status === 'paid'); });
       var action = null;
       if (isNow) action = el('span', { className: 'badge approved' }, 'Your current tier');
+      else if (sub) action = el('a', { className: 'btn' + (t === 'platinum' ? ' gold' : '') + (higher ? '' : ' secondary'), href: manage, target: '_blank', rel: 'noopener' },
+        t === 'bronze' ? 'Cancel my plan' : 'Switch to ' + info[0].split(' ·')[0]);
       else if (pending && pending.status === 'pending' && payLink(pending.id, t)) action = el('a', { className: 'btn' + (t === 'platinum' ? ' gold' : ''), href: payLink(pending.id, t) }, 'Pay to activate');
       else if (pending) action = el('span', { className: 'badge pending' }, 'Requested');
       else if (higher) action = el('button', { className: 'btn' + (t === 'platinum' ? ' gold' : ''), type: 'button', onclick: function (ev) { requestUpgrade(c, t, ev.currentTarget); } }, cfg.stripeLinks[t] ? 'Upgrade and pay' : 'Request ' + info[0].split(' ·')[0]);
@@ -307,6 +314,9 @@
       boxes.appendChild(el('div', { className: 'tier-box ' + t }, el('h4', {}, parts[0]), el('p', { className: 'price' }, amt[0], amt[1] ? el('small', {}, ' / ' + amt[1]) : null),
         el('ul', {}, info[1].map(function (x) { return el('li', {}, x); }).reduce(function (f, li) { f.appendChild(li); return f; }, document.createDocumentFragment())), action));
     });
+    if (sub) {
+      boxes.appendChild(el('p', { className: 'meta' }, 'Switching to a higher level starts right away, and you only pay the difference for the rest of this month. Switching to a lower level or cancelling takes effect when the month you already paid for ends.'));
+    }
     if (now !== 'bronze' && cfg.stripeManageLink) {
       boxes.appendChild(el('p', { className: 'meta' }, 'Need to update your card or cancel? ',
         el('a', { href: cfg.stripeManageLink + '?prefilled_email=' + encodeURIComponent(user.email || ''), target: '_blank', rel: 'noopener' }, 'Manage your subscription')));
