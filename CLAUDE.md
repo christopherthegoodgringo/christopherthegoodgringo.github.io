@@ -49,3 +49,10 @@ Checklist for every change:
 - Statuses: Not contacted, WhatsApped, Emailed, WhatsApped and emailed (set automatically by the send
   buttons), Replied and Not interested (set by hand), Claimed (set automatically when they claim).
 - Phone numbers found on Google Maps are pasted in by Christopher; don't copy Google Maps data into the database automatically.
+
+## Logo
+
+- The site logo everywhere is the "GG" sticker icon: `assets/cgg-home-emblem.svg` (same art in `assets/cgg-logo.svg`,
+  `/favicon.svg`, `/favicon-32.png`, `/apple-touch-icon.png`). Use it for any new logo spot.
+- `assets/cgg-wordmark.svg` is the full "Christopher the Good Gringo™" sticker, kept for print and merch.
+- Regenerate them with `scripts/make_logo.py` (lettering is converted to shapes; needs the Fredoka font file).
