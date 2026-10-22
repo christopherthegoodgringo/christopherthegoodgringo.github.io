@@ -116,6 +116,11 @@ Checklist for every change:
   with a temporary password he sends by WhatsApp/email. Agents sign in on /admin/ and only see Prospecting (their own leads
   plus businesses nobody has contacted; contacting or adding one makes it theirs), "Add a business" (live as Bronze, becomes
   their lead) and "My earnings". Outreach links get `&agent=CODE`.
+- Agents tab buttons per agent: Copy their link, Edit details (name, email = their sign-in, phone, country, language, code, notes;
+  `agents` action update), New temporary password, Turn off / Turn back on, Delete (action delete: removes the agent, their
+  sign-in, referrals and commissions; their prospects go back to the shared list).
+- Public agent page `agents.html` (footer on every page: "Become an Agent" + "Agent Login" -> /admin/): explains the program and has
+  a self sign-up form (`agents` action signup, no review, works right away, code made from their name).
 - Credit: any page stores `?agent=CODE` in localStorage `gg-agent` (assets/cgg-app.js, 90 days, first agent wins); the owner
   portal calls `record_agent_referral()` when the owner signs in (`agent_referrals`, first agent wins per owner account).
 - A trigger on `listing_upgrade_requests` records `agent_commissions` when a paid level goes live; payable 14 days later and
