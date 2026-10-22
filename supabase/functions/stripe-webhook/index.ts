@@ -4,6 +4,7 @@
 //
 // Events to send from Stripe (Developers > Webhooks):
 //   checkout.session.completed      -> owner paid: listing goes live at the new tier
+//                                      (or, with metadata ebook=<id>: ebook sale, recorded in ebook_orders + emailed)
 //   customer.subscription.updated   -> plan changed in "Manage my plan": listing level follows it
 //   customer.subscription.deleted   -> subscription ended: listing drops back to free
 //
@@ -65,6 +66,24 @@ Deno.serve(async (req: Request) => {
   const event = JSON.parse(body);
   const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
   const obj = event.data?.object ?? {};
+
+  if (event.type === "checkout.session.completed" && obj.metadata?.ebook) {
+    // Ebook sale (Payment Link with metadata ebook=<id>): record it and email the download link.
+    if (obj.payment_status !== "paid" && obj.payment_status !== "no_payment_required") return Response.json({ ignored: "not paid yet" });
+    const { error } = await db.from("ebook_orders").upsert({
+      session_id: obj.id, ebook_id: String(obj.metadata.ebook), email: obj.customer_details?.email ?? obj.customer_email ?? null,
+      amount_cents: obj.amount_total ?? 0, currency: obj.currency ?? "usd", language: obj.locale ?? null,
+    }, { onConflict: "session_id", ignoreDuplicates: true });
+    if (error) { console.error(error); return new Response("Database error", { status: 500 }); }
+    try {
+      await fetch(Deno.env.get("SUPABASE_URL")! + "/functions/v1/ebook-delivery", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")! },
+        body: JSON.stringify({ action: "email", session_id: obj.id }),
+      });
+    } catch (e) { console.error("ebook email", e); } // the download page still works without the email
+    return Response.json({ ebook: obj.metadata.ebook });
+  }
 
   if (event.type === "checkout.session.completed") {
     const requestId = obj.client_reference_id;

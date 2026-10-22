@@ -8,7 +8,7 @@
 (function () {
   var P = window.CGGPortal, el = P.el, sb = P.client();
   var $ = function (id) { return document.getElementById(id); };
-  var days = 30, data = null, busy = false;
+  var days = 30, data = null, busy = false, ebooks = null;
 
   var PAGES = {
     '/': 'Home', '/index.html': 'Home', '/hostels.html': 'Hostel Finder', '/hotels.html': 'Hotel Finder',
@@ -168,12 +168,46 @@
     try { var p = k.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]).toLocaleDateString(lang() === 'es' ? 'es-CO' : 'en-US', { month: 'short', day: 'numeric' }); } catch (e) { return k; }
   }
 
+
+  // Ebook sales (Stripe Payment Links -> stripe-webhook -> ebook_orders), read through the ebook-delivery function (admins only).
+  function ebookCard() {
+    if (!ebooks || !ebooks.orders) return null;
+    var titles = {}; (ebooks.books || []).forEach(function (b) { titles[b.id] = b.title; });
+    var paid = ebooks.orders.filter(function (o) { return o.amount_cents > 0; });
+    var total = paid.reduce(function (a, o) { return a + o.amount_cents; }, 0);
+    var body = el('div');
+    var sum = el('p', { className: 'meta' });
+    sum.appendChild(el('span', { textContent: 'Ebooks sold' })); sum.appendChild(document.createTextNode(': ' + num(paid.length) + ' · '));
+    sum.appendChild(el('span', { textContent: 'Total' })); sum.appendChild(document.createTextNode(': $' + (total / 100).toFixed(2)));
+    body.appendChild(sum);
+    if (!paid.length) body.appendChild(el('p', { className: 'st-note', textContent: 'No ebook sales yet. Each sale shows here automatically, and the buyer gets the download link by email.' }));
+    var counts = {}; paid.forEach(function (o) { counts[o.ebook_id] = (counts[o.ebook_id] || 0) + 1; });
+    if (paid.length) body.appendChild(bars(Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; }).map(function (k) { return { d: titles[k] || k, n: counts[k] }; })));
+    paid.slice(0, 25).forEach(function (o) {
+      var row = el('p', { className: 'meta st-sub' });
+      row.appendChild(document.createTextNode(when(String(o.created_at).slice(0, 10)) + ' · '));
+      row.appendChild(el('span', { textContent: titles[o.ebook_id] || o.ebook_id }));
+      row.appendChild(document.createTextNode(' · $' + (o.amount_cents / 100).toFixed(2) + ' · ' + (o.email || '')));
+      if (o.email_error) { row.appendChild(document.createTextNode(' · ')); row.appendChild(el('span', { textContent: 'Email not sent' })); }
+      body.appendChild(row);
+    });
+    return card('Ebook sales', 'All time. Paid by card through Stripe.', body);
+  }
+  function loadEbooks() {
+    sb.auth.getSession().then(function (r) {
+      var tok = r.data && r.data.session && r.data.session.access_token; if (!tok) return;
+      fetch('https://dhkyyhbfybbxczveyvfw.supabase.co/functions/v1/ebook-delivery', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok }, body: JSON.stringify({ action: 'sales' }) })
+        .then(function (x) { return x.json(); }).then(function (j) { if (j && j.orders) { ebooks = j; if (data) render(); } }).catch(function () {});
+    });
+  }
+
   function render() {
     var out = $('stOut'); out.replaceChildren();
     if (!data) return;
     var t = data.totals || {}, prev = data.previous || {};
     out.appendChild(tiles(t, prev));
     if (!t.views && !t.searches && !t.clicks) out.appendChild(el('p', { className: 'st-note', textContent: 'Counting started when this tab was added. Visits will show here as people use the site.' }));
+    var ec = ebookCard(); if (ec) out.appendChild(ec);
     out.appendChild(card('Visits over time', days === 1 ? 'Today, by hour (Chicago time).' : days > 120 ? 'By week.' : 'By day.', chart(data.daily || [])));
     var grid = el('div', { className: 'st-grid' });
     grid.appendChild(card('Most visited pages', 'Page views.', bars((data.pages || []).map(function (r) { var o = pageName(r.k); o.n = r.n; return o; }))));
@@ -210,6 +244,7 @@
     if (busy) return;
     busy = true; $('stRefresh').disabled = true;
     if (!data) $('stOut').replaceChildren(el('p', { className: 'muted', textContent: 'Loading…' }));
+    loadEbooks();
     sb.rpc('site_stats', { p_days: days }).then(function (r) {
       busy = false; $('stRefresh').disabled = false;
       if (r.error) { $('stOut').replaceChildren(); P.msg($('stOut'), 'err', 'The statistics couldn\'t be loaded. Try again in a moment.'); return; }

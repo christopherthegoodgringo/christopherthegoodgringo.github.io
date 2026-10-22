@@ -130,3 +130,22 @@ Checklist for every change:
   then sends follow-ups due, then first messages, to Prospecting rows with an email, no agent and status New/WhatsApped/Emailed/Both.
   Every email gets a "reply STOP" line, is saved to the Sent folder and logged in `prospect_emails`.
 - Admin Prospecting tab: "Automatic emails" box (on/pause, daily limit, send now, recently sent). Database: supabase/017_prospect_mailer.sql.
+
+## Ebook store (Stripe)
+
+- Ebooks page (`ebooks.html`): 10 covers; the ones for sale show "Available now" + a "Buy now · $9.99" button (a Stripe Payment Link),
+  the rest "Coming soon". Every ebook comes as an English AND a Spanish PDF (one purchase = both).
+- For sale now: `colombia-on-a-budget` (buy.stripe.com/8x2cN60vZfg16nM0h03oA03), `medellin-like-a-local` (buy.stripe.com/aFaaEY1A33xjaE2fbU3oA04).
+  Christopher paused the other 8 ("coming soon"); a Cartagena English draft is in the bucket at src/drafts/.
+- Flow: Payment Link (card only, `managed_payments` off, metadata `ebook=<id>`, redirect to `/ebook-download.html?session_id={CHECKOUT_SESSION_ID}`)
+  -> `stripe-webhook` (ebook branch, before the listing-upgrade code) records `ebook_orders` and calls `ebook-delivery` (action email)
+  -> buyer gets a bilingual email from christopher@ with the download link. The download page calls `ebook-delivery` (action download)
+  for 24-hour signed links to `<id>/en.pdf` and `<id>/es.pdf` in the PRIVATE storage bucket `ebooks`. Admin: Statistics tab -> "Ebook sales".
+- Database: `ebooks` (id, titles, price, payment link, file paths, active), `ebook_orders` (supabase/019_ebooks.sql). RLS on, no public policies:
+  everything goes through the `ebook-delivery` function (JWT off; actions download / email / sales (admins) / import).
+- NEVER put ebook PDFs or manuscripts in this repo (it's public). Manuscripts: bucket `ebooks` at `src/<id>.<lang>.md`.
+  Build: `python3 scripts/ebooks/build.py SRC OUT <id> <lang>` (pandoc + Playwright, A5, brand cover).
+  Publish: `python3 scripts/ebooks/publish.py OUT SRC <id>` encrypts the files and force-pushes them to the temporary branch
+  `ebook-transfer`; POST its JSON + `token` (vault `ebook_import_token`) to ebook-delivery action import (from SQL with net.http_post);
+  then force-push an empty commit over `ebook-transfer` (the proxy can't delete branches).
+  New ebook for sale: create a Payment Link (as above), insert the `ebooks` row (active true), add the Buy button on ebooks.html.
