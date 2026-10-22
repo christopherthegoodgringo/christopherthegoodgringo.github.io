@@ -119,6 +119,18 @@
         el('p', { className: 'meta ag-link' }, el('span', {}, 'Their link'), ': ', data(linkFor(a.code))),
         el('div', { className: 'actions' },
           copyBtn(linkFor(a.code), 'Copy their link'),
+          el('button', { type: 'button', className: 'btn light', onclick: function (ev) {
+            var b = ev.currentTarget;
+            if (!window.confirm('Send the welcome email to ' + a.name + ' at ' + a.email + '?')) return;
+            b.disabled = true; b.textContent = 'Sending…';
+            call({ action: 'send_welcome', agent_id: a.id }).then(function (r) {
+              b.disabled = false; b.textContent = 'Send welcome email';
+              P.msg(out, 'ok', (r && r.message) || ('Welcome email sent to ' + a.email + '.'));
+            }, function (e) {
+              b.disabled = false; b.textContent = 'Send welcome email';
+              P.msg(out, 'err', e.message || 'Could not send the welcome email.');
+            });
+          } }, 'Send welcome email'),
           el('a', { className: 'btn light', target: '_blank', rel: 'noopener', href: cardLink(a) }, 'Business card'),
           el('button', { type: 'button', className: 'btn light', onclick: function () { out.replaceChildren(editForm(a, out)); } }, 'Edit details'),
           el('button', { type: 'button', className: 'btn light', onclick: function (ev) {
