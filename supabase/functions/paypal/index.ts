@@ -123,8 +123,10 @@ Deno.serve(async (req: Request) => {
       if (!u || u.user_id !== who.id || !u.stripe_subscription_id) return json({ error: "No PayPal plan was found for this listing." }, 404);
       if (tier === "bronze") {
         const sub = await pp("/v1/billing/subscriptions/" + u.stripe_subscription_id);
-        const ends = sub.billing_info?.next_billing_time || new Date(Date.now() + 30 * 86400000).toISOString();
-        await pp("/v1/billing/subscriptions/" + u.stripe_subscription_id + "/cancel", "POST", { reason: "Cancelled by the owner in the business portal" });
+        const { data: had } = await db.from("listing_upgrade_requests").select("ends_at").eq("id", u.id).single();
+        const ends = had?.ends_at || sub.billing_info?.next_billing_time || new Date(Date.now() + 30 * 86400000).toISOString();
+        // Already cancelled (a second click, or cancelled in PayPal itself): just keep the level until the paid month ends.
+        if (sub.status === "ACTIVE" || sub.status === "SUSPENDED") await pp("/v1/billing/subscriptions/" + u.stripe_subscription_id + "/cancel", "POST", { reason: "Cancelled by the owner in the business portal" });
         await db.from("listing_upgrade_requests").update({ ends_at: ends }).eq("id", u.id);
         return json({ cancelled: true, ends_at: ends });
       }
