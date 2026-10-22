@@ -10,7 +10,7 @@ create table if not exists public.prospects (
   whatsapp text check (char_length(whatsapp) <= 40),
   email text check (char_length(email) <= 200),
   language text not null default 'es' check (language in ('es','en')),
-  status text not null default 'new' check (status in ('new','messaged','replied','claimed','not_interested')),
+  status text not null default 'new' check (status in ('new','whatsapped','emailed','both','replied','claimed','not_interested')),
   notes text check (char_length(notes) <= 2000),
   last_contacted_at timestamptz,
   contact_count integer not null default 0,
