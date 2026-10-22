@@ -33,6 +33,11 @@
   function day(iso) { if (!iso) return ''; try { return new Date(iso).toLocaleDateString(lang() === 'es' ? 'es-CO' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' }); } catch (e) { return iso.slice(0, 10); } }
   function data(text) { return el('span', { attrs: { 'data-no-translate': '' } }, String(text == null ? '' : text)); }
   function linkFor(code) { return SITE + '/owner/?agent=' + encodeURIComponent(code); }
+  // Business card generator (agent-card.html), filled in with the agent's details.
+  function cardLink(a) {
+    var q = new URLSearchParams({ name: a.name || '', code: a.code || '', email: a.email || '', phone: a.phone || '', lang: a.language === 'en' ? 'en' : 'es' });
+    return '/agent-card.html?' + q.toString();
+  }
   function call(body) {
     return sb.functions.invoke('agents', { body: body }).then(function (r) {
       if (r.error) {
@@ -113,6 +118,7 @@
         el('p', { className: 'meta ag-link' }, el('span', {}, 'Their link'), ': ', data(linkFor(a.code))),
         el('div', { className: 'actions' },
           copyBtn(linkFor(a.code), 'Copy their link'),
+          el('a', { className: 'btn light', target: '_blank', rel: 'noopener', href: cardLink(a) }, 'Business card'),
           el('button', { type: 'button', className: 'btn light', onclick: function () { out.replaceChildren(editForm(a, out)); } }, 'Edit details'),
           el('button', { type: 'button', className: 'btn light', onclick: function (ev) {
             var b = ev.currentTarget; b.disabled = true;
@@ -242,7 +248,8 @@
         el('p', { className: 'meta' }, 'Businesses that sign up through this link are credited to you. Your Prospecting messages already include it.'),
         el('p', { className: 'ag-big' }, data(link)),
         el('div', { className: 'actions' }, copyBtn(link, 'Copy link'),
-          el('a', { className: 'btn light', target: '_blank', rel: 'noopener', href: 'https://wa.me/?text=' + encodeURIComponent(link) }, 'Share on WhatsApp')),
+          el('a', { className: 'btn light', target: '_blank', rel: 'noopener', href: 'https://wa.me/?text=' + encodeURIComponent(link) }, 'Share on WhatsApp'),
+          el('a', { className: 'btn gold', target: '_blank', rel: 'noopener', href: cardLink(me) }, 'Make my business card')),
         el('p', { className: 'meta' }, el('span', {}, 'Your code'), ': ', el('strong', {}, data(me.code)))));
       box.appendChild(el('div', { className: 'ag-tiles' }, tile(s.referrals || 0, 'Owners signed up'), tile(s.sales || 0, 'Paid sales'),
         tile(money(s.earned_cents), 'Earned'), tile(money(s.paid_cents), 'Paid out'), tile(money(s.waiting_cents), 'Waiting')));

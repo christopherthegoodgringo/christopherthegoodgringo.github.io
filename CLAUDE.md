@@ -131,6 +131,9 @@ Checklist for every change:
 - Public agent page `agents.html` (footer on every page: "Become an Agent" + "Agent Login" -> /admin/): explains the program and has
   a self sign-up form (`agents` action signup, no review, works right away, code made from their name). Agent countries
   (sign-up and admin lists, checked on the server): the 17 Latin American countries on the site + the United States, Puerto Rico, Canada and Spain.
+- Business card generator `agent-card.html` (noindex): agent fills name, WhatsApp, email, code and card language (Spanish default);
+  canvas cards 1050x600 (3.5x2 in at 300 dpi), QR (assets/vendor/qrcode.js, MIT) to /owner/?agent=CODE; download PNGs, share on phone,
+  print 10 per page (fronts page 1, backs page 2). Linked from My earnings ("Make my business card", prefilled), the Agents tab and agents.html.
 - Credit: any page stores `?agent=CODE` in localStorage `gg-agent` (assets/cgg-app.js, 90 days, first agent wins); the owner
   portal calls `record_agent_referral()` when the owner signs in (`agent_referrals`, first agent wins per owner account).
 - A trigger on `listing_upgrade_requests` records the first-month `agent_commissions` when a paid level goes live; each payable 14 days later and
