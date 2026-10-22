@@ -632,6 +632,8 @@
     };
     return String(text || '').replace(/\{(\w+)\}/g, function (m, k) { return Object.prototype.hasOwnProperty.call(vals, k) ? vals[k] : m; });
   }
+  // Blank space under every email's signature. It ends with an invisible space so mail apps don't trim it away.
+  var EMAIL_GAP = '\n\n\n\n\u00a0';
   function digits(n) { return String(n || '').replace(/[^0-9]/g, ''); }
 
   function renderTemplates() {
@@ -735,7 +737,7 @@
       var to = em.value.trim();
       if (!to) { ev.preventDefault(); return P.msg(out, 'err', 'Add an email address first.'); }
       var t = templates['email_' + lg.value] || {};
-      sendEm.href = 'mailto:' + encodeURIComponent(to) + '?subject=' + encodeURIComponent(fill(t.subject, h, lg.value)) + '&body=' + encodeURIComponent(fill(t.body, h, lg.value));
+      sendEm.href = 'mailto:' + encodeURIComponent(to) + '?subject=' + encodeURIComponent(fill(t.subject, h, lg.value)) + '&body=' + encodeURIComponent(fill(t.body, h, lg.value).replace(/\s+$/, '') + EMAIL_GAP);
       contacted('emailed');
     } }, 'Send email');
     var maps = el('a', { className: 'btn light', target: '_blank', rel: 'noopener',
