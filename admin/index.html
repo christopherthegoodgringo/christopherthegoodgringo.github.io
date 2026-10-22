@@ -389,6 +389,8 @@
     AGENT = a; window.CGGAgents.setMe(a);
     $('heroTitle').textContent = 'Agent portal';
     $('heroText').textContent = 'Message businesses with your personal link, add new ones, and follow your earnings.';
+    // Business card maker (agent-card.html) right at the top, so agents find it.
+    if (!$('agCardBtn')) $('heroText').after(el('p', { style: 'margin:14px 0 0' }, el('a', { id: 'agCardBtn', className: 'btn gold', href: '/agent-card.html', target: '_blank', rel: 'noopener' }, 'Make my business card')));
     $('dash').hidden = false;
     $('who').replaceChildren(el('span', {}, 'Signed in as'), ' ', el('span', { attrs: { 'data-no-translate': '' } }, u.email), ' · ', el('span', {}, 'Agent'));
     document.querySelectorAll('.tabs [role=tab]').forEach(function (b) { b.hidden = ['prospects', 'agentadd', 'earnings'].indexOf(b.dataset.tab) < 0; });
