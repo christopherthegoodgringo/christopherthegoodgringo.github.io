@@ -130,6 +130,8 @@
 
   // Wait for the visitor's first search: a country/city pick, a typed search, or the search button.
   function watch() {
+    // Preview link for the site owner: add ?join=1 to any page to open the popup right away.
+    if (/[?&]join=1\b/.test(location.search)) { setTimeout(open, 600); return; }
     if (seen()) return;
     var forms = document.querySelectorAll('form.filters');
     if (!forms.length) return;
