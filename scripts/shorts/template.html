@@ -33,6 +33,10 @@ const ICONS = {
   mountain:'<svg viewBox="0 0 100 100"><path d="M5 85 38 30l15 22 10-14 32 47z" fill="#cfe0d4"/><path d="M38 30l9 14-9 6-8-6z" fill="#fffdf8"/><circle cx="76" cy="22" r="10" fill="#f5bd3e"/></svg>',
   coffee:'<svg viewBox="0 0 100 100"><path d="M18 40h52v22a22 22 0 0 1-22 22h-8a22 22 0 0 1-22-22z" fill="#f5bd3e"/><path d="M70 46h6a10 10 0 0 1 0 20h-7" fill="none" stroke="#f5bd3e" stroke-width="7"/><path d="M34 14c-6 8 6 10 0 18M50 14c-6 8 6 10 0 18" fill="none" stroke="#cfe0d4" stroke-width="5" stroke-linecap="round"/></svg>',
   bed:'<svg viewBox="0 0 100 100"><rect x="10" y="48" width="80" height="22" rx="6" fill="#f5bd3e"/><rect x="16" y="34" width="26" height="16" rx="6" fill="#fffdf8"/><rect x="10" y="30" width="7" height="50" rx="3" fill="#cfe0d4"/><rect x="83" y="56" width="7" height="24" rx="3" fill="#cfe0d4"/></svg>',
+  shop:'<svg viewBox="0 0 100 100"><path d="M14 40h72v46H14z" fill="#cfe0d4"/><path d="M10 22h80l-6 20H16z" fill="#f5bd3e"/><path d="M10 42c0 8 13 8 13 0 0 8 14 8 14 0 0 8 13 8 13 0 0 8 14 8 14 0 0 8 13 8 13 0" fill="none" stroke="#f5bd3e" stroke-width="6"/><rect x="42" y="58" width="16" height="28" rx="2" fill="#103e2f"/></svg>',
+  check:'<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="#f5bd3e"/><path d="M30 52l13 13 28-30" fill="none" stroke="#103e2f" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  globe:'<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#cfe0d4"/><path d="M50 10c-14 12-14 68 0 80M50 10c14 12 14 68 0 80M12 38h76M12 62h76" fill="none" stroke="#103e2f" stroke-width="4"/><circle cx="66" cy="34" r="8" fill="#f5bd3e"/></svg>',
+  pencil:'<svg viewBox="0 0 100 100"><path d="M20 80l4-18 42-42 14 14-42 42z" fill="#f5bd3e"/><path d="M66 20l14 14 6-6a6 6 0 0 0 0-8l-6-6a6 6 0 0 0-8 0z" fill="#cfe0d4"/><path d="M20 80l4-18 14 14z" fill="#fffdf8"/></svg>',
   question:'<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="#f5bd3e"/><text x="50" y="68" text-anchor="middle" font-family="Poppins" font-weight="700" font-size="56" fill="#103e2f">?</text></svg>'
 };
 const spec = JSON.parse(decodeURIComponent(new URLSearchParams(location.search).get('spec') || '{}'));
@@ -48,7 +52,7 @@ scenes.forEach((s, i) => {
   if (s.count != null) h += '<div class="big part" data-count="' + s.count + '">0</div>';
   if (s.title) h += '<h1 class="part">' + s.title + '</h1>';
   if (s.text) h += '<p class="part">' + s.text + '</p>';
-  if (s.end) h += '<img class="endlogo part" src="../../assets/cgg-wordmark.svg" alt=""><p class="part">' + (s.endText || '') + '</p><div class="part"><span class="url">' + (spec.url || 'christopherthegoodgringo.com') + '</span></div>';
+  if (s.end) h += '<img class="endlogo part" src="../../assets/cgg-wordmark.svg" alt=""><p class="part">' + (s.endText || '') + '</p><div class="part"><span class="url" style="font-size:' + ((spec.url || '').length > 30 ? 40 : 50) + 'px">' + (spec.url || 'christopherthegoodgringo.com') + '</span></div>';
   el.innerHTML = h; stage.appendChild(el);
 });
 const total = t0;
