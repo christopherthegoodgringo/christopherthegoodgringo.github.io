@@ -283,7 +283,7 @@
     '.cgg-lang-row{display:flex;justify-content:center;width:100%;margin-top:4px}' +
     '.cgg-lang-overlay{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(9,41,30,.82);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}' +
     '.cgg-lang-card{width:min(420px,100%);background:#fffdf8;color:#17271f;border-radius:18px;padding:28px 22px 24px;text-align:center;box-shadow:0 25px 90px rgba(0,0,0,.35);border:1px solid #f5bd3e;font-family:"DM Sans",system-ui,sans-serif}' +
-    '.cgg-lang-card img{width:64px;height:64px;margin:0 auto 10px;display:block}' +
+    '.cgg-lang-card img{width:190px;max-width:70%;height:auto;margin:0 auto 12px;display:block}' +
     '.cgg-lang-card h2{margin:0 0 4px;font:800 1.45rem/1.15 "Bricolage Grotesque","DM Sans",system-ui,sans-serif;letter-spacing:-.02em;color:#09291e}' +
     '.cgg-lang-card p{margin:0 0 20px;color:#657268;font-size:.95rem}' +
     '.cgg-lang-choices{display:grid;grid-template-columns:1fr 1fr;gap:12px}' +
@@ -341,7 +341,7 @@
     o.setAttribute('aria-modal', 'true');
     o.setAttribute('aria-labelledby', 'cggLangTitle');
     o.innerHTML = '<div class="cgg-lang-card">' +
-      '<img src="/assets/cgg-home-emblem.svg" alt="" onerror="this.remove()">' +
+      '<img src="/assets/cgg-wordmark.svg?v=1" alt="" onerror="this.remove()">' +
       '<h2 id="cggLangTitle">Choose your language<br>Elige tu idioma</h2>' +
       '<p>You can change it any time at the bottom of the page.<br>Puedes cambiarlo cuando quieras al final de la página.</p>' +
       '<div class="cgg-lang-choices">' +

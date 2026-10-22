@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script src="/assets/cgg-i18n.js?v=20261021d"></script>
+<head><script src="/assets/cgg-i18n.js?v=20261021e"></script><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Meet the Team | Christopher The Good Gringo™</title>
@@ -74,7 +74,7 @@ footer .wrap a { color: #f5bd3e !important; font-weight: 400 !important; text-de
 <style id="cgg-nav-hover-polish">.cgg-global-nav{gap:clamp(6px,.75vw,12px)!important}.cgg-global-nav a{font-weight:800!important;border-radius:999px!important;padding:9px 11px!important;transition:background-color .18s ease,color .18s ease!important}.cgg-global-nav a:hover,.cgg-global-nav a:focus-visible{background:#f5bd3e!important;color:#103e2f!important;outline:none!important}@media(max-width:1120px){.cgg-global-nav{gap:8px!important}.cgg-global-nav a{padding:8px 11px!important}}@media(max-width:560px){.cgg-global-nav{gap:5px!important}.cgg-global-nav a{padding:8px 10px!important}}</style>
 </head>
 <body>
-<header class="cgg-global-header"><a class="cgg-global-brand" href="/" aria-label="Christopher the Good Gringo home"><img src="/assets/cgg-home-emblem.svg" alt=""><span>CHRISTOPHER THE GOOD GRINGO™</span></a><nav class="cgg-global-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/hotels.html">Hotel Finder</a><a href="/hostels.html">Hostel Finder</a><a href="/restaurants.html">Restaurant Finder</a><a href="/bars.html">Bar Finder</a><a href="/street-food-finder.html">Street Food Finder</a><a href="/team/">Meet the Team</a><a href="/social-media.html">Social Media &amp; Contact</a><a href="/merch.html">Merch</a><a href="/ebooks.html">Ebooks</a><a href="/business-sponsorship.html">Business &amp; Sponsorship</a></nav></header>
+<header class="cgg-global-header"><a class="cgg-global-brand" href="/" aria-label="Christopher the Good Gringo home"><img src="/assets/cgg-home-emblem.svg?v=2" alt=""><span>CHRISTOPHER THE GOOD GRINGO™</span></a><nav class="cgg-global-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/hotels.html">Hotel Finder</a><a href="/hostels.html">Hostel Finder</a><a href="/restaurants.html">Restaurant Finder</a><a href="/bars.html">Bar Finder</a><a href="/street-food-finder.html">Street Food Finder</a><a href="/team/">Meet the Team</a><a href="/social-media.html">Social Media &amp; Contact</a><a href="/merch.html">Merch</a><a href="/ebooks.html">Ebooks</a><a href="/business-sponsorship.html">Business &amp; Sponsorship</a></nav></header>
 
 <main>
 <section class="hero"><div class="wrap"><div class="eyebrow"><span>The people and intelligence behind the brand</span></div><h1><span>Meet the team building <em>better LATAM travel.</em></span></h1><p><span>Christopher The Good Gringo combines real human leadership with clearly identified AI executive personas to help build useful tools, share local insight, and serve curious travelers.</span></p></div><svg class="mtn" viewBox="0 0 1200 62" preserveAspectRatio="none" aria-hidden="true"><path d="M0 36 L140 10 L290 40 L450 5 L600 33 L760 8 L920 38 L1070 14 L1200 31 L1200 62 L0 62Z" fill="#09291e"/><path d="M0 50 L210 35 L430 53 L650 32 L870 50 L1200 36 L1200 62 L0 62Z" fill="#fbf5e8"/></svg></section>
@@ -202,7 +202,7 @@ footer a,footer .wrap a{color:var(--gold,#f5bd3e)!important;margin:0!important;t
     selectedCountries.forEach(country=>selectedRoles.forEach(role=>{
       const card=document.createElement("article");card.className="person";
       const top=document.createElement("div");top.className="person-top";
-      const img=document.createElement("img");img.className="portrait";img.src=country.en==="Colombia"&&role.colombiaPhoto?role.colombiaPhoto+"?v=20261020-photos2":"/assets/cgg-logo.svg";img.alt=(country.en==="Colombia"&&role.colombiaName?role.colombiaName+" — ":"")+(spanish()?"Perfil de IA: ":"AI persona: ")+role.title;
+      const img=document.createElement("img");img.className="portrait";img.src=country.en==="Colombia"&&role.colombiaPhoto?role.colombiaPhoto+"?v=20261020-photos2":"/assets/cgg-logo.svg?v=2";img.alt=(country.en==="Colombia"&&role.colombiaName?role.colombiaName+" — ":"")+(spanish()?"Perfil de IA: ":"AI persona: ")+role.title;
       const heading=document.createElement("div");const h=document.createElement("h3");h.textContent=(country.en==="Colombia"&&role.colombiaName?role.colombiaName+" — ":"")+(spanish()?role.es:role.en)+" — "+(spanish()?country.es:country.en);
       const title=document.createElement("div");title.className="role";title.textContent=role.title;
       heading.append(h,title);top.append(img,heading);

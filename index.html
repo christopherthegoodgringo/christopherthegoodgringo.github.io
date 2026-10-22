@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script src="/assets/cgg-i18n.js?v=20261021d"></script>
+<head><script src="/assets/cgg-i18n.js?v=20261021e"></script><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hostel Finder | Christopher the Good Gringo</title>
@@ -26,7 +26,7 @@ html[lang="es"]
 /* Welcome chooser: language first, then hotel or hostel */
 .welcome-overlay{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:22px;background:rgba(5,24,17,.78);backdrop-filter:blur(7px)}
 .welcome-overlay[hidden]{display:none!important}.welcome-dialog{width:min(480px,100%);max-height:calc(100vh - 44px);overflow-y:auto;padding:30px 26px 24px;border-radius:24px;background:var(--white);border:1px solid var(--gold);box-shadow:0 25px 90px #0005;text-align:center;flex:0 0 auto}
-.welcome-dialog .welcome-mark{width:68px;height:68px;object-fit:contain;margin-bottom:8px}.welcome-step{color:#a66f0a;font-size:.72rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase}
+.welcome-dialog .welcome-mark{width:210px;height:auto;max-width:70%;object-fit:contain;margin:0 auto 8px;display:block}.welcome-step{color:#a66f0a;font-size:.72rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase}
 .welcome-dialog h2{margin:10px 0;color:var(--green);font-size:clamp(1.8rem,5vw,2.35rem)}.welcome-dialog p{margin:0 0 22px;color:var(--muted)}
 .welcome-choices{display:grid;grid-template-columns:1fr;gap:11px}.welcome-choice{width:100%;padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:#fffdf8;color:var(--green);font:800 1.05rem var(--body);cursor:pointer;text-align:left}
 .welcome-choice:hover{border-color:var(--gold);background:#fff8e5}.welcome-choice small{display:block;margin-top:3px;color:var(--muted);font-size:.82rem;font-weight:500}
@@ -77,11 +77,11 @@ html[lang="es"]
 <style id="cgg-nav-hover-polish">.cgg-global-nav{gap:clamp(6px,.75vw,12px)!important}.cgg-global-nav a{font-weight:800!important;border-radius:999px!important;padding:9px 11px!important;transition:background-color .18s ease,color .18s ease!important}.cgg-global-nav a:hover,.cgg-global-nav a:focus-visible{background:#f5bd3e!important;color:#103e2f!important;outline:none!important}@media(max-width:1120px){.cgg-global-nav{gap:8px!important}.cgg-global-nav a{padding:8px 11px!important}}@media(max-width:560px){.cgg-global-nav{gap:5px!important}.cgg-global-nav a{padding:8px 10px!important}}</style>
 </head>
 <body>
-<header class="cgg-global-header"><a class="cgg-global-brand" href="/" aria-label="Christopher the Good Gringo home"><img src="/assets/cgg-home-emblem.svg" alt=""><span>CHRISTOPHER THE GOOD GRINGO™</span></a><nav class="cgg-global-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/hotels.html">Hotel Finder</a><a href="/hostels.html">Hostel Finder</a><a href="/restaurants.html">Restaurant Finder</a><a href="/bars.html">Bar Finder</a><a href="/street-food-finder.html">Street Food Finder</a><a href="/team/">Meet the Team</a><a href="/social-media.html">Social Media &amp; Contact</a><a href="/merch.html">Merch</a><a href="/ebooks.html">Ebooks</a><a href="/business-sponsorship.html">Business &amp; Sponsorship</a></nav></header>
+<header class="cgg-global-header"><a class="cgg-global-brand" href="/" aria-label="Christopher the Good Gringo home"><img src="/assets/cgg-home-emblem.svg?v=2" alt=""><span>CHRISTOPHER THE GOOD GRINGO™</span></a><nav class="cgg-global-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/hotels.html">Hotel Finder</a><a href="/hostels.html">Hostel Finder</a><a href="/restaurants.html">Restaurant Finder</a><a href="/bars.html">Bar Finder</a><a href="/street-food-finder.html">Street Food Finder</a><a href="/team/">Meet the Team</a><a href="/social-media.html">Social Media &amp; Contact</a><a href="/merch.html">Merch</a><a href="/ebooks.html">Ebooks</a><a href="/business-sponsorship.html">Business &amp; Sponsorship</a></nav></header>
 
 <div class="welcome-overlay" id="welcomeSelectionPopup" role="dialog" aria-modal="true" aria-labelledby="welcomeSelectionTitle" hidden>
  <section class="welcome-dialog">
-  <img class="welcome-mark" src="/assets/cgg-home-emblem.svg" alt="Christopher the Good Gringo">
+  <img class="welcome-mark" src="/assets/cgg-wordmark.svg?v=1" alt="Christopher the Good Gringo">
   <div class="welcome-step"><span>Step 1</span></div>
   <h2 id="welcomeSelectionTitle"><span>Where would you like to explore?</span></h2>
   <p><span>Choose what you would like to find.</span></p>
