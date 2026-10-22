@@ -824,5 +824,13 @@
   "Edit": "Editar",
   "View": "Ver",
   "No owner yet": "Sin dueño todavía",
-  "Every business on the site. Pick a country and city to narrow the list. Edit details or the level directly (your changes go live right away), remove a business from the site, or remove its owner.": "Todos los negocios del sitio. Elige un país y una ciudad para acotar la lista. Edita los datos o el nivel directamente (tus cambios se publican de inmediato), quita un negocio del sitio o quita a su dueño."
+  "Every business on the site. Pick a country and city to narrow the list. Edit details or the level directly (your changes go live right away), remove a business from the site, or remove its owner.": "Todos los negocios del sitio. Elige un país y una ciudad para acotar la lista. Edita los datos o el nivel directamente (tus cambios se publican de inmediato), quita un negocio del sitio o quita a su dueño.",
+  "Free (Bronze) businesses that nobody has claimed yet. Save each one's WhatsApp or email, then tap Send WhatsApp or Send email: your message opens already written, with their name, city and links filled in. The list keeps track of who you have contacted. If a business doesn't reply, a follow-up is due 4 days later and a last one 7 days after that: pick Follow-up due now to see who's next, and the send buttons use the right message.": "Negocios gratis (Bronce) que nadie ha reclamado todavía. Guarda el WhatsApp o el correo de cada uno y toca Enviar WhatsApp o Enviar correo: tu mensaje se abre ya escrito, con su nombre, ciudad y enlaces. La lista lleva el control de a quién ya contactaste. Si un negocio no responde, toca un seguimiento 4 días después y uno último 7 días después: elige Seguimiento pendiente para ver a quién le toca, y los botones de envío usan el mensaje correcto.",
+  "Follow-ups": "Seguimientos",
+  "Follow-up due now": "Seguimiento pendiente",
+  "Waiting for a reply": "Esperando respuesta",
+  "No reply after 3 messages": "Sin respuesta tras 3 mensajes",
+  "First message": "Primer mensaje",
+  "Follow-up 1 (4 days later)": "Seguimiento 1 (4 días después)",
+  "Follow-up 2 (7 days after that)": "Seguimiento 2 (7 días después)"
 }

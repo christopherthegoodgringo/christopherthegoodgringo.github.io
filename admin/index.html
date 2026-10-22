@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script src="/assets/cgg-i18n.js?v=20261022f"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
+<head><script src="/assets/cgg-i18n.js?v=20261022g"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Listing Admin | Christopher the Good Gringo</title><meta property="og:site_name" content="Christopher The Good Gringo"><meta property="og:type" content="website"><meta property="og:title" content="Listing Admin | Christopher the Good Gringo"><meta property="og:url" content="https://christopherthegoodgringo.com/admin/"><meta property="og:image" content="https://christopherthegoodgringo.com/assets/cgg-share.png?v=1"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
@@ -66,7 +66,7 @@
     </section>
     <section class="panel" id="tab-prospects" hidden>
       <h2>Prospecting</h2>
-      <p class="sub">Free (Bronze) businesses that nobody has claimed yet. Save each one's WhatsApp or email, then tap Send WhatsApp or Send email: your message opens already written, with their name, city and links filled in. The list keeps track of who you have contacted.</p>
+      <p class="sub">Free (Bronze) businesses that nobody has claimed yet. Save each one's WhatsApp or email, then tap Send WhatsApp or Send email: your message opens already written, with their name, city and links filled in. The list keeps track of who you have contacted. If a business doesn't reply, a follow-up is due 4 days later and a last one 7 days after that: pick Follow-up due now to see who's next, and the send buttons use the right message.</p>
       <details class="panel" style="margin:0 0 16px;padding:14px 16px">
         <summary style="cursor:pointer;font-weight:700">Edit your messages</summary>
         <p class="meta" style="margin:10px 0 0">You can use these in any message: {name} business name · {city} city · {finder} link to their Finder · {finder_label} name of their Finder · {claim} link to claim their listing · {plans} link to the plans and prices.</p>
@@ -82,7 +82,7 @@
       </div>
       <div class="row">
         <div><label for="prHave">Contact details</label><select id="prHave"><option value="">Everything</option><option value="whatsapp">Has WhatsApp</option><option value="email">Has email</option><option value="none">No contact details yet</option></select></div>
-        <div></div>
+        <div><label for="prFollow">Follow-ups</label><select id="prFollow"><option value="">Everything</option><option value="due">Follow-up due now</option><option value="waiting">Waiting for a reply</option><option value="done">No reply after 3 messages</option></select></div>
       </div>
       <p class="meta" id="prCount" style="margin:12px 0 8px"></p>
       <div class="list" id="prList"><p class="muted">Loading…</p></div>
@@ -604,11 +604,34 @@
     return cur;
   }
   var prospects = null, templates = {}, prLimit = 30;
+  // Follow-ups for businesses that haven't replied: follow-up 1 is due 4 days after the first message,
+  // follow-up 2 is due 7 days after follow-up 1. Then they stop. Marking Replied, Claimed or Not interested stops them too.
+  // stage: 0 not contacted, 1 first message sent, 2 follow-up 1 sent, 3 follow-up 2 sent.
+  var FOLLOW_DAYS = [4, 7], DAY = 86400000;
+  var ROUND_NAME = ['', 'First message', 'Follow-up 1', 'Follow-up 2'];
+  function waitingReply(p) { return ['whatsapped', 'emailed', 'both'].indexOf(p.status) > -1; }
+  function stageOf(p) { return p.stage || (waitingReply(p) ? 1 : 0); }
+  function lastSent(p) { return new Date(p.last_contacted_at || p.updated_at || Date.now()).getTime(); }
+  function followDueAt(p) { var st = stageOf(p); return (waitingReply(p) && st >= 1 && st <= 2) ? lastSent(p) + FOLLOW_DAYS[st - 1] * DAY : null; }
+  function followState(p) {
+    if (!waitingReply(p)) return '';
+    if (stageOf(p) >= 3) return 'done';
+    return followDueAt(p) <= Date.now() ? 'due' : 'waiting';
+  }
+  // Which message the next send is: the first message, or the next follow-up. Sending the other channel
+  // (WhatsApp after email or the other way round) within 20 hours counts as the same message.
+  function nextRound(p) {
+    var st = stageOf(p);
+    if (st === 0) return 1;
+    if (Date.now() - lastSent(p) < 20 * 3600000) return st;
+    return Math.min(st + 1, 3);
+  }
+  function templateFor(kind, round, lang) { return templates[(round === 2 ? 'f1_' : round >= 3 ? 'f2_' : '') + kind + '_' + lang] || templates[kind + '_' + lang] || {}; }
   function prKey(h) { return h.__type + '|' + String(h.id || h.name); }
 
   Object.keys(cfg.typeLabels).forEach(function (t) { $('prType').appendChild(el('option', { value: t }, cfg.typeLabels[t])); });
   STATUS.forEach(function (s) { $('prStatus').appendChild(el('option', { value: s[0] }, s[1])); });
-  ['prType', 'prCountry', 'prCity', 'prStatus', 'prHave'].forEach(function (id) { $(id).addEventListener('change', function () { prLimit = 30; renderProspects(); }); });
+  ['prType', 'prCountry', 'prCity', 'prStatus', 'prHave', 'prFollow'].forEach(function (id) { $(id).addEventListener('change', function () { prLimit = 30; renderProspects(); }); });
   $('prMore').addEventListener('click', function () { prLimit += 30; renderProspects(); });
 
   function loadProspects() {
@@ -639,8 +662,13 @@
   function renderTemplates() {
     var box = $('prTemplates'); box.replaceChildren();
     var fields = {};
-    [['whatsapp_es', 'WhatsApp message (Spanish)', false], ['whatsapp_en', 'WhatsApp message (English)', false],
-     ['email_es', 'Email (Spanish)', true], ['email_en', 'Email (English)', true]].forEach(function (d) {
+    var IDS = [];
+    [['', 'First message'], ['f1_', 'Follow-up 1 (4 days later)'], ['f2_', 'Follow-up 2 (7 days after that)']].forEach(function (g) {
+      box.appendChild(el('h3', { style: 'margin:18px 0 4px' }, g[1]));
+      [[g[0] + 'whatsapp_es', 'WhatsApp message (Spanish)', false], [g[0] + 'whatsapp_en', 'WhatsApp message (English)', false],
+       [g[0] + 'email_es', 'Email (Spanish)', true], [g[0] + 'email_en', 'Email (English)', true]].forEach(function (d) { IDS.push(d[0]); addField(d); });
+    });
+    function addField(d) {
       var t = templates[d[0]] || {};
       if (d[2]) {
         fields[d[0] + ':subject'] = el('input', { value: t.subject || '', maxLength: 300 });
@@ -649,11 +677,11 @@
       fields[d[0]] = el('textarea', { rows: 8, maxLength: 4000, value: t.body || '' });
       fields[d[0]].value = t.body || '';
       box.appendChild(el('label', {}, d[1])); box.appendChild(fields[d[0]]);
-    });
+    }
     var msg = el('div');
     var save = el('button', { className: 'btn', type: 'button', onclick: function () {
       save.disabled = true;
-      var rows = ['whatsapp_es', 'whatsapp_en', 'email_es', 'email_en'].map(function (id) {
+      var rows = IDS.map(function (id) {
         return { id: id, body: fields[id].value, subject: fields[id + ':subject'] ? fields[id + ':subject'].value : null, updated_at: new Date().toISOString() };
       });
       sb.from('prospect_templates').upsert(rows).then(function (r) {
@@ -675,7 +703,7 @@
 
   function renderProspects() {
     var box = $('prList'); if (!box || !prospects) return;
-    var t = $('prType').value, st = $('prStatus').value, have = $('prHave').value;
+    var t = $('prType').value, st = $('prStatus').value, have = $('prHave').value, fol = $('prFollow').value;
     var base = listings.filter(function (h) { return P.tierOf(h) === 'bronze' && !h.hidden && !ownerOf(h); }), all = base;
     // Businesses you contacted that went on to claim their listing only show when you pick the Claimed status.
     if (st === 'claimed') all = listings.filter(function (h) { var p = prospects[prKey(h)]; return (p && p.status === 'claimed') || (p && ownerOf(h)); });
@@ -688,6 +716,7 @@
       if (have === 'whatsapp' && !p.whatsapp) return false;
       if (have === 'email' && !p.email) return false;
       if (have === 'none' && (p.whatsapp || p.email)) return false;
+      if (fol && followState(p) !== fol) return false;
       return true;
     });
     // A business you contacted that has since claimed its listing is marked Claimed automatically.
@@ -697,9 +726,9 @@
     });
     var count = function (s) { return base.filter(function (h) { return ((prospects[prKey(h)] || {}).status || 'new') === s; }).length; };
     var claimedCount = Object.keys(prospects).filter(function (k) { return prospects[k].status === 'claimed'; }).length;
-    $('prCount').textContent = rows.length + ' of ' + all.length + ' businesses · ' + count('whatsapped') + ' WhatsApped · ' + count('emailed') + ' emailed · ' + count('both') + ' both · ' + count('replied') + ' replied · ' + claimedCount + ' claimed';
-    // Businesses with contact details first, then not contacted before contacted, then by name.
-    var rank = function (h) { var p = prospects[prKey(h)] || {}; return (p.whatsapp || p.email ? 0 : 2) + ((p.status || 'new') === 'new' ? 0 : 1); };
+    $('prCount').textContent = rows.length + ' of ' + all.length + ' businesses · ' + count('whatsapped') + ' WhatsApped · ' + count('emailed') + ' emailed · ' + count('both') + ' both · ' + count('replied') + ' replied · ' + claimedCount + ' claimed · ' + base.filter(function (h) { return followState(prospects[prKey(h)] || {}) === 'due'; }).length + ' follow-ups due';
+    // Follow-ups due first, then businesses with contact details, then not contacted before contacted, then by name.
+    var rank = function (h) { var p = prospects[prKey(h)] || {}; return followState(p) === 'due' ? -1 : (p.whatsapp || p.email ? 0 : 2) + ((p.status || 'new') === 'new' ? 0 : 1); };
     rows.sort(function (a, b) { return rank(a) - rank(b) || String(a.name).localeCompare(String(b.name)); });
     box.replaceChildren();
     rows.slice(0, prLimit).forEach(function (h) { box.appendChild(prospectCard(h)); });
@@ -721,9 +750,11 @@
     }
     [wa, em, lg, ss, notes].forEach(function (i) { i.addEventListener('change', persist); });
 
+    var round = nextRound(p);
     function contacted(kind) {
       var cur = prospects[prKey(h)] || {};
       return saveProspect(h, {
+        stage: Math.max(stageOf(cur), round),
         whatsapp: wa.value.trim() || null, email: em.value.trim() || null, language: lg.value,
         status: afterSend(cur.status, kind),
         last_contacted_at: new Date().toISOString(), contact_count: (cur.contact_count || 0) + 1
@@ -732,25 +763,27 @@
     var sendWa = el('a', { className: 'btn', target: '_blank', rel: 'noopener', href: '#', onclick: function (ev) {
       var n = digits(wa.value);
       if (!n) { ev.preventDefault(); return P.msg(out, 'err', 'Add a WhatsApp number first.'); }
-      sendWa.href = 'https://wa.me/' + n + '?text=' + encodeURIComponent(fill((templates['whatsapp_' + lg.value] || {}).body, h, lg.value));
+      sendWa.href = 'https://wa.me/' + n + '?text=' + encodeURIComponent(fill(templateFor('whatsapp', round, lg.value).body, h, lg.value));
       contacted('whatsapped');
-    } }, 'Send WhatsApp');
+    } }, round === 1 ? 'Send WhatsApp' : 'Send ' + ROUND_NAME[round] + ' on WhatsApp');
     var sendEm = el('a', { className: 'btn light', href: '#', onclick: function (ev) {
       var to = em.value.trim();
       if (!to) { ev.preventDefault(); return P.msg(out, 'err', 'Add an email address first.'); }
-      var t = templates['email_' + lg.value] || {};
+      var t = templateFor('email', round, lg.value);
       sendEm.href = 'mailto:' + encodeURIComponent(to) + '?subject=' + encodeURIComponent(fill(t.subject, h, lg.value)) + '&body=' + encodeURIComponent(fill(t.body, h, lg.value).replace(/\s+$/, '') + EMAIL_GAP);
       contacted('emailed');
-    } }, 'Send email');
+    } }, round === 1 ? 'Send email' : 'Send ' + ROUND_NAME[round] + ' by email');
     var maps = el('a', { className: 'btn light', target: '_blank', rel: 'noopener',
       href: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([h.name, h.address || h.city, h.countryName].filter(Boolean).join(', ')) }, 'Find on Google Maps');
 
     var last = p.last_contacted_at ? 'Last contacted ' + P.fmtDate(p.last_contacted_at) + (p.contact_count > 1 ? ' (' + p.contact_count + ' times)' : '') : 'Not contacted yet';
+    var fs = followState(p), nextName = ROUND_NAME[Math.min(stageOf(p) + 1, 3)];
+    var follow = fs === 'due' ? nextName + ' due now' : fs === 'waiting' ? nextName + ' due ' + P.fmtDate(new Date(followDueAt(p)).toISOString()) : fs === 'done' ? 'No reply after 3 messages' : '';
     return el('article', { className: 'item' },
       el('div', { className: 'item-head' }, el('h3', {}, h.name),
         el('span', {}, el('span', { className: 'badge pending' }, cfg.typeLabels[h.__type]), ' ',
           el('span', { className: 'badge ' + (status === 'claimed' ? 'approved' : status === 'not_interested' ? 'rejected' : status === 'new' ? 'tier' : 'pending') }, (STATUS.find(function (s) { return s[0] === status; }) || STATUS[0])[1]))),
-      el('p', { className: 'meta' }, el('span', {}, (h.address && h.countryName && h.address.indexOf(h.countryName) > -1) ? h.address : [h.address || h.city, h.countryName].filter(Boolean).join(', ')), ' · ', el('span', {}, last)),
+      el('p', { className: 'meta' }, el('span', {}, (h.address && h.countryName && h.address.indexOf(h.countryName) > -1) ? h.address : [h.address || h.city, h.countryName].filter(Boolean).join(', ')), ' · ', el('span', {}, last), follow ? ' · ' : '', follow ? el('strong', { style: fs === 'due' ? 'color:#b4461f' : '' }, follow) : ''),
       el('div', { className: 'row' }, el('div', {}, el('label', {}, 'WhatsApp'), wa), el('div', {}, el('label', {}, 'Email'), em)),
       el('div', { className: 'row' }, el('div', {}, el('label', {}, 'Message language'), lg), el('div', {}, el('label', {}, 'Status'), ss)),
       el('label', {}, 'Notes'), notes,

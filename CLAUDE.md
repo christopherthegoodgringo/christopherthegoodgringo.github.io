@@ -49,6 +49,9 @@ Checklist for every change:
 - Statuses: Not contacted, WhatsApped, Emailed, WhatsApped and emailed (set automatically by the send
   buttons), Replied and Not interested (set by hand), Claimed (set automatically when they claim).
 - Phone numbers found on Google Maps are pasted in by Christopher; don't copy Google Maps data into the database automatically.
+- Follow-ups for businesses that don't reply: follow-up 1 is due 4 days after the first message, follow-up 2 is due 7 days
+  after that, then they stop (`prospects.stage` 0-3, templates `f1_*` / `f2_*`, supabase/011_prospect_followups.sql).
+  Replied, Claimed or Not interested stops follow-ups. The send buttons pick the right message automatically.
 
 ## Logo
 
