@@ -40,3 +40,12 @@ Checklist for every change:
   - A claim on a business that already has an owner is turned down automatically (the person is told to message us).
   - Payments made with a discount code go live automatically.
   - There is no public "suggest an update" form; only a listing's verified owner can change it.
+
+## Prospecting (admin page)
+
+- Outreach messages to businesses are always in Spanish, unless the business asks for English.
+  New prospects default to Spanish (`prospects.language` = 'es').
+- No mention of the YouTube channel in outreach messages.
+- Statuses: Not contacted, WhatsApped, Emailed, WhatsApped and emailed (set automatically by the send
+  buttons), Replied and Not interested (set by hand), Claimed (set automatically when they claim).
+- Phone numbers found on Google Maps are pasted in by Christopher; don't copy Google Maps data into the database automatically.
