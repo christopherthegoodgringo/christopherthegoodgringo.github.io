@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script src="/assets/cgg-i18n.js?v=20261022a"></script><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<head><script src="/assets/cgg-i18n.js?v=20261022c"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Latin America Boutique Hotel Finder | Christopher the Good Gringo</title>
@@ -186,5 +186,6 @@ document.getElementById('hotelSearch').addEventListener('submit',e=>{e.preventDe
 fetch('/data/hotels.json?v=20261021-silverfix',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Could not load hotel data');return r.json()}).then(d=>{hotels=(Array.isArray(d.hotels)?d.hotels:[]).filter(h=>h.hasWebsite||hasExpediaOrOfficialSite(h));countries=Array.isArray(d.countries)?d.countries:[];renderCountryOptions();renderCityOptions();setLanguage()}).catch(()=>{hotels=(Array.isArray(fallbackData.hotels)?fallbackData.hotels:[]).filter(h=>h.hasWebsite||hasExpediaOrOfficialSite(h));countries=Array.isArray(fallbackData.countries)?fallbackData.countries:[];renderCountryOptions();renderCityOptions();setLanguage()});
 })();
 </script>
+<script src="/assets/cgg-hero-slideshow.js?v=1" data-slides="https://images.unsplash.com/photo-1756326506751-02caa2d3f2e4?auto=format&amp;fit=crop&amp;w=1200&amp;q=85|Colonial boutique hotel with lush green balconies in Cartagena, Colombia;;https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&amp;fit=crop&amp;w=1200&amp;q=80|Hotel swimming pool surrounded by palm trees;;https://images.unsplash.com/photo-1731995282457-bf4bff140962?auto=format&amp;fit=crop&amp;w=1200&amp;q=80|Hotel courtyard with chairs and umbrellas;;https://images.unsplash.com/photo-1759038085950-1234ca8f5fed?auto=format&amp;fit=crop&amp;w=1200&amp;q=80|Hotel reception with modern wooden furniture;;https://images.unsplash.com/photo-1776763255197-495b343d5a33?auto=format&amp;fit=crop&amp;w=1200&amp;q=80|White pillows on a neatly made hotel bed"></script>
 </body>
 </html>
