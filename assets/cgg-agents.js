@@ -2,7 +2,7 @@
  * Commission agents in the admin page.
  *  - Christopher (admin): "Agents" tab: add agents (account + temporary password to send by WhatsApp), see each agent's
  *    sales and money, new temporary password, turn an agent off/on, all commissions (cancel, mark paid, send payouts now).
- *  - Agents: "My earnings" (their link, totals, Stripe payout setup, commissions, businesses credited to them) and
+ *  - Agents: "My earnings" (their link, totals, PayPal email for payouts, commissions, businesses credited to them) and
  *    "Add a business" (goes live as Bronze and becomes their lead). Their Prospecting is handled in admin/index.html.
  * Agents earn 30% of a business's first paid month, then 15% of every monthly renewal (supabase/020_agent_renewals.sql); payouts: supabase/functions/agents.
  * All text is English; assets/cgg-i18n.js translates it (i18n/es.json).
@@ -12,7 +12,7 @@
   var $ = function (id) { return document.getElementById(id); };
   var SITE = 'https://christopherthegoodgringo.com';
   // Agent countries: the 18 Latin American countries on the site plus the United States, named in the page's language.
-  var COUNTRY_CODES = 'AR BZ BO CL CO CR CU DO EC SV GT HN MX NI PA PY PE UY US'.split(' ');
+  var COUNTRY_CODES = 'AR BZ BO CL CO CR DO EC SV GT HN MX NI PA PY PE UY US'.split(' ');
   var COUNTRIES = [];
   function buildCountries() {
     var l = (document.documentElement.lang || 'en').slice(0, 2) === 'es' ? 'es' : 'en', dn;
@@ -103,11 +103,11 @@
     agents.forEach(function (a) {
       var s = summaries[a.id] || {};
       var out = el('div');
-      var payout = !a.stripe_account_id ? badge('tier', 'Payouts not set up') : a.payouts_enabled ? badge('approved', 'Payouts ready') : badge('pending', 'Payout setup not finished');
+      var payout = a.paypal_email ? badge('approved', 'PayPal ready') : badge('pending', 'No PayPal email yet');
       var card = el('article', { className: 'item' },
         el('div', { className: 'item-head' }, el('h3', {}, data(a.name)),
           el('span', {}, a.status === 'active' ? badge('approved', 'Active') : badge('rejected', 'Turned off'), ' ', payout)),
-        el('p', { className: 'meta' }, data(a.email), a.phone ? ' · ' : '', a.phone ? data(a.phone) : '', ' · ', el('span', {}, 'Code'), ': ', el('strong', {}, data(a.code))),
+        el('p', { className: 'meta' }, data(a.email), a.phone ? ' · ' : '', a.phone ? data(a.phone) : '', ' · ', el('span', {}, 'Code'), ': ', el('strong', {}, data(a.code)), a.paypal_email ? ' · ' : '', a.paypal_email ? el('span', {}, 'PayPal') : '', a.paypal_email ? ': ' : '', a.paypal_email ? data(a.paypal_email) : ''),
         el('div', { className: 'ag-tiles' }, tile(s.referrals || 0, 'Owners signed up'), tile(s.sales || 0, 'Paid sales'),
           tile(money(s.earned_cents), 'Earned'), tile(money(s.paid_cents), 'Paid out'), tile(money(s.waiting_cents), 'Waiting')),
         el('p', { className: 'meta ag-link' }, el('span', {}, 'Their link'), ': ', data(linkFor(a.code))),
@@ -152,6 +152,7 @@
     field('Country', country);
     var language = el('select'); language.appendChild(el('option', { value: 'es', selected: a.language !== 'en' }, 'Spanish')); language.appendChild(el('option', { value: 'en', selected: a.language === 'en' }, 'English'));
     field('Language', language);
+    var paypal = field('PayPal email (where commissions are sent)', el('input', { type: 'email', value: a.paypal_email || '' }));
     var code = field('Agent code', el('input', { type: 'text', value: a.code || '', required: true, maxLength: 20 }));
     code.addEventListener('input', function () { code.value = code.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); });
     f.appendChild(el('p', { className: 'meta' }, 'Changing the code changes their personal link. Links they already sent with the old code stop giving them credit.'));
@@ -162,7 +163,7 @@
     f.appendChild(msg);
     f.addEventListener('submit', function (e) {
       e.preventDefault(); save.disabled = true;
-      call({ action: 'update', agent_id: a.id, name: name.value, email: email.value, phone: phone.value, country: country.value, language: language.value, code: code.value, notes: notes.value })
+      call({ action: 'update', agent_id: a.id, name: name.value, email: email.value, phone: phone.value, country: country.value, language: language.value, code: code.value, notes: notes.value, paypal_email: paypal.value })
         .then(function () { save.disabled = false; loadAdmin(); }, function (err) { save.disabled = false; msg.replaceChildren(); P.msg(msg, 'err', err.message); });
     });
     return f;
@@ -176,7 +177,7 @@
       var out = el('div');
       var acts = el('div', { className: 'actions' });
       if (admin && k.status === 'pending') {
-        acts.appendChild(el('button', { type: 'button', className: 'btn light', onclick: function () { update(k, { status: 'paid', paid_at: new Date().toISOString(), note: 'Marked paid by hand', error: null }, out); } }, 'Mark as paid (paid outside Stripe)'));
+        acts.appendChild(el('button', { type: 'button', className: 'btn light', onclick: function () { update(k, { status: 'paid', paid_at: new Date().toISOString(), note: 'Marked paid by hand', error: null }, out); } }, 'Mark as paid (paid by hand)'));
         acts.appendChild(el('button', { type: 'button', className: 'btn danger', onclick: function () { update(k, { status: 'cancelled', note: 'Cancelled by admin' }, out); } }, 'Cancel (refunded)'));
       }
       if (admin && k.status === 'cancelled') acts.appendChild(el('button', { type: 'button', className: 'btn light', onclick: function () { update(k, { status: 'pending', note: null }, out); } }, 'Undo cancel'));
@@ -269,16 +270,20 @@
   function payoutBox() {
     var box = el('div', { className: 'item' }), out = el('div');
     box.appendChild(el('h3', {}, 'Getting paid'));
-    if (me.payouts_enabled) {
-      box.appendChild(el('p', {}, badge('approved', 'Payouts ready'), ' ', el('span', {}, 'Your commissions are sent automatically to the bank account you added in Stripe.')));
-    } else {
-      box.appendChild(el('p', {}, me.stripe_account_id ? 'Your payout setup in Stripe isn\'t finished yet. Tap the button to continue where you left off.' : 'To receive your commissions, add your bank account through Stripe (our payment company). It takes about 5 minutes and you only do it once.'));
-      box.appendChild(el('div', { className: 'actions' }, el('button', { type: 'button', className: 'btn', onclick: function (ev) {
-        var b = ev.currentTarget; b.disabled = true;
-        call({ action: 'connect' }).then(function (r) { location.href = r.url; }, function (e) { b.disabled = false; P.msg(out, 'err', e.message); });
-      } }, me.stripe_account_id ? 'Finish payout setup' : 'Set up payouts')));
-    }
-    box.appendChild(out);
+    if (me.paypal_email) box.appendChild(el('p', {}, badge('approved', 'Payouts ready'), ' ', el('span', {}, 'Your commissions are sent automatically to your PayPal account:'), ' ', el('strong', {}, data(me.paypal_email))));
+    else box.appendChild(el('p', {}, 'Your commissions are paid with PayPal. Add the email of your PayPal account (opening one is free at paypal.com).'));
+    var f = el('form', { className: 'ag-edit' });
+    var input = el('input', { type: 'email', value: me.paypal_email || '', placeholder: 'you@example.com', required: true });
+    var lab = el('label', {}, el('span', {}, 'PayPal email')); lab.appendChild(input); f.appendChild(lab);
+    var save = el('button', { type: 'submit', className: 'btn' }, me.paypal_email ? 'Update PayPal email' : 'Save PayPal email');
+    f.appendChild(el('div', { className: 'actions' }, save)); f.appendChild(out);
+    f.addEventListener('submit', function (e) {
+      e.preventDefault(); save.disabled = true;
+      call({ action: 'set_paypal', paypal_email: input.value }).then(function (r) {
+        save.disabled = false; me.paypal_email = r.agent.paypal_email; me.payouts_enabled = r.agent.payouts_enabled; loadEarnings();
+      }, function (err) { save.disabled = false; out.replaceChildren(); P.msg(out, 'err', err.message); });
+    });
+    box.appendChild(f);
     return box;
   }
 
@@ -320,12 +325,6 @@
     nameOf: nameOf,
     setMe: function (a) { me = a; },
     me: function () { return me; },
-    showEarnings: function () {
-      var q = new URLSearchParams(location.search).get('payouts');
-      if (q === 'done' || q === 'retry') {
-        history.replaceState(null, '', location.pathname + location.hash);
-        call({ action: 'refresh' }).then(function () { loadEarnings(); }, function () { loadEarnings(); });
-      } else loadEarnings();
-    }
+    showEarnings: function () { loadEarnings(); }
   };
 })();

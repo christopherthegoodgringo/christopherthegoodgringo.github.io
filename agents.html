@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script src="/assets/cgg-i18n.js?v=20261022zh"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/assets/app/apple-touch-icon-180.png?v=1"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#103e2f"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Christopher The Good Gringo"><meta name="apple-mobile-web-app-status-bar-style" content="black"><script src="/assets/cgg-app.js?v=20261022d" defer></script>
+<head><script src="/assets/cgg-i18n.js?v=20261022zi"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/assets/app/apple-touch-icon-180.png?v=1"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#103e2f"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Christopher The Good Gringo"><meta name="apple-mobile-web-app-status-bar-style" content="black"><script src="/assets/cgg-app.js?v=20261022d" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Become an Agent | Christopher The Good Gringo™</title><meta property="og:site_name" content="Christopher The Good Gringo"><meta property="og:type" content="website"><meta property="og:title" content="Become an Agent | Christopher The Good Gringo™"><meta property="og:url" content="https://christopherthegoodgringo.com/agents.html"><meta property="og:image" content="https://christopherthegoodgringo.com/assets/cgg-share.png?v=1"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
@@ -95,13 +95,13 @@ main{display:block;min-height:auto;padding:0 0 30px}
 <section class="ag-sec"><h2>What you earn</h2>
 <table class="ag-table"><thead><tr><th>Plan the business picks</th><th>They pay per month</th><th>First month (30%)</th><th>Every renewal (15%)</th></tr></thead><tbody>
 <tr><td>Silver</td><td>$9.99</td><td>$3.00</td><td>$1.50</td></tr><tr><td>Gold</td><td>$19.99</td><td>$6.00</td><td>$3.00</td></tr><tr><td>Platinum</td><td>$49.99</td><td>$15.00</td><td>$7.50</td></tr></tbody></table>
-<ul class="ag-facts"><li>Bronze listings are free, so they don’t earn a commission.</li><li>Renewal commissions keep coming every month for as long as the business stays on a paid plan.</li><li>If a discount code was used, you earn your share of what the business actually paid.</li><li>Each commission is paid 14 days after the payment (in case of a refund), straight to your bank through Stripe.</li></ul></section>
+<ul class="ag-facts"><li>Bronze listings are free, so they don’t earn a commission.</li><li>Renewal commissions keep coming every month for as long as the business stays on a paid plan.</li><li>If a discount code was used, you earn your share of what the business actually paid.</li><li>Each commission is paid 14 days after the payment (in case of a refund), straight to your PayPal account.</li></ul></section>
 
 <section class="ag-sec"><h2>Your agent tools</h2>
 <div class="ag-steps">
 <div class="ag-card"><h3>Prospecting list</h3><p>Businesses nobody has contacted yet, plus your own leads, with ready-made messages in Spanish and English. Contacting a business makes it yours.</p></div>
 <div class="ag-card"><h3>Add a business</h3><p>Know a great place that isn’t on the site? Add it in a minute. It goes live as a free listing and becomes your lead.</p></div>
-<div class="ag-card"><h3>My earnings</h3><p>See the owners who signed up with your link, your sales, what you’ve earned and what’s on the way. Set up your payouts with Stripe.</p></div>
+<div class="ag-card"><h3>My earnings</h3><p>See the owners who signed up with your link, your sales, what you’ve earned and what’s on the way. Add your PayPal email to get paid.</p></div>
 </div></section>
 
 <section class="ag-sec" id="signup"><h2>Join or sign in</h2>
@@ -142,7 +142,7 @@ main{display:block;min-height:auto;padding:0 0 30px}
 <details><summary>Does it cost anything to join?</summary><p>No. Signing up is free and there are no monthly fees.</p></details>
 <details><summary>Do I need experience?</summary><p>No. Your Prospecting list has ready-made messages; you just send them and answer questions.</p></details>
 <details><summary>Where can I work from?</summary><p>Anywhere. Most agents work from their phone with WhatsApp.</p></details>
-<details><summary>How do I get paid?</summary><p>In “My earnings” you connect a free Stripe account with your bank details. Commissions are sent automatically 14 days after each payment.</p></details>
+<details><summary>How do I get paid?</summary><p>In “My earnings” you add the email of your PayPal account (opening one is free). Commissions are sent to your PayPal automatically 14 days after each payment.</p></details>
 <details><summary>How do businesses get credited to me?</summary><p>Your personal link is already included in your Prospecting messages. When a business owner opens it and signs up, they’re credited to you.</p></details>
 </section>
 </div></main>
@@ -150,7 +150,7 @@ main{display:block;min-height:auto;padding:0 0 30px}
 (function(){
 
   // The 18 Latin American countries on the site plus the United States, named in the visitor's language.
-  var CC="AR BZ BO CL CO CR CU DO EC SV GT HN MX NI PA PY PE UY US".split(' ');
+  var CC="AR BZ BO CL CO CR DO EC SV GT HN MX NI PA PY PE UY US".split(' ');
   function fillCountries(){var sel=document.getElementById('sCountry'),cur=sel.value||'CO',l=(document.documentElement.lang||'en').slice(0,2)==='es'?'es':'en',dn;
     try{dn=new Intl.DisplayNames([l],{type:'region'});}catch(e){dn={of:function(c){return c;}};}
     var list=CC.map(function(c){var n;try{n=dn.of(c);}catch(e){n=c;}return [c,n||c];}).sort(function(a,b){return a[1].localeCompare(b[1],l);});

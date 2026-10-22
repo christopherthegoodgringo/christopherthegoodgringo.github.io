@@ -124,12 +124,14 @@ Checklist for every change:
   sign-in, referrals and commissions; their prospects go back to the shared list).
 - Public agent page `agents.html` (footer on every page: "Become an Agent" + "Agent Login" -> /admin/): explains the program and has
   a self sign-up form (`agents` action signup, no review, works right away, code made from their name). Agent countries
-  (sign-up and admin lists, checked on the server): the 18 Latin American countries on the site + the United States only.
+  (sign-up and admin lists, checked on the server): the Latin American countries on the site except Cuba + the United States.
 - Credit: any page stores `?agent=CODE` in localStorage `gg-agent` (assets/cgg-app.js, 90 days, first agent wins); the owner
   portal calls `record_agent_referral()` when the owner signs in (`agent_referrals`, first agent wins per owner account).
 - A trigger on `listing_upgrade_requests` records the first-month `agent_commissions` when a paid level goes live; each payable 14 days later and
-  sent daily by pg_cron (`agent-payouts`) through Stripe Connect Express transfers (`agents` function, action pay_now).
-  Needs STRIPE_SECRET_KEY with Connect + Transfers permissions and Connect enabled in Stripe. Database: supabase/016_agents.sql.
+  sent daily by pg_cron (`agent-payouts`) with the PAYPAL Payouts API (`agents` function, action pay_now) to `agents.paypal_email`
+  (agents add it in My earnings, action set_paypal; Christopher can edit it). Christopher chose PayPal because Stripe can't pay out to
+  most Latin American countries (incl. Colombia). Secrets PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET (PAYPAL_MODE=sandbox to test).
+  No Cuba agents (PayPal doesn't work there). Database: supabase/016_agents.sql, 020_agent_renewals.sql.
 
 ## Automatic prospecting emails
 

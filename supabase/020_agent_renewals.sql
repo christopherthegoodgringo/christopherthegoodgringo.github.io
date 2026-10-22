@@ -57,3 +57,9 @@ begin
 end $$;
 revoke all on function public.record_agent_renewal(text, text, integer) from public, anon, authenticated;
 grant execute on function public.record_agent_renewal(text, text, integer) to service_role;
+
+-- Agent payouts by PayPal (Christopher, Oct 2026: Stripe can't pay out to most of the Latin American countries).
+-- Agents add the email of their PayPal account in My earnings; the agents function (action pay_now) sends each payable
+-- commission with the PayPal Payouts API (secrets PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET). payout_ref = PayPal batch id.
+alter table public.agents add column if not exists paypal_email text check (paypal_email is null or char_length(paypal_email) <= 254);
+alter table public.agent_commissions add column if not exists payout_ref text;

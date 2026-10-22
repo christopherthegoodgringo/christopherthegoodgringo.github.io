@@ -6,17 +6,17 @@
 //           { action: "delete", agent_id }                                    -> remove agent + sign-in (prospects go back to the shared list)
 //           { action: "pay_now" }                                             -> send every payable commission now
 //   Public: { action: "signup", name, email, password, phone, country, language, agree } -> agent account right away (agents.html)
-//   Agent:  { action: "connect" }  -> link to Stripe to set up payouts (Stripe Connect Express)
-//           { action: "refresh" }  -> re-check whether Stripe payouts are ready
+//   Agent:  { action: "set_paypal", paypal_email } -> where their commissions are sent (PayPal)
 //   Cron:   header x-cron-token = vault secret agents_cron_token, { action: "pay_now" } (daily, pg_cron)
-// Payouts: each pending commission whose 14-day refund window has passed is sent with a Stripe transfer to the agent's
-// connected account. Needs STRIPE_SECRET_KEY with Connect (accounts, account links), Transfers and Balance permissions.
+// Payouts (PayPal, Christopher's choice: Stripe can't pay out to most Latin American countries): each pending commission
+// whose 14-day refund window has passed is sent to the agent's PayPal email with the PayPal Payouts API.
+// Secrets: PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET (live REST app with Payouts enabled); PAYPAL_MODE=sandbox to test.
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const ALLOWED_ORIGINS = ["https://christopherthegoodgringo.com", "https://www.christopherthegoodgringo.com", "https://christopherthegoodgringo.github.io"];
 const SITE = "https://christopherthegoodgringo.com";
-// Agents can come from the 18 Latin American countries on the site or the United States (Christopher, Oct 2026).
-const AGENT_COUNTRIES = "AR BZ BO CL CO CR CU DO EC SV GT HN MX NI PA PY PE UY US".split(" ");
+// Agents can come from the Latin American countries on the site (not Cuba: PayPal can't pay there) or the United States.
+const AGENT_COUNTRIES = "AR BZ BO CL CO CR DO EC SV GT HN MX NI PA PY PE UY US".split(" ");
 
 function corsFor(req: Request) {
   const origin = req.headers.get("Origin") ?? "";
@@ -34,19 +34,19 @@ function tempPassword() {
   return words[b[0] % words.length] + words[b[1] % words.length] + "-" + String(1000 + (b[2] % 9000));
 }
 
-function stripeKey() {
-  return (Deno.env.get("STRIPE_SECRET_KEY") ?? "").trim().replace(/^["']|["']$/g, "").trim();
-}
+function env(name: string) { return (Deno.env.get(name) ?? "").trim().replace(/^["']|["']$/g, "").trim(); }
+const PAYPAL_API = () => env("PAYPAL_MODE") === "sandbox" ? "https://api-m.sandbox.paypal.com" : "https://api-m.paypal.com";
 
-async function stripe(path: string, method: string, params?: Record<string, string>, idem?: string) {
-  const key = stripeKey();
-  if (!key) throw new Error("Payouts aren't switched on yet: the Stripe key still needs to be added in Supabase.");
-  const headers: Record<string, string> = { Authorization: "Bearer " + key, "Content-Type": "application/x-www-form-urlencoded" };
-  if (idem) headers["Idempotency-Key"] = idem;
-  const r = await fetch("https://api.stripe.com/v1/" + path, { method, headers, body: params ? new URLSearchParams(params) : undefined });
+async function paypalToken() {
+  const id = env("PAYPAL_CLIENT_ID"), secret = env("PAYPAL_CLIENT_SECRET");
+  if (!id || !secret) throw new Error("Payouts aren't switched on yet: the PayPal keys still need to be added in Supabase.");
+  const r = await fetch(PAYPAL_API() + "/v1/oauth2/token", {
+    method: "POST", headers: { Authorization: "Basic " + btoa(id + ":" + secret), "Content-Type": "application/x-www-form-urlencoded" },
+    body: "grant_type=client_credentials",
+  });
   const j = await r.json();
-  if (!r.ok) throw new Error((j.error && j.error.message) || ("Stripe error " + r.status));
-  return j;
+  if (!r.ok) throw new Error("PayPal didn't accept the keys: " + (j.error_description || j.error || r.status));
+  return j.access_token as string;
 }
 
 Deno.serve(async (req: Request) => {
@@ -74,7 +74,7 @@ Deno.serve(async (req: Request) => {
     if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return reply(400, { error: "Add your name and a valid email." });
     if (password.length < 8) return reply(400, { error: "Choose a password with at least 8 characters." });
     if (!body.agree) return reply(400, { error: "Please accept the agent terms." });
-    if (!AGENT_COUNTRIES.includes(country)) return reply(400, { error: "Agents can sign up from the 18 Latin American countries on the site or the United States." });
+    if (!AGENT_COUNTRIES.includes(country)) return reply(400, { error: "Agents can sign up from the Latin American countries on the site (except Cuba) or the United States." });
     const { data: dupe } = await db.from("agents").select("id").ilike("email", email).limit(1);
     if (dupe && dupe.length) return reply(400, { error: "There's already an agent account with that email. Sign in instead." });
     const base = (name.normalize("NFD").replace(/[̀-ͯ]/g, "").toUpperCase().match(/[A-Z0-9]+/g) || ["AGENT"])[0].slice(0, 12).padEnd(3, "X");
@@ -174,6 +174,7 @@ Deno.serve(async (req: Request) => {
         country: /^[A-Z]{2}$/.test(country) ? country : null,
         language: body.language === "en" ? "en" : "es",
         notes: String(body.notes ?? "").trim().slice(0, 2000) || null,
+        ...(body.paypal_email !== undefined ? (() => { const pe = String(body.paypal_email ?? "").trim().toLowerCase(); return { paypal_email: /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(pe) ? pe : null, payouts_enabled: /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(pe) }; })() : {}),
       }).eq("id", id).select("*").single();
       if (error) return reply(400, { error: error.message });
       return reply(200, { agent });
@@ -198,61 +199,55 @@ Deno.serve(async (req: Request) => {
       return reply(200, { password, email: a.email });
     }
 
-    if ((action === "connect" || action === "refresh") && role === "agent") {
-      const { data: a } = await db.from("agents").select("*").eq("user_id", userId).eq("status", "active").maybeSingle();
-      if (!a) return reply(404, { error: "Your agent account wasn't found." });
-      let acct = a.stripe_account_id as string | null;
-      if (action === "refresh") {
-        if (!acct) return reply(200, { payouts_enabled: false, connected: false });
-        const s = await stripe("accounts/" + acct, "GET");
-        const ready = !!s.payouts_enabled && s.capabilities?.transfers === "active";
-        await db.from("agents").update({ payouts_enabled: ready }).eq("id", a.id);
-        return reply(200, { payouts_enabled: ready, connected: true });
-      }
-      if (!acct) {
-        const country = a.country || "US";
-        const params: Record<string, string> = {
-          type: "express", country, email: a.email,
-          "capabilities[transfers][requested]": "true",
-          "business_type": "individual",
-          "metadata[agent_id]": a.id, "metadata[agent_code]": a.code,
-        };
-        if (country !== "US") params["tos_acceptance[service_agreement]"] = "recipient";
-        const s = await stripe("accounts", "POST", params, "agent-account-" + a.id);
-        acct = s.id;
-        await db.from("agents").update({ stripe_account_id: acct }).eq("id", a.id);
-      }
-      const link = await stripe("account_links", "POST", {
-        account: acct!, type: "account_onboarding",
-        refresh_url: SITE + "/admin/?payouts=retry#earnings", return_url: SITE + "/admin/?payouts=done#earnings",
-      });
-      return reply(200, { url: link.url });
+    if (action === "set_paypal" && role === "agent") {
+      const pe = String(body.paypal_email ?? "").trim().toLowerCase();
+      if (pe && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(pe)) return reply(400, { error: "Add a valid PayPal email." });
+      const { data: a, error } = await db.from("agents").update({ paypal_email: pe || null, payouts_enabled: !!pe })
+        .eq("user_id", userId).select("paypal_email, payouts_enabled").single();
+      if (error) return reply(400, { error: error.message });
+      return reply(200, { agent: a });
     }
 
     if (action === "pay_now" && (role === "admin" || role === "cron")) {
       const { data: due } = await db.from("agent_commissions")
-        .select("id, agent_id, commission_cents, listing_name, tier, agents!inner(stripe_account_id, payouts_enabled, status, code)")
-        .eq("status", "pending").lte("available_at", new Date().toISOString()).limit(200);
-      const results: Array<Record<string, unknown>> = [];
+        .select("id, agent_id, commission_cents, listing_name, tier, kind, agents!inner(paypal_email, status, code)")
+        .eq("status", "pending").lte("available_at", new Date().toISOString()).limit(500);
+      const ready: any[] = [], results: Array<Record<string, unknown>> = [];
       for (const k of due ?? []) {
         const ag = (k as any).agents;
-        if (!ag || ag.status !== "active" || !ag.stripe_account_id || !ag.payouts_enabled) {
-          await db.from("agent_commissions").update({ error: "Waiting for the agent to set up payouts in Stripe." }).eq("id", k.id);
-          results.push({ id: k.id, sent: false, why: "payouts not set up" });
-          continue;
-        }
+        if (!ag || ag.status !== "active" || !ag.paypal_email) {
+          await db.from("agent_commissions").update({ error: "Waiting for the agent to add their PayPal email in My earnings." }).eq("id", k.id);
+          results.push({ id: k.id, sent: false, why: "no PayPal email" });
+        } else ready.push(k);
+      }
+      if (ready.length) {
         try {
-          const t = await stripe("transfers", "POST", {
-            amount: String(k.commission_cents), currency: "usd", destination: ag.stripe_account_id,
-            description: "Commission: " + (k.listing_name || "listing") + " (" + (k.tier || "") + ")",
-            "metadata[commission_id]": k.id, "metadata[agent_code]": ag.code, transfer_group: "commission-" + k.id,
-          }, "commission-" + k.id);
-          await db.from("agent_commissions").update({ status: "paid", paid_at: new Date().toISOString(), stripe_transfer_id: t.id, error: null }).eq("id", k.id);
-          results.push({ id: k.id, sent: true });
+          const token = await paypalToken();
+          const batchId = "gg-" + new Date().toISOString().slice(0, 10) + "-" + crypto.randomUUID().slice(0, 8);
+          const r = await fetch(PAYPAL_API() + "/v1/payments/payouts", {
+            method: "POST", headers: { Authorization: "Bearer " + token, "Content-Type": "application/json", "PayPal-Request-Id": batchId },
+            body: JSON.stringify({
+              sender_batch_header: { sender_batch_id: batchId, email_subject: "Your Christopher The Good Gringo commission", email_message: "Thank you for bringing businesses to Christopher The Good Gringo!" },
+              items: ready.map((k: any) => ({
+                recipient_type: "EMAIL", receiver: k.agents.paypal_email, sender_item_id: k.id,
+                amount: { value: (k.commission_cents / 100).toFixed(2), currency: "USD" },
+                note: "Commission: " + (k.listing_name || "listing") + " (" + (k.kind === "renewal" ? "monthly renewal" : "new listing") + ")",
+              })),
+            }),
+          });
+          const j = await r.json();
+          if (!r.ok) throw new Error(j.message || j.name || ("PayPal error " + r.status));
+          const ref = j.batch_header?.payout_batch_id || batchId;
+          for (const k of ready) {
+            await db.from("agent_commissions").update({ status: "paid", paid_at: new Date().toISOString(), payout_ref: ref, error: null }).eq("id", k.id);
+            results.push({ id: k.id, sent: true });
+          }
         } catch (e) {
           const m = String((e as Error).message || e);
-          await db.from("agent_commissions").update({ error: /insufficient/i.test(m) ? "Your Stripe balance doesn't have enough available money yet. It will try again tomorrow." : m.slice(0, 480) }).eq("id", k.id);
-          results.push({ id: k.id, sent: false, why: m });
+          for (const k of ready) {
+            await db.from("agent_commissions").update({ error: /insufficient|balance|fund/i.test(m) ? "Your PayPal balance doesn't have enough money yet. It will try again tomorrow." : m.slice(0, 480) }).eq("id", k.id);
+            results.push({ id: k.id, sent: false, why: m });
+          }
         }
       }
       return reply(200, { checked: (due ?? []).length, sent: results.filter((r) => r.sent).length, results });
