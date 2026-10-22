@@ -6,6 +6,8 @@
 //           { action: "delete", agent_id }                                    -> remove agent + sign-in (prospects go back to the shared list)
 //           { action: "pay_now" }                                             -> send every payable commission now
 //   Public: { action: "signup", name, email, password, phone, country, language, agree } -> agent account right away (agents.html)
+//           + welcome email in their language. Admin/cron: { action: "send_welcome", agent_id | all: true } sends it (with a new
+//           temporary password for agents who never set their own).
 //   Agent:  { action: "set_paypal", paypal_email } -> where their commissions are sent (PayPal)
 //   Cron:   header x-cron-token = vault secret agents_cron_token, { action: "pay_now" } (daily, pg_cron)
 //           { action: "notify_commission", commission_id } (trigger on new agent_commissions rows): "You earned a commission!" email
@@ -110,6 +112,30 @@ function commissionEmail(a: any, k: any) {
   return { subject, body };
 }
 
+function welcomeEmail(name: string, code: string, language: string, email = "", tempPass = "") {
+  const es = language !== "en";
+  const first = String(name || "").trim().split(/\s+/)[0] || (es ? "agente" : "agent");
+  const link = SITE + "/owner/?agent=" + encodeURIComponent(code);
+  const subject = es ? "¡Bienvenido a Christopher The Good Gringo, " + first + "!" : "Welcome to Christopher The Good Gringo, " + first + "!";
+  const body = es
+    ? `¡Hola ${first}!\n\nYa eres agente de Christopher The Good Gringo. ¡Bienvenido al equipo!\n\nInicia sesión aquí: ${SITE}/admin/\n${email ? "Usuario (correo): " + email + "\n" : ""}${tempPass ? "Contraseña temporal: " + tempPass + "\n(al entrar te pedirá elegir tu propia contraseña)" : "Contraseña: la que elegiste al registrarte. ¿La olvidaste? Toca \"¿Olvidaste tu contraseña?\" en la página de inicio de sesión."}\n\nTu código de agente: ${code}\nTu enlace personal: ${link}\n\nPrimeros pasos:\n1. Entra a "Mis ganancias" y agrega tu correo de PayPal para recibir tus pagos.\n2. Toca el botón rojo "Crear mi tarjeta de presentación" para hacer tu tarjeta, y el botón azul "Crear mi volante" para tu volante, los dos con tu código QR: ${SITE}/agent-card.html\n3. En "Prospección" encontrarás negocios y mensajes listos para enviar por WhatsApp o correo. Cuando contactas un negocio, queda a tu nombre.\n4. Comparte tu enlace personal: todo negocio que se registre con él queda a tu nombre.\n\nGanas el 30% del primer mes de cada negocio que pague un plan Plata, Oro o Platino, y luego el 15% cada mes que renueve. Tus comisiones se envían a tu PayPal automáticamente 14 días después de cada pago, y te avisamos por correo cada vez que ganas una.\n\nMás información sobre el programa: ${SITE}/agents.html\n¿Preguntas? Responde a este correo o escríbenos por WhatsApp al +1 305 440 5175.\n\n¡Mucho éxito!\nChristopher Kesl\nChristopher The Good Gringo\n${SITE}\n`
+    : `Hi ${first}!\n\nYou're now a Christopher The Good Gringo agent. Welcome to the team!\n\nSign in here: ${SITE}/admin/\n${email ? "Username (email): " + email + "\n" : ""}${tempPass ? "Temporary password: " + tempPass + "\n(you'll be asked to choose your own password when you sign in)" : "Password: the one you chose when you signed up. Forgot it? Tap \"Forgot password?\" on the sign-in page."}\n\nYour agent code: ${code}\nYour personal link: ${link}\n\nFirst steps:\n1. Open "My earnings" and add your PayPal email so you can get paid.\n2. Tap the red "Make my business card" button for your card and the blue "Make my flyer" button for your flyer, both with your QR code: ${SITE}/agent-card.html\n3. In "Prospecting" you'll find businesses and ready-made messages to send by WhatsApp or email. Contacting a business makes it yours.\n4. Share your personal link: every business that signs up with it is credited to you.\n\nYou earn 30% of the first month of every business that pays for Silver, Gold or Platinum, then 15% every month it renews. Your commissions are sent to your PayPal automatically 14 days after each payment, and we email you every time you earn one.\n\nMore about the program: ${SITE}/agents.html\nQuestions? Reply to this email or WhatsApp us at +1 305 440 5175.\n\nGood luck!\nChristopher Kesl\nChristopher The Good Gringo\n${SITE}\n`;
+  return { subject, body };
+}
+
+async function sendMail(db: any, to: string, subject: string, text: string) {
+  const { data: cfg } = await db.from("prospect_mailer").select("smtp_host").eq("id", 1).maybeSingle();
+  const user = (Deno.env.get("EMAIL_USER") ?? "christopher@christopherthegoodgringo.com").trim();
+  const pass = (Deno.env.get("EMAIL_PASSWORD") ?? "").replace(/^["']|["']$/g, "");
+  const raw = ["From: " + encodeHeader("Christopher The Good Gringo") + " <" + user + ">", "To: <" + to + ">", "Subject: " + encodeHeader(subject),
+    "Date: " + new Date().toUTCString().replace("GMT", "+0000"), "Message-ID: <" + crypto.randomUUID() + "@christopherthegoodgringo.com>",
+    "MIME-Version: 1.0", "Content-Type: text/plain; charset=UTF-8", "Content-Transfer-Encoding: base64", "",
+    wrap76(b64(text.replace(/\r?\n/g, "\r\n")))].join("\r\n");
+  const smtp = new Smtp();
+  try { await smtp.open(cfg?.smtp_host || "netsol-smtp-oxcs.hostingplatform.com", user, pass); await smtp.send(user, to, raw); }
+  finally { await smtp.close(); }
+}
+
 Deno.serve(async (req: Request) => {
   const cors = corsFor(req);
   const reply = (status: number, body: Record<string, unknown>) =>
@@ -155,6 +181,9 @@ Deno.serve(async (req: Request) => {
       notes: "Signed up on the agent page",
     }).select("name, email, code").single();
     if (e2) { await db.auth.admin.deleteUser(created.user.id); return reply(400, { error: e2.message }); }
+    // Welcome email in their language (sign-in link, code, personal link, first steps). A mail problem never blocks the sign-up.
+    try { const w = welcomeEmail(name, agent.code, body.language === "en" ? "en" : "es", email); await sendMail(db, email, w.subject, w.body); }
+    catch (e) { console.error("welcome email", e); }
     return reply(200, { agent, link: SITE + "/owner/?agent=" + agent.code });
   }
 
@@ -249,6 +278,32 @@ Deno.serve(async (req: Request) => {
       if (error) return reply(400, { error: error.message });
       if (a.user_id) await db.auth.admin.deleteUser(a.user_id);
       return reply(200, { deleted: true });
+    }
+
+    if (action === "send_welcome" && (role === "admin" || role === "cron")) {
+      // One agent (agent_id) or every active agent (all: true). Agents who still have a temporary password from Christopher
+      // get a new temporary password in the email (the old one can't be read back); agents who chose their own keep it.
+      let q = db.from("agents").select("id, user_id, name, email, code, language").eq("status", "active");
+      if (!body.all) q = q.eq("id", String(body.agent_id ?? ""));
+      const { data: list } = await q;
+      if (!list || !list.length) return reply(404, { error: "That agent wasn't found." });
+      const results: Array<Record<string, unknown>> = [];
+      for (const a of list) {
+        try {
+          let temp = "";
+          if (a.user_id) {
+            const { data: u } = await db.auth.admin.getUserById(a.user_id);
+            if (u?.user?.user_metadata?.must_change_password) {
+              temp = tempPassword();
+              const { error } = await db.auth.admin.updateUserById(a.user_id, { password: temp, user_metadata: { ...u.user.user_metadata, must_change_password: true, agent: true } });
+              if (error) throw error;
+            }
+          }
+          const w = welcomeEmail(a.name, a.code, a.language, a.email, temp); await sendMail(db, a.email, w.subject, w.body);
+          results.push({ email: a.email, sent: true, new_password: !!temp });
+        } catch (e) { results.push({ email: a.email, sent: false, why: String((e as Error).message || e) }); }
+      }
+      return reply(200, { results });
     }
 
     if (action === "reset_password" && role === "admin") {

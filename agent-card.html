@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script src="/assets/cgg-i18n.js?v=20261022zp"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/assets/app/apple-touch-icon-180.png?v=1"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#103e2f"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Christopher The Good Gringo"><meta name="apple-mobile-web-app-status-bar-style" content="black"><script src="/assets/cgg-app.js?v=20261022d" defer></script>
+<head><script src="/assets/cgg-i18n.js?v=20261022zq"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/assets/app/apple-touch-icon-180.png?v=1"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#103e2f"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Christopher The Good Gringo"><meta name="apple-mobile-web-app-status-bar-style" content="black"><script src="/assets/cgg-app.js?v=20261022d" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Agent Business Card | Christopher The Good Gringo™</title><meta property="og:site_name" content="Christopher The Good Gringo"><meta property="og:type" content="website"><meta property="og:title" content="Agent Business Card | Christopher The Good Gringo™"><meta property="og:url" content="https://christopherthegoodgringo.com/agent-card.html"><meta property="og:image" content="https://christopherthegoodgringo.com/assets/cgg-share.png?v=1"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
@@ -147,7 +147,7 @@ main{display:block;min-height:auto;padding:0 0 40px}
 <div id="bcMsg" role="status" aria-live="polite"></div>
 </section>
 </div>
-<section class="bc-panel bc-flyer" id="bcFlyerBox" hidden aria-labelledby="bcFlyerTitle">
+<section class="bc-panel bc-flyer" id="bcFlyerBox" style="scroll-margin-top:16px" hidden aria-labelledby="bcFlyerTitle">
 <div class="bc-flyer-grid"><div><h2 id="bcFlyerTitle">Your flyer</h2>
 <p class="bc-tip" style="margin-top:0">A full-page flyer with your QR code and contact details, in the same language as your card. Leave it at businesses or send it on WhatsApp.</p>
 <div class="bc-actions" style="grid-template-columns:1fr">
@@ -301,6 +301,7 @@ main{display:block;min-height:auto;padding:0 0 40px}
     $('bcEmail').value=(saved.code===a.code&&saved.email)||a.email||''; $('bcCode').value=a.code||''; $('bcCode').readOnly=true;
     if(!q.get('lang')&&!(saved.code===a.code&&saved.lang)){cardLang=a.language==='en'?'en':'es';document.querySelectorAll('.bc-seg button').forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-lang')===cardLang?'true':'false');});}
     $('bcGate').hidden=true; $('bcGrid').hidden=false; $('bcFlyerBox').hidden=false;
+    if(location.hash==='#flyer')setTimeout(function(){$('bcFlyerBox').scrollIntoView({behavior:'smooth',block:'start'});},400);
     Promise.all([logoReady,fontsReady]).then(render);
   }
   function gate(title,text){$('bcGateTitle').textContent=t(title);$('bcGateText').textContent=t(text);$('bcGateBtn').hidden=false;}
