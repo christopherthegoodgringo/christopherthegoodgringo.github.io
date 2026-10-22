@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script src="/assets/cgg-i18n.js?v=20261022e"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
+<head><script src="/assets/cgg-i18n.js?v=20261022f"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Listing Admin | Christopher the Good Gringo</title>
@@ -47,18 +47,18 @@
     <section class="panel" id="tab-claims"><h2>Ownership claims</h2><p class="sub">Confirm the person really runs the business (call or message the business's official number or email) before approving.</p><div class="list" id="claimsList"></div></section>
     <section class="panel" id="tab-businesses" hidden>
       <h2>All businesses</h2>
-      <p class="sub">Search every business on the site. Edit details or the level directly (your changes go live right away), remove a business from the site, or remove its owner.</p>
-      <div class="row">
-        <div><label for="bizSearch">Search name, city or owner email</label><input id="bizSearch" type="search" placeholder="e.g. La Puerta, Cartagena, ana@…"></div>
-        <div><label for="bizType">Type</label><select id="bizType"><option value="">All types</option></select></div>
-      </div>
+      <p class="sub">Every business on the site. Pick a country and city to narrow the list. Edit details or the level directly (your changes go live right away), remove a business from the site, or remove its owner.</p>
       <div class="row">
         <div><label for="bizCountry">Country</label><select id="bizCountry"><option value="">All countries</option></select></div>
         <div><label for="bizCity">City</label><select id="bizCity"><option value="">All cities</option></select></div>
       </div>
       <div class="row">
+        <div><label for="bizType">Type</label><select id="bizType"><option value="">All types</option></select></div>
         <div><label for="bizTier">Level</label><select id="bizTier"><option value="">All levels</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select></div>
+      </div>
+      <div class="row">
         <div><label for="bizShow">Show</label><select id="bizShow"><option value="">Everything</option><option value="owned">With an owner</option><option value="unowned">Without an owner</option><option value="hidden">Removed from site</option><option value="owner-added">Added by owners</option></select></div>
+        <div></div>
       </div>
       <p class="meta" id="bizCount" style="margin:12px 0 8px"></p>
       <div class="list" id="bizList"></div>
@@ -251,7 +251,7 @@
     var city = $(prefix + 'City').value;
     return function (h) { return (!c || h.countryName === c) && (!city || h.city === city); };
   }
-  ['bizSearch', 'bizType', 'bizCountry', 'bizCity', 'bizTier', 'bizShow'].forEach(function (id) { $(id).addEventListener(id === 'bizSearch' ? 'input' : 'change', function () { bizLimit = 30; renderBusinesses(); }); });
+  ['bizType', 'bizCountry', 'bizCity', 'bizTier', 'bizShow'].forEach(function (id) { $(id).addEventListener('change', function () { bizLimit = 30; renderBusinesses(); }); });
   $('bizMore').addEventListener('click', function () { bizLimit += 30; renderBusinesses(); });
   function ownerOf(h) {
     return allClaims.find(function (c) { return c.listing_type === h.__type && c.listing_id === String(h.id || h.name) && c.status === 'approved'; });
@@ -276,7 +276,7 @@
   }
   function renderBusinesses() {
     var box = $('bizList'); if (!box) return;
-    var q = $('bizSearch').value.trim().toLowerCase(), t = $('bizType').value, tier = $('bizTier').value, show = $('bizShow').value;
+    var t = $('bizType').value, tier = $('bizTier').value, show = $('bizShow').value;
     var inPlace = placeFilter('biz', listings.filter(function (h) { return !t || h.__type === t; }));
     var rows = listings.filter(function (h) {
       var o = ownerOf(h);
@@ -287,7 +287,6 @@
       if (show === 'unowned' && o) return false;
       if (show === 'hidden' && !h.hidden) return false;
       if (show === 'owner-added' && !h.ownerSubmitted) return false;
-      if (q && [h.name, h.city, h.countryName, h.address, o && o.owner_email].join(' ').toLowerCase().indexOf(q) === -1) return false;
       return true;
     });
     $('bizCount').textContent = rows.length + ' business' + (rows.length === 1 ? '' : 'es');
