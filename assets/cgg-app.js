@@ -238,6 +238,16 @@
     hide(); track('install');
     if (!celebrated()) congratulate('install');
   });
+  // Commission agents: remember the agent whose link brought this visitor (first agent wins for 90 days).
+  // The owner portal credits the business owner's account to that agent when they sign in.
+  try {
+    var ag = new URLSearchParams(location.search).get('agent');
+    if (ag && /^[A-Za-z0-9]{3,20}$/.test(ag)) {
+      var prevAg = JSON.parse(localStorage.getItem('gg-agent') || 'null');
+      if (!prevAg || Date.now() - prevAg.at > 90 * 864e5) localStorage.setItem('gg-agent', JSON.stringify({ code: ag.toUpperCase(), at: Date.now() }));
+    }
+  } catch (e) {}
+
   function start() {
     var st = el('style'); st.textContent = CSS; document.head.appendChild(st);
     setTimeout(place, 0);

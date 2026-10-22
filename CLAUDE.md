@@ -107,3 +107,17 @@ Checklist for every change:
 - Admin tab "Statistics" (`assets/cgg-stats-admin.js`, open directly with /admin/#stats): Today / 7 / 30 / 90 days / 12 months.
 - Confetti + "Congratulations!" when the app is installed (Android/computer `appinstalled`) or first opened from the home screen
   (iPhone/iPad), once per app (localStorage `gg-app-celebrated-<site|owner|admin>`).
+
+## Commission agents
+
+- Commission-only agents earn 75% of a business's FIRST paid month (Silver $7.49, Gold $14.99, Platinum $37.49; 75% of what
+  was actually paid if a discount code was used; nothing for Bronze). Everything is automatic: no review by Christopher.
+- Christopher adds agents in the admin "Agents" tab (`assets/cgg-agents.js`): the `agents` Edge Function creates their login
+  with a temporary password he sends by WhatsApp/email. Agents sign in on /admin/ and only see Prospecting (their own leads
+  plus businesses nobody has contacted; contacting or adding one makes it theirs), "Add a business" (live as Bronze, becomes
+  their lead) and "My earnings". Outreach links get `&agent=CODE`.
+- Credit: any page stores `?agent=CODE` in localStorage `gg-agent` (assets/cgg-app.js, 90 days, first agent wins); the owner
+  portal calls `record_agent_referral()` when the owner signs in (`agent_referrals`, first agent wins per owner account).
+- A trigger on `listing_upgrade_requests` records `agent_commissions` when a paid level goes live; payable 14 days later and
+  sent daily by pg_cron (`agent-payouts`) through Stripe Connect Express transfers (`agents` function, action pay_now).
+  Needs STRIPE_SECRET_KEY with Connect + Transfers permissions and Connect enabled in Stripe. Database: supabase/016_agents.sql.
