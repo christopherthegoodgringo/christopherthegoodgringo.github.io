@@ -9,7 +9,7 @@ CLEAN_FILE = ROOT / "data" / "hostels-clean.json"
 PAID_FILE = ROOT / "data" / "paid-listings.json"
 HTML_FILE = ROOT / "hostels.html"
 REPORT_FILE = ROOT / "reports" / "city-search-test-report.md"
-APPROVED = {"MX","BZ","GT","HN","SV","NI","CR","PA","AR","BO","CL","CO","EC","PY","PE","UY","CU","DO"}
+APPROVED = {"MX","BZ","GT","HN","SV","NI","CR","PA","AR","BO","CL","CO","EC","PY","PE","UY","DO"}
 
 def norm(value):
     value = unicodedata.normalize("NFKD", str(value or ""))

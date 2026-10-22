@@ -36,7 +36,6 @@
 | PY | Paraguay | 91 |
 | PE | Peru | 2389 |
 | UY | Uruguay | 121 |
-| CU | Cuba | 1016 |
 | DO | Dominican Republic | 46 |
 
 ### City index
@@ -58,7 +57,6 @@
 | PY | Paraguay | 932 |
 | PE | Peru | 8562 |
 | UY | Uruguay | 339 |
-| CU | Cuba | 1300 |
 | DO | Dominican Republic | 729 |
 
 ## Data-quality findings

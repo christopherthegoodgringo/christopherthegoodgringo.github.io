@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script src="/assets/cgg-i18n.js?v=20261022zk"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/assets/app/apple-touch-icon-180.png?v=1"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#103e2f"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Christopher The Good Gringo"><meta name="apple-mobile-web-app-status-bar-style" content="black"><script src="/assets/cgg-app.js?v=20261022d" defer></script>
+<head><script src="/assets/cgg-i18n.js?v=20261022zl"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/assets/app/apple-touch-icon-180.png?v=1"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#103e2f"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Christopher The Good Gringo"><meta name="apple-mobile-web-app-status-bar-style" content="black"><script src="/assets/cgg-app.js?v=20261022d" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Become an Agent | Christopher The Good Gringo™</title><meta property="og:site_name" content="Christopher The Good Gringo"><meta property="og:type" content="website"><meta property="og:title" content="Become an Agent | Christopher The Good Gringo™"><meta property="og:url" content="https://christopherthegoodgringo.com/agents.html"><meta property="og:image" content="https://christopherthegoodgringo.com/assets/cgg-share.png?v=1"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
@@ -149,8 +149,8 @@ main{display:block;min-height:auto;padding:0 0 30px}
 <script>
 (function(){
 
-  // The 18 Latin American countries on the site plus the United States, named in the visitor's language.
-  var CC="AR BZ BO CL CO CR DO EC SV GT HN MX NI PA PY PE UY US".split(' ');
+  // The 17 Latin American countries on the site plus the United States, Puerto Rico, Canada and Spain, named in the visitor's language.
+  var CC="AR BZ BO CL CO CR DO EC SV GT HN MX NI PA PY PE UY US PR CA ES".split(' ');
   function fillCountries(){var sel=document.getElementById('sCountry'),cur=sel.value||'CO',l=(document.documentElement.lang||'en').slice(0,2)==='es'?'es':'en',dn;
     try{dn=new Intl.DisplayNames([l],{type:'region'});}catch(e){dn={of:function(c){return c;}};}
     var list=CC.map(function(c){var n;try{n=dn.of(c);}catch(e){n=c;}return [c,n||c];}).sort(function(a,b){return a[1].localeCompare(b[1],l);});

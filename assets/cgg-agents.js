@@ -11,8 +11,8 @@
   var P = window.CGGPortal, el = P.el, sb = P.client();
   var $ = function (id) { return document.getElementById(id); };
   var SITE = 'https://christopherthegoodgringo.com';
-  // Agent countries: the 18 Latin American countries on the site plus the United States, named in the page's language.
-  var COUNTRY_CODES = 'AR BZ BO CL CO CR DO EC SV GT HN MX NI PA PY PE UY US'.split(' ');
+  // Agent countries: the 17 Latin American countries on the site plus the United States, Puerto Rico, Canada and Spain, named in the page's language.
+  var COUNTRY_CODES = 'AR BZ BO CL CO CR DO EC SV GT HN MX NI PA PY PE UY US PR CA ES'.split(' ');
   var COUNTRIES = [];
   function buildCountries() {
     var l = (document.documentElement.lang || 'en').slice(0, 2) === 'es' ? 'es' : 'en', dn;

@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-21",
-  "scope": "Curated street-food markets, food stalls, and local market destinations across the site's 18 Latin American countries. Ratings are omitted unless reliably sourced; vendor locations and hours can change and should be checked before visiting. Photos are illustrative stock images, not confirmed photos of each venue. Santa Marta listings added October 2026 show one business per tier; tier labels are sample placements for layout testing and do not imply that a business purchased or endorsed a paid listing.",
+  "scope": "Curated street-food markets, food stalls, and local market destinations across the site's 17 Latin American countries. Ratings are omitted unless reliably sourced; vendor locations and hours can change and should be checked before visiting. Photos are illustrative stock images, not confirmed photos of each venue. Santa Marta listings added October 2026 show one business per tier; tier labels are sample placements for layout testing and do not imply that a business purchased or endorsed a paid listing.",
   "countries": [
     {
       "code": "BZ",
@@ -65,10 +65,6 @@
     {
       "code": "UY",
       "name": "Uruguay"
-    },
-    {
-      "code": "CU",
-      "name": "Cuba"
     },
     {
       "code": "DO",

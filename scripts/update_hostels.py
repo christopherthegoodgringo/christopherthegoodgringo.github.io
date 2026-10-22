@@ -13,7 +13,7 @@ from pathlib import Path
 COUNTRIES = [
     "MX", "BZ", "GT", "HN", "SV", "NI", "CR", "PA",
     "AR", "BO", "CL", "CO", "EC", "PY", "PE", "UY",
-    "CU", "DO",
+    "DO",
 ]
 ENDPOINTS = [
     "https://overpass-api.de/api/interpreter",

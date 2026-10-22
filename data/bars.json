@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-21",
-  "scope": "Initial researched batch of independent and distinctive bars. Listings must have an official website or direct OpenTable listing and a currently sourced rating of at least 4.0/5. Ratings and sources should be rechecked periodically. The directory covers 18 Latin American countries; additional countries remain to be researched. Santa Marta listings added October 2026 show one business per tier; tier labels are sample placements for layout testing and do not imply that a business purchased or endorsed a paid listing.",
+  "scope": "Initial researched batch of independent and distinctive bars. Listings must have an official website or direct OpenTable listing and a currently sourced rating of at least 4.0/5. Ratings and sources should be rechecked periodically. The directory covers 17 Latin American countries; additional countries remain to be researched. Santa Marta listings added October 2026 show one business per tier; tier labels are sample placements for layout testing and do not imply that a business purchased or endorsed a paid listing.",
   "countries": [
     {
       "code": "BZ",
@@ -65,10 +65,6 @@
     {
       "code": "UY",
       "name": "Uruguay"
-    },
-    {
-      "code": "CU",
-      "name": "Cuba"
     },
     {
       "code": "DO",

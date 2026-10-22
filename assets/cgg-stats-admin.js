@@ -18,12 +18,12 @@
     '/claim-hostel.html': 'Claim your hostel', '/ebooks.html': 'Ebooks', '/merch.html': 'Merch', '/privacy-policy.html': 'Privacy Policy',
     '/terms-of-use.html': 'Terms of Use', '/porthos-platinum.html': 'Porthos Steakhouse & Pub', '/offline.html': 'Offline'
   };
-  var CODES = { AR: 'Argentina', BO: 'Bolivia', BR: 'Brazil', BZ: 'Belize', CL: 'Chile', CO: 'Colombia', CR: 'Costa Rica', CU: 'Cuba',
+  var CODES = { AR: 'Argentina', BO: 'Bolivia', BR: 'Brazil', BZ: 'Belize', CL: 'Chile', CO: 'Colombia', CR: 'Costa Rica',
     DO: 'Dominican Republic', EC: 'Ecuador', SV: 'El Salvador', GT: 'Guatemala', HN: 'Honduras', MX: 'Mexico', NI: 'Nicaragua',
     PA: 'Panama', PY: 'Paraguay', PE: 'Peru', PR: 'Puerto Rico', UY: 'Uruguay', VE: 'Venezuela' };
   var TZ = {
     Bogota: 'Colombia', Lima: 'Peru', Guatemala: 'Guatemala', Costa_Rica: 'Costa Rica', El_Salvador: 'El Salvador', Tegucigalpa: 'Honduras',
-    Managua: 'Nicaragua', Panama: 'Panama', Santo_Domingo: 'Dominican Republic', Puerto_Rico: 'Puerto Rico', Havana: 'Cuba',
+    Managua: 'Nicaragua', Panama: 'Panama', Santo_Domingo: 'Dominican Republic', Puerto_Rico: 'Puerto Rico',
     Guayaquil: 'Ecuador', Galapagos: 'Ecuador', La_Paz: 'Bolivia', Santiago: 'Chile', Punta_Arenas: 'Chile', Easter: 'Chile',
     Montevideo: 'Uruguay', Asuncion: 'Paraguay', Caracas: 'Venezuela', Belize: 'Belize',
     Mexico_City: 'Mexico', Cancun: 'Mexico', Merida: 'Mexico', Monterrey: 'Mexico', Matamoros: 'Mexico', Chihuahua: 'Mexico',

@@ -23,12 +23,11 @@
     "PY",
     "PE",
     "UY",
-    "CU",
     "DO"
   ],
   "personas_per_country": 6,
-  "total_personas": 108,
-  "execution_model": "One shared AI runtime with country/role-specific system instructions; do not create 108 paid API agents unless needed.",
+  "total_personas": 102,
+  "execution_model": "One shared AI runtime with country/role-specific system instructions; do not create 102 paid API agents unless needed.",
   "approval_policy": {
     "publishing": "human_approval_required",
     "outbound_messages": "human_approval_required",

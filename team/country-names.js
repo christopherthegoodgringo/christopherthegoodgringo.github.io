@@ -40,14 +40,6 @@ window.CGG_COUNTRY_NAMES = {
   "Local Research": "Mauricio Solís",
   "Partnerships": "Daniela Chaves"
  },
- "Cuba": {
-  "Marketing": "Yoandry Pérez",
-  "Social Media": "Raúl Rodríguez",
-  "Content Creator": "Osmany Hernández",
-  "Web Design": "Yanelis Cruz",
-  "Local Research": "Alexis Fernández",
-  "Partnerships": "Yasiel Díaz"
- },
  "Dominican Republic": {
   "Marketing": "Yokasta Rodríguez",
   "Social Media": "Juan Carlos Peña",

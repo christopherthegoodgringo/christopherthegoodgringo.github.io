@@ -28,6 +28,11 @@ Checklist for every change:
 5. Never write code that forces the page to English (`document.documentElement.lang = 'en'` or
    `localStorage.setItem('gg-lang', 'en')`). The visitor's choice is stored in `localStorage` key `gg-lang`.
 
+## Countries
+
+- The site covers 17 Latin American countries: MX BZ GT HN SV NI CR PA AR BO CL CO EC PY PE UY DO (COUNTRY-LIST-LOCK.md).
+- NO CUBA anywhere on the site, in any form (Christopher, Oct 22, 2026): no listings, cities, team members, agents, country lists or text. Venezuela and Brazil are excluded too.
+
 ## Membership levels and payments
 
 - Levels: Bronze (free), Silver $9.99/mo, Gold $19.99/mo, Platinum $49.99/mo.
@@ -68,7 +73,7 @@ Checklist for every change:
 ## Team portraits
 
 - Michael Giacona shows the logo until his real photo is added.
-- AI personas (executives and the 108 country team members) are lifelike cartoon portraits drawn by
+- AI personas (executives and the 102 country team members) are lifelike cartoon portraits drawn by
   `scripts/make_country_avatars.py`; every one is different and matches the person's name (woman or man).
 
 ## Social media (admin page, YouTube Shorts)
@@ -125,14 +130,14 @@ Checklist for every change:
   sign-in, referrals and commissions; their prospects go back to the shared list).
 - Public agent page `agents.html` (footer on every page: "Become an Agent" + "Agent Login" -> /admin/): explains the program and has
   a self sign-up form (`agents` action signup, no review, works right away, code made from their name). Agent countries
-  (sign-up and admin lists, checked on the server): the Latin American countries on the site except Cuba + the United States.
+  (sign-up and admin lists, checked on the server): the 17 Latin American countries on the site + the United States, Puerto Rico, Canada and Spain.
 - Credit: any page stores `?agent=CODE` in localStorage `gg-agent` (assets/cgg-app.js, 90 days, first agent wins); the owner
   portal calls `record_agent_referral()` when the owner signs in (`agent_referrals`, first agent wins per owner account).
 - A trigger on `listing_upgrade_requests` records the first-month `agent_commissions` when a paid level goes live; each payable 14 days later and
   sent daily by pg_cron (`agent-payouts`) with the PAYPAL Payouts API (`agents` function, action pay_now) to `agents.paypal_email`
   (agents add it in My earnings, action set_paypal; Christopher can edit it). Christopher chose PayPal because Stripe can't pay out to
   most Latin American countries (incl. Colombia). Secrets PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET (PAYPAL_MODE=sandbox to test).
-  No Cuba agents (PayPal doesn't work there). Database: supabase/016_agents.sql, 020_agent_renewals.sql.
+  Database: supabase/016_agents.sql, 020_agent_renewals.sql.
 
 ## Automatic prospecting emails
 

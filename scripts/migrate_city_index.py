@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "data" / "hostels.json"
 TARGET = ROOT / "data" / "cities.json"
-APPROVED = {"MX","BZ","GT","HN","SV","NI","CR","PA","AR","BO","CL","CO","EC","PY","PE","UY","CU","DO"}
+APPROVED = {"MX","BZ","GT","HN","SV","NI","CR","PA","AR","BO","CL","CO","EC","PY","PE","UY","DO"}
 
 def norm(value):
     value = unicodedata.normalize("NFKD", str(value or ""))

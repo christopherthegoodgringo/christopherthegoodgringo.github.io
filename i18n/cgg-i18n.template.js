@@ -32,7 +32,7 @@
     'Belize': 'Belice', 'Dominican Republic': 'República Dominicana', 'Mexico': 'México',
     'Panama': 'Panamá', 'Peru': 'Perú', 'Brazil': 'Brasil',
     'Mexico City': 'Ciudad de México', 'Panama City': 'Ciudad de Panamá',
-    'Guatemala City': 'Ciudad de Guatemala', 'Belize City': 'Ciudad de Belice', 'Havana': 'La Habana',
+    'Guatemala City': 'Ciudad de Guatemala', 'Belize City': 'Ciudad de Belice',
     'Latin America': 'Latinoamérica'
   };
   function place(s) {

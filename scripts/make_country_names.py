@@ -6,7 +6,7 @@ Writes i18n-neutral data the team page reads: team/country-names.js
 Run from the repository root:  python3 scripts/make_country_names.py"""
 import hashlib, json, os
 
-COUNTRIES = ['Argentina', 'Belize', 'Bolivia', 'Chile', 'Colombia', 'Costa Rica', 'Cuba', 'Dominican Republic', 'Ecuador',
+COUNTRIES = ['Argentina', 'Belize', 'Bolivia', 'Chile', 'Colombia', 'Costa Rica', 'Dominican Republic', 'Ecuador',
              'El Salvador', 'Guatemala', 'Honduras', 'Mexico', 'Nicaragua', 'Panama', 'Paraguay', 'Peru', 'Uruguay']
 ROLES = ['Marketing', 'Social Media', 'Content Creator', 'Web Design', 'Local Research', 'Partnerships']
 
@@ -18,7 +18,6 @@ NAMES = {
  'Chile': (['Constanza', 'Javiera', 'Catalina', 'Francisca', 'Antonia', 'Fernanda'], ['Benjamín', 'Vicente', 'Cristóbal', 'Felipe', 'Ignacio', 'Sebastián'], ['Muñoz', 'Rojas', 'Díaz', 'Soto', 'Contreras', 'Silva', 'Sepúlveda', 'Morales']),
  'Colombia': (['Valentina', 'Camila', 'Isabella'], ['Santiago', 'Andrés', 'Mateo'], ['Torres', 'Rojas', 'Restrepo', 'Mendoza', 'Moreno', 'Vargas']),
  'Costa Rica': (['Mariana', 'Fabiola', 'Daniela', 'Hazel', 'Natalia', 'Melissa'], ['Esteban', 'Pablo', 'Mauricio', 'Adrián', 'Jeffrey', 'Randall'], ['Vargas', 'Jiménez', 'Mora', 'Rojas', 'Solís', 'Chaves', 'Araya', 'Quesada']),
- 'Cuba': (['Yanelis', 'Dayana', 'Yudith', 'Lisandra', 'Yaimara', 'Marisol'], ['Yoandry', 'Raúl', 'Osmany', 'Alexis', 'Yasiel', 'Ernesto'], ['Pérez', 'Rodríguez', 'Hernández', 'Cruz', 'Fernández', 'Díaz', 'Valdés', 'Castillo']),
  'Dominican Republic': (['Yokasta', 'Rosanna', 'Wendy', 'Dahiana', 'Carolina', 'Yesenia'], ['Juan Carlos', 'Wilkin', 'Rafael', 'Starlin', 'Manuel', 'Ramón'], ['Rodríguez', 'Peña', 'Batista', 'Reyes', 'Almonte', 'De la Cruz', 'Santana', 'Polanco']),
  'Ecuador': (['Fernanda', 'Doménica', 'Karla', 'Andrea', 'Paulina', 'Tatiana'], ['Andrés', 'Jorge', 'Byron', 'Darwin', 'Fabricio', 'Santiago'], ['Zambrano', 'Andrade', 'Cedeño', 'Guamán', 'Vera', 'Mendoza', 'Ortiz', 'Chávez']),
  'El Salvador': (['Gabriela', 'Karla', 'Yesenia', 'Roxana', 'Claudia', 'Beatriz'], ['Óscar', 'René', 'Edwin', 'Mauricio', 'Nelson', 'Kevin'], ['Hernández', 'Martínez', 'Rivas', 'Flores', 'Portillo', 'Ayala', 'Menjívar', 'Guardado']),

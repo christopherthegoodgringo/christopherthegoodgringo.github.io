@@ -8,7 +8,7 @@ Run from the repository root:  python3 scripts/make_country_avatars.py
 Women and men match the names in team/country-names.js (scripts/make_country_names.py)."""
 import hashlib, os, random, re
 
-COUNTRIES = ['Argentina', 'Belize', 'Bolivia', 'Chile', 'Colombia', 'Costa Rica', 'Cuba', 'Dominican Republic', 'Ecuador',
+COUNTRIES = ['Argentina', 'Belize', 'Bolivia', 'Chile', 'Colombia', 'Costa Rica', 'Dominican Republic', 'Ecuador',
              'El Salvador', 'Guatemala', 'Honduras', 'Mexico', 'Nicaragua', 'Panama', 'Paraguay', 'Peru', 'Uruguay']
 ROLES = ['Marketing', 'Social Media', 'Content Creator', 'Web Design', 'Local Research', 'Partnerships']
 # Colombia's six already have names on the site: Valentina, Santiago, Camila, Andrés, Isabella, Mateo.

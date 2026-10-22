@@ -15,8 +15,8 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 
 const ALLOWED_ORIGINS = ["https://christopherthegoodgringo.com", "https://www.christopherthegoodgringo.com", "https://christopherthegoodgringo.github.io"];
 const SITE = "https://christopherthegoodgringo.com";
-// Agents can come from the Latin American countries on the site (not Cuba: PayPal can't pay there) or the United States.
-const AGENT_COUNTRIES = "AR BZ BO CL CO CR DO EC SV GT HN MX NI PA PY PE UY US".split(" ");
+// Agents can come from the 17 Latin American countries on the site, the United States, Puerto Rico, Canada or Spain (PayPal payouts work there).
+const AGENT_COUNTRIES = "AR BZ BO CL CO CR DO EC SV GT HN MX NI PA PY PE UY US PR CA ES".split(" ");
 
 function corsFor(req: Request) {
   const origin = req.headers.get("Origin") ?? "";
@@ -74,10 +74,10 @@ Deno.serve(async (req: Request) => {
     if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return reply(400, { error: "Add your name and a valid email." });
     if (password.length < 8) return reply(400, { error: "Choose a password with at least 8 characters." });
     if (!body.agree) return reply(400, { error: "Please accept the agent terms." });
-    if (!AGENT_COUNTRIES.includes(country)) return reply(400, { error: "Agents can sign up from the Latin American countries on the site (except Cuba) or the United States." });
+    if (!AGENT_COUNTRIES.includes(country)) return reply(400, { error: "Agents can sign up from the Latin American countries on the site, the United States, Puerto Rico, Canada or Spain." });
     const { data: dupe } = await db.from("agents").select("id").ilike("email", email).limit(1);
     if (dupe && dupe.length) return reply(400, { error: "There's already an agent account with that email. Sign in instead." });
-    const base = (name.normalize("NFD").replace(/[̀-ͯ]/g, "").toUpperCase().match(/[A-Z0-9]+/g) || ["AGENT"])[0].slice(0, 12).padEnd(3, "X");
+    const base = (name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().match(/[A-Z0-9]+/g) || ["AGENT"])[0].slice(0, 12).padEnd(3, "X");
     let code = base;
     for (let i = 0; i < 20; i++) {
       const { data: taken } = await db.from("agents").select("id").eq("code", code).limit(1);

@@ -2,7 +2,7 @@
 
 **Owner decision: this list is fixed and must not be changed unless the site owner explicitly asks for a change.**
 
-The hostel finder and weekly OpenStreetMap database audit must include exactly these 18 countries:
+The hostel finder and weekly OpenStreetMap database audit must include exactly these 17 countries:
 
 1. Mexico (MX)
 2. Belize (BZ)
@@ -20,10 +20,9 @@ The hostel finder and weekly OpenStreetMap database audit must include exactly t
 14. Paraguay (PY)
 15. Peru (PE)
 16. Uruguay (UY)
-17. Cuba (CU)
-18. Dominican Republic (DO)
+17. Dominican Republic (DO)
 
-Venezuela is excluded. Brazil and all other countries not listed above are excluded.
+Venezuela and Cuba are excluded (Christopher removed Cuba from the whole site, Oct 22, 2026). Brazil and all other countries not listed above are excluded.
 
 The weekly database script validates that the country codes in `hostels.html` match its own locked list exactly. If either list is changed or the two lists get out of sync, the weekly update stops with an error rather than silently proceeding.
 
