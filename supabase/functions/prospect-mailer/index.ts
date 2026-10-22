@@ -1,4 +1,4 @@
-// Automatic prospecting emails from Christopher's own mailbox (domain.com: smtp.domain.com:465, imap.domain.com:993).
+// Automatic prospecting emails from Christopher's own mailbox (Network Solutions / Open-Xchange; servers in prospect_mailer).
 // Deployed as "prospect-mailer" with JWT verification OFF; callers are checked here:
 //   the scheduled job (header x-mailer-token, every 10 minutes 9:00-10:50 am Colombia), or an admin ("Run now" button).
 // Each run:
@@ -16,7 +16,7 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 const ALLOWED_ORIGINS = ["https://christopherthegoodgringo.com", "https://www.christopherthegoodgringo.com", "https://christopherthegoodgringo.github.io"];
 const SITE = "https://christopherthegoodgringo.com";
 const FROM_NAME = "Christopher Kesl";
-const SMTP_HOST = "smtp.domain.com", IMAP_HOST = "imap.domain.com";
+let SMTP_HOST = "smtp.domain.com", IMAP_HOST = "imap.domain.com", SMTP_PORT = 465;
 const PER_RUN = 8, GAP_MS = 3000, DAY = 86400000, FOLLOW_DAYS = [4, 7];
 const FINDER: Record<string, [string, string, string]> = {
   hotels: ["/hotels.html", "buscador de hoteles", "hotel finder"],
@@ -56,6 +56,9 @@ function encodeHeader(s: string) { return /^[\x20-\x7e]*$/.test(s) ? s : "=?UTF-
 class Line {
   conn!: Deno.TlsConn; buf = ""; dec = new TextDecoder();
   async open(host: string, port: number) { this.conn = await Deno.connectTls({ hostname: host, port }); }
+  async openPlain(host: string, port: number) { this.plain = await Deno.connect({ hostname: host, port }); this.conn = this.plain as any; }
+  plain: Deno.TcpConn | null = null;
+  async upgrade(host: string) { this.conn = await Deno.startTls(this.plain!, { hostname: host }); this.buf = ""; }
   async readLine(timeoutMs = 30000): Promise<string> {
     const start = Date.now();
     while (true) {
@@ -85,13 +88,19 @@ class Smtp {
     if (!ok.includes(code)) throw Object.assign(new Error(text.trim().split("\n").pop() || ("SMTP " + code)), { code });
     return text;
   }
-  async open(user: string, pass: string) {
-    await this.l.open(SMTP_HOST, 465);
+  async open(user: string, pass: string, host = SMTP_HOST, port = SMTP_PORT) {
+    if (port === 465) await this.l.open(host, 465); else await this.l.openPlain(host, port);
     const [c] = await this.reply(); if (c !== 220) throw new Error("The mail server didn't say hello.");
     await this.cmd("EHLO christopherthegoodgringo.com", [250]);
+    if (port !== 465) { await this.cmd("STARTTLS", [220]); await this.l.upgrade(host); await this.cmd("EHLO christopherthegoodgringo.com", [250]); }
     await this.cmd("AUTH LOGIN", [334]);
     await this.cmd(b64(user), [334]);
-    try { await this.cmd(b64(pass), [235]); } catch { throw new Error("The mailbox didn't accept the email password. Check EMAIL_PASSWORD in Supabase."); }
+    try { await this.cmd(b64(pass), [235]); }
+    catch (e1) {
+      // Some servers only take AUTH PLAIN: try it before giving up.
+      try { await this.cmd("AUTH PLAIN " + b64("\u0000" + user + "\u0000" + pass), [235]); }
+      catch (e2) { throw new Error("The mailbox didn't accept the email password. Check EMAIL_PASSWORD in Supabase. (" + String((e2 as Error).message || e2).slice(0, 160) + ")"); }
+    }
   }
   async send(from: string, to: string, raw: string) {
     await this.cmd("MAIL FROM:<" + from + ">", [250]);
@@ -108,21 +117,21 @@ class Smtp {
 // ---------- IMAP (port 993) ----------
 class Imap {
   l = new Line(); n = 0;
-  async open(user: string, pass: string) {
-    await this.l.open(IMAP_HOST, 993);
+  async open(user: string, pass: string, host = IMAP_HOST) {
+    await this.l.open(host, 993);
     await this.l.readLine();
     const q = (s: string) => '"' + s.replace(/\\/g, "\\\\").replace(/"/g, '\\"') + '"';
     const r = await this.cmd("LOGIN " + q(user) + " " + q(pass));
-    if (!r.ok) throw new Error("The mailbox didn't accept the email password (inbox check). Check EMAIL_PASSWORD in Supabase.");
+    if (!r.ok) throw new Error("The mailbox didn't accept the email password (inbox check). Check EMAIL_PASSWORD in Supabase. (" + r.last.slice(0, 160) + ")");
   }
-  async cmd(c: string, literal?: string): Promise<{ ok: boolean; lines: string[] }> {
+  async cmd(c: string, literal?: string): Promise<{ ok: boolean; lines: string[]; last: string }> {
     const tag = "A" + (++this.n);
     await this.l.write(tag + " " + c + "\r\n");
     const lines: string[] = [];
     while (true) {
       const line = await this.l.readLine(60000);
       if (line.startsWith("+") && literal !== undefined) { await this.l.write(literal + "\r\n"); literal = undefined; continue; }
-      if (line.startsWith(tag + " ")) return { ok: line.startsWith(tag + " OK"), lines };
+      if (line.startsWith(tag + " ")) return { ok: line.startsWith(tag + " OK"), lines, last: line.slice(tag.length + 1) };
       lines.push(line);
     }
   }
@@ -217,15 +226,63 @@ Deno.serve(async (req: Request) => {
   if (!allowed) return reply(403, { error: "Please sign in again." });
 
   const { data: settings } = await db.from("prospect_mailer").select("*").eq("id", 1).maybeSingle();
+  if (settings?.imap_host) IMAP_HOST = settings.imap_host;
+  if (settings?.smtp_host) SMTP_HOST = settings.smtp_host;
+  if (settings?.smtp_port) SMTP_PORT = settings.smtp_port;
   const finish = async (result: string, error: string | null, extra: Record<string, unknown> = {}) => {
     await db.from("prospect_mailer").update({ last_run_at: new Date().toISOString(), last_result: result, last_error: error }).eq("id", 1);
     return reply(200, { result, error, ...extra });
   };
-  if (!settings?.enabled && !manual) return reply(200, { result: "Automatic emails are paused." });
+  let body: Record<string, unknown> = {};
+  try { body = await req.json(); } catch { /* no body */ }
+  const testOnly = body.action === "test" || body.action === "probe";
+  if (!settings?.enabled && !manual && !testOnly) return reply(200, { result: "Automatic emails are paused." });
 
   const user = (Deno.env.get("EMAIL_USER") ?? "christopher@christopherthegoodgringo.com").trim();
   const pass = (Deno.env.get("EMAIL_PASSWORD") ?? "").replace(/^["']|["']$/g, "");
   if (!pass) return finish("Not sent", "Add your email password in Supabase (Edge Functions > Secrets, name EMAIL_PASSWORD) to switch on automatic emails.");
+
+  // Probe: find which mail servers accept this mailbox (checks the domain's mail records, then likely server names).
+  if (body.action === "probe") {
+    const out: Record<string, unknown> = {};
+    try { out.mx = await Deno.resolveDns(user.split("@")[1], "MX"); } catch (e) { out.mx = "lookup failed: " + String(e); }
+    const imapHosts = (Array.isArray(body.imap) ? body.imap : ["imap.xion.oxcs.net", "imap.netsol.xion.oxcs.net"]) as string[];
+    const smtp = (Array.isArray(body.smtp) ? body.smtp : [["smtp.xion.oxcs.net", 465], ["smtp.xion.oxcs.net", 587], ["smtp.netsol.xion.oxcs.net", 465]]) as Array<[string, number]>;
+    const ir: Record<string, string> = {}, sr: Record<string, string> = {};
+    for (const h of imapHosts) { const im = new Imap(); try { await im.open(user, pass, h); ir[h] = "OK"; await im.close(); } catch (e) { ir[h] = String((e as Error).message || e).slice(0, 140); im.l.close(); } }
+    for (const [h, port] of smtp) { const sm = new Smtp(); try { await sm.open(user, pass, h, port); sr[h + ":" + port] = "OK"; await sm.close(); } catch (e) { sr[h + ":" + port] = String((e as Error).message || e).slice(0, 140); sm.l.close(); } }
+    return reply(200, { ...out, imap: ir, smtp: sr });
+  }
+
+  // Test: one sample email (the real first message, filled in for one of your businesses) sent only to your own mailbox.
+  if (body.action === "test") {
+    const { data: sample } = await db.from("prospects").select("*").not("email", "is", null).limit(1).maybeSingle();
+    const { data: tpls } = await db.from("prospect_templates").select("*");
+    const T: Record<string, any> = {}; (tpls ?? []).forEach((t: any) => { T[t.id] = t; });
+    const p = sample || { listing_type: "hostels", listing_id: "test", listing_name: "Hostal de prueba", language: "es" };
+    const lang = p.language === "en" ? "en" : "es";
+    const t = T["email_" + lang] || { subject: "Test", body: "Test" };
+    const listings = await loadListings(db);
+    const h = listings[p.listing_type + "|" + p.listing_id] || { name: p.listing_name, city: "" };
+    const subject = (lang === "es" ? "[PRUEBA] " : "[TEST] ") + fill(t.subject || "", p, h, lang);
+    const text = fill(t.body, p, h, lang).replace(/\s+$/, "") + FOOTER[lang];
+    const raw = message(user, user, subject, text);
+    const steps: string[] = [];
+    let sendErr: string | null = null, inboxErr: string | null = null;
+    steps.push("Password length " + pass.length + (pass !== pass.trim() ? " (has spaces at the start or end)" : ""));
+    try {
+      const smtp = new Smtp(); await smtp.open(user, pass); steps.push("Signed in to send");
+      await smtp.send(user, user, raw); steps.push("Test email sent to " + user); await smtp.close();
+    } catch (e) { sendErr = String((e as Error).message || e); steps.push("Send: " + sendErr); }
+    try {
+      const im = new Imap(); await im.open(user, pass); steps.push("Signed in to the inbox");
+      if (!sendErr) { const box = await im.sentFolder(); if (box) { await im.append(box, raw); steps.push("Copy saved in " + box); } }
+      await im.close();
+    } catch (e) { inboxErr = String((e as Error).message || e); steps.push("Inbox: " + inboxErr); }
+    if (sendErr) return finish("Test failed", sendErr, { steps });
+    if (inboxErr) return finish("Test sent, inbox check failed", inboxErr, { steps });
+    return finish("Test email sent to your inbox", null, { steps, sample: h.name });
+  }
 
   const { data: allRows, error: pe } = await db.from("prospects").select("*").not("email", "is", null)
     .in("status", ["new", "whatsapped", "emailed", "both"]);
