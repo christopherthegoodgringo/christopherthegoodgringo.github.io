@@ -84,6 +84,8 @@
     [/^Approve (bronze|silver|gold|platinum)$/i, function (m) { return 'Aprobar ' + tr(m[1]); }],
     [/^This claim was not approved\. Note: (.+)$/, function (m) { return 'Esta solicitud no fue aprobada. Nota: ' + tr(m[1]); }],
     [/^Last contacted (.+?)(?: \((\d+) times\))?$/, function (m) { return 'Último contacto: ' + m[1] + (m[2] ? ' (' + m[2] + ' veces)' : ''); }],
+    [/^(.*?)( · Added by owner)? · (?:No owner yet|Owner: (.+))$/, function (m) { return m[1] + (m[2] ? ' · Agregado por el dueño' : '') + ' · ' + (m[3] ? 'Dueño: ' + m[3] : 'Sin dueño todavía'); }],
+    [/^(\d+) business(es)?$/, function (m) { return m[1] + (m[1] === '1' ? ' negocio' : ' negocios'); }],
     [/^(\d+) of (\d+) businesses · (\d+) WhatsApped · (\d+) emailed · (\d+) both · (\d+) replied · (\d+) claimed$/, function (m) { return m[1] + ' de ' + m[2] + ' negocios · ' + m[3] + ' por WhatsApp · ' + m[4] + ' por correo · ' + m[5] + ' por ambos · ' + m[6] + ' respondieron · ' + m[7] + ' reclamados'; }],
     [/^Switch to (Bronze|Silver|Gold|Platinum)$/, function (m) { return 'Cambiar a ' + tr(m[1]); }],
     [/^Upgrade (.+)$/, function (m) { return m[1] === 'your listing' ? 'Sube de nivel tu listado' : 'Subir de nivel: ' + m[1]; }],
