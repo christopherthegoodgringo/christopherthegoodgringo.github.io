@@ -7,6 +7,7 @@
 //                                      (or, with metadata ebook=<id>: ebook sale, recorded in ebook_orders + emailed)
 //   customer.subscription.updated   -> plan changed in "Manage my plan": listing level follows it
 //   customer.subscription.deleted   -> subscription ended: listing drops back to free
+//   invoice.paid                    -> monthly renewal: 15% commission for the agent who brought the business in
 //
 // Secrets (Supabase > Edge Functions > Secrets):
 //   STRIPE_WEBHOOK_SECRET  required. The "Signing secret" (whsec_...) of the webhook.
@@ -120,6 +121,18 @@ Deno.serve(async (req: Request) => {
 
   if (event.type === "customer.subscription.deleted") {
     const { data, error } = await db.rpc("stripe_end_subscription", { p_subscription_id: obj.id });
+    if (error) { console.error(error); return new Response("Database error", { status: 500 }); }
+    return Response.json(data);
+  }
+
+  if (event.type === "invoice.paid") {
+    // Monthly renewal (or plan change charge) of a listing subscription: the agent who brought the business in earns 15%.
+    // The first payment (billing_reason subscription_create) is handled by checkout.session.completed above.
+    if (obj.billing_reason === "subscription_create") return Response.json({ ignored: "first payment" });
+    const sub = typeof obj.subscription === "string" ? obj.subscription : obj.subscription?.id
+      ?? obj.parent?.subscription_details?.subscription ?? null;
+    if (!sub || !(obj.amount_paid > 0)) return Response.json({ ignored: "no subscription payment" });
+    const { data, error } = await db.rpc("record_agent_renewal", { p_subscription_id: sub, p_invoice_id: obj.id, p_amount_cents: obj.amount_paid });
     if (error) { console.error(error); return new Response("Database error", { status: 500 }); }
     return Response.json(data);
   }

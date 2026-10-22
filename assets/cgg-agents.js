@@ -4,7 +4,7 @@
  *    sales and money, new temporary password, turn an agent off/on, all commissions (cancel, mark paid, send payouts now).
  *  - Agents: "My earnings" (their link, totals, Stripe payout setup, commissions, businesses credited to them) and
  *    "Add a business" (goes live as Bronze and becomes their lead). Their Prospecting is handled in admin/index.html.
- * Agents earn 75% of a business's first paid month (supabase/016_agents.sql); payouts: supabase/functions/agents.
+ * Agents earn 30% of a business's first paid month, then 15% of every monthly renewal (supabase/020_agent_renewals.sql); payouts: supabase/functions/agents.
  * All text is English; assets/cgg-i18n.js translates it (i18n/es.json).
  */
 (function () {
@@ -160,7 +160,7 @@
   function renderCommissions(box, rows, admin) {
     if (!box) return;
     box.replaceChildren();
-    if (!rows.length) { box.appendChild(el('p', { className: 'muted' }, admin ? 'No commissions yet. They appear here automatically when a business an agent brought in pays for its first month.' : 'No commissions yet. When a business that signed up through your link pays for a Silver, Gold or Platinum plan, your commission shows here.')); return; }
+    if (!rows.length) { box.appendChild(el('p', { className: 'muted' }, admin ? 'No commissions yet. They appear here automatically when a business an agent brought in pays its first month or a monthly renewal.' : 'No commissions yet. When a business that signed up through your link pays for a Silver, Gold or Platinum plan, your commission shows here.')); return; }
     rows.forEach(function (k) {
       var out = el('div');
       var acts = el('div', { className: 'actions' });
@@ -174,7 +174,7 @@
         : [el('span', {}, 'Payable from'), ' ', data(day(k.available_at))];
       var meta = el('p', { className: 'meta' });
       [admin ? el('span', {}, el('span', {}, 'Agent'), ': ', data(nameOf(k.agent_id)), ' · ') : '',
-        el('span', {}, TIER[k.tier] || k.tier || ''), ' · ', el('span', {}, 'They paid'), ' ', data(money(k.amount_paid_cents)), ' · ',
+        el('span', {}, k.kind === 'renewal' ? 'Monthly renewal (15%)' : 'New listing (30%)'), ' · ', el('span', {}, TIER[k.tier] || k.tier || ''), ' · ', el('span', {}, 'They paid'), ' ', data(money(k.amount_paid_cents)), ' · ',
         el('strong', {}, el('span', {}, 'Commission'), ' ', data(money(k.commission_cents))), ' · '].concat(when).forEach(function (n) {
         if (n) meta.appendChild(typeof n === 'string' ? document.createTextNode(n) : n);
       });
@@ -237,12 +237,12 @@
       box.appendChild(payoutBox());
       box.appendChild(el('div', { className: 'item' },
         el('h3', {}, 'How you earn'),
-        el('p', {}, 'You earn 75% of the first monthly payment of every business that signs up through your link and picks a paid plan:'),
+        el('p', {}, 'For every business that signs up through your link and picks a paid plan, you earn 30% of its first month, then 15% of every month it renews:'),
         el('ul', { className: 'ag-ul' },
-          el('li', {}, el('span', {}, 'Silver'), ' ($9.99) → ', el('strong', {}, data('$7.49'))),
-          el('li', {}, el('span', {}, 'Gold'), ' ($19.99) → ', el('strong', {}, data('$14.99'))),
-          el('li', {}, el('span', {}, 'Platinum'), ' ($49.99) → ', el('strong', {}, data('$37.49')))),
-        el('p', { className: 'meta' }, 'Free Bronze listings don\'t earn a commission. If the business used a discount code, you earn 75% of what it actually paid. Your money is sent automatically 14 days after the payment.')));
+          el('li', {}, el('span', {}, 'Silver'), ' ($9.99) → ', el('strong', {}, data('$3.00')), ' + ', data('$1.50'), ' ', el('span', {}, 'every month')),
+          el('li', {}, el('span', {}, 'Gold'), ' ($19.99) → ', el('strong', {}, data('$6.00')), ' + ', data('$3.00'), ' ', el('span', {}, 'every month')),
+          el('li', {}, el('span', {}, 'Platinum'), ' ($49.99) → ', el('strong', {}, data('$15.00')), ' + ', data('$7.50'), ' ', el('span', {}, 'every month'))),
+        el('p', { className: 'meta' }, 'Free Bronze listings don\'t earn a commission. If the business used a discount code, you earn your share of what it actually paid. Your money is sent automatically 14 days after each payment.')));
       box.appendChild(el('h3', { className: 'ag-h' }, 'Your commissions'));
       var cbox = el('div', { className: 'list' }); renderCommissions(cbox, rows, false); box.appendChild(cbox);
       box.appendChild(el('h3', { className: 'ag-h' }, 'Businesses that signed up through you'));
