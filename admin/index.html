@@ -235,17 +235,21 @@
   $('bizCountry').addEventListener('change', function () { $('bizCity').value = ''; });
   $('prCountry').addEventListener('change', function () { $('prCity').value = ''; });
   // Country and City dropdowns: list the countries and cities of the businesses in view (with how many), keep the current choice.
-  function placeOptions(selId, values, allLabel) {
+  // Our 18 countries always show in the Country dropdown, even before they have any businesses.
+  var ALL_COUNTRIES = ['Argentina', 'Belize', 'Bolivia', 'Chile', 'Colombia', 'Costa Rica', 'Cuba', 'Dominican Republic', 'Ecuador',
+    'El Salvador', 'Guatemala', 'Honduras', 'Mexico', 'Nicaragua', 'Panama', 'Paraguay', 'Peru', 'Uruguay'];
+  function placeOptions(selId, values, allLabel, always) {
     var sel = $(selId), cur = sel.value, counts = {};
+    (always || []).forEach(function (v) { counts[v] = 0; });
     values.forEach(function (v) { if (v) counts[v] = (counts[v] || 0) + 1; });
     sel.replaceChildren(el('option', { value: '' }, allLabel));
     Object.keys(counts).sort(function (a, b) { return a.localeCompare(b); }).forEach(function (v) {
       sel.appendChild(el('option', { value: v, selected: v === cur }, v + ' (' + counts[v] + ')'));
     });
-    if (cur && !counts[cur]) sel.value = '';
+    if (cur && !(cur in counts)) sel.value = '';
   }
   function placeFilter(prefix, pool) {
-    placeOptions(prefix + 'Country', pool.map(function (h) { return h.countryName; }), 'All countries');
+    placeOptions(prefix + 'Country', pool.map(function (h) { return h.countryName; }), 'All countries', ALL_COUNTRIES);
     var c = $(prefix + 'Country').value;
     placeOptions(prefix + 'City', pool.filter(function (h) { return !c || h.countryName === c; }).map(function (h) { return h.city; }), 'All cities');
     var city = $(prefix + 'City').value;
