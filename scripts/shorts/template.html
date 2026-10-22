@@ -1,0 +1,82 @@
+<!doctype html>
+<!-- Vertical Short template (1080x1920). make_short.py loads it with ?spec=..., then calls window.seek(t) for each frame.
+     Everything is driven by seek(t) so every frame renders the same way every time. -->
+<html><head><meta charset="utf-8"><style>
+:root{--deep:#09291e;--green:#103e2f;--leaf:#17553f;--gold:#f5bd3e;--cream:#fffdf8;--sage:#cfe0d4;--coral:#e8664a}
+html,body{margin:0;padding:0}
+body{width:1080px;height:1920px;overflow:hidden;position:relative;font-family:'Poppins',sans-serif;color:var(--cream);
+ background:radial-gradient(ellipse 1200px 1500px at 50% 42%,var(--leaf) 0%,var(--green) 55%,var(--deep) 100%)}
+.dot{position:absolute;border-radius:50%;background:var(--gold)}
+.wave{position:absolute;left:-60px;width:1200px;opacity:.14}
+.logo{position:absolute;top:120px;left:50%;width:300px;transform:translateX(-50%)}
+.bar{position:absolute;top:70px;left:90px;right:90px;height:10px;border-radius:99px;background:#ffffff26;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--gold);border-radius:99px}
+.scene{position:absolute;left:90px;right:90px;top:480px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:34px}
+.icon{width:300px;height:300px}
+.kicker{display:inline-block;padding:14px 34px;border-radius:999px;background:var(--gold);color:var(--deep);font-weight:700;font-size:46px;letter-spacing:.02em}
+h1{margin:0;font-weight:700;font-size:112px;line-height:1.02;letter-spacing:-.02em}
+h1 em{font-style:normal;color:var(--gold)}
+p{margin:0;font-weight:500;font-size:58px;line-height:1.25;color:var(--sage)}
+.big{font-weight:700;font-size:300px;line-height:.9;color:var(--gold);letter-spacing:-.04em}
+.url{display:inline-block;padding:22px 40px;border-radius:999px;background:var(--gold);color:var(--deep);font-weight:700;font-size:50px}
+.endlogo{width:760px}
+</style></head><body>
+<svg class="wave" style="top:1540px" viewBox="0 0 1200 300" fill="none" stroke="#f5bd3e" stroke-width="4"><path d="M0 60 C200 0,400 120,600 60 S1000 0,1200 60"/><path d="M0 130 C200 70,400 190,600 130 S1000 70,1200 130"/><path d="M0 200 C200 140,400 260,600 200 S1000 140,1200 200"/></svg>
+<div class="dot" id="d1" style="width:180px;height:180px;right:-40px;top:300px;opacity:.85"></div>
+<div class="dot" id="d2" style="width:70px;height:70px;left:70px;top:1380px;opacity:.5"></div>
+<div class="bar"><i id="bar"></i></div>
+<img class="logo" id="logo" src="../../assets/cgg-wordmark.svg" alt="">
+<div id="stage"></div>
+<script>
+const ICONS = {
+  pin:'<svg viewBox="0 0 100 100"><path d="M50 8C33 8 20 21 20 38c0 23 30 54 30 54s30-31 30-54C80 21 67 8 50 8z" fill="#f5bd3e"/><circle cx="50" cy="38" r="12" fill="#103e2f"/></svg>',
+  mountain:'<svg viewBox="0 0 100 100"><path d="M5 85 38 30l15 22 10-14 32 47z" fill="#cfe0d4"/><path d="M38 30l9 14-9 6-8-6z" fill="#fffdf8"/><circle cx="76" cy="22" r="10" fill="#f5bd3e"/></svg>',
+  coffee:'<svg viewBox="0 0 100 100"><path d="M18 40h52v22a22 22 0 0 1-22 22h-8a22 22 0 0 1-22-22z" fill="#f5bd3e"/><path d="M70 46h6a10 10 0 0 1 0 20h-7" fill="none" stroke="#f5bd3e" stroke-width="7"/><path d="M34 14c-6 8 6 10 0 18M50 14c-6 8 6 10 0 18" fill="none" stroke="#cfe0d4" stroke-width="5" stroke-linecap="round"/></svg>',
+  bed:'<svg viewBox="0 0 100 100"><rect x="10" y="48" width="80" height="22" rx="6" fill="#f5bd3e"/><rect x="16" y="34" width="26" height="16" rx="6" fill="#fffdf8"/><rect x="10" y="30" width="7" height="50" rx="3" fill="#cfe0d4"/><rect x="83" y="56" width="7" height="24" rx="3" fill="#cfe0d4"/></svg>',
+  question:'<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="#f5bd3e"/><text x="50" y="68" text-anchor="middle" font-family="Poppins" font-weight="700" font-size="56" fill="#103e2f">?</text></svg>'
+};
+const spec = JSON.parse(decodeURIComponent(new URLSearchParams(location.search).get('spec') || '{}'));
+const stage = document.getElementById('stage');
+const scenes = spec.scenes || [];
+let starts = [], t0 = 0;
+scenes.forEach((s, i) => {
+  starts.push(t0); t0 += s.dur;
+  const el = document.createElement('div'); el.className = 'scene'; el.id = 's' + i;
+  let h = '';
+  if (s.icon) h += '<div class="icon part">' + ICONS[s.icon] + '</div>';
+  if (s.kicker) h += '<div class="part"><span class="kicker">' + s.kicker + '</span></div>';
+  if (s.count != null) h += '<div class="big part" data-count="' + s.count + '">0</div>';
+  if (s.title) h += '<h1 class="part">' + s.title + '</h1>';
+  if (s.text) h += '<p class="part">' + s.text + '</p>';
+  if (s.end) h += '<img class="endlogo part" src="../../assets/cgg-wordmark.svg" alt=""><p class="part">' + (s.endText || '') + '</p><div class="part"><span class="url">' + (spec.url || 'christopherthegoodgringo.com') + '</span></div>';
+  el.innerHTML = h; stage.appendChild(el);
+});
+const total = t0;
+const ease = x => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
+const back = x => { x = Math.min(1, Math.max(0, x)); const c = 1.6; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+window.TOTAL = total;
+window.seek = function (t) {
+  document.getElementById('bar').style.width = (Math.min(1, t / total) * 100) + '%';
+  document.getElementById('d1').style.transform = 'translateY(' + Math.sin(t * 0.9) * 30 + 'px)';
+  document.getElementById('d2').style.transform = 'translateY(' + Math.cos(t * 1.1) * 22 + 'px)';
+  const last = scenes.length - 1;
+  document.getElementById('logo').style.opacity = scenes[last] && scenes[last].end && t > starts[last] ? Math.max(0, 1 - (t - starts[last]) * 4) : 1;
+  scenes.forEach((s, i) => {
+    const el = document.getElementById('s' + i), local = t - starts[i], out = s.dur - local;
+    const on = local >= -0.01 && local < s.dur + (i === last ? 99 : 0);
+    el.style.display = on ? 'flex' : 'none';
+    if (!on) return;
+    const fadeOut = i === last ? 1 : Math.min(1, out / 0.3);
+    el.style.opacity = fadeOut;
+    el.querySelectorAll('.part').forEach((p, k) => {
+      const a = local - 0.12 - k * 0.16;
+      const e = p.classList.contains('icon') || p.classList.contains('endlogo') ? back(a / 0.55) : ease(a / 0.45);
+      p.style.opacity = Math.min(1, Math.max(0, a / 0.3));
+      p.style.transform = 'translateY(' + (1 - e) * 80 + 'px) scale(' + (0.85 + 0.15 * e) + ')';
+      if (p.dataset.count) p.textContent = Math.round(Number(p.dataset.count) * ease((local - 0.2) / 1.2));
+    });
+  });
+};
+window.seek(0);
+</script>
+</body></html>

@@ -969,5 +969,17 @@
   "YouTube didn't accept the publish time. Pick a time at least a few minutes from now.": "YouTube no aceptó la hora de publicación. Elige una hora por lo menos unos minutos más adelante.",
   "YouTube didn't start the upload.": "YouTube no inició la subida.",
   "YouTube didn't confirm the upload. Check the video file and try again.": "YouTube no confirmó la subida. Revisa el archivo de video e intenta de nuevo.",
-  "Couldn't reach YouTube.": "No se pudo conectar con YouTube."
+  "Couldn't reach YouTube.": "No se pudo conectar con YouTube.",
+  "Changes requested": "Cambios pedidos",
+  "Made by Claude": "Hecho por Claude",
+  "Version": "Versión",
+  "Changes you asked for:": "Cambios que pediste:",
+  "Last changes you asked for:": "Últimos cambios que pediste:",
+  "Claude will make a new version and send it back here for review.": "Claude hará una nueva versión y la enviará aquí para que la revises.",
+  "Request changes": "Pedir cambios",
+  "What should Claude change?": "¿Qué debe cambiar Claude?",
+  "e.g. Make it shorter, change the first line, use English, brighter colors": "ej. Hazlo más corto, cambia la primera frase, en inglés, colores más vivos",
+  "Send to Claude": "Enviar a Claude",
+  "Sent. Tell Claude in your chat, or it picks up change requests when it checks in.": "Enviado. Avísale a Claude en tu chat, o lo verá cuando revise los pedidos de cambios.",
+  "The video file couldn't be downloaded (404). Ask Claude to make it again.": "No se pudo descargar el archivo de video (404). Pídele a Claude que lo haga de nuevo."
 }

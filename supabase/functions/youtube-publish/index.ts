@@ -61,7 +61,7 @@ Deno.serve(async (req: Request) => {
 
   if (body.action !== "publish") return reply(400, { error: "Unknown action." });
   if (post.youtube_video_id) return reply(400, { error: "This Short is already on YouTube." });
-  if (!post.video_parts || !post.video_size) return reply(400, { error: "Add the video file first." });
+  if (!post.video_url && (!post.video_parts || !post.video_size)) return reply(400, { error: "Add the video file first." });
   if (!post.title.trim()) return reply(400, { error: "Add a title first." });
   if (post.status === "publishing") return reply(409, { error: "This Short is already being sent to YouTube." });
 
@@ -113,8 +113,15 @@ function googleError(j: any) {
 }
 
 async function upload(db: any, token: string, post: Post) {
-  const total = Number(post.video_size);
-  const type = post.video_type || "video/mp4";
+  // A Short Claude made comes as one finished file at video_url; one Christopher added comes in parts in storage.
+  let whole: Uint8Array | null = null;
+  if (post.video_url && !post.video_parts) {
+    const v = await fetch(post.video_url);
+    if (!v.ok) throw new Error("The video file couldn't be downloaded (" + v.status + "). Ask Claude to make it again.");
+    whole = new Uint8Array(await v.arrayBuffer());
+  }
+  const total = whole ? whole.length : Number(post.video_size);
+  const type = whole ? "video/mp4" : (post.video_type || "video/mp4");
   const meta = metadata(post);
   const init = await fetch("https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status", {
     method: "POST",
@@ -129,7 +136,12 @@ async function upload(db: any, token: string, post: Post) {
   if (!session) throw new Error("YouTube didn't start the upload.");
 
   let offset = 0, result: any = null;
-  for (let i = 0; i < post.video_parts; i++) {
+  if (whole) {
+    const r = await fetch(session, { method: "PUT", headers: { "Content-Length": String(total), "Content-Type": type }, body: whole });
+    if (r.status === 200 || r.status === 201) result = await r.json();
+    else throw new Error(googleError(await r.json().catch(() => ({ error: { message: "upload failed (" + r.status + ")" } }))));
+  }
+  for (let i = 0; !whole && i < post.video_parts; i++) {
     const path = `posts/${post.id}/part-${String(i).padStart(3, "0")}`;
     const { data: blob, error } = await db.storage.from(BUCKET).download(path);
     if (error || !blob) throw new Error("Part " + (i + 1) + " of the video is missing. Upload the video again.");
@@ -155,6 +167,7 @@ async function upload(db: any, token: string, post: Post) {
     published_at: scheduled ? null : new Date().toISOString(),
     video_parts: 0, error: null, updated_at: new Date().toISOString(),
   }).eq("id", post.id);
+  if (!post.video_parts) return;
   const paths = Array.from({ length: post.video_parts }, (_, i) => `posts/${post.id}/part-${String(i).padStart(3, "0")}`);
   await db.storage.from(BUCKET).remove(paths);
 }

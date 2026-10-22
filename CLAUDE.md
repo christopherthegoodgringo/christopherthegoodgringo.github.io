@@ -77,3 +77,7 @@ Checklist for every change:
 - `youtube-auth` connects the channel (Google OAuth; secrets YOUTUBE_CLIENT_ID / YOUTUBE_CLIENT_SECRET; refresh token in
   `youtube_connection`, readable only by the server). `youtube-stats` updates views/likes/comments every 6 hours (pg_cron)
   and from the Refresh stats button. Database: supabase/013_social_youtube.sql. Function code: supabase/functions/.
+- Shorts Claude makes: `scripts/shorts/make_short.py spec.json out.mp4` (brand-style animated text scenes, original generated
+  music, 1080x1920). The finished file goes in `media/shorts/` (hidden from search via robots.txt) and a `social_posts` row is
+  added with `made_by = 'claude'`, `video_url`, status `review`. Christopher approves or taps Request changes
+  (status `changes`, his note in `change_request`); Claude makes version + 1 and sets it back to `review`.

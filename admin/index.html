@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script src="/assets/cgg-i18n.js?v=20261022l"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
+<head><script src="/assets/cgg-i18n.js?v=20261022m"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Listing Admin | Christopher the Good Gringo</title><meta property="og:site_name" content="Christopher The Good Gringo"><meta property="og:type" content="website"><meta property="og:title" content="Listing Admin | Christopher the Good Gringo"><meta property="og:url" content="https://christopherthegoodgringo.com/admin/"><meta property="og:image" content="https://christopherthegoodgringo.com/assets/cgg-share.png?v=1"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
@@ -13,15 +13,18 @@
 <script src="/assets/cgg-overrides.js?v=5"></script>
 <script src="/assets/cgg-portal.js?v=7"></script>
 <script src="/assets/cgg-listing-editor.js?v=4"></script>
-<script src="/assets/cgg-social.js?v=20261022a"></script>
+<script src="/assets/cgg-social.js?v=20261022b"></script>
 <style id="cgg-global-header-css">.cgg-global-header{box-sizing:border-box;width:100%;min-height:84px;padding:0 14px;background:#103e2f;display:flex;align-items:center;gap:28px;position:relative;z-index:20;font-family:Arial,sans-serif;color:#fffdf8}.cgg-global-header *{box-sizing:border-box}.cgg-global-brand{display:flex;align-items:center;gap:12px;flex:0 0 auto;white-space:nowrap;text-decoration:none;color:#fffdf8;font-size:15px;font-weight:800;line-height:1;letter-spacing:0}.cgg-global-brand img{display:block;width:100px;height:73px;object-fit:contain;flex:0 0 100px}.cgg-global-nav{display:flex;align-items:center;justify-content:space-between;gap:clamp(10px,1.25vw,20px);flex:1 1 auto;min-width:0;white-space:nowrap;overflow-x:auto;scrollbar-width:thin}.cgg-global-nav a{display:block;flex:0 0 auto;padding:8px 0;margin:0;color:#fffdf8;text-decoration:none;font-family:Arial,sans-serif;font-size:13px;font-weight:700;line-height:1.2;white-space:nowrap}.cgg-global-nav a:hover{color:#f5bd3e}@media(max-width:1120px){.cgg-global-header{min-height:84px;align-items:flex-start;flex-direction:column;gap:8px;padding:10px 14px}.cgg-global-nav{width:100%;flex:0 0 auto;justify-content:flex-start;gap:22px}.cgg-global-brand{font-size:14px}.cgg-global-brand img{width:88px;height:64px;flex-basis:88px}}@media(max-width:560px){.cgg-global-header{padding:10px 12px}.cgg-global-brand{font-size:12px;gap:9px}.cgg-global-brand img{width:80px;height:58px;flex-basis:80px}.cgg-global-nav{gap:18px}.cgg-global-nav a{font-size:13px}}</style><style id="cgg-nav-hover-polish">.cgg-global-nav{gap:clamp(6px,.75vw,12px)!important}.cgg-global-nav a{font-weight:800!important;border-radius:999px!important;padding:9px 11px!important;transition:background-color .18s ease,color .18s ease!important}.cgg-global-nav a:hover,.cgg-global-nav a:focus-visible{background:#f5bd3e!important;color:#103e2f!important;outline:none!important}@media(max-width:1120px){.cgg-global-nav{gap:8px!important}.cgg-global-nav a{padding:8px 11px!important}}@media(max-width:560px){.cgg-global-nav{gap:5px!important}.cgg-global-nav a{padding:8px 10px!important}}</style>
 <style>
 .so-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px}
 .so-tile{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:2px}
 .so-tile strong{font:800 1.4rem/1.1 'Bricolage Grotesque','DM Sans',sans-serif;color:var(--green)}
 .so-tile span{font-size:.82rem;color:var(--muted);font-weight:600}
-.so-card{grid-template-columns:120px 1fr;gap:14px;align-items:start}
+.so-card{grid-template-columns:auto 1fr;gap:14px;align-items:start}
 @media(max-width:560px){.so-card{grid-template-columns:1fr}}
+.so-video{width:200px;aspect-ratio:9/16;border-radius:12px;background:#000;object-fit:contain}
+@media(max-width:560px){.so-video{width:100%;max-width:300px;justify-self:center}}
+.so-changes{display:grid;gap:6px;margin-top:6px}
 .so-thumb{width:120px;aspect-ratio:16/9;object-fit:cover;border-radius:10px;background:#e9e5d9;display:flex;align-items:center;justify-content:center;color:#9aa39b;font-size:1.6rem}
 .so-info{display:grid;gap:6px;min-width:0}
 .so-stats{display:flex;gap:14px;flex-wrap:wrap;margin:0;font-size:.92rem;color:var(--muted)}
@@ -183,7 +186,7 @@
         <div id="soChart"></div>
       </div>
       <div class="row" style="margin:0 0 10px">
-        <div><label for="soFilter">Show</label><select id="soFilter"><option value="">All Shorts</option><option value="upcoming">Coming up (scheduled)</option><option value="idea">Ideas</option><option value="draft">Drafts</option><option value="review">Ready to review</option><option value="approved">Approved</option><option value="published">Published</option><option value="failed">Didn't post</option></select></div>
+        <div><label for="soFilter">Show</label><select id="soFilter"><option value="">All Shorts</option><option value="upcoming">Coming up (scheduled)</option><option value="idea">Ideas</option><option value="draft">Drafts</option><option value="review">Ready to review</option><option value="changes">Changes requested</option><option value="approved">Approved</option><option value="published">Published</option><option value="failed">Didn't post</option></select></div>
         <div></div>
       </div>
       <div class="list" id="soList"><p class="muted">Loading…</p></div>

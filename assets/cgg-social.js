@@ -13,10 +13,10 @@
   var $ = function (id) { return document.getElementById(id); };
   var BUCKET = 'social-videos', PART = 40 * 1024 * 1024; // a multiple of 256 KB, as YouTube requires
   var STEPS = {
-    idea: 'Idea', draft: 'Draft', review: 'Ready to review', approved: 'Approved', publishing: 'Sending to YouTube',
+    idea: 'Idea', draft: 'Draft', review: 'Ready to review', changes: 'Changes requested', approved: 'Approved', publishing: 'Sending to YouTube',
     scheduled: 'Scheduled', published: 'Published', failed: "Didn't post"
   };
-  var BADGE = { idea: 'tier', draft: 'tier', review: 'pending', approved: 'paid', publishing: 'pending', scheduled: 'paid', published: 'approved', failed: 'rejected' };
+  var BADGE = { idea: 'tier', draft: 'tier', review: 'pending', changes: 'rejected', approved: 'paid', publishing: 'pending', scheduled: 'paid', published: 'approved', failed: 'rejected' };
   var posts = null, conn = null, editing = null, loaded = false, polling = null;
 
   function lang() { return (document.documentElement.lang || 'en').slice(0, 2) === 'es' ? 'es' : 'en'; }
@@ -128,17 +128,20 @@
   }
 
   function card(p) {
-    var thumb = p.youtube_video_id ? el('img', { className: 'so-thumb', src: 'https://i.ytimg.com/vi/' + p.youtube_video_id + '/mqdefault.jpg', alt: '', attrs: { loading: 'lazy' } })
+    var thumb = (!p.youtube_video_id && p.video_url) ? el('video', { className: 'so-video', src: p.video_url, controls: true, preload: 'metadata', attrs: { playsinline: '' } })
+      : p.youtube_video_id ? el('img', { className: 'so-thumb', src: 'https://i.ytimg.com/vi/' + p.youtube_video_id + '/mqdefault.jpg', alt: '', attrs: { loading: 'lazy' } })
       : el('div', { className: 'so-thumb so-thumb-empty', attrs: { 'aria-hidden': 'true' } }, '▶');
     var info = el('div', { className: 'so-info' },
       el('div', { className: 'item-head' }, el('h3', {}, p.title || 'Untitled Short'), el('span', { className: 'badge ' + BADGE[p.status] }, STEPS[p.status])));
+    if (p.made_by === 'claude') info.appendChild(el('p', { className: 'meta', style: 'margin:0' }, el('span', { className: 'badge tier' }, 'Made by Claude'), ' ', el('span', {}, el('span', {}, 'Version'), ' ' + (p.version || 1))));
     var meta = el('p', { className: 'meta', style: 'margin:0' });
     var bits = [];
     if (p.status === 'scheduled' && p.publish_at) bits.push(el('span', {}, el('span', {}, 'Goes public'), ' ', when(p.publish_at)));
     else if (p.status === 'published' && p.published_at) bits.push(el('span', {}, el('span', {}, 'Published'), ' ', when(p.published_at)));
     else if (p.publish_at) bits.push(el('span', {}, el('span', {}, 'Planned for'), ' ', when(p.publish_at)));
     bits.push(el('span', {}, p.language === 'en' ? 'English' : 'Spanish'));
-    if (p.video_parts > 0) bits.push(el('span', {}, el('span', {}, 'Video ready'), ' (' + mb(p.video_size) + ')'));
+    if (p.video_url && !p.youtube_video_id) bits.push(el('span', {}, 'Video ready'));
+    else if (p.video_parts > 0) bits.push(el('span', {}, el('span', {}, 'Video ready'), ' (' + mb(p.video_size) + ')'));
     else if (!p.youtube_video_id) bits.push(el('span', {}, 'No video yet'));
     bits.forEach(function (b, i) { if (i) meta.appendChild(document.createTextNode(' · ')); meta.appendChild(b); });
     info.appendChild(meta);
@@ -149,6 +152,9 @@
         el('span', {}, el('strong', {}, num(p.comments)), ' ', el('span', {}, 'comments'))));
     }
     if (p.notes) info.appendChild(el('p', { className: 'muted', style: 'margin:0' }, p.notes));
+    if (p.change_request && (p.status === 'changes' || p.status === 'review')) info.appendChild(el('div', { className: 'msg info', style: 'margin:0' },
+      el('strong', {}, p.status === 'changes' ? 'Changes you asked for:' : 'Last changes you asked for:'), ' ', p.change_request,
+      p.status === 'changes' ? el('div', { className: 'meta', style: 'margin-top:4px' }, 'Claude will make a new version and send it back here for review.') : null));
     if (p.error) info.appendChild(el('p', { className: 'msg err', style: 'margin:0' }, p.error));
 
     var acts = el('div', { className: 'actions' });
@@ -158,7 +164,11 @@
     else if (!p.youtube_video_id) {
       acts.appendChild(btn('Edit', 'light', function () { openForm(p); }));
       if (p.status === 'idea' || p.status === 'draft') acts.appendChild(btn('Send to review', '', move('review')));
-      if (p.status === 'review') { acts.appendChild(btn('Approve', '', move('approved'))); acts.appendChild(btn('Back to draft', 'light', move('draft'))); }
+      if (p.status === 'review') {
+        acts.appendChild(btn('Approve', '', move('approved')));
+        if (p.made_by === 'claude') acts.appendChild(btn('Request changes', 'light', function () { requestChanges(p, info); }));
+        else acts.appendChild(btn('Back to draft', 'light', move('draft')));
+      }
       if (p.status === 'approved' || p.status === 'failed') {
         var future = p.publish_at && Date.parse(p.publish_at) > Date.now() + 2 * 60e3;
         acts.appendChild(btn(future ? 'Schedule on YouTube' : 'Post to YouTube now', 'gold', function (ev) { publish(p, ev.currentTarget, future); }));
@@ -180,9 +190,24 @@
       Object.assign(p, r.data[0]); render(); return p;
     });
   }
+  // Ask Claude for a new version: the note is saved and the Short waits in "Changes requested".
+  function requestChanges(p, info) {
+    if (info.querySelector('.so-changes')) return;
+    var ta = el('textarea', { maxLength: 2000, placeholder: 'e.g. Make it shorter, change the first line, use English, brighter colors' });
+    var box = el('div', { className: 'so-changes' },
+      el('label', {}, 'What should Claude change?'), ta,
+      el('div', { className: 'actions' },
+        el('button', { className: 'btn', type: 'button', onclick: function (ev) {
+          var t = ta.value.trim(); if (!t) { ta.focus(); return; }
+          ev.currentTarget.disabled = true;
+          save(p, { status: 'changes', change_request: t.slice(0, 2000) }).then(function () { msg('ok', 'Sent. Tell Claude in your chat, or it picks up change requests when it checks in.'); });
+        } }, 'Send to Claude'),
+        el('button', { className: 'btn light', type: 'button', onclick: function () { box.remove(); } }, 'Cancel')));
+    info.appendChild(box); ta.focus();
+  }
   function publish(p, b, future) {
     if (!conn) return msg('err', 'Connect your YouTube channel first.');
-    if (!p.video_parts) return msg('err', 'Add the video file first.');
+    if (!p.video_parts && !p.video_url) return msg('err', 'Add the video file first.');
     var text = future ? 'Upload this Short to YouTube now? It stays private and goes public by itself at the time you chose.' : 'Post this Short on YouTube now?';
     if (!confirm(text)) return;
     b.disabled = true;
@@ -219,9 +244,10 @@
     $('soPrivacy').value = p ? p.privacy : 'public';
     $('soWhen').value = p ? toLocalInput(p.publish_at) : '';
     $('soNotes').value = p ? (p.notes || '') : '';
-    $('soStatus').value = p && ['idea', 'draft', 'review', 'approved'].indexOf(p.status) > -1 ? p.status : 'draft';
+    $('soStatus').value = p && ['idea', 'draft', 'review', 'approved'].indexOf(p.status) > -1 ? p.status : (p && p.status === 'changes' ? 'review' : 'draft');
+    $('soStatusRow').dataset.keep = p && p.status === 'changes' ? 'changes' : '';
     $('soStatusRow').hidden = !!(p && p.youtube_video_id);
-    $('soFileRow').hidden = !!(p && p.youtube_video_id);
+    $('soFileRow').hidden = !!(p && (p.youtube_video_id || p.video_url));
     $('soOnYouTube').hidden = !(p && p.youtube_video_id);
     $('soFileNow').replaceChildren(p && p.video_parts > 0 ? el('span', {}, el('span', {}, 'Current video:'), ' ' + (p.video_name || '') + ' (' + mb(p.video_size) + ')') : el('span', {}, ''));
     $('soProgress').hidden = true;
@@ -271,7 +297,7 @@
       notes: $('soNotes').value.trim().slice(0, 2000) || null
     };
     var p = editing;
-    if (!p || !p.youtube_video_id) fields.status = $('soStatus').value;
+    if (!p || !p.youtube_video_id) fields.status = $('soStatusRow').dataset.keep || $('soStatus').value;
     if (p && p.status === 'failed' && !p.youtube_video_id) fields.status = 'approved';
     b.disabled = true; msg('', '');
     var start = p ? save(p, fields) : sb.from('social_posts').insert(fields).select().then(function (r) {
