@@ -39,12 +39,18 @@ Deno.serve(async (req: Request) => {
 
   // 1) Admin page asks where to send the browser.
   if (req.method === "POST") {
-    if (!clientId || !clientSecret) return reply(400, { error: "YouTube isn't set up yet: the Google client ID and secret are missing in Supabase." });
     const authHeader = req.headers.get("Authorization") ?? "";
     if (!authHeader.startsWith("Bearer ")) return reply(401, { error: "Please sign in again." });
     const caller = createClient(url, anonKey, { global: { headers: { Authorization: authHeader } }, auth: { persistSession: false } });
     const { data: isAdmin } = await caller.rpc("is_portal_admin");
     if (isAdmin !== true) return reply(403, { error: "Only admins can do this." });
+    if (!clientId || !clientSecret) {
+      // Say which name is missing (never the values), and list similar-looking names that do exist.
+      const missing = [!clientId && "YOUTUBE_CLIENT_ID", !clientSecret && "YOUTUBE_CLIENT_SECRET"].filter(Boolean).join(" and ");
+      const similar = Object.keys(Deno.env.toObject()).filter((k) => /youtube|client|google|secret/i.test(k) && !/^SUPABASE_/.test(k));
+      return reply(400, { error: "YouTube isn't set up yet. Supabase is missing the secret named " + missing + "." +
+        (similar.length ? " Secret names found: " + similar.join(", ") + "." : " No similar secret names were found.") });
+    }
     const { data: me } = await caller.auth.getUser();
     const state = crypto.randomUUID() + crypto.randomUUID().replace(/-/g, "");
     await admin.from("oauth_states").delete().lt("created_at", new Date(Date.now() - 3600e3).toISOString());

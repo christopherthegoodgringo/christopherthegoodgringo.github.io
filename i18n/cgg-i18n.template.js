@@ -89,6 +89,7 @@
     [/^(\d+) of (\d+) members$/, function (m) { return m[1] + ' de ' + m[2] + ' miembros'; }],
     [/^(\d+) \/ 100$/, function (m) { return m[0]; }],
     [/^Part (\d+) of the video is missing\. Upload the video again\.$/, function (m) { return 'Falta la parte ' + m[1] + ' del video. Vuelve a subir el video.'; }],
+    [/^YouTube isn't set up yet\. Supabase is missing the secret named (.+?)\.(?: Secret names found: (.+)\.| No similar secret names were found\.)$/, function (m) { return 'YouTube todavía no está configurado. A Supabase le falta el secreto llamado ' + m[1].replace(' and ', ' y ') + '.' + (m[2] ? ' Nombres de secretos encontrados: ' + m[2] + '.' : ' No se encontraron nombres de secretos parecidos.'); }],
     [/^YouTube said: (.+)$/, function (m) { return 'YouTube dijo: ' + m[1]; }],
     [/^Joined (.+)$/, function (m) { return 'Se unió el ' + m[1]; }],
     [/^From: (.+)$/, function (m) { return 'Desde: ' + (m[1] === 'added by admin' ? 'agregado por el administrador' : m[1]); }],
