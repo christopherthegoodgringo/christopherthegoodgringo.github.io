@@ -261,7 +261,7 @@
           el('li', {}, el('span', {}, 'Silver'), ' ($9.99) → ', el('strong', {}, data('$3.00')), ' + ', data('$1.50'), ' ', el('span', {}, 'every month')),
           el('li', {}, el('span', {}, 'Gold'), ' ($19.99) → ', el('strong', {}, data('$6.00')), ' + ', data('$3.00'), ' ', el('span', {}, 'every month')),
           el('li', {}, el('span', {}, 'Platinum'), ' ($49.99) → ', el('strong', {}, data('$15.00')), ' + ', data('$7.50'), ' ', el('span', {}, 'every month'))),
-        el('p', { className: 'meta' }, 'Free Bronze listings don\'t earn a commission. If the business used a discount code, you earn your share of what it actually paid. Your money is sent automatically 14 days after each payment.')));
+        el('p', { className: 'meta' }, 'Free Bronze listings don\'t earn a commission. Your money is sent automatically 14 days after each payment.')));
       box.appendChild(el('h3', { className: 'ag-h' }, 'Your commissions'));
       var cbox = el('div', { className: 'list' }); renderCommissions(cbox, rows, false); box.appendChild(cbox);
       box.appendChild(el('h3', { className: 'ag-h' }, 'Businesses that signed up through you'));

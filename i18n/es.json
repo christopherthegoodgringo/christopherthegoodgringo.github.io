@@ -1099,7 +1099,6 @@
   "Earned": "Ganado",
   "Email (they sign in with it)": "Correo (entra con él)",
   "Finish payout setup": "Terminar la configuración de pagos",
-  "Free Bronze listings don't earn a commission. If the business used a discount code, you earn 75% of what it actually paid. Your money is sent automatically 14 days after the payment.": "Las fichas Bronce gratis no generan comisión. Si el negocio usó un código de descuento, ganas el 75% de lo que realmente pagó. Tu dinero se envía automáticamente 14 días después del pago.",
   "Getting paid": "Cómo recibes tu dinero",
   "How you earn": "Cómo ganas",
   "Mark as paid (paid outside Stripe)": "Marcar como pagada (pagada fuera de Stripe)",
@@ -1355,7 +1354,6 @@
   "Commission-only agents. Each one gets a personal link; businesses that sign up through it are credited to them, and they earn 30% of each business's first paid month (Silver $3.00, Gold $6.00, Platinum $15.00), then 15% of every monthly renewal while the business keeps paying (Silver $1.50, Gold $3.00, Platinum $7.50). Commissions are recorded automatically and sent through Stripe 14 days after each payment. Agents sign in on this page and only see their own Prospecting leads, Add a business and My earnings.": "Agentes que trabajan solo por comisión. Cada uno tiene un enlace personal; los negocios que se registran con él quedan a su nombre, y ganan el 30% del primer mes pagado de cada negocio (Plata $3.00, Oro $6.00, Platino $15.00), y luego el 15% de cada renovación mensual mientras el negocio siga pagando (Plata $1.50, Oro $3.00, Platino $7.50). Las comisiones se registran automáticamente y se envían por Stripe 14 días después de cada pago. Los agentes inician sesión en esta página y solo ven sus propios prospectos, Agregar un negocio y Mis ganancias.",
   "For every business that signs up through your link and picks a paid plan, you earn 30% of its first month, then 15% of every month it renews:": "Por cada negocio que se registre con tu enlace y escoja un plan pagado, ganas el 30% de su primer mes y luego el 15% de cada mes que renueve:",
   "every month": "cada mes",
-  "Free Bronze listings don't earn a commission. If the business used a discount code, you earn your share of what it actually paid. Your money is sent automatically 14 days after each payment.": "Los anuncios Bronce gratis no generan comisión. Si el negocio usó un código de descuento, ganas tu parte de lo que pagó de verdad. Tu dinero se envía automáticamente 14 días después de cada pago.",
   "No commissions yet. They appear here automatically when a business an agent brought in pays its first month or a monthly renewal.": "Todavía no hay comisiones. Aparecen aquí automáticamente cuando un negocio que trajo un agente paga su primer mes o una renovación mensual.",
   "Monthly renewal (15%)": "Renovación mensual (15%)",
   "New listing (30%)": "Anuncio nuevo (30%)",
@@ -1368,7 +1366,6 @@
   "A business belongs to the first agent who contacts it or whose link the owner uses. You earn 30% on its first paid month and 15% on each monthly renewal after that.": "Un negocio es del primer agente que lo contacta o cuyo enlace usa el dueño. Ganas el 30% de su primer mes pagado y el 15% de cada renovación mensual después.",
   "Bronze listings are free, so they don’t earn a commission.": "Los anuncios Bronce son gratis, así que no generan comisión.",
   "Renewal commissions keep coming every month for as long as the business stays on a paid plan.": "Las comisiones por renovación siguen llegando cada mes mientras el negocio siga en un plan pagado.",
-  "If a discount code was used, you earn your share of what the business actually paid.": "Si se usó un código de descuento, ganas tu parte de lo que el negocio pagó de verdad.",
   "Each commission is paid 14 days after the payment (in case of a refund), straight to your bank through Stripe.": "Cada comisión se paga 14 días después del pago (por si hay un reembolso), directo a tu banco a través de Stripe.",
   "Each commission is paid 14 days after the payment (in case of a refund), straight to your PayPal account.": "Cada comisión se paga 14 días después del pago (por si hay un reembolso), directo a tu cuenta de PayPal.",
   "See the owners who signed up with your link, your sales, what you’ve earned and what’s on the way. Add your PayPal email to get paid.": "Mira los dueños que se registraron con tu enlace, tus ventas, lo que has ganado y lo que viene en camino. Agrega tu correo de PayPal para recibir tus pagos.",
@@ -1463,5 +1460,8 @@
   "Agent not found": "Agente no encontrado",
   "No agent has that code.": "Ningún agente tiene ese código.",
   "Agents only": "Solo para agentes",
-  "This account isn’t an active agent account. Sign in with your agent account to make your card.": "Esta cuenta no es una cuenta de agente activa. Inicia sesión con tu cuenta de agente para crear tu tarjeta."
+  "This account isn’t an active agent account. Sign in with your agent account to make your card.": "Esta cuenta no es una cuenta de agente activa. Inicia sesión con tu cuenta de agente para crear tu tarjeta.",
+  "Free Bronze listings don't earn a commission. Your money is sent automatically 14 days after each payment.": "Los anuncios Bronce gratis no generan comisión. Tu dinero se envía automáticamente 14 días después de cada pago.",
+  "Who can join?": "¿Quién puede unirse?",
+  "Anyone 18 or older who lives in one of the 17 Latin American countries on the site (Argentina, Belize, Bolivia, Chile, Colombia, Costa Rica, Dominican Republic, Ecuador, El Salvador, Guatemala, Honduras, Mexico, Nicaragua, Panama, Paraguay, Peru or Uruguay), the United States, Puerto Rico, Canada or Spain, and has a PayPal account to get paid.": "Cualquier persona mayor de 18 años que viva en uno de los 17 países latinoamericanos del sitio (Argentina, Belice, Bolivia, Chile, Colombia, Costa Rica, República Dominicana, Ecuador, El Salvador, Guatemala, Honduras, México, Nicaragua, Panamá, Paraguay, Perú o Uruguay), Estados Unidos, Puerto Rico, Canadá o España, y que tenga una cuenta de PayPal para recibir sus pagos."
 }
