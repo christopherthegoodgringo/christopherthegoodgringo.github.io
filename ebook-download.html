@@ -39,7 +39,7 @@ main{display:block;place-items:initial}.merch-panel{margin:0 auto;min-height:340
 .dl p{color:var(--muted);margin:0 auto 10px;max-width:none}.dl .eyebrow{color:var(--coral)}
 .dl-title{font-family:var(--display);font-weight:800;font-size:1.2rem;color:var(--ink);margin:6px 0 18px}
 .dl-btns{display:flex;flex-direction:column;gap:12px;margin:22px auto 8px;max-width:360px}
-.dl-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:15px 18px;border-radius:14px;background:var(--green);color:#fffdf8;font-weight:800;font-size:1rem}.dl-btn.es{background:var(--gold);color:var(--green)}.dl-btn:hover{filter:brightness(1.08)}
+.dl-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:15px 18px;border-radius:14px;background:var(--green);color:#fffdf8;font-weight:800;font-size:1rem}.dl-btn.dl-es{background:var(--gold);color:var(--green)}.dl-btn:hover{filter:brightness(1.08)}
 .dl-note{font-size:.88rem}.dl-spin{width:38px;height:38px;border-radius:50%;border:4px solid var(--line);border-top-color:var(--green);margin:18px auto;animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
 .dl-err{color:#a23a22;font-weight:700}
 main{display:block;min-height:auto;padding:10px 0}
@@ -78,13 +78,14 @@ main{display:block;min-height:auto;padding:10px 0}
       if(!x.j.files){fail('Something went wrong getting your download. Please try again or email us.');return;}
       var es=(document.documentElement.lang||'').indexOf('es')===0;
       var html='<div class="dl-title"></div><div class="dl-btns">';
-      if(x.j.files.en) html+='<a class="dl-btn" id="dlEn">⬇ <span>Download in English (PDF)</span></a>';
-      if(x.j.files.es) html+='<a class="dl-btn es" id="dlEs">⬇ <span>Download in Spanish (PDF)</span></a>';
+      var tr=(window.CGGI18N&&window.CGGI18N.t&&es)?window.CGGI18N.t:function(s){return s;};
+      if(x.j.files.en) html+='<a class="dl-btn" id="dlEn">⬇ <span></span></a>';
+      if(x.j.files.es) html+='<a class="dl-btn dl-es" id="dlEs">⬇ <span></span></a>';
       html+='</div>';
       box.innerHTML=html;
       box.querySelector('.dl-title').textContent=(es&&x.j.title_es)?x.j.title_es:x.j.title;
-      if(x.j.files.en) document.getElementById('dlEn').href=x.j.files.en;
-      if(x.j.files.es) document.getElementById('dlEs').href=x.j.files.es;
+      if(x.j.files.en){var a1=document.getElementById('dlEn');a1.href=x.j.files.en;a1.querySelector('span').textContent=tr('Download in English (PDF)');}
+      if(x.j.files.es){var a2=document.getElementById('dlEs');a2.href=x.j.files.es;a2.querySelector('span').textContent=tr('Download in Spanish (PDF)');}
     }).catch(function(){ if(++tries<20){setTimeout(load,3000);} else fail('We couldn’t reach the server. Please check your connection and reload this page.'); });
   }
   load();
