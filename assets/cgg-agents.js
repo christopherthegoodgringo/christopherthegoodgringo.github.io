@@ -83,21 +83,11 @@
   }
   function nameOf(id) { var a = agents.find(function (x) { return x.id === id; }); return a ? a.name : ''; }
 
-  function credentials(a, password) {
-    var es = a.language !== 'en';
-    var text = es
-      ? 'Hola ' + a.name + ', ya tienes tu cuenta de agente de Christopher The Good Gringo.\n\nEntra aquí: ' + SITE + '/admin/\nCorreo: ' + a.email + '\nContraseña temporal: ' + password + '\n\nAl entrar te pedirá elegir tu propia contraseña. Tu enlace personal es ' + linkFor(a.code) + ' (ya va incluido en tus mensajes de Prospección).'
-      : 'Hi ' + a.name + ', your Christopher The Good Gringo agent account is ready.\n\nSign in here: ' + SITE + '/admin/\nEmail: ' + a.email + '\nTemporary password: ' + password + '\n\nYou\'ll be asked to choose your own password. Your personal link is ' + linkFor(a.code) + ' (it\'s already in your Prospecting messages).';
+  function credentials(a, message) {
     var box = el('div', { className: 'item ag-cred' });
-    box.appendChild(el('h3', {}, 'Send these sign-in details to the agent'));
-    box.appendChild(el('p', { className: 'meta' }, 'The temporary password is shown only now. They choose their own password when they sign in.'));
-    box.appendChild(el('pre', { className: 'ag-pre', attrs: { 'data-no-translate': '' } }, text));
-    var acts = el('div', { className: 'actions' });
-    var digits = String(a.phone || '').replace(/[^0-9]/g, '');
-    if (digits) acts.appendChild(el('a', { className: 'btn', target: '_blank', rel: 'noopener', href: 'https://wa.me/' + digits + '?text=' + encodeURIComponent(text) }, 'Send on WhatsApp'));
-    acts.appendChild(el('a', { className: 'btn light', href: 'mailto:' + encodeURIComponent(a.email) + '?subject=' + encodeURIComponent(es ? 'Tu cuenta de agente' : 'Your agent account') + '&body=' + encodeURIComponent(text) }, 'Send by email'));
-    acts.appendChild(copyBtn(text, 'Copy'));
-    box.appendChild(acts);
+    box.appendChild(el('h3', {}, 'Secure password setup'));
+    box.appendChild(el('p', { className: 'meta' }, message || ('A secure password setup link was emailed to ' + a.email + '. No password is included in the email or shown here.')));
+    box.appendChild(el('p', { className: 'meta' }, 'The agent uses the personal, temporary link in that email to choose their own password, then signs in at ' + SITE + '/admin/.'));
     return box;
   }
 
@@ -135,9 +125,9 @@
           el('button', { type: 'button', className: 'btn light', onclick: function () { out.replaceChildren(editForm(a, out)); } }, 'Edit details'),
           el('button', { type: 'button', className: 'btn light', onclick: function (ev) {
             var b = ev.currentTarget; b.disabled = true;
-            call({ action: 'reset_password', agent_id: a.id }).then(function (r) { b.disabled = false; out.replaceChildren(credentials(a, r.password)); },
+            call({ action: 'reset_password', agent_id: a.id }).then(function (r) { b.disabled = false; out.replaceChildren(credentials(a, r.message || ('Secure password setup link sent to ' + a.email + '.'))); },
               function (e) { b.disabled = false; P.msg(out, 'err', e.message); });
-          } }, 'New temporary password'),
+          } }, 'Send password setup link'),
           el('button', { type: 'button', className: a.status === 'active' ? 'btn danger' : 'btn light', onclick: function (ev) {
             var b = ev.currentTarget; b.disabled = true;
             sb.from('agents').update({ status: a.status === 'active' ? 'inactive' : 'active' }).eq('id', a.id).then(function (r) {
@@ -248,7 +238,7 @@
       e.preventDefault();
       var btn = e.submitter; if (btn) btn.disabled = true;
       call({ action: 'create', name: $('agName').value, email: $('agEmail').value, phone: $('agPhone').value, country: cs.value, language: $('agLang').value, code: $('agCode').value })
-        .then(function (r) { if (btn) btn.disabled = false; form.reset(); delete $('agCode').dataset.touched; $('agOut').replaceChildren(credentials(r.agent, r.password)); loadAdmin(); },
+        .then(function (r) { if (btn) btn.disabled = false; form.reset(); delete $('agCode').dataset.touched; $('agOut').replaceChildren(credentials(r.agent, r.message || (r.setup_email_sent ? ('Secure password setup link emailed to ' + r.agent.email + '.') : 'Agent created, but the setup email failed. Use Send password setup link to retry.'))); loadAdmin(); },
           function (err) { if (btn) btn.disabled = false; $('agOut').replaceChildren(); P.msg($('agOut'), 'err', err.message); });
     });
     $('agPay').addEventListener('click', function (ev) {
