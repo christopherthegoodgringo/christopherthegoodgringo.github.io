@@ -392,7 +392,7 @@
     AGENT = a; window.CGGAgents.setMe(a);
     $('heroTitle').textContent = 'Agent portal';
     $('heroText').textContent = 'Message businesses with your personal link, add new ones, and follow your earnings.';
-    $('agCardTab').hidden = false; $('agFlyerTab').hidden = false; // Business card maker (agent-card.html), next to Prospecting.
+    $('agCardTab').hidden = false; // Business card and flyer maker (agent-card.html), next to Prospecting.
     $('dash').hidden = false;
     $('who').replaceChildren(el('span', {}, 'Signed in as'), ' ', el('span', { attrs: { 'data-no-translate': '' } }, u.email), ' · ', el('span', {}, 'Agent'));
     document.querySelectorAll('.tabs [role=tab]').forEach(function (b) { b.hidden = ['prospects', 'agentadd', 'earnings'].indexOf(b.dataset.tab) < 0; });
