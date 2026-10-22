@@ -123,7 +123,8 @@ Checklist for every change:
   `agents` action update), New temporary password, Turn off / Turn back on, Delete (action delete: removes the agent, their
   sign-in, referrals and commissions; their prospects go back to the shared list).
 - Public agent page `agents.html` (footer on every page: "Become an Agent" + "Agent Login" -> /admin/): explains the program and has
-  a self sign-up form (`agents` action signup, no review, works right away, code made from their name).
+  a self sign-up form (`agents` action signup, no review, works right away, code made from their name). Agent countries
+  (sign-up and admin lists, checked on the server): the 18 Latin American countries on the site + the United States only.
 - Credit: any page stores `?agent=CODE` in localStorage `gg-agent` (assets/cgg-app.js, 90 days, first agent wins); the owner
   portal calls `record_agent_referral()` when the owner signs in (`agent_referrals`, first agent wins per owner account).
 - A trigger on `listing_upgrade_requests` records the first-month `agent_commissions` when a paid level goes live; each payable 14 days later and

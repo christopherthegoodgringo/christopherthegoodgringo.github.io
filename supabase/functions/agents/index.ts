@@ -15,6 +15,8 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 
 const ALLOWED_ORIGINS = ["https://christopherthegoodgringo.com", "https://www.christopherthegoodgringo.com", "https://christopherthegoodgringo.github.io"];
 const SITE = "https://christopherthegoodgringo.com";
+// Agents can come from the 18 Latin American countries on the site or the United States (Christopher, Oct 2026).
+const AGENT_COUNTRIES = "AR BZ BO CL CO CR CU DO EC SV GT HN MX NI PA PY PE UY US".split(" ");
 
 function corsFor(req: Request) {
   const origin = req.headers.get("Origin") ?? "";
@@ -72,6 +74,7 @@ Deno.serve(async (req: Request) => {
     if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return reply(400, { error: "Add your name and a valid email." });
     if (password.length < 8) return reply(400, { error: "Choose a password with at least 8 characters." });
     if (!body.agree) return reply(400, { error: "Please accept the agent terms." });
+    if (!AGENT_COUNTRIES.includes(country)) return reply(400, { error: "Agents can sign up from the 18 Latin American countries on the site or the United States." });
     const { data: dupe } = await db.from("agents").select("id").ilike("email", email).limit(1);
     if (dupe && dupe.length) return reply(400, { error: "There's already an agent account with that email. Sign in instead." });
     const base = (name.normalize("NFD").replace(/[̀-ͯ]/g, "").toUpperCase().match(/[A-Z0-9]+/g) || ["AGENT"])[0].slice(0, 12).padEnd(3, "X");
