@@ -17,8 +17,9 @@ How the languages work:
 - `assets/cgg-i18n.js` is generated. Never edit it by hand.
 
 Checklist for every change:
-1. New page: add `<script src="/assets/cgg-i18n.js?v=YYYYMMDD (bump it whenever assets/cgg-i18n.js changes)"></script>` right after `<head>` (or
+1. New page: add `<script src="/assets/cgg-i18n.js?v=YYYYMMDD"></script>` right after `<head>` (or
    `<meta charset>`), and give it the same `<footer>` as the other pages (the language toggle goes there).
+   Use the same `?v=` as the other pages, and bump it on every page whenever `assets/cgg-i18n.js` changes.
 2. Add a Spanish entry to `i18n/es.json` for every new English string, including button labels,
    placeholders, `alt` / `aria-label` / `title` text, the page `<title>`, and messages scripts show.
    Use natural Latin American Spanish with "tú".
