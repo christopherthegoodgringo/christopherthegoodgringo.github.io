@@ -676,7 +676,9 @@
   function renderProspects() {
     var box = $('prList'); if (!box || !prospects) return;
     var t = $('prType').value, st = $('prStatus').value, have = $('prHave').value;
-    var all = listings.filter(function (h) { return P.tierOf(h) === 'bronze' && !h.hidden && !ownerOf(h); });
+    var base = listings.filter(function (h) { return P.tierOf(h) === 'bronze' && !h.hidden && !ownerOf(h); }), all = base;
+    // Businesses you contacted that went on to claim their listing only show when you pick the Claimed status.
+    if (st === 'claimed') all = listings.filter(function (h) { var p = prospects[prKey(h)]; return (p && p.status === 'claimed') || (p && ownerOf(h)); });
     var inPlace = placeFilter('pr', all.filter(function (h) { return !t || h.__type === t; }));
     var rows = all.filter(function (h) {
       var p = prospects[prKey(h)] || {};
@@ -693,7 +695,7 @@
       var p = prospects[prKey(h)];
       if (p && p.status !== 'claimed' && ownerOf(h)) saveProspect(h, { status: 'claimed' });
     });
-    var count = function (s) { return all.filter(function (h) { return ((prospects[prKey(h)] || {}).status || 'new') === s; }).length; };
+    var count = function (s) { return base.filter(function (h) { return ((prospects[prKey(h)] || {}).status || 'new') === s; }).length; };
     var claimedCount = Object.keys(prospects).filter(function (k) { return prospects[k].status === 'claimed'; }).length;
     $('prCount').textContent = rows.length + ' of ' + all.length + ' businesses · ' + count('whatsapped') + ' WhatsApped · ' + count('emailed') + ' emailed · ' + count('both') + ' both · ' + count('replied') + ' replied · ' + claimedCount + ' claimed';
     // Businesses with contact details first, then not contacted before contacted, then by name.
