@@ -75,3 +75,18 @@ footer a:hover{text-decoration:underline}
 .gallery-item{position:relative}
 .gallery-item img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;background:#eee}
 .gallery-x{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;border:0;background:#09291ecc;color:#fff;font-weight:900;cursor:pointer;line-height:26px;padding:0}
+.plan-card{margin-top:16px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#fffdf8,#fff);overflow:hidden;box-shadow:0 6px 18px rgba(16,62,47,.06)}
+.plan-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;background:#103e2f;color:#fffdf8}
+.plan-label{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#f5bd3e}
+.plan-name{font-family:'Bricolage Grotesque',Arial,sans-serif;font-size:1.35rem;font-weight:800;line-height:1.15}
+.plan-pill{flex:0 0 auto;background:#fffdf8;color:#103e2f;border-radius:999px;padding:6px 12px;font-size:.78rem;font-weight:800}
+.plan-card.ending .plan-pill{background:#f5bd3e}
+.plan-rows{list-style:none;margin:0;padding:6px 18px}
+.plan-rows li{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
+.plan-rows li:last-child{border-bottom:0}
+.plan-ico{flex:0 0 34px;height:34px;border-radius:10px;background:#eef5f0;color:#103e2f;display:flex;align-items:center;justify-content:center;font-weight:800}
+.plan-rows strong{display:block;color:var(--green);font-size:.95rem}
+.plan-rows li span:not(.plan-ico){display:block;color:var(--muted);font-size:.88rem;line-height:1.45}
+.plan-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 18px;background:#f6f1e6;border-top:1px solid var(--line);font-size:.88rem;color:var(--muted)}
+.plan-manage{min-height:44px;display:inline-flex;align-items:center}
+@media(max-width:560px){.plan-head{padding:14px}.plan-rows{padding:4px 14px}.plan-foot{padding:14px}.plan-manage{width:100%;justify-content:center}}

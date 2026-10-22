@@ -1413,5 +1413,21 @@
   "That upgrade wasn't found.": "No se encontró esa mejora.",
   "That upgrade is already paid or cancelled.": "Esa mejora ya está pagada o cancelada.",
   "That level isn't available.": "Ese nivel no está disponible.",
-  "That ebook isn't for sale yet.": "Ese ebook aún no está a la venta."
+  "That ebook isn't for sale yet.": "Ese ebook aún no está a la venta.",
+  "Your plan": "Tu plan",
+  "Plan cancelled": "Plan cancelado",
+  "Switch levels": "Cambiar de nivel",
+  "Your monthly PayPal payment changes from your next bill.": "Tu pago mensual de PayPal cambia desde tu próximo cobro.",
+  "Cancel any time": "Cancela cuando quieras",
+  "Your level stays until the month you already paid for ends. No extra charges.": "Tu nivel se mantiene hasta que termine el mes que ya pagaste. Sin cobros extra.",
+  "Move up": "Subir de nivel",
+  "Starts right away. You only pay the difference for the rest of this month.": "Empieza de inmediato. Solo pagas la diferencia por el resto de este mes.",
+  "Move down or cancel": "Bajar de nivel o cancelar",
+  "Takes effect when the month you already paid for ends.": "Se aplica cuando termine el mes que ya pagaste.",
+  "Paid with PayPal": "Pagado con PayPal",
+  "Paid by card": "Pagado con tarjeta",
+  "Change the card or PayPal account you pay with:": "Cambia la tarjeta o la cuenta de PayPal con la que pagas:",
+  "Update your card or cancel:": "Actualiza tu tarjeta o cancela:",
+  "Manage in PayPal ↗": "Administrar en PayPal ↗",
+  "Manage your subscription ↗": "Administrar tu suscripción ↗"
 }

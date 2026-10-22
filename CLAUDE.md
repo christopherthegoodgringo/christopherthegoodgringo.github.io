@@ -146,7 +146,7 @@ Checklist for every change:
 ## PayPal payments (listings and ebooks)
 
 - Switch: `payments` in `assets/cgg-portal-config.js` ('stripe' now; set to 'paypal' after testing). One device can test PayPal first with
-  localStorage `gg-pay-test` = 'paypal'. Secrets PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET / PAYPAL_MODE ('sandbox' to test; anything else = live).
+  localStorage `gg-pay-test` = 'paypal' (open any page with ?paytest=paypal; ?paytest=off). Secrets PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET / PAYPAL_MODE ('sandbox' to test; anything else = live).
 - `paypal` Edge Function (JWT off): setup (admin or `ebook_import_token`: creates product, Silver/Gold/Platinum monthly plans and the webhook,
   ids in `paypal_config` keyed `<mode>:<name>`; run again after switching mode), subscribe (owner, returns PayPal approval link, custom_id =
   upgrade request id), change_plan (revise to another plan, or bronze = cancel; level stays until `ends_at`), ebook_order, capture_ebook
