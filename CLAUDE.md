@@ -67,3 +67,13 @@ Checklist for every change:
 - Michael Giacona shows the logo until his real photo is added.
 - AI personas (executives and the 108 country team members) are lifelike cartoon portraits drawn by
   `scripts/make_country_avatars.py`; every one is different and matches the person's name (woman or man).
+
+## Social media (admin page, YouTube Shorts)
+
+- Tab "Social media" (`assets/cgg-social.js`): Idea -> Draft -> Ready to review -> Approved -> Post now / Schedule -> Published.
+- Videos upload in 40 MB parts to the private `social-videos` bucket (plan limit 50 MB per file); the `youtube-publish`
+  Edge Function joins them while uploading to YouTube, then deletes them. A future publish time = uploaded as private with
+  `publishAt`, YouTube makes it public by itself.
+- `youtube-auth` connects the channel (Google OAuth; secrets YOUTUBE_CLIENT_ID / YOUTUBE_CLIENT_SECRET; refresh token in
+  `youtube_connection`, readable only by the server). `youtube-stats` updates views/likes/comments every 6 hours (pg_cron)
+  and from the Refresh stats button. Database: supabase/013_social_youtube.sql. Function code: supabase/functions/.

@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script src="/assets/cgg-i18n.js?v=20261022j"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
+<head><script src="/assets/cgg-i18n.js?v=20261022k"></script><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="/favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Listing Admin | Christopher the Good Gringo</title><meta property="og:site_name" content="Christopher The Good Gringo"><meta property="og:type" content="website"><meta property="og:title" content="Listing Admin | Christopher the Good Gringo"><meta property="og:url" content="https://christopherthegoodgringo.com/admin/"><meta property="og:image" content="https://christopherthegoodgringo.com/assets/cgg-share.png?v=1"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
@@ -13,7 +13,25 @@
 <script src="/assets/cgg-overrides.js?v=5"></script>
 <script src="/assets/cgg-portal.js?v=7"></script>
 <script src="/assets/cgg-listing-editor.js?v=4"></script>
+<script src="/assets/cgg-social.js?v=20261022a"></script>
 <style id="cgg-global-header-css">.cgg-global-header{box-sizing:border-box;width:100%;min-height:84px;padding:0 14px;background:#103e2f;display:flex;align-items:center;gap:28px;position:relative;z-index:20;font-family:Arial,sans-serif;color:#fffdf8}.cgg-global-header *{box-sizing:border-box}.cgg-global-brand{display:flex;align-items:center;gap:12px;flex:0 0 auto;white-space:nowrap;text-decoration:none;color:#fffdf8;font-size:15px;font-weight:800;line-height:1;letter-spacing:0}.cgg-global-brand img{display:block;width:100px;height:73px;object-fit:contain;flex:0 0 100px}.cgg-global-nav{display:flex;align-items:center;justify-content:space-between;gap:clamp(10px,1.25vw,20px);flex:1 1 auto;min-width:0;white-space:nowrap;overflow-x:auto;scrollbar-width:thin}.cgg-global-nav a{display:block;flex:0 0 auto;padding:8px 0;margin:0;color:#fffdf8;text-decoration:none;font-family:Arial,sans-serif;font-size:13px;font-weight:700;line-height:1.2;white-space:nowrap}.cgg-global-nav a:hover{color:#f5bd3e}@media(max-width:1120px){.cgg-global-header{min-height:84px;align-items:flex-start;flex-direction:column;gap:8px;padding:10px 14px}.cgg-global-nav{width:100%;flex:0 0 auto;justify-content:flex-start;gap:22px}.cgg-global-brand{font-size:14px}.cgg-global-brand img{width:88px;height:64px;flex-basis:88px}}@media(max-width:560px){.cgg-global-header{padding:10px 12px}.cgg-global-brand{font-size:12px;gap:9px}.cgg-global-brand img{width:80px;height:58px;flex-basis:80px}.cgg-global-nav{gap:18px}.cgg-global-nav a{font-size:13px}}</style><style id="cgg-nav-hover-polish">.cgg-global-nav{gap:clamp(6px,.75vw,12px)!important}.cgg-global-nav a{font-weight:800!important;border-radius:999px!important;padding:9px 11px!important;transition:background-color .18s ease,color .18s ease!important}.cgg-global-nav a:hover,.cgg-global-nav a:focus-visible{background:#f5bd3e!important;color:#103e2f!important;outline:none!important}@media(max-width:1120px){.cgg-global-nav{gap:8px!important}.cgg-global-nav a{padding:8px 11px!important}}@media(max-width:560px){.cgg-global-nav{gap:5px!important}.cgg-global-nav a{padding:8px 10px!important}}</style>
+<style>
+.so-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px}
+.so-tile{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:2px}
+.so-tile strong{font:800 1.4rem/1.1 'Bricolage Grotesque','DM Sans',sans-serif;color:var(--green)}
+.so-tile span{font-size:.82rem;color:var(--muted);font-weight:600}
+.so-card{grid-template-columns:120px 1fr;gap:14px;align-items:start}
+@media(max-width:560px){.so-card{grid-template-columns:1fr}}
+.so-thumb{width:120px;aspect-ratio:16/9;object-fit:cover;border-radius:10px;background:#e9e5d9;display:flex;align-items:center;justify-content:center;color:#9aa39b;font-size:1.6rem}
+.so-info{display:grid;gap:6px;min-width:0}
+.so-stats{display:flex;gap:14px;flex-wrap:wrap;margin:0;font-size:.92rem;color:var(--muted)}
+.so-stats strong{color:var(--green)}
+.so-bar{display:grid;grid-template-columns:minmax(90px,38%) 1fr auto;gap:10px;align-items:center;margin:6px 0;font-size:.88rem}
+.so-bar-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.so-bar-track{display:block;height:12px;border-radius:999px;background:#ece7da;overflow:hidden}
+.so-bar-fill{display:block;height:100%;border-radius:999px;background:var(--green)}
+.so-bar-value{font-weight:800;color:var(--green);min-width:3ch;text-align:right}
+</style>
 </head>
 <body>
 <header class="cgg-global-header"><a class="cgg-global-brand" href="/" aria-label="Christopher the Good Gringo home"><img src="/assets/cgg-wordmark.svg?v=1" alt=""></a><nav class="cgg-global-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/hotels.html">Hotel Finder</a><a href="/hostels.html">Hostel Finder</a><a href="/restaurants.html">Restaurant Finder</a><a href="/bars.html">Bar Finder</a><a href="/street-food-finder.html">Street Food Finder</a><a href="/team/">Meet the Team</a><a href="/social-media.html">Social Media &amp; Contact</a><a href="/merch.html">Merch</a><a href="/ebooks.html">Ebooks</a><a href="/business-sponsorship.html">Business &amp; Sponsorship</a></nav></header>
@@ -39,6 +57,7 @@
       <button role="tab" data-tab="businesses" aria-selected="false">Businesses</button>
       <button role="tab" data-tab="prospects" aria-selected="false">Prospecting</button>
       <button role="tab" data-tab="members" aria-selected="false">Mailing list <span id="nMembers"></span></button>
+      <button role="tab" data-tab="social" aria-selected="false">Social media</button>
       <button role="tab" data-tab="newbiz" aria-selected="false">New businesses <span id="nNew"></span></button>
       <button role="tab" data-tab="edits" aria-selected="false">Updates <span id="nEdits"></span></button>
       <button role="tab" data-tab="upgrades" aria-selected="false">Upgrades <span id="nUpgrades"></span></button>
@@ -121,6 +140,54 @@
       <div class="list" id="mbList"><p class="muted">Loading…</p></div>
       <div class="actions"><button class="btn light" type="button" id="mbMore" hidden>Show more</button></div>
     </section>
+    <section class="panel" id="tab-social" hidden>
+      <h2>Social media</h2>
+      <p class="sub">Your YouTube Shorts from idea to published. Add a Short with its video, send it to review, approve it, then post it now or schedule it: YouTube makes it public by itself at the time you pick. Views, likes and comments update every 6 hours.</p>
+      <div class="item" id="soConn" style="margin:0 0 16px"></div>
+      <div id="soMsg"></div>
+      <div class="so-summary" id="soSummary"></div>
+      <p class="meta" id="soUpdated" style="margin:6px 0 14px"></p>
+      <div class="actions" style="margin:0 0 14px">
+        <button class="btn gold" type="button" id="soNew">New Short</button>
+        <button class="btn light" type="button" id="soRefresh">Refresh stats</button>
+      </div>
+      <form id="soForm" class="item" hidden style="margin:0 0 18px" novalidate>
+        <h3 id="soFormTitle">New Short</h3>
+        <p class="msg info" id="soOnYouTube" hidden>This Short is already on YouTube. Saving updates its title, description, tags and visibility there too.</p>
+        <label for="soTitle">Title <small id="soTitleCount">0 / 100</small></label>
+        <input id="soTitle" type="text" maxlength="100" required placeholder="e.g. Best hostel in Santa Marta? #Shorts">
+        <label for="soDesc">Description</label>
+        <textarea id="soDesc" maxlength="5000" placeholder="What the Short is about, links to your site, hashtags"></textarea>
+        <label for="soTags">Tags <small>(separated by commas)</small></label>
+        <input id="soTags" type="text" placeholder="colombia, santa marta, hostel, travel">
+        <div class="row">
+          <div><label for="soLang">Language of the video</label><select id="soLang"><option value="es">Spanish</option><option value="en">English</option></select></div>
+          <div><label for="soPrivacy">Who can see it</label><select id="soPrivacy"><option value="public">Public</option><option value="unlisted">Unlisted (only people with the link)</option><option value="private">Private (only you)</option></select></div>
+        </div>
+        <div class="row">
+          <div><label for="soWhen">Publish date and time <small>(leave empty to post as soon as you tap Post)</small></label><input id="soWhen" type="datetime-local"></div>
+          <div id="soStatusRow"><label for="soStatus">Step</label><select id="soStatus"><option value="idea">Idea</option><option value="draft">Draft</option><option value="review">Ready to review</option><option value="approved">Approved</option></select></div>
+        </div>
+        <div id="soFileRow">
+          <label for="soFile">Video file <small>(vertical video, up to 3 minutes for a Short)</small></label>
+          <input id="soFile" type="file" accept="video/*">
+          <p class="meta" id="soFileNow" style="margin:6px 0 0"></p>
+          <div id="soProgress" hidden style="margin-top:10px"><p class="meta" id="soProgressText" style="margin:0 0 6px"></p><div class="so-bar-track"><span class="so-bar-fill" id="soBar" style="width:0%"></span></div></div>
+        </div>
+        <label for="soNotes">Notes for yourself <small>(optional, not posted)</small></label>
+        <textarea id="soNotes" maxlength="2000" style="min-height:60px"></textarea>
+        <div class="actions"><button class="btn" type="submit" id="soSave">Save</button><button class="btn light" type="button" id="soCancel">Cancel</button></div>
+      </form>
+      <div id="soChartWrap" hidden style="margin:0 0 18px">
+        <h3 style="margin:0 0 8px">Views by Short</h3>
+        <div id="soChart"></div>
+      </div>
+      <div class="row" style="margin:0 0 10px">
+        <div><label for="soFilter">Show</label><select id="soFilter"><option value="">All Shorts</option><option value="upcoming">Coming up (scheduled)</option><option value="idea">Ideas</option><option value="draft">Drafts</option><option value="review">Ready to review</option><option value="approved">Approved</option><option value="published">Published</option><option value="failed">Didn't post</option></select></div>
+        <div></div>
+      </div>
+      <div class="list" id="soList"><p class="muted">Loading…</p></div>
+    </section>
     <section class="panel" id="tab-newbiz" hidden><h2>New businesses</h2><p class="sub">Businesses owners added that aren't listed yet. Confirm the person runs it, then approve: it goes live as Bronze in the right Finder, is linked to their account, and any paid level they chose appears under Upgrades.</p><div class="list" id="newList"></div></section>
     <section class="panel" id="tab-edits" hidden><h2>Listing updates</h2><p class="sub">Suggestions from the public "suggest an update" forms. Changes from verified owners go live automatically and don't appear here. Approving publishes the new values to the site.</p><div class="list" id="editsList"></div></section>
     <section class="panel" id="tab-upgrades" hidden><h2>Tier upgrades</h2><p class="sub">Approve once payment is confirmed. Approving changes the listing's tier on the site.</p><div class="list" id="upgradesList"></div></section>
@@ -175,11 +242,12 @@
   document.querySelectorAll('[role=tab]').forEach(function (b) {
     b.addEventListener('click', function () {
       document.querySelectorAll('[role=tab]').forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
-      ['claims', 'businesses', 'prospects', 'members', 'newbiz', 'edits', 'upgrades', 'passwords', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
+      ['claims', 'businesses', 'prospects', 'members', 'social', 'newbiz', 'edits', 'upgrades', 'passwords', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
       $('tab-passwords-form').hidden = b.dataset.tab !== 'passwords';
       if (b.dataset.tab === 'passwords' && !owners) loadOwners();
       if (b.dataset.tab === 'prospects') { if (!prospects) loadProspects(); else renderProspects(); }
       if (b.dataset.tab === 'members') { if (!members) loadMembers(); else renderMembers(); }
+      if (b.dataset.tab === 'social') window.CGGSocial.show();
     });
   });
 
@@ -196,7 +264,7 @@
     $('signin').hidden = !!u; $('dash').hidden = true; $('denied').hidden = true;
     if (!u) return;
     sb.rpc('is_portal_admin').then(function (r) {
-      if (r.data === true) { $('dash').hidden = false; $('who').textContent = 'Signed in as ' + u.email; P.loadListings().then(function (l) { listings = l; refresh(); }); loadMembers(); }
+      if (r.data === true) { $('dash').hidden = false; $('who').textContent = 'Signed in as ' + u.email; P.loadListings().then(function (l) { listings = l; refresh(); }); loadMembers(); if (location.hash === '#social') { var st = document.querySelector('[data-tab=social]'); if (st) st.click(); } }
       else { $('denied').hidden = false; $('deniedWho').textContent = u.email + ' is not set up as an admin.'; }
     });
   }
@@ -905,5 +973,6 @@
 
 })();
 </script>
+<script>window.CGGSocial && window.CGGSocial.init();</script>
 </body>
 </html>
