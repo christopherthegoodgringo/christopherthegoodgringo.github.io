@@ -135,6 +135,10 @@ Checklist for every change:
   agent's card with ?code=CODE): agent edits name, WhatsApp, email, code and card language (Spanish default);
   canvas cards 1050x600 (3.5x2 in at 300 dpi), QR (assets/vendor/qrcode.js, MIT) to /owner/?agent=CODE; download PNGs, share on phone,
   print 10 per page (fronts page 1, backs page 2). Linked from My earnings ("Make my business card", prefilled), the Agents tab and agents.html.
+- Same page: full-page flyer (1700x2200 JPEG, card language, QR + agent strip): share, download, print.
+- "You earned a commission!" email: trigger on new `agent_commissions` -> `agents` action notify_commission (x-cron-token) -> email in the
+  agent's language from christopher@ (`notified_at`). Leaderboard: `agent_leaderboard()` (top 10 this month, first name + initial,
+  paid sales incl. renewals) shown in My earnings and the admin Agents tab. Database: supabase/022_agent_notify_leaderboard.sql.
 - Credit: any page stores `?agent=CODE` in localStorage `gg-agent` (assets/cgg-app.js, 90 days, first agent wins); the owner
   portal calls `record_agent_referral()` when the owner signs in (`agent_referrals`, first agent wins per owner account).
 - A trigger on `listing_upgrade_requests` records the first-month `agent_commissions` when a paid level goes live; each payable 14 days later and

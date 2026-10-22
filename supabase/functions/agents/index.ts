@@ -8,6 +8,7 @@
 //   Public: { action: "signup", name, email, password, phone, country, language, agree } -> agent account right away (agents.html)
 //   Agent:  { action: "set_paypal", paypal_email } -> where their commissions are sent (PayPal)
 //   Cron:   header x-cron-token = vault secret agents_cron_token, { action: "pay_now" } (daily, pg_cron)
+//           { action: "notify_commission", commission_id } (trigger on new agent_commissions rows): "You earned a commission!" email
 // Payouts (PayPal, Christopher's choice: Stripe can't pay out to most Latin American countries): each pending commission
 // whose 14-day refund window has passed is sent to the agent's PayPal email with the PayPal Payouts API.
 // Secrets: PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET (live REST app with Payouts enabled); PAYPAL_MODE=sandbox to test.
@@ -47,6 +48,66 @@ async function paypalToken() {
   const j = await r.json();
   if (!r.ok) throw new Error("PayPal didn't accept the keys: " + (j.error_description || j.error || r.status));
   return j.access_token as string;
+}
+
+// ---- Email (same mailbox as prospect-mailer / ebook-delivery): "You earned a commission!" ----
+const enc = new TextEncoder();
+function b64(s: string) { const bytes = enc.encode(s); let bin = ""; for (const x of bytes) bin += String.fromCharCode(x); return btoa(bin); }
+function wrap76(s: string) { return s.replace(/.{1,76}/g, "$&\r\n").trimEnd(); }
+function encodeHeader(s: string) { return /^[\x20-\x7e]*$/.test(s) ? s : "=?UTF-8?B?" + b64(s) + "?="; }
+
+class Line {
+  conn!: Deno.TlsConn; buf = ""; dec = new TextDecoder();
+  async open(host: string, port: number) { this.conn = await Deno.connectTls({ hostname: host, port }); }
+  async readLine(timeoutMs = 30000): Promise<string> {
+    const start = Date.now();
+    while (true) {
+      const i = this.buf.indexOf("\r\n");
+      if (i >= 0) { const line = this.buf.slice(0, i); this.buf = this.buf.slice(i + 2); return line; }
+      if (Date.now() - start > timeoutMs) throw new Error("The mail server stopped answering.");
+      const chunk = new Uint8Array(16384);
+      const n = await this.conn.read(chunk);
+      if (n === null) throw new Error("The mail server closed the connection.");
+      this.buf += this.dec.decode(chunk.subarray(0, n), { stream: true });
+    }
+  }
+  async write(s: string) { const d = enc.encode(s); let off = 0; while (off < d.length) off += await this.conn.write(d.subarray(off)); }
+  close() { try { this.conn.close(); } catch { /* closed */ } }
+}
+class Smtp {
+  l = new Line();
+  async reply(): Promise<[number, string]> { let t = ""; while (true) { const line = await this.l.readLine(); t += line + "\n"; if (/^\d{3} /.test(line) || line.length < 4) return [Number(line.slice(0, 3)), t]; } }
+  async cmd(c: string, ok: number[]) { await this.l.write(c + "\r\n"); const [code, text] = await this.reply(); if (!ok.includes(code)) throw new Error(text.trim().split("\n").pop() || "SMTP " + code); return text; }
+  async open(host: string, user: string, pass: string) {
+    await this.l.open(host, 465);
+    const [c] = await this.reply(); if (c !== 220) throw new Error("The mail server didn't say hello.");
+    await this.cmd("EHLO christopherthegoodgringo.com", [250]);
+    await this.cmd("AUTH LOGIN", [334]); await this.cmd(b64(user), [334]);
+    try { await this.cmd(b64(pass), [235]); } catch { await this.cmd("AUTH PLAIN " + b64("\u0000" + user + "\u0000" + pass), [235]); }
+  }
+  async send(from: string, to: string, raw: string) {
+    await this.cmd("MAIL FROM:<" + from + ">", [250]); await this.cmd("RCPT TO:<" + to + ">", [250, 251]); await this.cmd("DATA", [354]);
+    await this.l.write(raw.replace(/\r\n\./g, "\r\n..") + "\r\n.\r\n");
+    const [code, text] = await this.reply(); if (code !== 250) throw new Error(text.trim());
+  }
+  async close() { try { await this.l.write("QUIT\r\n"); } catch { /* ignore */ } this.l.close(); }
+}
+
+function usd(c: number) { return "$" + (Number(c || 0) / 100).toFixed(2); }
+function commissionEmail(a: any, k: any) {
+  const es = a.language !== "en";
+  const first = String(a.name || "").trim().split(/\s+/)[0] || (es ? "agente" : "agent");
+  const tier = ({ silver: es ? "Plata" : "Silver", gold: es ? "Oro" : "Gold", platinum: es ? "Platino" : "Platinum" } as Record<string, string>)[k.tier] || k.tier;
+  const when = new Date(k.available_at || Date.now()).toLocaleDateString(es ? "es-CO" : "en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "America/Bogota" });
+  const kind = k.kind === "renewal" ? (es ? "renovación mensual (15%)" : "monthly renewal (15%)") : (es ? "nuevo anuncio (30%)" : "new listing (30%)");
+  const pay = a.paypal_email
+    ? (es ? `Se enviará automáticamente a tu PayPal (${a.paypal_email}) el ${when}.` : `It will be sent to your PayPal (${a.paypal_email}) automatically on ${when}.`)
+    : (es ? `Para recibirlo, agrega tu correo de PayPal en "Mis ganancias": ${SITE}/admin/#earnings` : `To get paid, add your PayPal email in "My earnings": ${SITE}/admin/#earnings`);
+  const subject = es ? `¡Ganaste una comisión de ${usd(k.commission_cents)}!` : `You earned a ${usd(k.commission_cents)} commission!`;
+  const body = es
+    ? `¡Hola ${first}!\n\n¡Buenas noticias! ${k.listing_name || "Un negocio"} pagó su plan ${tier} y ganaste ${usd(k.commission_cents)}.\n\nTipo de comisión: ${kind}\nEl negocio pagó: ${usd(k.amount_paid_cents)}\n\n${pay}\n\nMira todas tus ganancias aquí: ${SITE}/admin/#earnings\n\n¡Sigue así!\nChristopher Kesl\nChristopher The Good Gringo\n`
+    : `Hi ${first}!\n\nGreat news! ${k.listing_name || "A business"} paid for its ${tier} plan and you earned ${usd(k.commission_cents)}.\n\nCommission type: ${kind}\nThe business paid: ${usd(k.amount_paid_cents)}\n\n${pay}\n\nSee all your earnings here: ${SITE}/admin/#earnings\n\nKeep it up!\nChristopher Kesl\nChristopher The Good Gringo\n`;
+  return { subject, body };
 }
 
 Deno.serve(async (req: Request) => {
@@ -206,6 +267,29 @@ Deno.serve(async (req: Request) => {
         .eq("user_id", userId).select("paypal_email, payouts_enabled").single();
       if (error) return reply(400, { error: error.message });
       return reply(200, { agent: a });
+    }
+
+    if (action === "notify_commission" && role === "cron") {
+      const { data: k } = await db.from("agent_commissions").select("*").eq("id", String(body.commission_id ?? "")).maybeSingle();
+      if (!k) return reply(404, { error: "Commission not found." });
+      if (k.notified_at) return reply(200, { already: true });
+      const { data: a } = await db.from("agents").select("name, email, language, paypal_email, status").eq("id", k.agent_id).maybeSingle();
+      if (!a?.email || a.status !== "active") return reply(200, { skipped: true });
+      const { data: cfg } = await db.from("prospect_mailer").select("smtp_host").eq("id", 1).maybeSingle();
+      const user = (Deno.env.get("EMAIL_USER") ?? "christopher@christopherthegoodgringo.com").trim();
+      const pass = (Deno.env.get("EMAIL_PASSWORD") ?? "").replace(/^["']|["']$/g, "");
+      const m = commissionEmail(a, k);
+      const raw = ["From: " + encodeHeader("Christopher The Good Gringo") + " <" + user + ">", "To: <" + a.email + ">", "Subject: " + encodeHeader(m.subject),
+        "Date: " + new Date().toUTCString().replace("GMT", "+0000"), "Message-ID: <" + crypto.randomUUID() + "@christopherthegoodgringo.com>",
+        "MIME-Version: 1.0", "Content-Type: text/plain; charset=UTF-8", "Content-Transfer-Encoding: base64", "",
+        wrap76(b64(m.body.replace(/\r?\n/g, "\r\n")))].join("\r\n");
+      const smtp = new Smtp();
+      try {
+        await smtp.open(cfg?.smtp_host || "netsol-smtp-oxcs.hostingplatform.com", user, pass);
+        await smtp.send(user, a.email, raw);
+        await db.from("agent_commissions").update({ notified_at: new Date().toISOString() }).eq("id", k.id);
+        return reply(200, { sent: true });
+      } finally { await smtp.close(); }
     }
 
     if (action === "pay_now" && (role === "admin" || role === "cron")) {

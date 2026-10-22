@@ -104,6 +104,7 @@
   function renderAdmin() {
     var list = $('agList'); if (!list) return;
     list.replaceChildren();
+    list.appendChild(leaderboardBox());
     if (!agents.length) list.appendChild(el('p', { className: 'muted' }, 'No agents yet. Add your first one above.'));
     agents.forEach(function (a) {
       var s = summaries[a.id] || {};
@@ -175,6 +176,25 @@
     return f;
   }
 
+  // Top agents this month (agent_leaderboard(): first name + last initial and number of paid sales only).
+  function countryName(c) { try { return new Intl.DisplayNames([lang()], { type: 'region' }).of(c); } catch (e) { return c; } }
+  function leaderboardBox() {
+    var wrap = el('div', { className: 'item ag-board' }, el('h3', {}, '🏆 ', el('span', {}, 'Top agents this month')));
+    var list = el('ol', { className: 'ag-board-list' }); wrap.appendChild(list);
+    sb.rpc('agent_leaderboard').then(function (r) {
+      var rows = r.data || [];
+      if (!rows.length) { wrap.appendChild(el('p', { className: 'meta' }, 'No sales yet this month. Your first sale puts you at the top!')); return; }
+      rows.forEach(function (x) {
+        var medal = x.rank === 1 ? '🥇' : x.rank === 2 ? '🥈' : x.rank === 3 ? '🥉' : String(x.rank) + '.';
+        list.appendChild(el('li', { className: x.is_me ? 'me' : '' },
+          el('span', { className: 'ag-rank', attrs: { 'data-no-translate': '' } }, medal),
+          el('span', { className: 'ag-who' }, data(x.agent_name), x.country ? el('small', { attrs: { 'data-no-translate': '' } }, ' · ' + countryName(x.country)) : null, x.is_me ? el('em', {}, ' (you)') : null),
+          el('strong', {}, data(String(x.sales)), ' ', el('span', {}, x.sales === 1 ? 'sale' : 'sales'))));
+      });
+      wrap.appendChild(el('p', { className: 'meta' }, 'Counts every paid sale and monthly renewal since the 1st of the month. It starts over every month.'));
+    });
+    return wrap;
+  }
   function renderCommissions(box, rows, admin) {
     if (!box) return;
     box.replaceChildren();
@@ -254,6 +274,7 @@
       box.appendChild(el('div', { className: 'ag-tiles' }, tile(s.referrals || 0, 'Owners signed up'), tile(s.sales || 0, 'Paid sales'),
         tile(money(s.earned_cents), 'Earned'), tile(money(s.paid_cents), 'Paid out'), tile(money(s.waiting_cents), 'Waiting')));
       box.appendChild(payoutBox());
+      box.appendChild(leaderboardBox());
       box.appendChild(el('div', { className: 'item' },
         el('h3', {}, 'How you earn'),
         el('p', {}, 'For every business that signs up through your link and picks a paid plan, you earn 30% of its first month, then 15% of every month it renews:'),
