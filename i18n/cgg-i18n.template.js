@@ -126,7 +126,10 @@
 
   // ---------- language state ----------
   function stored() { try { var v = localStorage.getItem(KEY); return v === 'es' || v === 'en' ? v : null; } catch (e) { return null; } }
-  function chosen() { try { return localStorage.getItem('gg-lang-chosen') === '1'; } catch (e) { return false; } }
+  // The language popup shows on the home page every time (arriving or clicking Home), and on the
+  // first page of a visit when someone enters the site somewhere else.
+  function isHome() { return location.pathname === '/' || location.pathname === '/index.html'; }
+  function chosenThisVisit() { try { return sessionStorage.getItem('gg-lang-session') === '1'; } catch (e) { return false; } }
   var lang = stored() === 'es' ? 'es' : 'en';
   document.documentElement.lang = lang;
 
@@ -250,7 +253,7 @@
   // ---------- switching ----------
   function setLang(l, remember) {
     l = l === 'es' ? 'es' : 'en';
-    try { localStorage.setItem(KEY, l); if (remember) localStorage.setItem('gg-lang-chosen', '1'); } catch (e) {}
+    try { localStorage.setItem(KEY, l); if (remember) { localStorage.setItem('gg-lang-chosen', '1'); sessionStorage.setItem('gg-lang-session', '1'); } } catch (e) {}
     var changed = l !== lang;
     lang = l;
     document.documentElement.lang = l;
@@ -320,7 +323,8 @@
 
   // ---------- first-visit popup ----------
   function showChooser() {
-    if (chosen() || document.querySelector('.cgg-lang-overlay')) return;
+    if (document.querySelector('.cgg-lang-overlay')) return;
+    if (!isHome() && chosenThisVisit()) return;
     var o = document.createElement('div');
     o.className = 'cgg-lang-overlay';
     o.setAttribute('data-no-translate', '');
@@ -339,7 +343,8 @@
       b.addEventListener('click', function () { setLang(b.getAttribute('data-lang'), true); o.remove(); });
     });
     document.body.appendChild(o);
-    var first = o.querySelector('button[data-lang="' + (navigator.language && /^es\b/i.test(navigator.language) ? 'es' : 'en') + '"]');
+    var pick = stored() || (navigator.language && /^es\b/i.test(navigator.language) ? 'es' : 'en');
+    var first = o.querySelector('button[data-lang="' + pick + '"]');
     if (first) first.focus();
   }
 
