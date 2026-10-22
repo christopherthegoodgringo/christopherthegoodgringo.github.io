@@ -131,6 +131,14 @@
   function isHome() { return location.pathname === '/' || location.pathname === '/index.html'; }
   function chosenThisVisit() { try { return sessionStorage.getItem('gg-lang-session') === '1'; } catch (e) { return false; } }
   var lang = stored() === 'es' ? 'es' : 'en';
+  // A link with ?lang=es or ?lang=en (e.g. from an outreach message) opens the site in that language.
+  try {
+    var urlLang = new URLSearchParams(location.search).get('lang');
+    if (urlLang === 'es' || urlLang === 'en') {
+      lang = urlLang;
+      localStorage.setItem(KEY, urlLang); localStorage.setItem('gg-lang-chosen', '1'); sessionStorage.setItem('gg-lang-session', '1');
+    }
+  } catch (e) {}
   document.documentElement.lang = lang;
 
   // ---------- translating the page ----------
@@ -325,6 +333,7 @@
   function showChooser() {
     if (document.querySelector('.cgg-lang-overlay')) return;
     if (!isHome() && chosenThisVisit()) return;
+    try { if (/^(es|en)$/.test(new URLSearchParams(location.search).get('lang') || '')) return; } catch (e) {}
     var o = document.createElement('div');
     o.className = 'cgg-lang-overlay';
     o.setAttribute('data-no-translate', '');

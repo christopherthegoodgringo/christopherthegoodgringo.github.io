@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script src="/assets/cgg-i18n.js?v=20261021c"></script>
+<head><script src="/assets/cgg-i18n.js?v=20261021d"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Listing Admin | Christopher the Good Gringo</title>
@@ -594,9 +594,9 @@
     var f = FINDER[h.__type] || FINDER.hostels, id = String(h.id || h.name);
     var vals = {
       name: h.name || '', city: h.city || '',
-      finder: SITE + f[0], finder_label: lang === 'en' ? f[2] : f[1],
-      claim: SITE + '/owner/?type=' + encodeURIComponent(h.__type) + '&id=' + encodeURIComponent(id),
-      plans: SITE + '/business-sponsorship.html'
+      finder: SITE + f[0] + '?lang=' + lang, finder_label: lang === 'en' ? f[2] : f[1],
+      claim: SITE + '/owner/?type=' + encodeURIComponent(h.__type) + '&id=' + encodeURIComponent(id) + '&lang=' + lang,
+      plans: SITE + '/business-sponsorship.html?lang=' + lang
     };
     return String(text || '').replace(/\{(\w+)\}/g, function (m, k) { return Object.prototype.hasOwnProperty.call(vals, k) ? vals[k] : m; });
   }
