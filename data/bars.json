@@ -164,6 +164,27 @@
       "rating": 4.5,
       "ratingSource": "Google, 1,199 reviews (checked October 2026)",
       "website": "https://www.facebook.com/ElCaribbeanTeam"
+    },
+    {
+      "city": "Antigua Guatemala",
+      "countryCode": "GT",
+      "countryName": "Guatemala",
+      "verifiedOn": "2026-10-22",
+      "id": "antigua-brewing-company-antigua-guatemala",
+      "name": "Antigua Brewing Company",
+      "membershipTier": "bronze",
+      "website": "https://www.antiguabrewingco.com/"
+    },
+    {
+      "city": "Oaxaca",
+      "countryCode": "MX",
+      "countryName": "Mexico",
+      "verifiedOn": "2026-10-22",
+      "id": "mezcaloteca-oaxaca",
+      "name": "Mezcaloteca",
+      "membershipTier": "bronze",
+      "address": "Reforma 506, Centro, Oaxaca de Juárez, Oaxaca, Mexico",
+      "website": "https://mezcaloteca.com/"
     }
   ]
 }

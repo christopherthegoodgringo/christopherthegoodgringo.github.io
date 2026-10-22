@@ -169,6 +169,28 @@
       ],
       "membershipTier": "bronze",
       "verifiedOn": "2026-10-20"
+    },
+    {
+      "city": "Antigua Guatemala",
+      "countryCode": "GT",
+      "countryName": "Guatemala",
+      "verifiedOn": "2026-10-22",
+      "id": "27-adentro-antigua-guatemala",
+      "name": "27 Adentro",
+      "membershipTier": "bronze",
+      "address": "6a Avenida Sur #22, Antigua Guatemala, Guatemala",
+      "website": "https://www.27adentro.com/"
+    },
+    {
+      "city": "Oaxaca",
+      "countryCode": "MX",
+      "countryName": "Mexico",
+      "verifiedOn": "2026-10-22",
+      "id": "casa-oaxaca-el-restaurante",
+      "name": "Casa Oaxaca El Restaurante",
+      "membershipTier": "bronze",
+      "address": "Constitución 104-A, Centro, Oaxaca de Juárez, Oaxaca, Mexico",
+      "website": "https://casaoaxacaelrestaurante.com/"
     }
   ]
 }

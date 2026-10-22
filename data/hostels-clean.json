@@ -8837,6 +8837,18 @@
       "membershipTier": "bronze",
       "website": "https://www.hostelworld.com/hostels/p/316316/hospedaje-restaurante-el-hombre/",
       "bookingUrl": "https://www.hostelworld.com/hostels/p/316316/hospedaje-restaurante-el-hombre/"
+    },
+    {
+      "city": "Antigua Guatemala",
+      "countryCode": "GT",
+      "countryName": "Guatemala",
+      "verifiedOn": "2026-10-22",
+      "id": "hostal-antigua-antigua-guatemala",
+      "name": "Hostal Antigua",
+      "membershipTier": "bronze",
+      "address": "5a Avenida Sur #22, Antigua Guatemala, Guatemala",
+      "website": "https://www.hostelworld.com/hostels/p/47734/hostal-antigua/",
+      "bookingUrl": "https://www.hostelworld.com/hostels/p/47734/hostal-antigua/"
     }
   ]
 }

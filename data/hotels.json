@@ -177,6 +177,39 @@
       "membershipTier": "bronze",
       "verifiedOn": "2026-10-21",
       "photo": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=85"
+    },
+    {
+      "city": "Antigua Guatemala",
+      "countryCode": "GT",
+      "countryName": "Guatemala",
+      "verifiedOn": "2026-10-22",
+      "id": "hotel-casa-antigua-antigua-guatemala",
+      "name": "Hotel Casa Antigua",
+      "membershipTier": "bronze",
+      "address": "3a Calle Poniente #5, Antigua Guatemala, Guatemala",
+      "website": "https://www.hotelcasa-antigua.com/"
+    },
+    {
+      "city": "Oaxaca",
+      "countryCode": "MX",
+      "countryName": "Mexico",
+      "verifiedOn": "2026-10-22",
+      "id": "sauve-casa-boutique-oaxaca",
+      "name": "Sauvé Casa Boutique",
+      "membershipTier": "bronze",
+      "address": "Calle Mariano Matamoros 102, Centro Histórico, Oaxaca de Juárez, Oaxaca, Mexico",
+      "website": "https://hotelsauve.com/"
+    },
+    {
+      "city": "Cusco",
+      "countryCode": "PE",
+      "countryName": "Peru",
+      "verifiedOn": "2026-10-22",
+      "id": "casa-san-blas-boutique-hotel-cusco",
+      "name": "Casa San Blas Boutique Hotel",
+      "membershipTier": "bronze",
+      "address": "Calle Tocuyeros 566, Barrio de San Blas, Cusco, Peru",
+      "website": "https://casasanblas.com/"
     }
   ]
 }
