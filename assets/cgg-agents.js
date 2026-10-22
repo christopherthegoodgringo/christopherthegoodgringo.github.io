@@ -102,6 +102,7 @@
         el('p', { className: 'meta ag-link' }, el('span', {}, 'Their link'), ': ', data(linkFor(a.code))),
         el('div', { className: 'actions' },
           copyBtn(linkFor(a.code), 'Copy their link'),
+          el('button', { type: 'button', className: 'btn light', onclick: function () { out.replaceChildren(editForm(a, out)); } }, 'Edit details'),
           el('button', { type: 'button', className: 'btn light', onclick: function (ev) {
             var b = ev.currentTarget; b.disabled = true;
             call({ action: 'reset_password', agent_id: a.id }).then(function (r) { b.disabled = false; out.replaceChildren(credentials(a, r.password)); },
@@ -112,11 +113,48 @@
             sb.from('agents').update({ status: a.status === 'active' ? 'inactive' : 'active' }).eq('id', a.id).then(function (r) {
               b.disabled = false; if (r.error) return P.msg(out, 'err', r.error.message); loadAdmin();
             });
-          } }, a.status === 'active' ? 'Turn off' : 'Turn back on')),
+          } }, a.status === 'active' ? 'Turn off' : 'Turn back on'),
+          el('button', { type: 'button', className: 'btn danger', onclick: function () {
+            var yes = el('button', { type: 'button', className: 'btn danger', onclick: function (ev) {
+              var b = ev.currentTarget; b.disabled = true;
+              call({ action: 'delete', agent_id: a.id }).then(function () { loadAdmin(); }, function (e) { b.disabled = false; P.msg(out, 'err', e.message); });
+            } }, 'Yes, delete this agent');
+            out.replaceChildren(el('div', { className: 'item' },
+              el('p', {}, el('strong', {}, 'Delete this agent?'), ' ', el('span', {}, 'Their sign-in, their link and their commission history will be removed. Businesses they contacted go back to the shared Prospecting list. This can’t be undone.')),
+              el('div', { className: 'actions' }, yes, el('button', { type: 'button', className: 'btn light', onclick: function () { out.replaceChildren(); } }, 'Cancel'))));
+          } }, 'Delete')),
         out);
       list.appendChild(card);
     });
     renderCommissions($('agComm'), commissions, true);
+  }
+
+  // Christopher edits any of an agent's details. A new email also becomes the agent's sign-in email.
+  function editForm(a, out) {
+    var f = el('form', { className: 'item ag-edit' });
+    function field(label, input) { var l = el('label', {}, el('span', {}, label)); l.appendChild(input); f.appendChild(l); return input; }
+    var name = field('Name', el('input', { type: 'text', value: a.name || '', required: true, maxLength: 120 }));
+    var email = field('Email (they sign in with it)', el('input', { type: 'email', value: a.email || '', required: true }));
+    var phone = field('WhatsApp / phone (with country code)', el('input', { type: 'tel', value: a.phone || '' }));
+    var country = el('select'); country.appendChild(el('option', { value: '' }, '—'));
+    COUNTRIES.forEach(function (c) { country.appendChild(el('option', { value: c[0], selected: c[0] === a.country }, c[1])); });
+    field('Country', country);
+    var language = el('select'); language.appendChild(el('option', { value: 'es', selected: a.language !== 'en' }, 'Spanish')); language.appendChild(el('option', { value: 'en', selected: a.language === 'en' }, 'English'));
+    field('Language', language);
+    var code = field('Agent code', el('input', { type: 'text', value: a.code || '', required: true, maxLength: 20 }));
+    code.addEventListener('input', function () { code.value = code.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); });
+    f.appendChild(el('p', { className: 'meta' }, 'Changing the code changes their personal link. Links they already sent with the old code stop giving them credit.'));
+    var notes = field('Notes (only you see these)', el('textarea', { rows: 2, maxLength: 2000 })); notes.value = a.notes || '';
+    var msg = el('div');
+    var save = el('button', { type: 'submit', className: 'btn' }, 'Save changes');
+    f.appendChild(el('div', { className: 'actions' }, save, el('button', { type: 'button', className: 'btn light', onclick: function () { out.replaceChildren(); } }, 'Cancel')));
+    f.appendChild(msg);
+    f.addEventListener('submit', function (e) {
+      e.preventDefault(); save.disabled = true;
+      call({ action: 'update', agent_id: a.id, name: name.value, email: email.value, phone: phone.value, country: country.value, language: language.value, code: code.value, notes: notes.value })
+        .then(function () { save.disabled = false; loadAdmin(); }, function (err) { save.disabled = false; msg.replaceChildren(); P.msg(msg, 'err', err.message); });
+    });
+    return f;
   }
 
   function renderCommissions(box, rows, admin) {

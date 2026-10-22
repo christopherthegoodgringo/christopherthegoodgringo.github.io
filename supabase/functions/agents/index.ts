@@ -2,7 +2,10 @@
 // Deployed as the "agents" Edge Function with JWT verification OFF: every action checks the caller itself.
 //   Admin:  { action: "create", name, email, phone, country, language, code } -> agent account + temporary password
 //           { action: "reset_password", agent_id }                           -> new temporary password
+//           { action: "update", agent_id, name, email, phone, country, language, code, notes } -> edit details (email also changes their sign-in)
+//           { action: "delete", agent_id }                                    -> remove agent + sign-in (prospects go back to the shared list)
 //           { action: "pay_now" }                                             -> send every payable commission now
+//   Public: { action: "signup", name, email, password, phone, country, language, agree } -> agent account right away (agents.html)
 //   Agent:  { action: "connect" }  -> link to Stripe to set up payouts (Stripe Connect Express)
 //           { action: "refresh" }  -> re-check whether Stripe payouts are ready
 //   Cron:   header x-cron-token = vault secret agents_cron_token, { action: "pay_now" } (daily, pg_cron)
@@ -59,6 +62,38 @@ Deno.serve(async (req: Request) => {
   try { body = await req.json(); } catch { return reply(400, { error: "Invalid request." }); }
   const action = String(body.action ?? "");
 
+  // Public sign-up from /agents.html: the account works right away (Christopher doesn't review anything).
+  if (action === "signup") {
+    if (String(body.website ?? "")) return reply(200, { ok: true }); // hidden honeypot field filled = bot
+    const name = String(body.name ?? "").trim().slice(0, 120);
+    const email = String(body.email ?? "").trim().toLowerCase();
+    const password = String(body.password ?? "");
+    const country = String(body.country ?? "").trim().toUpperCase();
+    if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return reply(400, { error: "Add your name and a valid email." });
+    if (password.length < 8) return reply(400, { error: "Choose a password with at least 8 characters." });
+    if (!body.agree) return reply(400, { error: "Please accept the agent terms." });
+    const { data: dupe } = await db.from("agents").select("id").ilike("email", email).limit(1);
+    if (dupe && dupe.length) return reply(400, { error: "There's already an agent account with that email. Sign in instead." });
+    const base = (name.normalize("NFD").replace(/[̀-ͯ]/g, "").toUpperCase().match(/[A-Z0-9]+/g) || ["AGENT"])[0].slice(0, 12).padEnd(3, "X");
+    let code = base;
+    for (let i = 0; i < 20; i++) {
+      const { data: taken } = await db.from("agents").select("id").eq("code", code).limit(1);
+      if (!taken || !taken.length) break;
+      code = base.slice(0, 10) + String(10 + Math.floor(Math.random() * 990));
+    }
+    const { data: created, error } = await db.auth.admin.createUser({ email, password, email_confirm: true, user_metadata: { agent: true, name } });
+    if (error) return reply(400, { error: /already|registered|exists/i.test(error.message) ? "That email already has an account on the site (maybe as a business owner). Use a different email." : error.message });
+    const { data: agent, error: e2 } = await db.from("agents").insert({
+      user_id: created.user.id, name, email, code,
+      phone: String(body.phone ?? "").trim().slice(0, 40) || null,
+      country: /^[A-Z]{2}$/.test(country) ? country : null,
+      language: body.language === "en" ? "en" : "es",
+      notes: "Signed up on the agent page",
+    }).select("name, email, code").single();
+    if (e2) { await db.auth.admin.deleteUser(created.user.id); return reply(400, { error: e2.message }); }
+    return reply(200, { agent, link: SITE + "/owner/?agent=" + agent.code });
+  }
+
   // Who is calling: the daily job, Christopher (admin) or an agent.
   let role: "cron" | "admin" | "agent" | null = null, userId = "";
   const cron = req.headers.get("x-cron-token");
@@ -105,6 +140,50 @@ Deno.serve(async (req: Request) => {
       }).select("*").single();
       if (e2) { await db.auth.admin.deleteUser(created.user.id); return reply(400, { error: e2.message }); }
       return reply(200, { agent, password, link: SITE + "/admin/" });
+    }
+
+    if (action === "update" && role === "admin") {
+      // Christopher edits an agent's details. A new email also changes the agent's sign-in email.
+      const id = String(body.agent_id ?? "");
+      const { data: a } = await db.from("agents").select("*").eq("id", id).maybeSingle();
+      if (!a) return reply(404, { error: "That agent wasn't found." });
+      const name = String(body.name ?? "").trim().slice(0, 120);
+      const email = String(body.email ?? "").trim().toLowerCase();
+      const code = String(body.code ?? "").trim().toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 20);
+      const country = String(body.country ?? "").trim().toUpperCase();
+      if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return reply(400, { error: "Add the agent's name and a valid email." });
+      if (code.length < 3) return reply(400, { error: "The agent code needs at least 3 letters or numbers." });
+      if (code !== a.code) {
+        const { data: d } = await db.from("agents").select("id").eq("code", code).neq("id", id).limit(1);
+        if (d && d.length) return reply(400, { error: "That agent code is already used. Pick another." });
+      }
+      if (email !== String(a.email).toLowerCase()) {
+        const { data: d } = await db.from("agents").select("id").ilike("email", email).neq("id", id).limit(1);
+        if (d && d.length) return reply(400, { error: "There is already an agent with that email." });
+        if (a.user_id) {
+          const { error } = await db.auth.admin.updateUserById(a.user_id, { email, email_confirm: true });
+          if (error) return reply(400, { error: /already|registered|exists/i.test(error.message) ? "That email already has an account on the site (maybe as a business owner). Use a different email for the agent." : error.message });
+        }
+      }
+      const { data: agent, error } = await db.from("agents").update({
+        name, email, code,
+        phone: String(body.phone ?? "").trim().slice(0, 40) || null,
+        country: /^[A-Z]{2}$/.test(country) ? country : null,
+        language: body.language === "en" ? "en" : "es",
+        notes: String(body.notes ?? "").trim().slice(0, 2000) || null,
+      }).eq("id", id).select("*").single();
+      if (error) return reply(400, { error: error.message });
+      return reply(200, { agent });
+    }
+
+    if (action === "delete" && role === "admin") {
+      // Removes the agent, their sign-in, referrals and commissions; their prospects go back to the shared list.
+      const { data: a } = await db.from("agents").select("id, user_id").eq("id", String(body.agent_id ?? "")).maybeSingle();
+      if (!a) return reply(404, { error: "That agent wasn't found." });
+      const { error } = await db.from("agents").delete().eq("id", a.id);
+      if (error) return reply(400, { error: error.message });
+      if (a.user_id) await db.auth.admin.deleteUser(a.user_id);
+      return reply(200, { deleted: true });
     }
 
     if (action === "reset_password" && role === "admin") {
