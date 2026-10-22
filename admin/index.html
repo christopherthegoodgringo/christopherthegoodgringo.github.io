@@ -73,16 +73,16 @@
         <div id="prTemplates"></div>
       </details>
       <div class="row">
-        <div><label for="prSearch">Search name, city, number or notes</label><input id="prSearch" type="search"></div>
-        <div><label for="prType">Type</label><select id="prType"><option value="">All types</option></select></div>
-      </div>
-      <div class="row">
         <div><label for="prCountry">Country</label><select id="prCountry"><option value="">All countries</option></select></div>
         <div><label for="prCity">City</label><select id="prCity"><option value="">All cities</option></select></div>
       </div>
       <div class="row">
+        <div><label for="prType">Type</label><select id="prType"><option value="">All types</option></select></div>
         <div><label for="prStatus">Status</label><select id="prStatus"><option value="">All statuses</option></select></div>
+      </div>
+      <div class="row">
         <div><label for="prHave">Contact details</label><select id="prHave"><option value="">Everything</option><option value="whatsapp">Has WhatsApp</option><option value="email">Has email</option><option value="none">No contact details yet</option></select></div>
+        <div></div>
       </div>
       <p class="meta" id="prCount" style="margin:12px 0 8px"></p>
       <div class="list" id="prList"><p class="muted">Loading…</p></div>
@@ -608,7 +608,7 @@
 
   Object.keys(cfg.typeLabels).forEach(function (t) { $('prType').appendChild(el('option', { value: t }, cfg.typeLabels[t])); });
   STATUS.forEach(function (s) { $('prStatus').appendChild(el('option', { value: s[0] }, s[1])); });
-  ['prSearch', 'prType', 'prCountry', 'prCity', 'prStatus', 'prHave'].forEach(function (id) { $(id).addEventListener(id === 'prSearch' ? 'input' : 'change', function () { prLimit = 30; renderProspects(); }); });
+  ['prType', 'prCountry', 'prCity', 'prStatus', 'prHave'].forEach(function (id) { $(id).addEventListener('change', function () { prLimit = 30; renderProspects(); }); });
   $('prMore').addEventListener('click', function () { prLimit += 30; renderProspects(); });
 
   function loadProspects() {
@@ -673,7 +673,7 @@
 
   function renderProspects() {
     var box = $('prList'); if (!box || !prospects) return;
-    var q = $('prSearch').value.trim().toLowerCase(), t = $('prType').value, st = $('prStatus').value, have = $('prHave').value;
+    var t = $('prType').value, st = $('prStatus').value, have = $('prHave').value;
     var all = listings.filter(function (h) { return P.tierOf(h) === 'bronze' && !h.hidden && !ownerOf(h); });
     var inPlace = placeFilter('pr', all.filter(function (h) { return !t || h.__type === t; }));
     var rows = all.filter(function (h) {
@@ -684,7 +684,6 @@
       if (have === 'whatsapp' && !p.whatsapp) return false;
       if (have === 'email' && !p.email) return false;
       if (have === 'none' && (p.whatsapp || p.email)) return false;
-      if (q && [h.name, h.city, h.countryName, h.address, p.whatsapp, p.email, p.notes].join(' ').toLowerCase().indexOf(q) === -1) return false;
       return true;
     });
     // A business you contacted that has since claimed its listing is marked Claimed automatically.
