@@ -114,7 +114,7 @@ function commissionEmail(a: any, k: any) {
 
 function welcomeEmail(name: string, code: string, language: string, email = "", tempPass = "") {
   const es = language !== "en";
-  const first = String(name || "").trim().split(/\\s+/)[0] || (es ? "agente" : "agent");
+  const first = String(name || "").trim().split(/\s+/)[0] || (es ? "agente" : "agent");
   const link = SITE + "/owner/?agent=" + encodeURIComponent(code);
   const subject = es ? "¡Bienvenido al equipo de agentes de Christopher The Good Gringo!" : "Welcome to the Christopher The Good Gringo Agent Team!";
   const body = es
@@ -125,7 +125,7 @@ function welcomeEmail(name: string, code: string, language: string, email = "", 
 TUS DATOS DE ACCESO
 Portal de agentes: ${SITE}/admin/
 Usuario (correo electrónico): ${email}
-${tempPass ? "Contraseña temporal: " + tempPass + "\\nPor seguridad, se te pedirá que elijas tu propia contraseña al iniciar sesión.\\n" : "Contraseña: la que elegiste al registrarte. Por seguridad, nunca te la enviaremos por correo.\\n"}
+${tempPass ? "Contraseña temporal: " + tempPass + "\nPor seguridad, se te pedirá que elijas tu propia contraseña al iniciar sesión.\n" : "Contraseña: la que elegiste al registrarte. Por seguridad, nunca te la enviaremos por correo.\n"}
 Guarda estos datos en un lugar seguro.
 
 CÓMO EMPEZAR
@@ -155,7 +155,7 @@ Welcome to the Christopher the Good Gringo Agent Team! We’re glad you’re joi
 YOUR LOGIN DETAILS
 Agent Portal: ${SITE}/admin/
 Username (registration email): ${email}
-${tempPass ? "Temporary password: " + tempPass + "\\nFor security, you’ll be asked to choose your own password when you sign in.\\n" : "Password: the one you chose during registration. For your security, we never email your password.\\n"}
+${tempPass ? "Temporary password: " + tempPass + "\nFor security, you’ll be asked to choose your own password when you sign in.\n" : "Password: the one you chose during registration. For your security, we never email your password.\n"}
 Keep your login details in a safe place.
 
 GETTING STARTED
