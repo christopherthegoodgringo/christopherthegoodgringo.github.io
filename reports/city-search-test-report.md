@@ -1,18 +1,18 @@
 # Automated Hostel Directory Quality Report
 
-- Clean hostel records: **0**
+- Clean hostel records: **36**
 - Owner-managed listings: **4**
-- Source database updated: **2026-10-20**
+- Source database updated: **2026-10-21**
 - Scope: structural data checks; OpenStreetMap coverage may be incomplete and listings are not independently verified.
 
 ## Automated checks
 
 | Check | Result | Details |
 |---|---|---|
-| Clean hostel database loads | FAIL | 0 records |
+| Clean hostel database loads | PASS | 36 records |
 | All 18 approved countries are available in the selector | PASS | 18 approved country codes configured |
 | No records outside the approved 18-country scope | PASS | 0 out-of-scope records |
-| Clean records have names and valid coordinates | PASS | 0 invalid records |
+| Clean records have names and valid coordinates | FAIL | 36 invalid records |
 | No exact normalized name/city duplicates remain | PASS | 0 duplicate groups |
 | Page loads compact cleaned data | FAIL | clean data endpoint found |
 | Paid and free owner listings are merged separately | FAIL | 4 owner listings available |
@@ -29,7 +29,7 @@
 | BO | 0 |
 | BZ | 0 |
 | CL | 0 |
-| CO | 0 |
+| CO | 36 |
 | CR | 0 |
 | CU | 0 |
 | DO | 0 |
