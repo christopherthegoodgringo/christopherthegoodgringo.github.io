@@ -103,13 +103,17 @@ class Smtp {
     }
   }
   async send(from: string, to: string, raw: string) {
-    await this.cmd("MAIL FROM:<" + from + ">", [250]);
-    await this.cmd("RCPT TO:<" + to + ">", [250, 251]);
-    await this.cmd("DATA", [354]);
-    await this.l.write(raw.replace(/\r\n\./g, "\r\n..") + "\r\n.\r\n");
-    const [code, text] = await this.reply();
-    if (code !== 250) throw new Error(text.trim());
-    await this.cmd("RSET", [250]);
+    try {
+      await this.cmd("MAIL FROM:<" + from + ">", [250]);
+      await this.cmd("RCPT TO:<" + to + ">", [250, 251]);
+      await this.cmd("DATA", [354]);
+      await this.l.write(raw.replace(/\r\n\./g, "\r\n..") + "\r\n.\r\n");
+      const [code, text] = await this.reply();
+      if (code !== 250) throw new Error(text.trim());
+    } finally {
+      // Always reset, so one rejected address never blocks the next email in the same run.
+      try { await this.cmd("RSET", [250]); } catch { /* connection may be gone */ }
+    }
   }
   async close() { try { await this.l.write("QUIT\r\n"); } catch { /* ignore */ } this.l.close(); }
 }
@@ -310,8 +314,9 @@ Deno.serve(async (req: Request) => {
   // 2. What's due.
   const { data: claims } = await db.from("listing_claims").select("listing_type, listing_id").eq("status", "approved");
   const owned = new Set((claims ?? []).map((c: any) => c.listing_type + "|" + c.listing_id));
-  const { data: badRows } = await db.from("prospect_emails").select("email").eq("ok", false).gte("sent_at", new Date(now - 30 * DAY).toISOString());
-  const bad = new Set((badRows ?? []).map((r: any) => String(r.email).toLowerCase()));
+  const { data: badRows } = await db.from("prospect_emails").select("email, error").eq("ok", false).gte("sent_at", new Date(now - 30 * DAY).toISOString());
+  // Only addresses the receiving side rejected for good (5xx, not "503 bad sequence") are skipped.
+  const bad = new Set((badRows ?? []).filter((r: any) => /^5\d\d/.test(String(r.error || "")) && !/^503/.test(String(r.error || ""))).map((r: any) => String(r.email).toLowerCase()));
   const due: Array<{ p: any; round: number; at: number }> = [];
   for (const p of rows ?? []) {
     if (p.status === "replied" || bad.has(String(p.email).toLowerCase())) continue;
