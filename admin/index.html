@@ -88,6 +88,7 @@
       <button role="tab" data-tab="claims" aria-selected="true">Claims <span id="nClaims"></span></button>
       <button role="tab" data-tab="stats" aria-selected="false">Statistics</button>
       <button role="tab" data-tab="agents" aria-selected="false">Agents</button>
+      <button role="tab" data-tab="recruitment" aria-selected="false">Agent recruitment</button>
       <button role="tab" data-tab="earnings" aria-selected="false" hidden>My earnings</button>
       <button role="tab" data-tab="agentadd" aria-selected="false" hidden>Add a business</button>
       <button role="tab" data-tab="businesses" aria-selected="false">Businesses</button>
@@ -142,6 +143,13 @@
       <div class="actions" style="margin:0 0 10px"><button class="btn light" type="button" id="agPay">Send payable commissions now</button></div>
       <div id="agPayOut"></div>
       <div class="list" id="agComm"></div>
+    </section>
+    <section class="panel" id="tab-recruitment" hidden>
+      <h2>Agent recruitment email test</h2>
+      <p class="sub">Send one test email to the owner inbox only. This does not contact agents or start the recruitment campaign.</p>
+      <div class="actions"><button class="btn" type="button" id="arTestSend">Send test to Christopher</button></div>
+      <div id="arTestResult" role="status" aria-live="polite" style="margin-top:12px"></div>
+      <p class="meta">Recruitment campaign remains disabled until unsubscribe handling and scheduled sending are verified.</p>
     </section>
     <section class="panel" id="tab-earnings" hidden>
       <h2>My earnings</h2>
@@ -1188,6 +1196,30 @@
       out);
   }
 
+})();
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('arTestSend'), out=document.getElementById('arTestResult');
+  if(!btn || !out) return;
+  btn.addEventListener('click', async function(){
+    btn.disabled=true; btn.textContent='Sending test…';
+    out.textContent='Checking admin session and sending a test to christopher@christopherthegoodgringo.com…';
+    try {
+      var client=window.CGGPortal && window.CGGPortal.client();
+      if(!client) throw new Error('The portal client is not ready. Refresh the page and sign in again.');
+      var sessionResult=await client.auth.getSession();
+      if(!sessionResult.data || !sessionResult.data.session) throw new Error('Your session has expired. Sign in again.');
+      var result=await client.functions.invoke('agent-recruitment-mailer',{body:{action:'send_test'}});
+      if(result.error) throw result.error;
+      if(!result.data || result.data.status!=='sent') throw new Error((result.data && result.data.message) || 'The server did not confirm that the test email was sent.');
+      out.textContent='The server confirmed the test email was sent to christopher@christopherthegoodgringo.com. Check your inbox and spam folder.';
+    } catch(e) {
+      out.textContent='Test not confirmed: '+(e && e.message ? e.message : String(e));
+    } finally {
+      btn.disabled=false; btn.textContent='Send test to Christopher';
+    }
+  });
 })();
 </script>
 <script>window.CGGSocial && window.CGGSocial.init(); window.CGGStats && window.CGGStats.init();</script>
