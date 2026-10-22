@@ -16,11 +16,11 @@ window.CGG_PORTAL = {
   editableFields: ['description', 'address', 'phone', 'email', 'website', 'whatsapp', 'hours', 'priceRange', 'cuisine', 'drinks', 'features', 'photo'],
   // Payment links per tier. Leave empty until Stripe is set up.
   // Paid upgrades go live automatically through the "stripe-webhook" Supabase function.
-  // TEST MODE links (Stripe sandbox). Swap for live links before taking real payments.
+  // LIVE links (real payments, cards only).
   stripeLinks: {
-    silver: 'https://buy.stripe.com/test_fZu14o3KL4ajftt3o03Ru00',
-    gold: 'https://buy.stripe.com/test_bJe5kEepp4ajchh1fS3Ru01',
-    platinum: 'https://buy.stripe.com/test_eVq6oI955bCLbddaQs3Ru02'
+    silver: 'https://buy.stripe.com/7sY9AUa6z3xjdQeaVE3oA00',
+    gold: 'https://buy.stripe.com/4gM3cwguX6JveUifbU3oA01',
+    platinum: 'https://buy.stripe.com/14A5kE92vd7T13s3tc3oA02'
   },
   // Stripe customer portal login link (Settings > Billing > Customer portal), for owners
   // to update their card or cancel. Leave empty to hide the link.
