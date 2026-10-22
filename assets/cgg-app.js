@@ -169,16 +169,17 @@
   function maybeRecruitAgents() {
     if (area !== 'site' || standalone() || /\/agents\.html$|\/admin\/|\/owner\//i.test(path)) return;
     var key = 'cgg-agent-recruit-dismissed';
+    var preview = new URLSearchParams(location.search).get('recruit') === '1';
     try {
       var dismissed = Number(localStorage.getItem(key) || 0);
-      if (dismissed && Date.now() - dismissed < 7 * 864e5) return;
+      if (!preview && dismissed && Date.now() - dismissed < 7 * 864e5) return;
     } catch (e) {}
-    // Let visitors settle in before inviting them to join the agent team.
+    // Preview link forces the popup immediately, even if it was dismissed earlier.
     setTimeout(function () {
       if (!document.body || document.querySelector('.cgg-agent-recruit-overlay')) return;
       try {
         var last = Number(localStorage.getItem(key) || 0);
-        if (last && Date.now() - last < 7 * 864e5) return;
+        if (!preview && last && Date.now() - last < 7 * 864e5) return;
       } catch (e) {}
       var es = (document.documentElement.lang || 'en').toLowerCase().indexOf('es') === 0;
       var overlay = el('div', 'cgg-agent-recruit-overlay');
@@ -215,7 +216,7 @@
       card.appendChild(heading); card.appendChild(rule); card.appendChild(copy); card.appendChild(actions);
       overlay.appendChild(card); document.body.appendChild(overlay);
       join.focus();
-    }, 10000);
+    }, preview ? 500 : 10000);
   }
 
   // ---------- Statistics (admin page, Statistics tab) ----------
