@@ -91,6 +91,7 @@
       <button role="tab" data-tab="agentadd" aria-selected="false" hidden>Add a business</button>
       <button role="tab" data-tab="businesses" aria-selected="false">Businesses</button>
       <button role="tab" data-tab="prospects" aria-selected="false">Prospecting</button>
+      <a class="tab-link" id="agCardTab" href="/agent-card.html" target="_blank" rel="noopener" hidden>Make my business card</a>
       <button role="tab" data-tab="members" aria-selected="false">Mailing list <span id="nMembers"></span></button>
       <button role="tab" data-tab="social" aria-selected="false">Social media</button>
       <button role="tab" data-tab="newbiz" aria-selected="false">New businesses <span id="nNew"></span></button>
@@ -389,8 +390,7 @@
     AGENT = a; window.CGGAgents.setMe(a);
     $('heroTitle').textContent = 'Agent portal';
     $('heroText').textContent = 'Message businesses with your personal link, add new ones, and follow your earnings.';
-    // Business card maker (agent-card.html) right at the top, so agents find it.
-    if (!$('agCardBtn')) $('heroText').after(el('p', { style: 'margin:14px 0 0' }, el('a', { id: 'agCardBtn', className: 'btn gold', href: '/agent-card.html', target: '_blank', rel: 'noopener' }, 'Make my business card')));
+    $('agCardTab').hidden = false; // Business card maker (agent-card.html), next to Prospecting.
     $('dash').hidden = false;
     $('who').replaceChildren(el('span', {}, 'Signed in as'), ' ', el('span', { attrs: { 'data-no-translate': '' } }, u.email), ' · ', el('span', {}, 'Agent'));
     document.querySelectorAll('.tabs [role=tab]').forEach(function (b) { b.hidden = ['prospects', 'agentadd', 'earnings'].indexOf(b.dataset.tab) < 0; });
