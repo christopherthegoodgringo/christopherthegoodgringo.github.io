@@ -16,7 +16,7 @@
 | No exact normalized name/city duplicates remain | PASS | 0 duplicate groups |
 | Page loads compact cleaned data | FAIL | clean data endpoint found |
 | Paid and free owner listings are merged separately | FAIL | 1 owner listings available |
-| Country and city filters are present | FAIL | both selectors found |
+| Country and city filters are present | PASS | both selectors found |
 | English/Spanish toggle is wired | FAIL | bilingual toggle found |
 | Booking buttons only link to Hostelworld | FAIL | Hostelworld-only booking link logic found |
 | No link to the separate hotel directory | FAIL | directory pages remain separate |
