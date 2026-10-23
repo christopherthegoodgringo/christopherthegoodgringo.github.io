@@ -592,6 +592,7 @@
   var AGENT = null, TAKEN = {};
   function agentMode(u, a) {
     AGENT = a; window.CGGAgents.setMe(a);
+    var mainAdminTabs = document.querySelector('.admin-main-tabs'); if (mainAdminTabs) mainAdminTabs.hidden = true;
     $('heroTitle').textContent = 'Agent portal';
     $('heroText').textContent = 'Message businesses with your personal link, add new ones, and follow your earnings.';
     $('agCardTab').hidden = false; // Business card and flyer maker (agent-card.html), next to Prospecting.
