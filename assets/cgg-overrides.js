@@ -90,12 +90,13 @@
   var LEVEL_FIELDS = {
     // Bronze: listed in the Finder with name, city and address.
     bronze: ['id', 'name', 'city', 'address', 'countryCode', 'countryName', 'country', 'membershipTier', 'verifiedOn', 'sample', 'hidden'],
-    // Silver, Gold and Platinum: main photo, star rating, More Information page,
+    // Silver, Gold and Platinum: star rating, More Information page,
     // website, booking and contact details. Price range, opening hours, category/style and highlights are hidden.
-    silver: ['photo', 'rating', 'ratingSource',
+    silver: ['rating', 'ratingSource',
       'operator', 'featured', 'website', 'officialWebsite', 'bookingUrl', 'affiliateUrl', 'affiliateBookingUrl', 'bookingAffiliateUrl',
       'bookingUrlAffiliate', 'phone', 'email', 'whatsapp'],
-    // Platinum: rotating photo gallery.
+    // Gold and Platinum: main photo. Platinum also gets rotating photo gallery.
+    gold: ['photo'],
     platinum: ['photos', 'photoUrls', 'images']
   };
   var PLAN_TO_LEVEL = { premium: 'platinum', featured: 'gold', silver: 'silver', free: 'bronze' };
