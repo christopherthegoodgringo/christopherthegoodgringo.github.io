@@ -786,7 +786,8 @@
       var o = ownerOf(h);
       if (!inPlace(h)) return false;
       if (search) {
-        var searchable = [h.name, h.address, h.city, h.countryName, h.phone, h.email, h.website,
+        var searchable = [h.name, h.address, h.city, h.countryName, h.country_name, h.phone, h.contact_phone,
+          h.email, h.contact_email, h.website, h.website_url, h.whatsapp, h.owner_email, h.ownerEmail,
           o && o.owner_email, o && o.contact_name].filter(Boolean).join(' ').toLocaleLowerCase();
         if (searchable.indexOf(search) < 0) return false;
       }
