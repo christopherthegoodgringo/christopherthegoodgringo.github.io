@@ -739,7 +739,8 @@
   function renderBusinesses() {
     var box = $('bizList'); if (!box) return;
     var t = $('bizType').value, tier = $('bizTier').value, show = $('bizShow').value;
-    var inPlace = placeFilter('biz', listings.filter(function (h) { return !t || h.__type === t; }));
+    // Keep the location filters shared across all five directory types; the Type filter only narrows results.
+    var inPlace = placeFilter('biz', listings);
     var rows = listings.filter(function (h) {
       var o = ownerOf(h);
       if (!inPlace(h)) return false;
