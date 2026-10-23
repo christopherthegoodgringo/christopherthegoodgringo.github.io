@@ -324,13 +324,23 @@ fetch('/data/hotels.json?v=20261023-cartagena-tiers4', { cache: 'no-store' })
   })
   .catch(function (error) {
     console.error('Could not load hotel directory data', error);
-    hotels = Array.isArray(fallbackData.hotels) ? fallbackData.hotels : [];
+    // Do not silently show only the single emergency fallback hotel. That made a
+    // failed data request look like a successful directory with missing listings.
+    hotels = [];
     countries = Array.isArray(fallbackData.countries) ? fallbackData.countries : [];
-    ensureUnclaimedHotel();
     renderCountryOptions();
     renderCityOptions();
-    render();
-    setLanguage();
+    document.body.classList.add('hotel-filters-ready');
+    results.hidden = false;
+    results.style.setProperty('display', 'grid', 'important');
+    results.classList.add('is-visible');
+    results.innerHTML = '';
+    count.textContent = 'Hotel listings could not be loaded';
+    document.getElementById('resultsTitle').textContent = 'Hotel directory temporarily unavailable';
+    empty.hidden = false;
+    empty.querySelector('h3').textContent = 'We couldn’t load the hotel listings';
+    empty.querySelector('p').textContent = 'Please refresh this page in a moment. If the problem continues, the directory data needs to be checked.';
+    empty.querySelector('a').hidden = true;
   });
 })();
 </script>
