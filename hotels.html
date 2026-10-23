@@ -433,5 +433,46 @@ fetch('/data/hotels.json?v=20261023-city-options1', { cache: 'no-store' })
  const params=new URLSearchParams(location.search);if(params.get('country')){country.value=params.get('country').toUpperCase();if(params.get('city')){const name=params.get('city');let opt=Array.from(city.options).find(o=>norm(o.value)===norm(name));if(!opt){opt=document.createElement('option');opt.value=name;opt.textContent=name;city.appendChild(opt);}city.value=name;}draw();}
 })();
 </script>
+<script id="hotel-city-dropdown-repair">
+(function(){
+  var cityLists={
+    AR:['Buenos Aires','Iguazú Falls (Puerto Iguazú)','Mendoza','Bariloche','El Calafate','Ushuaia','Salta','Puerto Madryn'],
+    BZ:['San Pedro','Caye Caulker','San Ignacio','Placencia','Hopkins','Belize City','Punta Gorda','Orange Walk'],
+    BO:['Uyuni','La Paz','Sucre','Potosí','Copacabana','Samaipata','Santa Cruz de la Sierra','Rurrenabaque'],
+    CL:['Santiago','San Pedro de Atacama','Valparaíso','Puerto Varas','Puerto Natales','Pucón','Easter Island (Hanga Roa)','La Serena'],
+    CO:['Cartagena','Medellín','Bogotá','Santa Marta','San Andrés','Salento','Cali','Villa de Leyva'],
+    CR:['La Fortuna','Monteverde','Tamarindo','San José','Manuel Antonio (Quepos)','Puerto Viejo de Talamanca','Liberia','Tortuguero'],
+    DO:['Punta Cana','Santo Domingo','Puerto Plata','Samaná','La Romana','Bayahibe','Las Terrenas','Cabarete'],
+    EC:['Quito','Galápagos (Puerto Ayora)','Cuenca','Baños','Guayaquil','Otavalo','Montañita','Mindo'],
+    SV:['San Salvador','El Tunco','Santa Ana','Suchitoto','La Libertad','El Zonte','Ataco'],
+    GT:['Antigua Guatemala','Guatemala City','Lake Atitlán (Panajachel)','Flores','Tikal (Flores)','Quetzaltenango','Livingston'],
+    HN:['Roatán','Utila','Copán Ruinas','La Ceiba','West Bay','Tegucigalpa','San Pedro Sula','Tela'],
+    MX:['Mexico City','Cancún','Playa del Carmen','Tulum','Oaxaca City','Puerto Vallarta','San Miguel de Allende','Mérida'],
+    NI:['Granada','León','San Juan del Sur','Ometepe Island (Moyogalpa)','Managua','Little Corn Island','Matagalpa','Estelí'],
+    PA:['Panama City','Bocas del Toro (Bocas Town)','Boquete','Pedasí','Santa Catalina','David','El Valle de Antón','San Blas Islands'],
+    PY:['Asunción','Encarnación','Ciudad del Este','Trinidad (Jesuit Missions)','Areguá','Villarrica','Filadelfia','Ybycuí'],
+    PE:['Cusco','Lima','Arequipa','Machu Picchu (Aguas Calientes)','Iquitos','Puno','Huacachina (Ica)','Huaraz'],
+    UY:['Montevideo','Punta del Este','Colonia del Sacramento','José Ignacio','Piriápolis','Cabo Polonio','La Paloma','Punta del Diablo']
+  };
+  function init(){
+    var country=document.getElementById('countryFilter'),city=document.getElementById('cityFilter');
+    if(!country||!city)return;
+    function fillCities(){
+      var code=String(country.value||'').trim().toUpperCase();
+      var prior=city.value;
+      var values=cityLists[code]||[];
+      city.innerHTML='';
+      var all=document.createElement('option');all.value='';all.textContent='All cities';city.appendChild(all);
+      values.forEach(function(name){var o=document.createElement('option');o.value=name;o.textContent=name;city.appendChild(o);});
+      if(values.indexOf(prior)>=0)city.value=prior;
+    }
+    country.addEventListener('change',fillCities);
+    fillCities();
+    var params=new URLSearchParams(location.search),c=params.get('country');
+    if(c){country.value=c.toUpperCase();fillCities();var wanted=params.get('city');if(wanted){var match=Array.from(city.options).find(function(o){return o.value.toLowerCase()===wanted.toLowerCase();});if(match)city.value=match.value;}}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
 </body>
 </html>
