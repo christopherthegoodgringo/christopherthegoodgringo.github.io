@@ -161,7 +161,7 @@ function render(){
   const card=document.createElement('article'),tier=String(h.membershipTier||'bronze').toLowerCase();card.className='hotel-card tier-'+tier+'-card';
   const ribbon=document.createElement('span');ribbon.className='tier-ribbon';ribbon.textContent=tier==='platinum'?'♛ PLATINUM':tier==='gold'?'★ GOLD':tier==='silver'?'◆ SILVER':'● BRONZE';card.appendChild(ribbon);
   const isBronze=tier==='bronze';if(!isBronze)addPlatinumSlideshow(card,h,h.photo,tier);
-  const tag=document.createElement('span');tag.className='hotel-city';tag.textContent=(h.city?h.city+', ':'')+(h.countryName||'');card.appendChild(tag);
+  const tag=document.createElement('span');tag.className='hotel-city';tag.textContent=(h.city?h.city+', ':'')+(h.countryName||(countries.find(c=>c.code===h.countryCode)||{}).name||'');card.appendChild(tag);
   const title=document.createElement('h3');title.textContent=h.name;card.appendChild(title);
   if(!isBronze&&h.rating!==undefined&&h.rating!==null&&Number.isFinite(Number(h.rating))){
    const rating=Number(h.rating),line=document.createElement('p');line.className='hotel-rating';line.setAttribute('aria-label','Rating '+rating.toFixed(1)+' out of 5');
