@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-23",
-  "scope": "Initial Santa Marta boutique hotel directory. One example listing per tier is not guaranteed; only one Bronze listing is intentionally assigned. Tier labels are sample placements for layout testing and do not imply that a property purchased or endorsed a paid listing. Official hotel website links are verified; affiliate booking links will be added only after approval and tracking verification.",
+  "scope": "Cartagena test dataset: sample tier assignments are for internal card/detail-page QA only and do not indicate that any hotel purchased or endorsed a paid listing. Confirm business details and replace the Platinum sample imagery with property-approved photos before public launch. Official websites are supplied where verified; no affiliate links added without approval/tracking verification.",
   "countries": [
     {
       "code": "AR",
@@ -129,6 +129,127 @@
       "category": "Boutique hotel",
       "claimStatus": "unclaimed",
       "claimed": false
+    },
+    {
+      "id": "delirio-hotel-cartagena-test-bronze",
+      "name": "Delirio Hotel",
+      "city": "Cartagena",
+      "country": "Colombia",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "address": "Centro Histórico, Cartagena de Indias, Bolívar, Colombia",
+      "website": "https://www.deliriohotel.co/",
+      "hasWebsite": true,
+      "membershipTier": "bronze",
+      "rating": 4.5,
+      "priceRange": "$$–$$$",
+      "description": "Independent 18-room boutique hotel in Cartagena’s historic walled city, with a calm location close to historic sights.",
+      "sample": true,
+      "ratingSource": "Public business listing; verify before public launch",
+      "hours": "Contact the hotel directly for current check-in and reception hours.",
+      "features": [
+        "Boutique hotel",
+        "Historic walled city",
+        "Personalized service",
+        "Air conditioning",
+        "Wi-Fi"
+      ],
+      "category": "Boutique hotel"
+    },
+    {
+      "id": "cartagena-royal-boutique-test-silver",
+      "name": "Cartagena Royal Hotel Boutique",
+      "city": "Cartagena",
+      "country": "Colombia",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "address": "Calle de la Cruz #09-41, Centro, Cartagena de Indias, Bolívar, Colombia",
+      "phone": "+57 300 6534590",
+      "email": "info@cartagenaroyal.com",
+      "website": "https://www.cartagenaroyal.com/en/?page_id=7719",
+      "hasWebsite": true,
+      "membershipTier": "silver",
+      "rating": 4.5,
+      "priceRange": "$$–$$$",
+      "description": "Independent boutique hotel in Cartagena’s historic center, with a rooftop terrace, restaurant, bar and outdoor jacuzzi.",
+      "sample": true,
+      "ratingSource": "Public business listing; verify before public launch",
+      "hours": "Contact the hotel directly for current check-in and reception hours.",
+      "features": [
+        "Rooftop terrace",
+        "Outdoor jacuzzi",
+        "Restaurant and bar",
+        "Airport transfers",
+        "13 rooms"
+      ],
+      "category": "Boutique hotel"
+    },
+    {
+      "id": "casa-pestagua-cartagena-test-gold",
+      "name": "Casa Pestagua",
+      "city": "Cartagena",
+      "country": "Colombia",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "address": "Centro Histórico, Calle Santo Domingo #33-63, Cartagena de Indias, Bolívar, Colombia",
+      "phone": "+57 605 664 9510",
+      "email": "reservas@casapestagua.com",
+      "website": "https://www.casapestagua.com/",
+      "hasWebsite": true,
+      "membershipTier": "gold",
+      "rating": 4.8,
+      "priceRange": "$$$$",
+      "description": "Luxury boutique hotel in a restored 18th-century mansion in Cartagena’s walled city, with suites, dining and wellness experiences.",
+      "sample": true,
+      "ratingSource": "Public business listing; verify before public launch",
+      "hours": "Contact the hotel directly for current check-in and reception hours.",
+      "features": [
+        "Historic mansion",
+        "Luxury suites",
+        "Restaurant",
+        "Wellness and spa",
+        "Private beach experience"
+      ],
+      "category": "Luxury boutique hotel"
+    },
+    {
+      "id": "casa-claver-cartagena-test-platinum",
+      "name": "Casa Claver Loft Boutique Hotel",
+      "city": "Cartagena",
+      "country": "Colombia",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "address": "Calle de las Damas #3-134, Centro Histórico, Cartagena de Indias, Bolívar, Colombia",
+      "phone": "+57 315 203 9371",
+      "email": "info@casaclaver.com",
+      "website": "https://www.casaclaver.com/en",
+      "hasWebsite": true,
+      "membershipTier": "platinum",
+      "rating": 4.7,
+      "priceRange": "$$$–$$$$",
+      "description": "Boutique hotel in a restored 17th-century house, with loft-style rooms, a courtyard and pool in Cartagena’s historic center.",
+      "sample": true,
+      "ratingSource": "Public business listing; verify before public launch",
+      "hours": "Contact the hotel directly for current check-in and reception hours.",
+      "features": [
+        "Restored 17th-century house",
+        "Courtyard and pool",
+        "Loft-style rooms",
+        "Historic center",
+        "Direct booking"
+      ],
+      "category": "Luxury boutique hotel",
+      "photos": [
+        "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1400&q=85",
+        "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1400&q=85",
+        "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1400&q=85",
+        "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1400&q=85",
+        "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=1400&q=85",
+        "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1400&q=85",
+        "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1400&q=85",
+        "https://images.unsplash.com/photo-1563911302283-d2bc129e7570?auto=format&fit=crop&w=1400&q=85"
+      ],
+      "photo": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1400&q=85"
     }
   ]
 }
