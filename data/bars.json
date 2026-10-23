@@ -88,7 +88,17 @@
       "rating": 4.8,
       "priceRange": "$$",
       "description": "Rock-and-blues bar in Santa Marta’s historic center, known for live music, cocktails and an energetic late-night atmosphere.",
-      "sample": true
+      "sample": true,
+      "ratingSource": "Publicly surfaced review listing; recheck before publication",
+      "drinks": "Cocktails, beer and spirits",
+      "hours": "Confirm current opening hours with the bar.",
+      "features": [
+        "Live music",
+        "Rock and blues",
+        "Cocktails",
+        "Historic center"
+      ],
+      "photos": []
     }
   ]
 }
