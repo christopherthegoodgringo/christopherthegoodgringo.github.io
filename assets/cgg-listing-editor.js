@@ -20,7 +20,8 @@
       ['__food', ''], ['features', 'Highlights', 'text', 'Separate with commas, e.g. Rooftop, Live music, Ocean view']] },
     { title: 'Photo gallery', tier: 'platinum', note: 'Rotating photos on your Finder card and information page.', fields: [['photos', 'Gallery photos', 'gallery']] }
   ];
-  var ADMIN_FIELDS = [['name', 'Business name'], ['city', 'City'], ['rating', 'Rating (0–5)', 'number'], ['ratingSource', 'Rating source']];
+  var ADMIN_FIELDS = [['name', 'Business name'], ['city', 'City']];
+  var RATED_ADMIN_FIELDS = [['rating', 'Rating (0–5)', 'number'], ['ratingSource', 'Rating source']];
 
   function resize(file) {
     return new Promise(function (resolve, reject) {
@@ -124,9 +125,13 @@
       form.appendChild(el('div', { className: 'editor-section level-pick', style: 'background:#fff8e6;border-color:#d6a84f' },
         el('label', { style: 'margin-top:0' }, 'Level'), lvl,
         el('p', { className: 'meta', style: 'margin:6px 0 0' }, 'The fields below match this level. To edit more, change the level here first.')));
-      var sec = el('fieldset', { className: 'editor-section' }, el('legend', {}, 'Admin only'));
+      var sec = el('fieldset', { className: 'editor-section' }, el('legend', {}, 'Admin details'));
       ADMIN_FIELDS.forEach(function (f) { input(f[0], f[1], f[2]).forEach(function (n) { sec.appendChild(n); }); });
       form.appendChild(sec);
+      var ratedSec = el('fieldset', { className: 'editor-section' }, el('legend', {}, 'Rating (Silver and above)'));
+      RATED_ADMIN_FIELDS.forEach(function (f) { input(f[0], f[1], f[2]).forEach(function (n) { ratedSec.appendChild(n); }); });
+      form.appendChild(ratedSec);
+      sectionEls.push({ el: ratedSec, tier: 'silver' });
     }
 
     // Only the sections the level includes are shown. Owners never see higher-level sections;
