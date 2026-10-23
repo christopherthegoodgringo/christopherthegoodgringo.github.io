@@ -712,9 +712,9 @@
   $('bizCountry').addEventListener('change', function () { $('bizCity').value = ''; });
   $('prCountry').addEventListener('change', function () { $('prCity').value = ''; });
   // Country and City dropdowns: list the countries and cities of the businesses in view (with how many), keep the current choice.
-  // Our 17 countries always show in the Country dropdown, even before they have any businesses.
+  // Latin America locations plus the United States always show in the Country dropdown, even before they have any businesses.
   var ALL_COUNTRIES = ['Argentina', 'Belize', 'Bolivia', 'Chile', 'Colombia', 'Costa Rica', 'Dominican Republic', 'Ecuador',
-    'El Salvador', 'Guatemala', 'Honduras', 'Mexico', 'Nicaragua', 'Panama', 'Paraguay', 'Peru', 'Uruguay'];
+    'El Salvador', 'Guatemala', 'Honduras', 'Mexico', 'Nicaragua', 'Panama', 'Paraguay', 'Peru', 'United States', 'Uruguay'];
   function placeOptions(selId, values, allLabel, always) {
     var sel = $(selId), cur = sel.value, counts = {};
     (always || []).forEach(function (v) { counts[v] = 0; });
