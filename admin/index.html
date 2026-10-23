@@ -253,11 +253,11 @@
             <div><label for="bpCountry">Country *</label><input id="bpCountry" required value="Colombia"></div>
           </div>
           <div class="row">
-            <div><label for="bpEmail">Public business email</label><input id="bpEmail" type="email" placeholder="Only if publicly listed"></div>
+            <div><label for="bpEmail">Public business email *</label><input id="bpEmail" type="email" required placeholder="Required; never shown on the public card"></div>
             <div><label for="bpContact">Contact name (optional)</label><input id="bpContact"></div>
           </div>
           <div class="row">
-            <div><label for="bpAddress">Business address</label><input id="bpAddress"></div>
+            <div><label for="bpAddress">Business address *</label><input id="bpAddress" required></div>
             <div><label for="bpPhone">Business phone</label><input id="bpPhone"></div>
           </div>
           <div class="row">
@@ -266,7 +266,7 @@
           </div>
           <div><label for="bpNotes">Internal research notes</label><textarea id="bpNotes" rows="2" style="width:100%"></textarea></div>
           <div class="actions"><button class="btn" type="submit" id="bpSave">Save prospect</button><button class="btn light" type="button" id="bpCancel" hidden>Cancel edit</button><button class="btn light" type="button" id="bpReload">Refresh prospects</button></div>
-          <p class="meta" id="bpStatus" aria-live="polite">No email will be sent from this form.</p>
+          <p class="meta" id="bpStatus" aria-live="polite">Saving a prospect creates its public Bronze card. Contact email stays private; no email is sent.</p>
         </form>
       </div>
       <div class="item">
@@ -498,8 +498,7 @@
     try {
       var id = $('bpId').value;
       var result = await bpRequest(id ? 'update' : 'add', id ? { id: id, prospect: prospect } : { prospect: prospect });
-      if (result.prospect && !result.prospect.contact_email) bpSetStatus('Saved, but add only if you later verify a publicly listed business email.');
-      else bpSetStatus('Prospect saved. No email was sent.');
+      bpSetStatus(id ? 'Prospect updated and its Bronze card refreshed. Contact email remains private; no email was sent.' : 'Prospect saved and Bronze card published to the directory. Contact email remains private; no email was sent.');
       bpReset(); await bpLoad();
     } catch (e) { bpSetStatus(e.message, true); }
     finally { $('bpSave').disabled = false; }
