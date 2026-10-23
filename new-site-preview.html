@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#103e2f">
+  <title>Christopher the Good Gringo — New Site Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--green:#103e2f;--deep-green:#09291e;--gold:#f5bd3e;--cream:#fbf5e8;--display:"Bricolage Grotesque",sans-serif;--body:"DM Sans",sans-serif}
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:var(--body)}
+    .banner{position:relative;isolation:isolate;min-height:320px;padding:24px clamp(18px,4vw,56px);overflow:hidden;display:flex;align-items:flex-start;background:radial-gradient(ellipse at 85% 20%,rgba(245,189,62,.16),transparent 32%),radial-gradient(ellipse at 76% 105%,rgba(69,126,91,.36),transparent 40%),linear-gradient(112deg,var(--deep-green) 0%,var(--green) 62%,#174b3b 100%);border-bottom:5px solid var(--gold)}
+    .banner:before{content:"";position:absolute;z-index:-1;inset:0;opacity:.16;background-image:linear-gradient(30deg,transparent 48%,rgba(255,255,255,.16) 49%,transparent 50%),linear-gradient(150deg,transparent 48%,rgba(255,255,255,.10) 49%,transparent 50%);background-size:74px 74px;mask-image:linear-gradient(90deg,transparent 12%,#000 100%)}
+    .brand{display:inline-flex;align-items:center;justify-content:flex-start;max-width:min(520px,92%);min-height:72px;padding:8px 14px 8px 8px;border:1px solid rgba(245,189,62,.4);border-radius:14px;background:rgba(5,28,20,.22);box-shadow:0 8px 26px rgba(0,0,0,.12)}
+    .brand img{display:block;width:clamp(190px,27vw,330px);max-height:92px;height:auto;object-fit:contain;object-position:left center}
+    .preview-note{padding:22px clamp(18px,4vw,56px);color:#34483c;background:#fbf5e8}.preview-note h1{margin:0 0 8px;color:#103e2f;font-size:clamp(1.35rem,3vw,2rem)}.preview-note p{margin:0;max-width:720px;line-height:1.6}
+    @media(max-width:560px){.banner{min-height:220px;padding:16px}.brand{max-width:100%;min-height:58px}.brand img{width:min(74vw,270px)}}
+  </style>
+</head>
+<body>
+  <header class="banner" aria-label="Christopher the Good Gringo website banner">
+    <a class="brand" href="https://christopherthegoodgringo.com/" aria-label="Christopher the Good Gringo home">
+      <img src="https://christopherthegoodgringo.com/assets/cgg-wordmark.svg?v=1" alt="Christopher the Good Gringo">
+    </a>
+  </header>
+  <main class="preview-note">
+    <h1>New website preview</h1>
+    <p>This is the separate scratch-build preview. Your existing website remains unchanged. We’ll build the new site here one piece at a time, starting with the banner.</p>
+  </main>
+</body>
+</html>
