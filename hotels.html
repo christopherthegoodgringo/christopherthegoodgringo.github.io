@@ -157,7 +157,7 @@ function addPlatinumSlideshow(card,h,primary,tier){
 }
 let activeTierFilter='all';function isListingClaimed(h){if(!h||typeof h!=='object')return false;const status=String(h.claimStatus||h.claim_status||h.ownerStatus||'').toLowerCase().trim();if(['claimed','approved','verified','active'].includes(status))return true;if(['unclaimed','not claimed','not_claimed','unclaimed_listing'].includes(status))return false;if(h.claimed===true||h.isClaimed===true||h.is_claimed===true||h.ownerId||h.owner_id||h.claimedAt||h.claimed_at)return true;return false;}function listingMatchesTierFilter(h,tier){if(tier==='all')return true;if(tier==='not-claimed')return !isListingClaimed(h);if(!isListingClaimed(h)&&['unclaimed','not-claimed'].includes(String(h.claimStatus||h.claim_status||'').toLowerCase().replace(/[_ ]/g,'-')))return false;const level=String(h.membershipTier||({premium:'platinum',featured:'gold',silver:'silver',free:'bronze'}[String(h.listingPlan||'').toLowerCase()]||'bronze')).toLowerCase();return level===tier;}function ensureUnclaimedHotel(){const id='hotel-casa-del-coliseo-cartagena-sample';if(!hotels.some(h=>String(h.id||'')===id)){hotels.push({id:id,name:'Hotel Casa del Coliseo',city:'Cartagena',country:'Colombia',countryCode:'CO',countryName:'Colombia',address:'Calle del Coliseo #35-23, Centro Histórico, Cartagena de Indias, Bolívar, Colombia',phone:'+57 605 6798779',website:'https://www.hotelcasadelcoliseocartagena.com/EN/home.html',hasWebsite:true,rating:4.7,priceRange:'$
  const code=countryCodeFromInput(countryFilter.value),city=cityFilter.value,q=normalize(query.value);
- const found=hotels.filter(h=>listingMatchesTierFilter(h,activeTierFilter)&&(!code||h.countryCode===code)&&(!city||normalize(h.city)===normalize(city))&&(!q||normalize([h.name,h.city,h.countryName,h.address,h.description,(h.amenities||[]).join(' ')].join(' ')).includes(q)));
+ const found=hotels.filter(h=>listingMatchesTierFilter(h,activeTierFilter)&&(!code||String(h.countryCode||h.country_code||'').trim().toUpperCase()===code)&&(!city||normalize(h.city)===normalize(city))&&(!q||normalize([h.name,h.city,h.countryName,h.country,h.address,h.description,(h.amenities||[]).join(' ')].join(' ')).includes(q)));
  results.innerHTML='';const tierRank={platinum:4,gold:3,silver:2,bronze:1};
  found.sort((a,b)=>(tierRank[String(b.membershipTier||'bronze').toLowerCase()]||1)-(tierRank[String(a.membershipTier||'bronze').toLowerCase()]||1)||String(a.name).localeCompare(String(b.name)));
  found.forEach(h=>{
@@ -187,7 +187,7 @@ let activeTierFilter='all';function isListingClaimed(h){if(!h||typeof h!=='objec
 function renderShortcuts(){}
 document.getElementById('hotelSearch').addEventListener('submit',e=>{e.preventDefault();render()});
 const startSearchButton=document.querySelector('#hotelSearch button[type="submit"]');if(startSearchButton)startSearchButton.addEventListener('click',e=>{e.preventDefault();render();document.getElementById('resultsTitle').scrollIntoView({behavior:'smooth',block:'start'});});query.addEventListener&&query.addEventListener('input',render);countryFilter.addEventListener('change',()=>{cityFilter.value='';renderCityOptions();render();renderShortcuts()});cityFilter.addEventListener('change',render);
-fetch('/data/hotels.json?v=20261023-unclaimed3', { cache: 'no-store' })
+fetch('/data/hotels.json?v=20261023-hotel-visible1', { cache: 'no-store' })
   .then(function (response) {
     if (!response.ok) throw new Error('Could not load hotel data');
     return response.json();
