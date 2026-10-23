@@ -407,8 +407,17 @@
 
 <script>
 (function () {
-  var cfg = window.CGG_PORTAL, P = window.CGGPortal, el = P.el, sb = P.client(), user = null, listings = [];
   var $ = function (id) { return document.getElementById(id); };
+  var signin = $('signin');
+  function startupError(message) {
+    if (signin) signin.innerHTML = '<div style="padding:18px;border:1px solid #b45309;border-radius:10px;background:#fff7ed;color:#7c2d12"><strong>Sign-in could not start.</strong><p style="margin:8px 0 0">' + message + '</p><p style="margin:8px 0 0">Reload this page in a moment. If it continues, contact support.</p></div>';
+  }
+  if (!window.CGG_PORTAL) { startupError('The portal configuration did not load.'); return; }
+  if (!window.CGGPortal) { startupError('The portal sign-in script did not load.'); return; }
+  if (!window.supabase || typeof window.supabase.createClient !== 'function') { startupError('The secure sign-in service did not load. Please reload the page.'); return; }
+  var cfg = window.CGG_PORTAL, P = window.CGGPortal, el = P.el, sb;
+  try { sb = P.client(); } catch (e) { startupError('The sign-in service could not initialize.'); console.error('CGG admin startup:', e); return; }
+  var user = null, listings = [];
 
   P.mountAuth($('signin'), { redirect: location.origin + '/admin/', allowSignup: false, adminHelp: { sqlUrl: 'https://supabase.com/dashboard/project/dhkyyhbfybbxczveyvfw/sql/new' } });
   $('setpwBtn').addEventListener('click', function () { P.mountSetPassword($('setpw'), { title: 'Set or change your password' }); });
