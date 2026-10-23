@@ -10,7 +10,7 @@
 
   var SECTIONS = [
     { title: 'Basics', tier: 'bronze', note: 'Bronze shows your name, city and address in the Finder.', fields: [
-      ['address', 'Street address']] },
+      ['address', 'Street address, neighborhood, city, department, postal code', 'area', 'e.g. Cra. 3 #16-30, Centro, Santa Marta, Magdalena, 470004']] },
     { title: 'Your card and information page', tier: 'silver', note: 'Adds a photo, star rating, description, contact details, website and booking buttons, plus your own More Information page.', fields: [
       ['photo', 'Main photo', 'photo'], ['description', 'Description', 'area'], ['priceRange', 'Price range', 'text', 'e.g. $$–$$$'],
       ['phone', 'Phone'], ['whatsapp', 'WhatsApp number'], ['email', 'Business email', 'email'],
