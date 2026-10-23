@@ -16,7 +16,7 @@ COUNTRIES = [
     ("CR", "Costa Rica"), ("PA", "Panama"), ("AR", "Argentina"),
     ("BO", "Bolivia"), ("CL", "Chile"), ("CO", "Colombia"),
     ("EC", "Ecuador"), ("PY", "Paraguay"), ("PE", "Peru"),
-    ("UY", "Uruguay"), ("DO", "Dominican Republic"),
+    ("UY", "Uruguay"), ("DO", "Dominican Republic"), ("US", "United States"),
 ]
 ENDPOINTS = [
     "https://overpass-api.de/api/interpreter",
