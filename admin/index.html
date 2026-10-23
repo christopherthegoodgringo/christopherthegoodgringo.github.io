@@ -197,7 +197,7 @@
       <div id="aaMsg"></div>
     </section>
      <section class="panel" id="tab-businesses" hidden>
-      <h2>Current businesses</h2>
+      <div class="item-head" style="align-items:center;gap:12px;flex-wrap:wrap"><h2 style="margin:0">Current businesses</h2><button class="btn" type="button" id="quickAddBusiness">+ Add a business</button></div>
       <p class="sub">Choose a level above to see the businesses currently listed at that level.</p>
       <div id="bizCount" role="status" aria-live="polite"></div>
       <div class="list" id="bizList" aria-label="Current business listings"></div>
@@ -732,6 +732,18 @@
     var city = $(prefix + 'City').value;
     return function (h) { return (!c || h.countryName === c) && (!city || h.city === city); };
   }
+  // Shortcut to the existing add-business form, with the name field focused.
+  var quickAddBusiness = document.getElementById('quickAddBusiness');
+  if (quickAddBusiness) quickAddBusiness.addEventListener('click', function () {
+    var prospectTab = document.querySelector('[data-tab="prospects"]');
+    if (prospectTab) prospectTab.click();
+    window.setTimeout(function () {
+      var nameField = document.getElementById('bpName');
+      if (nameField) nameField.focus();
+      var form = document.getElementById('bpForm');
+      if (form) form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 120);
+  });
   document.querySelectorAll('[data-directory-type]').forEach(function (button) {
     button.addEventListener('click', function () {
       $('bizType').value = button.dataset.directoryType;
