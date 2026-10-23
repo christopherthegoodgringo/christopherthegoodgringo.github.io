@@ -11,10 +11,10 @@
   var SECTIONS = [
     { title: 'Basics', tier: 'bronze', note: 'Bronze shows your name, city and address in the Finder.', fields: [
       ['address', 'Street address, neighborhood, city, department, postal code', 'area', 'e.g. Cra. 3 #16-30, Centro, Santa Marta, Magdalena, 470004']] },
-    { title: 'Your card and information page', tier: 'silver', note: 'Adds a photo, star rating, contact details, website and booking buttons, plus your own More Information page.', fields: [
-      ['photo', 'Main photo', 'photo'],
+    { title: 'Your card and information page', tier: 'silver', note: 'Adds a star rating, contact details, website and booking buttons, plus your own More Information page.', fields: [
       ['phone', 'Phone'], ['whatsapp', 'WhatsApp number'], ['email', 'Business email', 'email'],
       ['website', 'Website or booking link', 'url']] },
+    { title: 'Main photo', tier: 'gold', note: 'Gold and Platinum listings can add a main photo to the Finder card.', fields: [['photo', 'Main photo', 'photo']] },
     { title: 'Photo gallery', tier: 'platinum', note: 'Rotating photos on your Finder card and information page.', fields: [['photos', 'Gallery photos', 'gallery']] }
   ];
   var ADMIN_FIELDS = [['name', 'Business name'], ['city', 'City'], ['countryName', 'Country']];
@@ -187,7 +187,7 @@
         addressKeys.forEach(function (k) { delete changes[k]; });
       }
       var level = admin ? inputs.membershipTier.value : tier;
-      if (RANK[level] >= RANK.silver && (state.photo || '') !== (h.photo || '')) changes.photo = state.photo || null;
+      if (RANK[level] >= RANK.gold && (state.photo || '') !== (h.photo || '')) changes.photo = state.photo || null;
       var before = (Array.isArray(h.photos) ? h.photos : []).join('|');
       if (RANK[level] >= RANK.platinum && state.photos.join('|') !== before) changes.photos = state.photos.length ? state.photos.slice() : null;
       var n = note ? note.value.trim() : '';
