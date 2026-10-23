@@ -419,7 +419,13 @@
   try { sb = P.client(); } catch (e) { startupError('The sign-in service could not initialize.'); console.error('CGG admin startup:', e); return; }
   var user = null, listings = [];
 
-  P.mountAuth($('signin'), { redirect: location.origin + '/admin/', allowSignup: false, adminHelp: { sqlUrl: 'https://supabase.com/dashboard/project/dhkyyhbfybbxczveyvfw/sql/new' } });
+  try {
+    P.mountAuth($('signin'), { redirect: location.origin + '/admin/', allowSignup: false, adminHelp: { sqlUrl: 'https://supabase.com/dashboard/project/dhkyyhbfybbxczveyvfw/sql/new' } });
+  } catch (e) {
+    console.error('CGG admin sign-in render:', e);
+    startupError('The sign-in form failed while opening. Please try reloading; if it continues, the page will now show this message instead of a blank box.');
+    return;
+  }
   $('setpwBtn').addEventListener('click', function () { P.mountSetPassword($('setpw'), { title: 'Set or change your password' }); });
   document.querySelectorAll('#signout, #denied button').forEach(function (b) { b.addEventListener('click', function () { sb.auth.signOut(); }); });
   document.querySelectorAll('[role=tab]').forEach(function (b) {
