@@ -487,8 +487,8 @@
   function bpMakeDraft(id) {
     var r = bpRows.find(function (x) { return x.id === id; }); if (!r) return;
     bpSelected = id;
-    $('bpDraftSubject').value = 'Your free listing on Christopher the Good Gringo';
-    $('bpDraftBody').value = 'Hello' + (r.contact_name ? ' ' + r.contact_name : '') + ',\\n\\nWe are building Christopher the Good Gringo, a directory highlighting independent businesses across Latin America. We have prepared a basic Bronze listing for ' + r.business_name + ' in ' + r.city + ', Colombia.\\n\\nThe free Bronze listing displays your business name and address. You can review the listing and request ownership verification before making any changes.\\n\\nIf you would like to learn more, reply to this email and we will share the next steps.\\n\\nBest regards,\\nChristopher\\nChristopher the Good Gringo';
+    $('bpDraftSubject').value = 'An invitation for ' + r.business_name + ' | Christopher the Good Gringo';
+    $('bpDraftBody').value = 'Hello' + (r.contact_name ? ' ' + r.contact_name : '') + ',\\n\\nMy name is Christopher Kesl, and I’m the founder of Christopher the Good Gringo. I’m reaching out because we’re building a directory that helps travelers discover independent businesses across Latin America, and I’d like to invite ' + r.business_name + ' to be included.\\n\\nWHAT THE FREE BRONZE LISTING INCLUDES\\nYour free Bronze listing displays your business name and address. There’s no obligation to purchase an upgrade. You can review the details and verify that you represent the business before requesting any changes.\\n\\nWOULD YOU LIKE TO TAKE A LOOK?\\nSimply reply to this email and I’ll share the listing details and explain the next steps.\\n\\nThank you for your time.\\n\\nBest regards,\\nChristopher Kesl\\nFounder & President\\nChristopher the Good Gringo\\nchristopherthegoodgringo.com
     $('bpDraftStatus').textContent = 'Draft created for ' + r.business_name + '. Review and edit before use; not sent.';
     $('bpDraftSubject').scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
