@@ -97,6 +97,7 @@
   <div id="dash" hidden>
     <div class="item-head" style="margin-bottom:14px"><p class="muted" id="who" style="margin:0"></p><div class="actions" style="margin-top:0"><button class="btn light" id="setpwBtn" type="button">Set or change password</button><button class="btn light" id="signout" type="button">Sign out</button></div></div>
     <nav class="admin-main-tabs tier-main-tabs" aria-label="Listing levels">
+      <button type="button" id="addBusinessBeforeNotClaimed" style="background:var(--green);color:#fff;border:1px solid var(--gold)">+ Add a business</button>
       <button type="button" data-tier-filter="not-claimed" aria-pressed="false">Not Claimed</button>
       <button type="button" data-tier-filter="bronze" aria-pressed="true">Bronze</button>
       <button type="button" data-tier-filter="silver" aria-pressed="false">Silver</button>
@@ -733,17 +734,21 @@
     return function (h) { return (!c || h.countryName === c) && (!city || h.city === city); };
   }
   // Shortcut to the existing add-business form, with the name field focused.
-  var quickAddBusiness = document.getElementById('quickAddBusiness');
-  if (quickAddBusiness) quickAddBusiness.addEventListener('click', function () {
+  function openAddBusinessForm() {
+    if (typeof chooseAdminSection === 'function') chooseAdminSection('communications', 'prospects');
     var prospectTab = document.querySelector('[data-tab="prospects"]');
-    if (prospectTab) prospectTab.click();
+    if (prospectTab && !prospectTab.hidden) prospectTab.click();
     window.setTimeout(function () {
       var nameField = document.getElementById('bpName');
       if (nameField) nameField.focus();
       var form = document.getElementById('bpForm');
       if (form) form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 120);
-  });
+    }, 180);
+  }
+  var quickAddBusiness = document.getElementById('quickAddBusiness');
+  if (quickAddBusiness) quickAddBusiness.addEventListener('click', openAddBusinessForm);
+  var addBeforeNotClaimed = document.getElementById('addBusinessBeforeNotClaimed');
+  if (addBeforeNotClaimed) addBeforeNotClaimed.addEventListener('click', openAddBusinessForm);
   document.querySelectorAll('[data-directory-type]').forEach(function (button) {
     button.addEventListener('click', function () {
       $('bizType').value = button.dataset.directoryType;
