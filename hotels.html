@@ -185,12 +185,36 @@ let activeTierFilter='all';function isListingClaimed(h){if(!h||typeof h!=='objec
  }
 }
 function render(){
- const code=countryCodeFromInput(countryFilter.value),city=normalize(cityFilter.value),q=normalize(query.value);
- results.innerHTML='';results.hidden=false;results.style.removeProperty('display');results.classList.add('is-visible');document.body.classList.add('hotel-filters-ready');
- const found=hotels.filter(h=>{const hCode=String(h.countryCode||h.country_code||'').trim().toUpperCase();const hCity=normalize(h.city);const countryMatches=!code||hCode===code;const cityMatches=!city||hCity===city;const queryMatches=!q||normalize([h.name,h.city,h.countryName,h.country,h.address,h.description,(h.amenities||[]).join(' '),(h.features||[]).join(' ')].join(' ')).includes(q);return listingMatchesTierFilter(h,activeTierFilter)&&countryMatches&&cityMatches&&queryMatches;});
- const tierRank={platinum:4,gold:3,silver:2,bronze:1};found.sort((a,b)=>(tierRank[String(b.membershipTier||'bronze').toLowerCase()]||1)-(tierRank[String(a.membershipTier||'bronze').toLowerCase()]||1)||String(a.name).localeCompare(String(b.name)));
- found.forEach(h=>{const card=document.createElement('article'),tier=String(h.membershipTier||'bronze').toLowerCase(),isUnclaimed=!isListingClaimed(h)&&['unclaimed','not-claimed'].includes(String(h.claimStatus||h.claim_status||'').toLowerCase().replace(/[_ ]/g,'-'));card.className='hotel-card '+(isUnclaimed?'tier-unclaimed-card':'tier-'+tier+'-card');const ribbon=document.createElement('span');ribbon.className='tier-ribbon';ribbon.textContent=isUnclaimed?'UNCLAIMED':tier==='platinum'?'♛ PLATINUM':tier==='gold'?'★ GOLD':tier==='silver'?'◆ SILVER':'● BRONZE';card.appendChild(ribbon);const isBronze=tier==='bronze'||isUnclaimed;if(!isBronze)addPlatinumSlideshow(card,h,h.photo,tier);const tag=document.createElement('span');tag.className='hotel-city';tag.textContent=(h.city?h.city+', ':'')+(h.countryName||(countries.find(c=>c.code===h.countryCode)||{}).name||'');card.appendChild(tag);const title=document.createElement('h3');title.textContent=h.name;card.appendChild(title);if(!isBronze&&h.rating!==undefined&&h.rating!==null&&Number.isFinite(Number(h.rating))){const rating=Number(h.rating),line=document.createElement('p');line.className='hotel-rating';line.setAttribute('aria-label','Rating '+rating.toFixed(1)+' out of 5');const stars=document.createElement('span');stars.className='rating-stars';stars.setAttribute('aria-hidden','true');const rounded=Math.max(0,Math.min(5,Math.round(rating)));stars.textContent='★'.repeat(rounded)+'☆'.repeat(5-rounded);line.appendChild(stars);const score=document.createElement('strong');score.textContent=' '+rating.toFixed(1)+'/5';line.appendChild(score);if(h.ratingSource){const source=document.createElement('small');source.className='rating-source';source.textContent='Rating source: '+h.ratingSource;line.appendChild(source)}card.appendChild(line)}if(h.address){const p=document.createElement('p');p.textContent=h.address;card.appendChild(p)}if(!isBronze&&h.priceRange){const p=document.createElement('p');p.className='hotel-price';p.textContent='Cost: '+h.priceRange;card.appendChild(p)}if(!isBronze&&h.amenities?.length){const p=document.createElement('p');p.textContent=h.amenities.join(' · ');card.appendChild(p)}if(['platinum','gold','silver'].includes(tier)){const more=document.createElement('a');more.href='/listing-information.html?type=hotels&id='+encodeURIComponent(h.id||h.name);more.className='button listing-more';more.textContent='More Information';more.setAttribute('aria-label','More information about '+h.name);card.appendChild(more)}results.appendChild(card)});
- count.textContent=found.length+' stays found';empty.hidden=found.length>0;const selected=countries.find(c=>c.code===code);document.getElementById('resultsTitle').textContent=selected?'Boutique & independent hotels in '+selected.name:'Boutique & independent hotels across Latin America';
+ const code=countryCodeFromInput(countryFilter.value),city=cityFilter.value,q=normalize(query.value);
+ results.innerHTML='';results.hidden=true;results.style.setProperty('display','none','important');results.classList.remove('is-visible');document.body.classList.remove('hotel-filters-ready');
+ if(!code||!city){count.textContent='Choose a country and city to see hotels';empty.hidden=true;document.getElementById('resultsTitle').textContent='Choose a destination to see hotels';return;}
+ document.body.classList.add('hotel-filters-ready');results.hidden=false;results.style.setProperty('display','grid','important');results.classList.add('is-visible');
+ const found=hotels.filter(h=>{const hCode=String(h.countryCode||h.country_code||'').trim().toUpperCase();const hCity=normalize(h.city);const countryMatches=!code||hCode===code;const cityMatches=!city||hCity===normalize(city);const queryMatches=!q||normalize([h.name,h.city,h.countryName,h.country,h.address,h.description,(h.amenities||[]).join(' '),(h.features||[]).join(' ')].join(' ')).includes(q);return listingMatchesTierFilter(h,activeTierFilter)&&countryMatches&&cityMatches&&queryMatches;});
+ results.innerHTML='';const tierRank={platinum:4,gold:3,silver:2,bronze:1};
+ found.sort((a,b)=>(tierRank[String(b.membershipTier||'bronze').toLowerCase()]||1)-(tierRank[String(a.membershipTier||'bronze').toLowerCase()]||1)||String(a.name).localeCompare(String(b.name)));
+ found.forEach(h=>{
+  const card=document.createElement('article'),tier=String(h.membershipTier||'bronze').toLowerCase(),isUnclaimed=!isListingClaimed(h)&&['unclaimed','not-claimed'].includes(String(h.claimStatus||h.claim_status||'').toLowerCase().replace(/[_ ]/g,'-'));card.className='hotel-card '+(isUnclaimed?'tier-unclaimed-card':'tier-'+tier+'-card');
+  const ribbon=document.createElement('span');ribbon.className='tier-ribbon';ribbon.textContent=isUnclaimed?'UNCLAIMED':tier==='platinum'?'♛ PLATINUM':tier==='gold'?'★ GOLD':tier==='silver'?'◆ SILVER':'● BRONZE';card.appendChild(ribbon);
+  const isBronze=tier==='bronze'||isUnclaimed;if(!isBronze)addPlatinumSlideshow(card,h,h.photo,tier);
+  const tag=document.createElement('span');tag.className='hotel-city';tag.textContent=(h.city?h.city+', ':'')+(h.countryName||(countries.find(c=>c.code===h.countryCode)||{}).name||'');card.appendChild(tag);
+  const title=document.createElement('h3');title.textContent=h.name;card.appendChild(title);
+  if(!isBronze&&h.rating!==undefined&&h.rating!==null&&Number.isFinite(Number(h.rating))){
+   const rating=Number(h.rating),line=document.createElement('p');line.className='hotel-rating';line.setAttribute('aria-label','Rating '+rating.toFixed(1)+' out of 5');
+   const stars=document.createElement('span');stars.className='rating-stars';stars.setAttribute('aria-hidden','true');const rounded=Math.max(0,Math.min(5,Math.round(rating)));stars.textContent='★'.repeat(rounded)+'☆'.repeat(5-rounded);line.appendChild(stars);
+   const score=document.createElement('strong');score.textContent=' '+rating.toFixed(1)+'/5';line.appendChild(score);
+   if(h.ratingSource){const source=document.createElement('small');source.className='rating-source';source.textContent='Rating source: '+h.ratingSource;line.appendChild(source);}card.appendChild(line);
+  }
+  if(h.address){const p=document.createElement('p');p.textContent=h.address;card.appendChild(p);}
+  if(!isBronze&&h.priceRange){const p=document.createElement('p');p.className='hotel-price';p.textContent='Cost: '+h.priceRange;card.appendChild(p);}
+  
+  if(!isBronze&&h.amenities?.length){const p=document.createElement('p');p.textContent=h.amenities.join(' · ');card.appendChild(p);}
+  if(['platinum','gold','silver'].includes(tier)){const more=document.createElement('a');more.href='/listing-information.html?type=hotels&id='+encodeURIComponent(h.id||h.name);more.className='button listing-more';more.textContent='More Information';more.setAttribute('aria-label','More information about '+h.name);card.appendChild(more);}
+  results.appendChild(card);
+ });
+ count.textContent=found.length+' stays found';empty.hidden=found.length>0;
+ const selected=countries.find(c=>c.code===code);
+ document.getElementById('resultsTitle').textContent=selected?'Boutique & independent hotels in '+selected.name:'Boutique & independent hotels across Latin America';
+ 
 }
 function renderShortcuts(){}
 document.getElementById('hotelSearch').addEventListener('submit',e=>{e.preventDefault();render()});
