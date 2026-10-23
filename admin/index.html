@@ -65,6 +65,8 @@
 .admin-main-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 10px}
 .admin-main-tabs button{border:1px solid var(--line);border-radius:12px;padding:12px 10px;background:#fff;color:var(--green);font:800 .94rem/1.2 inherit;font-family:inherit;cursor:pointer}
 .admin-main-tabs button[aria-pressed="true"]{background:var(--green);color:#fff;border-color:var(--gold);box-shadow:inset 0 -3px 0 var(--gold)}
+[data-directory-type][aria-pressed="true"]{background:var(--green);color:#fff;border-color:var(--gold);box-shadow:inset 0 -2px 0 var(--gold)}
+[data-directory-type]:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .tabs{display:flex;gap:7px;flex-wrap:wrap}
 .tabs [role="tab"]{font-size:.86rem}
 @media(max-width:620px){.admin-main-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-main-tabs button{padding:11px 7px;font-size:.86rem}}
@@ -193,7 +195,7 @@
       <h2>Shared Directory Manager</h2>
       <p class="sub">Manage Hotels, Hostels, Restaurants, Bars and Street Vendors in one place. The country and town filters apply across all five directories. Edit a listing or its level, remove it from the site, or manage its owner.</p>
       <div class="actions" aria-label="Quick directory filters" style="margin:10px 0">
-        <button class="btn light" type="button" data-directory-type="">All directories</button>
+        <button class="btn light" type="button" data-directory-type="" aria-pressed="true">All directories</button>
         <button class="btn light" type="button" data-directory-type="hotels">Hotels</button>
         <button class="btn light" type="button" data-directory-type="hostels">Hostels</button>
         <button class="btn light" type="button" data-directory-type="restaurants">Restaurants</button>
@@ -728,13 +730,17 @@
       bizLimit = 30;
       renderBusinesses();
       document.querySelectorAll('[data-directory-type]').forEach(function (b) {
-        b.setAttribute('aria-pressed', b === button ? 'true' : 'false');
-        b.classList.toggle('btn', b !== button);
-        b.classList.toggle('light', b !== button);
+        b.setAttribute('aria-pressed', b.dataset.directoryType === $('bizType').value ? 'true' : 'false');
       });
     });
   });
-  ['bizType', 'bizCountry', 'bizCity', 'bizTier', 'bizShow'].forEach(function (id) { $(id).addEventListener('change', function () { bizLimit = 30; renderBusinesses(); }); });
+  ['bizType', 'bizCountry', 'bizCity', 'bizTier', 'bizShow'].forEach(function (id) { $(id).addEventListener('change', function () {
+    bizLimit = 30;
+    if (id === 'bizType') document.querySelectorAll('[data-directory-type]').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.dataset.directoryType === $('bizType').value ? 'true' : 'false');
+    });
+    renderBusinesses();
+  }); });
   $('bizMore').addEventListener('click', function () { bizLimit += 30; renderBusinesses(); });
   function ownerOf(h) {
     return allClaims.find(function (c) { return c.listing_type === h.__type && c.listing_id === String(h.id || h.name) && c.status === 'approved'; });
