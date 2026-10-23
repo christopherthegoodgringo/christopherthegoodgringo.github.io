@@ -438,7 +438,7 @@
     if (!session) throw new Error('Please sign in again.');
     var base = (window.CGG_PORTAL && window.CGG_PORTAL.supabaseUrl) || '';
     if (!base) throw new Error('Supabase URL configuration is missing.');
-    var response = await fetch(base.replace(/\\/$/, '') + '/functions/v1/cgg-business-prospects-admin', {
+    var response = await fetch(base.replace(/\/$/, '') + '/functions/v1/cgg-business-prospects-admin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'apikey': window.CGG_PORTAL.supabaseKey || window.CGG_PORTAL.publishableKey || window.CGG_PORTAL.anonKey || '', 'Authorization': 'Bearer ' + session.access_token },
       body: JSON.stringify(Object.assign({ action: action }, extra || {}))
