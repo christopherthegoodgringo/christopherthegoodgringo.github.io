@@ -197,6 +197,18 @@
       </form>
       <div id="aaMsg"></div>
     </section>
+     <section class="panel" id="adminAddBusinessPanel" hidden>
+      <div class="item-head" style="align-items:center;gap:12px;flex-wrap:wrap"><div><h2 style="margin:0">Add a business</h2><p class="sub" style="margin:5px 0 0">Choose the listing level and enter only the details needed for that level.</p></div><button class="btn light" type="button" id="adminAddBusinessCancel">Back to listings</button></div>
+      <form id="adminAddBusinessForm">
+        <div class="row"><div><label for="nabTier">Listing level</label><select id="nabTier" required><option value="bronze">Bronze</option><option value="silver">Silver</option><option value="gold">Gold</option><option value="platinum">Platinum</option></select></div><div><label for="nabType">Business type</label><select id="nabType" required><option value="hotels">Hotel</option><option value="hostels">Hostel</option><option value="restaurants">Restaurant</option><option value="bars">Bar</option><option value="street-food">Street Food</option></select></div></div>
+        <div class="row"><div><label for="nabName">Business name</label><input id="nabName" required maxlength="200"></div><div><label for="nabCountry">Country</label><select id="nabCountry" required><option value="">Select country</option></select></div></div>
+        <div class="row"><div><label for="nabCity">City</label><input id="nabCity" required maxlength="120"></div><div><label for="nabAddress">Street address</label><input id="nabAddress" maxlength="300"></div></div>
+        <div class="row"><div><label for="nabWebsite">Official website</label><input id="nabWebsite" type="url" maxlength="500" placeholder="https://"></div><div><label for="nabPhone">Phone</label><input id="nabPhone" type="tel" maxlength="50"></div></div>
+        <div class="row"><div><label for="nabWhatsapp">WhatsApp</label><input id="nabWhatsapp" type="tel" maxlength="50"></div><div><label for="nabEmail">Email</label><input id="nabEmail" type="email" maxlength="254"></div></div>
+        <div id="nabLevelFields"></div><div id="nabFormNotice" class="st-note" role="status" aria-live="polite" hidden></div>
+        <div class="actions"><button class="btn" type="submit">Review business details</button><button class="btn light" type="reset">Clear form</button></div>
+      </form><div id="nabReview" hidden style="margin-top:16px"></div>
+     </section>
      <section class="panel" id="tab-businesses" hidden>
       <div class="item-head" style="align-items:center;gap:12px;flex-wrap:wrap"><h2 style="margin:0">Current businesses</h2></div>
       <p class="sub">Choose a level above to see the businesses currently listed at that level.</p>
@@ -754,18 +766,56 @@
     var city = $(prefix + 'City').value;
     return function (h) { return (!c || h.countryName === c) && (!city || h.city === city); };
   }
-  // Shortcut to the existing add-business form, with the name field focused.
+  // Open the new standalone form, never the legacy prospect form.
   function openAddBusinessForm() {
-    if (typeof chooseAdminSection === 'function') chooseAdminSection('communications', 'prospects');
-    var prospectTab = document.querySelector('[data-tab="prospects"]');
-    if (prospectTab && !prospectTab.hidden) prospectTab.click();
-    window.setTimeout(function () {
-      var nameField = document.getElementById('bpName');
-      if (nameField) nameField.focus();
-      var form = document.getElementById('bpForm');
-      if (form) form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 180);
+    document.querySelectorAll('main #dash > section[id^="tab-"]').forEach(function (panel) { panel.hidden = true; });
+    var panel = document.getElementById('adminAddBusinessPanel');
+    if (panel) { panel.hidden = false; panel.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    var nameField = document.getElementById('nabName');
+    if (nameField) nameField.focus({ preventScroll: true });
   }
+  // New admin form with tier-specific fields and a review summary.
+  (function setupAdminAddBusinessForm() {
+    var form=document.getElementById('adminAddBusinessForm'), tier=document.getElementById('nabTier'), fields=document.getElementById('nabLevelFields'), country=document.getElementById('nabCountry'), notice=document.getElementById('nabFormNotice'), review=document.getElementById('nabReview');
+    var countries=(window.CGGPortalConfig&&window.CGGPortalConfig.countries)||window.CGG_COUNTRIES||[];
+    (Array.isArray(countries)?countries:[]).forEach(function(x){var v=typeof x==='string'?x:(x.name||x.label||x.value||'');if(v)country.appendChild(el('option',{value:v},v));});
+    function renderLevelFields(){
+      fields.replaceChildren();
+      var level=tier.value;
+      fields.appendChild(el('h3',{style:'margin:18px 0 8px'},level.charAt(0).toUpperCase()+level.slice(1)+' details'));
+      fields.appendChild(el('label',{attrs:{for:'nabDescription'}},'Short description'));
+      fields.appendChild(el('textarea',{id:'nabDescription',rows:3,maxLength:1500,placeholder:'A short, useful description'}));
+      if(['silver','gold','platinum'].indexOf(level)>=0){
+        fields.appendChild(el('div',{className:'row'},
+          el('div',{},el('label',{attrs:{for:'nabPhotos'}},'Photo URLs (one per line)'),el('textarea',{id:'nabPhotos',rows:3,maxLength:3000,placeholder:'https://…'})),
+          el('div',{},el('label',{attrs:{for:'nabFeatures'}},'Features / highlights'),el('textarea',{id:'nabFeatures',rows:3,maxLength:1200,placeholder:'Separate items with commas'}))));
+      }
+      if(['gold','platinum'].indexOf(level)>=0){
+        fields.appendChild(el('div',{className:'row'},
+          el('div',{},el('label',{attrs:{for:'nabHours'}},'Opening hours'),el('input',{id:'nabHours',maxLength:300,placeholder:'e.g. Daily 8 AM–10 PM'})),
+          el('div',{},el('label',{attrs:{for:'nabPrice'}},'Price range'),el('input',{id:'nabPrice',maxLength:100,placeholder:'e.g. $'}))));
+      }
+      if(level==='platinum'){
+        fields.appendChild(el('div',{className:'row'},
+          el('div',{},el('label',{attrs:{for:'nabBooking'}},'Verified booking / affiliate URL (optional)'),el('input',{id:'nabBooking',type:'url',maxLength:500,placeholder:'https://…'})),
+          el('div',{},el('label',{attrs:{for:'nabRating'}},'Verified rating (optional)'),el('input',{id:'nabRating',type:'number',min:'0',max:'5',step:'0.1',placeholder:'0–5'}))));
+      }
+      if(review)review.hidden=true;
+    }
+    tier.addEventListener('change',renderLevelFields);renderLevelFields();
+    document.getElementById('adminAddBusinessCancel').addEventListener('click',function(){document.getElementById('adminAddBusinessPanel').hidden=true;document.getElementById('tab-businesses').hidden=false;});
+    form.addEventListener('reset',function(){setTimeout(function(){renderLevelFields();notice.hidden=true;review.hidden=true;},0);});
+    form.addEventListener('submit',function(ev){
+      ev.preventDefault();if(!form.reportValidity())return;
+      notice.hidden=false;notice.textContent='Review only: the form is separate from Prospecting, but publishing is not connected yet. Nothing has been saved to the public directory.';
+      review.hidden=false;review.replaceChildren(el('h3',{},'Review business details'));
+      var rows=[['Level',tier.options[tier.selectedIndex].text],['Type',document.getElementById('nabType').selectedOptions[0].textContent],['Business',document.getElementById('nabName').value],['Country',country.value],['City',document.getElementById('nabCity').value],['Address',document.getElementById('nabAddress').value],['Website',document.getElementById('nabWebsite').value],['Phone',document.getElementById('nabPhone').value],['WhatsApp',document.getElementById('nabWhatsapp').value],['Email',document.getElementById('nabEmail').value]];
+      ['nabDescription','nabPhotos','nabFeatures','nabHours','nabPrice','nabBooking','nabRating'].forEach(function(id){var x=document.getElementById(id);if(x&&x.value.trim())rows.push([x.previousElementSibling?x.previousElementSibling.textContent:id,x.value.trim()]);});
+      var dl=el('dl',{style:'display:grid;grid-template-columns:minmax(110px,160px) 1fr;gap:8px;margin:10px 0'});
+      rows.forEach(function(pair){if(pair[1]){dl.appendChild(el('dt',{style:'font-weight:700'},pair[0]));dl.appendChild(el('dd',{style:'margin:0;overflow-wrap:anywhere;white-space:pre-wrap'},pair[1]));}});
+      review.appendChild(dl);
+    });
+  })();
   var quickAddBusiness = document.getElementById('quickAddBusiness');
   if (quickAddBusiness) quickAddBusiness.addEventListener('click', openAddBusinessForm);
   var addBeforeNotClaimed = document.getElementById('addBusinessBeforeNotClaimed');
