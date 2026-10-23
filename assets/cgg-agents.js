@@ -112,7 +112,7 @@
         if (r.error) { P.msg(notice, 'err', r.error.message || 'The mailer request failed.'); return; }
         var d = r.data || {};
         if (d.error) { P.msg(notice, 'err', d.error); return; }
-        P.msg(notice, 'ok', d.message || ('Mailer finished. Sent: ' + (d.sent || 0) + (d.skipped ? '; skipped: ' + d.skipped : '')));
+        P.msg(notice, d.status === 'completed' && Number(d.failed_count || 0) === 0 ? 'ok' : 'err', d.message || ('Mailer finished. Accepted by mail server: ' + Number(d.sent_count || d.sent || 0) + '; failed: ' + Number(d.failed_count || 0) + (Array.isArray(d.results) ? '\\n' + d.results.filter(function(x){ return x.status === 'failed'; }).map(function(x){ return x.email + ': ' + (x.error || 'send failed'); }).join('\\n') : '')));
         loadRecruitmentRows(rows, notice);
       }).catch(function (err) {
         sendBtn.disabled = false; sendBtn.textContent = 'Send first email to approved prospects';
