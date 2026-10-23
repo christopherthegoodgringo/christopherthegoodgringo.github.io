@@ -1,42 +1,14 @@
 {
   "updatedAt": "2026-10-23",
-  "scope": "Curated street-food markets, food stalls, and local market destinations across the site's 17 Latin American countries. Ratings are omitted unless reliably sourced; vendor locations and hours can change and should be checked before visiting. Photos are illustrative stock images, not confirmed photos of each venue. Santa Marta listings added October 2026 show one business per tier; tier labels are sample placements for layout testing and do not imply that a business purchased or endorsed a paid listing.",
+  "scope": "Curated street-food markets, food stalls, and local market destinations across Latin America. Ratings are omitted unless reliably sourced; vendor locations and hours can change and should be checked before visiting. Photos are illustrative stock images, not confirmed photos of each venue. Santa Marta listings added October 2026 show one business per tier; tier labels are sample placements for layout testing and do not imply that a business purchased or endorsed a paid listing.",
   "countries": [
-    {
-      "code": "BZ",
-      "name": "Belize"
-    },
-    {
-      "code": "MX",
-      "name": "Mexico"
-    },
-    {
-      "code": "GT",
-      "name": "Guatemala"
-    },
-    {
-      "code": "HN",
-      "name": "Honduras"
-    },
-    {
-      "code": "SV",
-      "name": "El Salvador"
-    },
-    {
-      "code": "NI",
-      "name": "Nicaragua"
-    },
-    {
-      "code": "CR",
-      "name": "Costa Rica"
-    },
-    {
-      "code": "PA",
-      "name": "Panama"
-    },
     {
       "code": "AR",
       "name": "Argentina"
+    },
+    {
+      "code": "BZ",
+      "name": "Belize"
     },
     {
       "code": "BO",
@@ -51,8 +23,40 @@
       "name": "Colombia"
     },
     {
+      "code": "CR",
+      "name": "Costa Rica"
+    },
+    {
+      "code": "DO",
+      "name": "Dominican Republic"
+    },
+    {
       "code": "EC",
       "name": "Ecuador"
+    },
+    {
+      "code": "SV",
+      "name": "El Salvador"
+    },
+    {
+      "code": "GT",
+      "name": "Guatemala"
+    },
+    {
+      "code": "HN",
+      "name": "Honduras"
+    },
+    {
+      "code": "MX",
+      "name": "Mexico"
+    },
+    {
+      "code": "NI",
+      "name": "Nicaragua"
+    },
+    {
+      "code": "PA",
+      "name": "Panama"
     },
     {
       "code": "PY",
@@ -63,12 +67,12 @@
       "name": "Peru"
     },
     {
-      "code": "UY",
-      "name": "Uruguay"
+      "code": "US",
+      "name": "United States"
     },
     {
-      "code": "DO",
-      "name": "Dominican Republic"
+      "code": "UY",
+      "name": "Uruguay"
     }
   ],
   "streetFood": []
