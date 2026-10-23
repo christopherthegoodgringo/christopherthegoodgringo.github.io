@@ -18,7 +18,7 @@
       ['__food', ''], ['features', 'Highlights', 'text', 'Separate with commas, e.g. Rooftop, Live music, Ocean view']] },
     { title: 'Photo gallery', tier: 'platinum', note: 'Rotating photos on your Finder card and information page.', fields: [['photos', 'Gallery photos', 'gallery']] }
   ];
-  var ADMIN_FIELDS = [['name', 'Business name'], ['city', 'City']];
+  var ADMIN_FIELDS = [['name', 'Business name'], ['city', 'City'], ['countryName', 'Country']];
 
   function resize(file) {
     return new Promise(function (resolve, reject) {
@@ -58,6 +58,7 @@
 
     function input(k, label, kind, ph) {
       var val = P.show(h[k]);
+      if (k === 'countryName' && !val) val = P.show(h.country);
       if (k === 'streetAddress' || k === 'neighborhood' || k === 'addressCity' || k === 'department' || k === 'postalCode') {
         var parts = P.show(h.address).split(',').map(function (part) { return part.trim(); }).filter(Boolean);
         var idx = { streetAddress: 0, neighborhood: 1, addressCity: 2, department: 3, postalCode: 4 }[k];
