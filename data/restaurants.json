@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-23",
-  "scope": "Curated restaurant directory. Buenos Aires entries are real businesses with publicly listed booking or official website links. Membership tiers here are directory display assignments for setup and do not indicate that a restaurant has purchased or endorsed a paid listing.",
+  "scope": "Curated restaurant directory. Casa Sáenz Botánico is a real Buenos Aires restaurant and is marked not claimed. Tier values are internal directory display assignments, not claims that a business purchased a paid listing.",
   "countries": [
     {
       "code": "AR",
@@ -104,7 +104,7 @@
       "rating": 4.4,
       "ratingSource": "OpenTable listing; ratings can change",
       "priceRange": "$$$$",
-      "description": "Restaurant by Ximena Sáenz focused on seasonal ingredients and creative, shareable dishes."
+      "description": "Real Buenos Aires restaurant listing; owner has not claimed this directory entry. Verify details before public launch."
     },
     {
       "id": "tanta-buenos-aires",
