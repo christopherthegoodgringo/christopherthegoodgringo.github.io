@@ -20,7 +20,7 @@
       "ratingSource": "Publicly surfaced review listing; recheck before publication",
       "priceRange": "$",
       "category": "Tropical hostel",
-      "hours": "Reception hours should be confirmed with the hostel.",
+      "hours": "Reception 6:00 AM–10:00 PM; check-in 1:00 PM, check-out 11:00 AM.",
       "features": [
         "Outdoor pool",
         "Courtyard",
@@ -28,7 +28,8 @@
         "Coworking space",
         "Bar and restaurant",
         "Tour support"
-      ]
+      ],
+      "hostelworld": "https://www.hostelworld.com/hostels/p/279357/cacao-hostel-santa-marta/"
     }
   ]
 }
