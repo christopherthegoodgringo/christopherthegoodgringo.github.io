@@ -157,13 +157,21 @@
       if (results[0].error) { rows.appendChild(el('p', { className: 'meta', style: 'color:#a2462f' }, 'Could not load recruitment prospects: ' + results[0].error.message)); return; }
       if (results[1].error) { rows.appendChild(el('p', { className: 'meta', style: 'color:#a2462f' }, 'Could not load email templates: ' + results[1].error.message)); return; }
       var prospects = results[0].data || [], templates = results[1].data || [];
+      // Show pending approvals first, then most recently added within each status.
+      prospects.sort(function (a, b) {
+        var rank = function (p) { return (!p.opted_out_at && !p.registered_agent_id && p.approval_status === 'pending') ? 0 : 1; };
+        var diff = rank(a) - rank(b);
+        if (diff) return diff;
+        return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
+      });
+      var visibleProspects = 25;
       var tpl = el('details', { className: 'item' }, el('summary', {}, 'Review saved email subjects'));
       templates.forEach(function (t) {
         tpl.appendChild(el('p', { className: 'meta' }, 'Email ' + t.step + ' · Day ' + (t.send_day + 1) + ' · ' + t.subject));
       });
       rows.appendChild(tpl);
       if (!prospects.length) { rows.appendChild(el('p', { className: 'muted' }, 'No prospective agents added yet.')); return; }
-      prospects.forEach(function (p) {
+      prospects.forEach(function (p, prospectIndex) {
         var state = p.opted_out_at ? badge('rejected', 'Opted out') :
           p.registered_agent_id ? badge('approved', 'Registered — stop sequence') :
           p.approval_status === 'approved' ? badge('approved', 'Approved') :
@@ -190,8 +198,22 @@
           } }, 'Reject'));
           card.appendChild(actions);
         }
+        if (prospectIndex >= visibleProspects) card.hidden = true;
         rows.appendChild(card);
       });
+      if (prospects.length > visibleProspects) {
+        var moreBtn = el('button', { type: 'button', className: 'btn light', style: 'margin-top:12px', onclick: function () {
+          var nextLimit = visibleProspects + 25;
+          var shown = 0;
+          Array.prototype.forEach.call(rows.children, function (child) {
+            if (child.tagName === 'ARTICLE' && child.hidden && shown < 25) { child.hidden = false; shown++; }
+          });
+          visibleProspects = nextLimit;
+          if (visibleProspects >= prospects.length) moreBtn.remove();
+          else moreBtn.textContent = 'Show more prospects (' + Math.min(25, prospects.length - visibleProspects) + ' more available after this batch)';
+        } }, 'Show more prospects (' + Math.min(25, prospects.length - visibleProspects) + ' more)');
+        rows.appendChild(moreBtn);
+      }
     }).catch(function (e) { rows.replaceChildren(el('p', { className: 'meta', style: 'color:#a2462f' }, e.message || 'Could not load campaign data.')); });
   }
 
