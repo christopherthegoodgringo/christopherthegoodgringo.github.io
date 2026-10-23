@@ -606,7 +606,7 @@
     $('signin').hidden = !!u; $('dash').hidden = true; $('denied').hidden = true;
     if (!u) return;
     sb.rpc('is_portal_admin').then(function (r) {
-      if (r.data === true) { window.CGGStats.adminSignedIn(); window.CGGAgents.loadAdmin(); $('dash').hidden = false; $('who').textContent = 'Signed in as ' + u.email; P.loadListings().then(function (l) { listings = l; refresh(); }); loadMembers(); if (location.hash === '#social' || location.hash === '#stats') { var ht = location.hash.slice(1); chooseAdminSection(ht === 'stats' ? 'overview' : 'communications', ht); } else chooseAdminSection('directory', 'claims'); }
+      if (r.data === true) { window.CGGStats.adminSignedIn(); window.CGGAgents.loadAdmin(); $('dash').hidden = false; $('who').textContent = 'Signed in as ' + u.email; P.loadListings().then(function (l) { listings = l; refresh(); }); loadMembers(); if (location.hash === '#social' || location.hash === '#stats') { var ht = location.hash.slice(1); chooseAdminSection(ht === 'stats' ? 'overview' : 'communications', ht); } else { var firstTier = document.querySelector('.admin-main-tabs [data-tier-filter="bronze"]'); if (firstTier) firstTier.click(); } }
       else sb.from('agents').select('*').eq('user_id', u.id).eq('status', 'active').maybeSingle().then(function (a) {
         if (a.data) return agentMode(u, a.data);
         $('denied').hidden = false; $('deniedWho').textContent = u.email + ' is not set up as an admin.';
