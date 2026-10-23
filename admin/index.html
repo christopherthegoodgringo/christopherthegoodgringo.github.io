@@ -689,7 +689,8 @@
 
   // ---------- All businesses ----------
   var allClaims = [], bizLimit = 30, editing = null;
-  Object.keys(cfg.typeLabels).forEach(function (t) { $('bizType').appendChild(el('option', { value: t }, cfg.typeLabels[t])); });
+  function directoryTypeLabel(type) { return type === 'street-food' ? 'Street Vendors' : (cfg.typeLabels[type] || type); }
+  Object.keys(cfg.typeLabels).forEach(function (t) { $('bizType').appendChild(el('option', { value: t }, directoryTypeLabel(t))); });
   $('bizCountry').addEventListener('change', function () { $('bizCity').value = ''; });
   $('prCountry').addEventListener('change', function () { $('prCity').value = ''; });
   // Country and City dropdowns: list the countries and cities of the businesses in view (with how many), keep the current choice.
@@ -763,7 +764,7 @@
     var out = el('div');
     var card = el('article', { className: 'item' + (h.hidden ? ' is-hidden' : ''), style: h.hidden ? 'opacity:.75;border-style:dashed' : '' },
       el('div', { className: 'item-head' }, el('h3', {}, h.name),
-        el('span', {}, el('span', { className: 'badge tier' }, tier), ' ', el('span', { className: 'badge pending' }, cfg.typeLabels[h.__type]),
+        el('span', {}, el('span', { className: 'badge tier' }, tier), ' ', el('span', { className: 'badge pending' }, directoryTypeLabel(h.__type)),
           h.hidden ? el('span', { className: 'badge rejected', style: 'margin-left:4px' }, 'Removed from site') : null,
           h.sample ? el('span', { className: 'badge pending', style: 'margin-left:4px' }, 'Sample') : null)),
       el('p', { className: 'meta' }, [h.city, h.countryName].filter(Boolean).join(', ') + (h.ownerSubmitted ? ' · Added by owner' : '') + ' · ' +
