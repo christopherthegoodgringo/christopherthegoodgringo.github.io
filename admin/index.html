@@ -214,7 +214,7 @@
         <input id="bizSearch" type="search">
         <select id="bizCity"><option value="">All cities</option></select>
         <select id="bizType"><option value="">All types</option></select>
-        <select id="bizTier"><option value="">All levels</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select>
+        <select id="bizTier"><option value="">All levels</option><option value="bronze">Bronze</option><option value="silver">Silver</option><option value="gold">Gold</option><option value="platinum">Platinum</option></select>
         <select id="bizShow"><option value="">Everything</option><option value="owned">With an owner</option><option value="unowned">Without an owner</option><option value="hidden">Removed from site</option><option value="owner-added">Added by owners</option></select>
         <p id="bizCount" role="status" aria-live="polite"></p>
         <div class="list" id="bizList" aria-label="Directory listings"></div>
@@ -844,7 +844,7 @@
       h.__type === 'bars' ? 'drinks' : 'cuisine', 'features', 'photo', 'rating', 'ratingSource'];
     var labels = Object.assign({ name: 'Business name', city: 'City', rating: 'Rating (0–5)', ratingSource: 'Rating source' }, P.fieldLabels);
     var tierSel = el('select', { name: 'membershipTier' });
-    ['platinum', 'gold', 'silver', 'bronze'].forEach(function (t) { tierSel.appendChild(el('option', { value: t, selected: P.tierOf(h) === t }, t.charAt(0).toUpperCase() + t.slice(1))); });
+    ['bronze', 'silver', 'gold', 'platinum'].forEach(function (t) { tierSel.appendChild(el('option', { value: t, selected: P.tierOf(h) === t }, t.charAt(0).toUpperCase() + t.slice(1))); });
     f.appendChild(el('label', {}, 'Level')); f.appendChild(tierSel);
     fields.forEach(function (k) {
       var v = P.show(h[k]);
