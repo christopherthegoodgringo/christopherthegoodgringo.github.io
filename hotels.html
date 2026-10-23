@@ -155,7 +155,148 @@ function addPlatinumSlideshow(card,h,primary,tier){
   },2000);window.__platinumSlideshowTimers.push(timer);
  });
 }
-let activeTierFilter='all';function isListingClaimed(h){if(!h||typeof h!=='object')return false;const status=String(h.claimStatus||h.claim_status||h.ownerStatus||'').toLowerCase().trim();if(['claimed','approved','verified','active'].includes(status))return true;if(['unclaimed','not claimed','not_claimed','unclaimed_listing'].includes(status))return false;if(h.claimed===true||h.isClaimed===true||h.is_claimed===true||h.ownerId||h.owner_id||h.claimedAt||h.claimed_at)return true;return false;}function listingMatchesTierFilter(h,tier){if(tier==='all')return true;if(tier==='not-claimed')return !isListingClaimed(h);if(!isListingClaimed(h)&&['unclaimed','not-claimed'].includes(String(h.claimStatus||h.claim_status||'').toLowerCase().replace(/[_ ]/g,'-')))return false;const level=String(h.membershipTier||({premium:'platinum',featured:'gold',silver:'silver',free:'bronze'}[String(h.listingPlan||'').toLowerCase()]||'bronze')).toLowerCase();return level===tier;}function render(){
+let activeTierFilter='all';function isListingClaimed(h){if(!h||typeof h!=='object')return false;const status=String(h.claimStatus||h.claim_status||h.ownerStatus||'').toLowerCase().trim();if(['claimed','approved','verified','active'].includes(status))return true;if(['unclaimed','not claimed','not_claimed','unclaimed_listing'].includes(status))return false;if(h.claimed===true||h.isClaimed===true||h.is_claimed===true||h.ownerId||h.owner_id||h.claimedAt||h.claimed_at)return true;return false;}function listingMatchesTierFilter(h,tier){if(tier==='all')return true;if(tier==='not-claimed')return !isListingClaimed(h);if(!isListingClaimed(h)&&['unclaimed','not-claimed'].includes(String(h.claimStatus||h.claim_status||'').toLowerCase().replace(/[_ ]/g,'-')))return false;const level=String(h.membershipTier||({premium:'platinum',featured:'gold',silver:'silver',free:'bronze'}[String(h.listingPlan||'').toLowerCase()]||'bronze')).toLowerCase();return level===tier;}function ensureUnclaimedHotel(){const id='hotel-casa-del-coliseo-cartagena-sample';if(!hotels.some(h=>String(h.id||'')===id)){hotels.push({id:id,name:'Hotel Casa del Coliseo',city:'Cartagena',country:'Colombia',countryCode:'CO',countryName:'Colombia',address:'Calle del Coliseo #35-23, Centro Histórico, Cartagena de Indias, Bolívar, Colombia',phone:'+57 605 6798779',website:'https://www.hotelcasadelcoliseocartagena.com/EN/home.html',hasWebsite:true,rating:4.7,priceRange:'$
+ const code=countryCodeFromInput(countryFilter.value),city=cityFilter.value,q=normalize(query.value);
+ const found=hotels.filter(h=>listingMatchesTierFilter(h,activeTierFilter)&&(!code||h.countryCode===code)&&(!city||normalize(h.city)===normalize(city))&&(!q||normalize([h.name,h.city,h.countryName,h.address,h.description,(h.amenities||[]).join(' ')].join(' ')).includes(q)));
+ results.innerHTML='';const tierRank={platinum:4,gold:3,silver:2,bronze:1};
+ found.sort((a,b)=>(tierRank[String(b.membershipTier||'bronze').toLowerCase()]||1)-(tierRank[String(a.membershipTier||'bronze').toLowerCase()]||1)||String(a.name).localeCompare(String(b.name)));
+ found.forEach(h=>{
+  const card=document.createElement('article'),tier=String(h.membershipTier||'bronze').toLowerCase(),isUnclaimed=!isListingClaimed(h)&&['unclaimed','not-claimed'].includes(String(h.claimStatus||h.claim_status||'').toLowerCase().replace(/[_ ]/g,'-'));card.className='hotel-card '+(isUnclaimed?'tier-unclaimed-card':'tier-'+tier+'-card');
+  const ribbon=document.createElement('span');ribbon.className='tier-ribbon';ribbon.textContent=isUnclaimed?'UNCLAIMED':tier==='platinum'?'♛ PLATINUM':tier==='gold'?'★ GOLD':tier==='silver'?'◆ SILVER':'● BRONZE';card.appendChild(ribbon);
+  const isBronze=tier==='bronze'||isUnclaimed;if(!isBronze)addPlatinumSlideshow(card,h,h.photo,tier);
+  const tag=document.createElement('span');tag.className='hotel-city';tag.textContent=(h.city?h.city+', ':'')+(h.countryName||(countries.find(c=>c.code===h.countryCode)||{}).name||'');card.appendChild(tag);
+  const title=document.createElement('h3');title.textContent=h.name;card.appendChild(title);
+  if(!isBronze&&h.rating!==undefined&&h.rating!==null&&Number.isFinite(Number(h.rating))){
+   const rating=Number(h.rating),line=document.createElement('p');line.className='hotel-rating';line.setAttribute('aria-label','Rating '+rating.toFixed(1)+' out of 5');
+   const stars=document.createElement('span');stars.className='rating-stars';stars.setAttribute('aria-hidden','true');const rounded=Math.max(0,Math.min(5,Math.round(rating)));stars.textContent='★'.repeat(rounded)+'☆'.repeat(5-rounded);line.appendChild(stars);
+   const score=document.createElement('strong');score.textContent=' '+rating.toFixed(1)+'/5';line.appendChild(score);
+   if(h.ratingSource){const source=document.createElement('small');source.className='rating-source';source.textContent='Rating source: '+h.ratingSource;line.appendChild(source);}card.appendChild(line);
+  }
+  if(h.address){const p=document.createElement('p');p.textContent=h.address;card.appendChild(p);}
+  if(!isBronze&&h.priceRange){const p=document.createElement('p');p.className='hotel-price';p.textContent='Cost: '+h.priceRange;card.appendChild(p);}
+  
+  if(!isBronze&&h.amenities?.length){const p=document.createElement('p');p.textContent=h.amenities.join(' · ');card.appendChild(p);}
+  if(['platinum','gold','silver'].includes(tier)){const more=document.createElement('a');more.href='/listing-information.html?type=hotels&id='+encodeURIComponent(h.id||h.name);more.className='button listing-more';more.textContent='More Information';more.setAttribute('aria-label','More information about '+h.name);card.appendChild(more);}
+  results.appendChild(card);
+ });
+ count.textContent=found.length+' stays found';empty.hidden=found.length>0;
+ const selected=countries.find(c=>c.code===code);
+ document.getElementById('resultsTitle').textContent=selected?'Boutique & independent hotels in '+selected.name:'Boutique & independent hotels across Latin America';
+ 
+}
+function renderShortcuts(){}
+document.getElementById('hotelSearch').addEventListener('submit',e=>{e.preventDefault();render()});
+const startSearchButton=document.querySelector('#hotelSearch button[type="submit"]');if(startSearchButton)startSearchButton.addEventListener('click',e=>{e.preventDefault();render();document.getElementById('resultsTitle').scrollIntoView({behavior:'smooth',block:'start'});});query.addEventListener&&query.addEventListener('input',render);countryFilter.addEventListener('change',()=>{cityFilter.value='';renderCityOptions();render();renderShortcuts()});cityFilter.addEventListener('change',render);
+fetch('/data/hotels.json?v=20261023-unclaimed3', { cache: 'no-store' })
+  .then(function (response) {
+    if (!response.ok) throw new Error('Could not load hotel data');
+    return response.json();
+  })
+  .then(async function (data) {
+    hotels = Array.isArray(data.hotels) ? data.hotels : [];
+    countries = Array.isArray(data.countries) ? data.countries : [];
+
+    try {
+      var cfg = window.CGG_PORTAL || {};
+      if (cfg.supabaseUrl && cfg.supabaseKey) {
+        var headers = {
+          apikey: cfg.supabaseKey,
+          Authorization: 'Bearer ' + cfg.supabaseKey
+        };
+        var response = await fetch(
+          cfg.supabaseUrl + '/rest/v1/published_new_listings?select=listing_id,data&listing_type=eq.hotels',
+          { headers: headers, cache: 'no-store' }
+        );
+        if (response.ok) {
+          var rows = await response.json();
+          var overrides = [];
+          try {
+            var overrideResponse = await fetch(
+              cfg.supabaseUrl + '/rest/v1/published_listing_overrides?select=listing_id,changes&listing_type=eq.hotels',
+              { headers: headers, cache: 'no-store' }
+            );
+            if (overrideResponse.ok) overrides = await overrideResponse.json();
+          } catch (overrideError) {
+            console.warn('Hotel overrides unavailable', overrideError);
+          }
+
+          var changesById = new Map(overrides.map(function (item) {
+            return [String(item.listing_id), item.changes || {}];
+          }));
+          rows.forEach(function (row) {
+            if (!row || !row.data || !row.data.name || !row.listing_id) return;
+            var id = String(row.listing_id);
+            var changes = changesById.get(id) || {};
+            if (changes.hidden === true) return;
+            var hotel = Object.assign({}, row.data, changes, { id: id });
+            var country = String(hotel.countryName || hotel.country || '').trim();
+            if (!hotel.countryCode && country) {
+              var match = countries.find(function (item) {
+                return String(item.name || '').trim().toLowerCase() === country.toLowerCase();
+              });
+              if (match) hotel.countryCode = match.code;
+            }
+            if (!hotel.countryName && country) hotel.countryName = country;
+            var index = hotels.findIndex(function (item) {
+              return String(item.id || '').toLowerCase() === id.toLowerCase();
+            });
+            if (index >= 0) {
+              hotels[index] = Object.assign({}, hotels[index], hotel);
+            } else {
+              hotels.push(hotel);
+            }
+          });
+        } else {
+          console.error('Hotel listings request failed', response.status);
+        }
+      } else {
+        console.error('Hotel Finder Supabase configuration is missing');
+      }
+    } catch (error) {
+      console.error('Could not load saved hotel listings', error);
+    }
+
+    ensureUnclaimedHotel();
+    renderCountryOptions();
+    renderCityOptions();
+    render();
+    setLanguage();
+  })
+  .catch(function (error) {
+    console.error('Could not load hotel directory data', error);
+    hotels = Array.isArray(fallbackData.hotels) ? fallbackData.hotels : [];
+    countries = Array.isArray(fallbackData.countries) ? fallbackData.countries : [];
+    ensureUnclaimedHotel();
+    renderCountryOptions();
+    renderCityOptions();
+    render();
+    setLanguage();
+  });
+})();
+</script>
+<script src="/assets/cgg-hero-slideshow.js?v=2" data-slides="https://images.unsplash.com/photo-1756326506751-02caa2d3f2e4?auto=format&amp;fit=crop&amp;w=1200&amp;q=85|Colonial boutique hotel with lush green balconies in Cartagena, Colombia;;https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&amp;fit=crop&amp;w=1200&amp;q=80|Hotel swimming pool surrounded by palm trees;;https://images.unsplash.com/photo-1731995282457-bf4bff140962?auto=format&amp;fit=crop&amp;w=1200&amp;q=80|Hotel courtyard with chairs and umbrellas;;https://images.unsplash.com/photo-1759038085950-1234ca8f5fed?auto=format&amp;fit=crop&amp;w=1200&amp;q=80|Hotel reception with modern wooden furniture;;https://images.unsplash.com/photo-1776763255197-495b343d5a33?auto=format&amp;fit=crop&amp;w=1200&amp;q=80|White pillows on a neatly made hotel bed"></script>
+<script src="/assets/cgg-join.js?v=20261022b" defer></script>
+<script id="hotel-directory-link-behavior">
+(function(){
+ const countries=[['AR','Argentina'],['BZ','Belize'],['BO','Bolivia'],['CL','Chile'],['CO','Colombia'],['CR','Costa Rica'],['DO','Dominican Republic'],['EC','Ecuador'],['SV','El Salvador'],['GT','Guatemala'],['HN','Honduras'],['MX','Mexico'],['NI','Nicaragua'],['PA','Panama'],['PY','Paraguay'],['PE','Peru'],['UY','Uruguay']];
+ const cities={"AR":["Buenos Aires","Iguazú Falls (Puerto Iguazú)","Mendoza","Bariloche","El Calafate","Ushuaia","Salta","Puerto Madryn"],"BZ":["San Pedro","Caye Caulker","San Ignacio","Placencia","Hopkins","Belize City","Punta Gorda","Orange Walk"],"BO":["Uyuni","La Paz","Sucre","Potosí","Copacabana","Samaipata","Santa Cruz de la Sierra","Rurrenabaque"],"CL":["Santiago","San Pedro de Atacama","Valparaíso","Puerto Varas","Torres del Paine (Puerto Natales)","Pucón","Easter Island (Hanga Roa)","La Serena"],"CO":["Cartagena","Medellín","Bogotá","Santa Marta","San Andrés","Salento","Cali","Villa de Leyva"],"CR":["La Fortuna","Monteverde","Tamarindo","San José","Manuel Antonio (Quepos)","Puerto Viejo de Talamanca","Liberia","Tortuguero"],"DO":["Punta Cana","Santo Domingo","Puerto Plata","Samaná","La Romana","Bayahibe","Las Terrenas","Cabarete"],"EC":["Quito","Galápagos (Puerto Ayora)","Cuenca","Baños","Guayaquil","Otavalo","Montañita","Mindo"],"SV":["San Salvador","El Tunco","Santa Ana","Suchitoto","Ruta de las Flores (Juayúa)","La Libertad","El Zonte","Ataco"],"GT":["Antigua Guatemala","Guatemala City","Lake Atitlán (Panajachel)","Flores","Tikal (Flores)","Semuc Champey (Lanquin)","Quetzaltenango","Livingston"],"HN":["Roatán","Utila","Copán Ruinas","La Ceiba","West Bay","Tegucigalpa","San Pedro Sula","Tela"],"MX":["Mexico City","Cancún","Playa del Carmen","Tulum","Oaxaca City","Puerto Vallarta","San Miguel de Allende","Mérida"],"NI":["Granada","León","San Juan del Sur","Ometepe Island (Moyogalpa)","Managua","Little Corn Island","Matagalpa","Estelí"],"PA":["Panama City","Bocas del Toro (Bocas Town)","Boquete","Pedasí","Santa Catalina","David","El Valle de Antón","San Blas Islands"],"PY":["Asunción","Encarnación","Ciudad del Este","Trinidad (Jesuit Missions)","Areguá","Villarrica","Filadelfia","Ybycuí"],"PE":["Cusco","Lima","Arequipa","Machu Picchu (Aguas Calientes)","Iquitos","Puno","Huacachina (Ica)","Huaraz"],"UY":["Montevideo","Punta del Este","Colonia del Sacramento","José Ignacio","Piriápolis","Cabo Polonio","La Paloma","Punta del Diablo"]};
+ const root=document.getElementById('hotelDirectoryLinks'),country=document.getElementById('countryFilter'),city=document.getElementById('cityFilter'),query=document.getElementById('hotelQuery');
+ if(!root||!country||!city||!query)return;
+ const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+ function setCountry(code){country.value=code;city.value='';query.value='';country.dispatchEvent(new Event('change'));history.replaceState(null,'','/hotels.html'+(code?'?country='+encodeURIComponent(code):''));draw();}
+ function setCity(code,name){const countryChanged=country.value!==code;country.value=code;query.value='';if(countryChanged)country.dispatchEvent(new Event('change'));let opt=Array.from(city.options).find(o=>norm(o.value)===norm(name));if(!opt){opt=document.createElement('option');opt.value=name;opt.textContent=name;city.appendChild(opt);}city.value=opt.value;city.dispatchEvent(new Event('change'));history.replaceState(null,'','/hotels.html?country='+encodeURIComponent(code)+'&city='+encodeURIComponent(name));draw();}
+ function link(text,cls,fn){const a=document.createElement('a');a.href='#';a.textContent=text;a.className=cls;a.addEventListener('click',e=>{e.preventDefault();fn();});return a;}
+ function draw(){root.innerHTML='';const selected=country.value;const selectedCity=city.value;const headingRow=document.createElement('div');headingRow.className='hotel-destination-heading-row';const h1=document.createElement('h3');h1.className='hotel-city-links-title';h1.textContent=selected?(selectedCity?'Your selected destination':'8 top tourist destinations in '+((countries.find(c=>c[0]===selected)||[])[1]||selected)):'Choose a country';headingRow.appendChild(h1);root.appendChild(headingRow);if(!selected){const row=document.createElement('div');row.className='hotel-country-links';countries.slice().sort((a,b)=>a[1].localeCompare(b[1])).forEach(([code,name])=>row.appendChild(link(name,'hotel-country-link',()=>setCountry(code))));root.appendChild(row);}else{const chosen=countries.find(c=>c[0]===selected);root.appendChild(link((chosen?chosen[1]:selected)+' ×','hotel-country-link active',()=>setCountry('')));if(!selectedCity){const row2=document.createElement('div');row2.className='hotel-city-links';(cities[selected]||[]).slice(0,8).forEach(name=>row2.appendChild(link(name,'hotel-city-link',()=>setCity(selected,name))));root.appendChild(row2);}else{root.appendChild(link(selectedCity+' ×','hotel-city-link active',()=>{city.value='';query.value='';country.dispatchEvent(new Event('change'));city.dispatchEvent(new Event('change'));history.replaceState(null,'','/hotels.html?country='+encodeURIComponent(selected));draw();}));}}}
+ draw();
+ 
+ 
+ const params=new URLSearchParams(location.search);if(params.get('country')){country.value=params.get('country').toUpperCase();if(params.get('city')){const name=params.get('city');let opt=Array.from(city.options).find(o=>norm(o.value)===norm(name));if(!opt){opt=document.createElement('option');opt.value=name;opt.textContent=name;city.appendChild(opt);}city.value=name;}draw();}
+})();
+</script>
+</body>
+</html>
+,description:'Independent boutique hotel in a restored colonial building in Cartagena’s historic center, close to Bolívar Square and Santo Domingo Square.',sample:false,claimStatus:'unclaimed',claimed:false,category:'Boutique hotel'});}}
+function render(){
  clearPlatinumSlideshowTimers();
  const code=countryCodeFromInput(countryFilter.value),city=cityFilter.value,q=normalize(query.value);
  const found=hotels.filter(h=>listingMatchesTierFilter(h,activeTierFilter)&&(!code||h.countryCode===code)&&(!city||normalize(h.city)===normalize(city))&&(!q||normalize([h.name,h.city,h.countryName,h.address,h.description,(h.amenities||[]).join(' ')].join(' ')).includes(q)));
