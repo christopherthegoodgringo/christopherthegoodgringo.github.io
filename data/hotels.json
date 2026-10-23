@@ -114,7 +114,6 @@
       "phone": "+57 605 6798779",
       "website": "https://www.hotelcasadelcoliseocartagena.com/EN/home.html",
       "hasWebsite": true,
-      "membershipTier": "bronze",
       "rating": 4.7,
       "priceRange": "$$$",
       "description": "Independent boutique hotel in a restored colonial building in Cartagena’s historic center, close to Bolívar Square and Santo Domingo Square.",
@@ -128,7 +127,8 @@
         "Rooftop pool"
       ],
       "category": "Boutique hotel",
-      "claimStatus": "not-claimed"
+      "claimStatus": "unclaimed",
+      "claimed": false
     }
   ]
 }
