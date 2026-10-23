@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CGG Header Preview</title>
+<style>
+:root{--green:#123f32;--green2:#0c3027;--gold:#d5ad55;--cream:#f7f3e9;--ink:#18352d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+.site-header{background:linear-gradient(115deg,var(--green2),var(--green));border-bottom:4px solid var(--gold);box-shadow:0 5px 18px #102d2420}
+.header-inner{max-width:1240px;min-height:104px;margin:auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:30px}
+.brand{display:flex;align-items:center;flex:0 0 auto}
+.brand img{display:block;width:112px;height:auto;max-height:78px;object-fit:contain}
+nav{display:flex;align-items:center;justify-content:flex-end;gap:clamp(12px,2vw,28px);flex-wrap:wrap}
+nav a{color:#fff;text-decoration:none;font-size:15px;font-weight:700;letter-spacing:.15px;padding:10px 0;border-bottom:2px solid transparent;white-space:nowrap}
+nav a:hover,nav a:focus-visible{color:#f2d68d;border-bottom-color:var(--gold);outline:none}
+.preview{max-width:1040px;margin:64px auto;padding:0 24px;text-align:center}
+.kicker{color:#8c6b28;font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase}
+h1{font-family:Georgia,'Times New Roman',serif;font-size:clamp(32px,5vw,52px);margin:14px 0;color:var(--green)}
+.preview p{max-width:620px;margin:0 auto;color:#53665e;font-size:17px;line-height:1.7}
+@media(max-width:780px){.header-inner{min-height:0;padding:14px 18px;gap:12px;flex-direction:column}.brand img{width:88px;max-height:62px}nav{justify-content:center;gap:8px 18px}nav a{font-size:14px;padding:7px 0}}
+@media(max-width:420px){nav{gap:6px 14px}nav a{font-size:13px}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="Christopher the Good Gringo home"><img src="/assets/cgg-wordmark.svg?v=1" alt="Christopher the Good Gringo"></a>
+    <nav aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/hotel-finder/">Hotel Finder</a>
+      <a href="/hostel-finder/">Hostel Finder</a>
+      <a href="/restaurant-finder/">Restaurant Finder</a>
+      <a href="/bar-finder/">Bar Finder</a>
+      <a href="/meet-the-team/">Meet the Team</a>
+    </nav>
+  </div>
+</header>
+<main class="preview">
+  <div class="kicker">Header design preview</div>
+  <h1>Christopher the Good Gringo</h1>
+  <p>Dark green, the existing CGG wordmark, and restrained gold accents. The navigation stays compact on desktop and wraps neatly on phones.</p>
+</main>
+</body>
+</html>
