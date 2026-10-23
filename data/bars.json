@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-23",
+  "updatedAt": "2026-10-22",
   "scope": "Initial researched batch of independent and distinctive bars. Listings must have an official website or direct OpenTable listing and a currently sourced rating of at least 4.0/5. Ratings and sources should be rechecked periodically. The directory covers 17 Latin American countries; additional countries remain to be researched. Santa Marta listings added October 2026 show one business per tier; tier labels are sample placements for layout testing and do not imply that a business purchased or endorsed a paid listing.",
   "countries": [
     {
@@ -71,5 +71,24 @@
       "name": "Dominican Republic"
     }
   ],
-  "bars": []
+  "bars": [
+    {
+      "id": "crabs-bar-santa-marta-sample",
+      "name": "Crab's Bar",
+      "city": "Santa Marta",
+      "country": "Colombia",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "address": "Calle 18 #3-69, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "phone": "+57 315 796 3636",
+      "website": "https://www.instagram.com/crabsbar/",
+      "website_url": "https://www.instagram.com/crabsbar/",
+      "hasWebsite": true,
+      "membershipTier": "platinum",
+      "rating": 4.8,
+      "priceRange": "$$",
+      "description": "Rock-and-blues bar in Santa Marta’s historic center, known for live music, cocktails and an energetic late-night atmosphere.",
+      "sample": true
+    }
+  ]
 }
