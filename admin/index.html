@@ -192,6 +192,14 @@
     <section class="panel" id="tab-businesses" hidden>
       <h2>Shared Directory Manager</h2>
       <p class="sub">Manage Hotels, Hostels, Restaurants, Bars and Street Vendors in one place. The country and town filters apply across all five directories. Edit a listing or its level, remove it from the site, or manage its owner.</p>
+      <div class="actions" aria-label="Quick directory filters" style="margin:10px 0">
+        <button class="btn light" type="button" data-directory-type="">All directories</button>
+        <button class="btn light" type="button" data-directory-type="hotels">Hotels</button>
+        <button class="btn light" type="button" data-directory-type="hostels">Hostels</button>
+        <button class="btn light" type="button" data-directory-type="restaurants">Restaurants</button>
+        <button class="btn light" type="button" data-directory-type="bars">Bars</button>
+        <button class="btn light" type="button" data-directory-type="street-food">Street Vendors</button>
+      </div>
       <div class="row">
         <div><label for="bizCountry">Country</label><select id="bizCountry"><option value="">All countries</option></select></div>
         <div><label for="bizCity">City</label><select id="bizCity"><option value="">All cities</option></select></div>
@@ -714,6 +722,18 @@
     var city = $(prefix + 'City').value;
     return function (h) { return (!c || h.countryName === c) && (!city || h.city === city); };
   }
+  document.querySelectorAll('[data-directory-type]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      $('bizType').value = button.dataset.directoryType;
+      bizLimit = 30;
+      renderBusinesses();
+      document.querySelectorAll('[data-directory-type]').forEach(function (b) {
+        b.setAttribute('aria-pressed', b === button ? 'true' : 'false');
+        b.classList.toggle('btn', b !== button);
+        b.classList.toggle('light', b !== button);
+      });
+    });
+  });
   ['bizType', 'bizCountry', 'bizCity', 'bizTier', 'bizShow'].forEach(function (id) { $(id).addEventListener('change', function () { bizLimit = 30; renderBusinesses(); }); });
   $('bizMore').addEventListener('click', function () { bizLimit += 30; renderBusinesses(); });
   function ownerOf(h) {
