@@ -190,8 +190,8 @@
       <div id="aaMsg"></div>
     </section>
     <section class="panel" id="tab-businesses" hidden>
-      <h2>All businesses</h2>
-      <p class="sub">Every business on the site. Pick a country and city to narrow the list. Edit details or the level directly (your changes go live right away), remove a business from the site, or remove its owner.</p>
+      <h2>Shared Directory Manager</h2>
+      <p class="sub">Manage Hotels, Hostels, Restaurants, Bars and Street Vendors in one place. The country and town filters apply across all five directories. Edit a listing or its level, remove it from the site, or manage its owner.</p>
       <div class="row">
         <div><label for="bizCountry">Country</label><select id="bizCountry"><option value="">All countries</option></select></div>
         <div><label for="bizCity">City</label><select id="bizCity"><option value="">All cities</option></select></div>
@@ -464,6 +464,11 @@
   document.querySelectorAll('.tabs [role=tab]').forEach(function (b) {
     b.addEventListener('click', function () {
       if (b.hidden) return;
+      var activeTab = b.dataset.tab;
+      var mainSection = Object.keys(adminTabGroups).find(function (section) { return adminTabGroups[section].indexOf(activeTab) >= 0; });
+      document.querySelectorAll('.admin-main-tabs [data-main-tab]').forEach(function (x) {
+        x.setAttribute('aria-pressed', x.dataset.mainTab === mainSection ? 'true' : 'false');
+      });
       document.querySelectorAll('.tabs [role=tab]').forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
       ['claims', 'stats', 'agents', 'earnings', 'agentadd', 'businesses', 'prospects', 'claimemails', 'members', 'social', 'newbiz', 'edits', 'upgrades', 'passwords', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
       $('tab-passwords-form').hidden = b.dataset.tab !== 'passwords';
