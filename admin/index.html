@@ -75,7 +75,7 @@
 .tabs [role="tab"]{font-size:.86rem}
 @media(max-width:620px){.admin-main-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-main-tabs button{padding:11px 7px;font-size:.86rem}}
 @media(max-width:560px){.st-grid{grid-template-columns:1fr}.st-chart svg{height:140px}}
-</style>
+.nab-help{margin:4px 0 0;color:var(--muted);font-size:.8rem;line-height:1.4}.nab-tier-help{margin:8px 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#f8f6ef;color:#4f5d53;font-size:.88rem;line-height:1.45}</style>
 </head>
 <body>
 <header class="cgg-global-header"><a class="cgg-global-brand" href="/" aria-label="Christopher the Good Gringo home"><img src="/assets/cgg-wordmark.svg?v=1" alt=""></a><nav class="cgg-global-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/hotels.html">Hotel Finder</a><a href="/hostels.html">Hostel Finder</a><a href="/restaurants.html">Restaurant Finder</a><a href="/bars.html">Bar Finder</a><a href="/street-food-finder.html">Street Food Finder</a><a href="/team/">Meet the Team</a><a href="/social-media.html">Social Media &amp; Contact</a><a href="/merch.html">Merch</a><a href="/ebooks.html">Ebooks</a><a href="/business-sponsorship.html">Business &amp; Sponsorship</a></nav></header>
@@ -206,18 +206,18 @@
         <div class="row">
           <div><label for="nabTier">Level / status</label><select id="nabTier" required>
             <option value="not-claimed">Not Claimed</option><option value="bronze">Bronze</option><option value="silver">Silver</option><option value="gold">Gold</option><option value="platinum">Platinum</option>
-          </select></div>
+          </select><p class="nab-help">Choose the listing's current status. “Not Claimed” means no owner has claimed it; it publishes at Bronze level until you upgrade it.</p></div>
           <div><label for="nabType">Business type</label><select id="nabType" required>
             <option value="hotels">Hotel</option><option value="hostels">Hostel</option><option value="restaurants">Restaurant</option><option value="bars">Bar</option><option value="street-food">Street Food</option>
-          </select></div>
+          </select><p class="nab-help">Choose which Finder should display this business.</p></div>
         </div>
         <div class="row">
-          <div><label for="nabName">Business name</label><input id="nabName" required maxlength="200" autocomplete="organization"></div>
-          <div><label for="nabCountry">Country</label><input id="nabCountry" type="text" required maxlength="100" autocomplete="country-name" placeholder="Type country name"></div>
+          <div><label for="nabName">Business name</label><input id="nabName" required maxlength="200" autocomplete="organization"><p class="nab-help">Enter the business's public name as customers know it. Check for an existing listing before publishing.</p></div>
+          <div><label for="nabCountry">Country</label><input id="nabCountry" type="text" required maxlength="100" autocomplete="country-name" placeholder="Type country name"><p class="nab-help">Type the full country name (for example, Colombia). Use the same spelling consistently so country filters work correctly.</p></div>
         </div>
         <div class="row">
-          <div><label for="nabCity">City</label><input id="nabCity" required maxlength="120" autocomplete="address-level2"></div>
-          <div><label for="nabAddress">Street address (optional)</label><input id="nabAddress" maxlength="300" autocomplete="street-address"></div>
+          <div><label for="nabCity">City</label><input id="nabCity" required maxlength="120" autocomplete="address-level2"><p class="nab-help">Enter the city or town where the business is located.</p></div>
+          <div><label for="nabAddress">Street address (optional)</label><input id="nabAddress" maxlength="300" autocomplete="street-address"><p class="nab-help">Add the street and building number when known. Leave blank if you cannot verify it.</p></div>
         </div>
         <div id="nabLevelFields"></div>
         <div id="nabFormNotice" class="st-note" role="status" aria-live="polite" hidden></div>
@@ -808,33 +808,45 @@
       parent.appendChild(el('label', { attrs: { for: id } }, label));
       parent.appendChild(el('input', Object.assign({ id: id, maxLength: 500 }, props || {})));
     }
+    function addHelp(parent, text) {
+      parent.appendChild(el('p', { className: 'nab-help' }, text));
+    }
     function renderLevelFields() {
       fields.replaceChildren();
       var selected = tier.value;
       var actualTier = selected === 'not-claimed' ? 'bronze' : selected;
+      var tierDescriptions = {
+        'not-claimed': 'Not Claimed: this business has no owner claim on record. It is published with Bronze-level fields and can be upgraded later.',
+        bronze: 'Bronze: a basic free listing. Only the business name and location are needed; no contact or photo fields are required.',
+        silver: 'Silver: includes contact details and an optional verified public rating. Add only details that you have checked.',
+        gold: 'Gold: includes Silver details plus one main photo. Use a direct image URL that loads publicly.',
+        platinum: 'Platinum: includes Gold details plus additional gallery photos. Put one direct, publicly accessible image URL on each line.'
+      };
+      fields.appendChild(el('p', { className: 'nab-tier-help' }, tierDescriptions[selected] || tierDescriptions.bronze));
       if (['silver','gold','platinum'].indexOf(actualTier) >= 0) {
         fields.appendChild(el('h3', { style: 'margin:18px 0 8px' }, actualTier.charAt(0).toUpperCase() + actualTier.slice(1) + ' details'));
         var contact = el('div', { className: 'row' });
-        var website = el('div'); addField(website, 'nabWebsite', 'Official website', { type: 'url', placeholder: 'https://…' }); contact.appendChild(website);
-        var phone = el('div'); addField(phone, 'nabPhone', 'Phone', { type: 'tel', maxLength: 60 }); contact.appendChild(phone);
+        var website = el('div'); addField(website, 'nabWebsite', 'Official website', { type: 'url', placeholder: 'https://…' }); addHelp(website, 'Enter the business’s own official website, starting with https://. Do not use a map or directory page.'); contact.appendChild(website);
+        var phone = el('div'); addField(phone, 'nabPhone', 'Phone', { type: 'tel', maxLength: 60, placeholder: '+57 601 555 0100' }); addHelp(phone, 'Use the business’s public phone number, including country/area code when possible.'); contact.appendChild(phone);
         fields.appendChild(contact);
         var contacts = el('div', { className: 'row' });
-        var wa = el('div'); addField(wa, 'nabWhatsapp', 'WhatsApp', { type: 'tel', maxLength: 60 }); contacts.appendChild(wa);
-        var email = el('div'); addField(email, 'nabEmail', 'Business email', { type: 'email', maxLength: 254 }); contacts.appendChild(email);
+        var wa = el('div'); addField(wa, 'nabWhatsapp', 'WhatsApp', { type: 'tel', maxLength: 60, placeholder: '+57 300 123 4567' }); addHelp(wa, 'Enter the WhatsApp number customers can message, including the country code. Leave blank if it is not available.'); contacts.appendChild(wa);
+        var email = el('div'); addField(email, 'nabEmail', 'Business email', { type: 'email', maxLength: 254, placeholder: 'info@example.com' }); addHelp(email, 'Use a public business email address, not a personal address unless the business publishes it for customers.'); contacts.appendChild(email);
         fields.appendChild(contacts);
         var ratingRow = el('div', { className: 'row' });
-        var rating = el('div'); addField(rating, 'nabRating', 'Verified rating (optional)', { type: 'number', min: '0', max: '5', step: '0.1', placeholder: '0–5' }); ratingRow.appendChild(rating);
-        var ratingSource = el('div'); addField(ratingSource, 'nabRatingSource', 'Rating source URL (optional)', { type: 'url', placeholder: 'https://…' }); ratingRow.appendChild(ratingSource);
+        var rating = el('div'); addField(rating, 'nabRating', 'Verified rating (optional)', { type: 'number', min: '0', max: '5', step: '0.1', placeholder: '0–5' }); addHelp(rating, 'Enter a rating out of 5 only when you can verify it on the source linked beside it. Do not guess or convert a rating from another scale.'); ratingRow.appendChild(rating);
+        var ratingSource = el('div'); addField(ratingSource, 'nabRatingSource', 'Rating source URL (optional)', { type: 'url', placeholder: 'https://…' }); addHelp(ratingSource, 'Paste the public page where that exact rating is shown (for example, the business’s profile on the rating platform).'); ratingRow.appendChild(ratingSource);
         fields.appendChild(ratingRow);
       }
       if (['gold','platinum'].indexOf(actualTier) >= 0) {
         var photoRow = el('div', { className: 'row' });
-        var photo = el('div'); addField(photo, 'nabPhoto', 'Main photo URL', { type: 'url', placeholder: 'https://…' }); photoRow.appendChild(photo);
+        var photo = el('div'); addField(photo, 'nabPhoto', 'Main photo URL', { type: 'url', placeholder: 'https://…' }); addHelp(photo, 'Paste the direct URL to the main image, not the page containing it. The image must be publicly accessible.'); photoRow.appendChild(photo);
         fields.appendChild(photoRow);
       }
       if (actualTier === 'platinum') {
         fields.appendChild(el('label', { attrs: { for: 'nabPhotos' } }, 'Gallery photo URLs (one per line)'));
         fields.appendChild(el('textarea', { id: 'nabPhotos', rows: 4, maxLength: 4000, placeholder: 'https://…\nhttps://…' }));
+        addHelp(fields, 'Add one direct image URL per line. Use different photos of this same business; each image must load publicly. The main photo above remains the primary image.');
       }
     }
     function message(kind, text) { P.msg(notice, kind, text); notice.hidden = false; }
