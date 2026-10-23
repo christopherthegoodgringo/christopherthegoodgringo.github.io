@@ -8,7 +8,7 @@ APPROVED = {
     "MX":"Mexico","BZ":"Belize","GT":"Guatemala","HN":"Honduras","SV":"El Salvador",
     "NI":"Nicaragua","CR":"Costa Rica","PA":"Panama","AR":"Argentina","BO":"Bolivia",
     "CL":"Chile","CO":"Colombia","EC":"Ecuador","PY":"Paraguay","PE":"Peru",
-    "UY":"Uruguay","DO":"Dominican Republic"
+    "UY":"Uruguay","DO":"Dominican Republic","US":"United States"
 }
 ROOT=Path(__file__).resolve().parents[1]
 DATA=ROOT/"data"/"hostels.json"
