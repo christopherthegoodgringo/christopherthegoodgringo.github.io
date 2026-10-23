@@ -16,7 +16,7 @@
       "membershipTier": "gold",
       "rating": 4.6,
       "description": "A tropical hostel with an outdoor pool, courtyard, shared kitchen, coworking space, bar and restaurant, and tour support.",
-      "sample": true,
+      "sample": false,
       "ratingSource": "Publicly surfaced review listing; recheck before publication",
       "priceRange": "$",
       "category": "Tropical hostel",
