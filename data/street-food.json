@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-21",
+  "updatedAt": "2026-10-23",
   "scope": "Curated street-food markets, food stalls, and local market destinations across the site's 17 Latin American countries. Ratings are omitted unless reliably sourced; vendor locations and hours can change and should be checked before visiting. Photos are illustrative stock images, not confirmed photos of each venue. Santa Marta listings added October 2026 show one business per tier; tier labels are sample placements for layout testing and do not imply that a business purchased or endorsed a paid listing.",
   "countries": [
     {
@@ -71,90 +71,5 @@
       "name": "Dominican Republic"
     }
   ],
-  "streetFood": [
-    {
-      "city": "Santa Marta",
-      "countryCode": "CO",
-      "countryName": "Colombia",
-      "verifiedOn": "2026-10-21",
-      "id": "mercado-publico-santa-marta",
-      "name": "Mercado Público de Santa Marta",
-      "membershipTier": "bronze",
-      "address": "Carrera 9, Comuna 3, Santa Marta, Magdalena, Colombia",
-      "description": "The city's main public market, where food stalls serve seafood stews, fried fish, ceviche and empanadas next to fresh fruit and produce.",
-      "cuisine": "Cazuela de mariscos, ceviche, empanadas, tropical fruit",
-      "features": [
-        "Local market",
-        "Seafood stalls",
-        "Fresh fruit"
-      ],
-      "rating": 4.1,
-      "ratingSource": "Google, 6,628 reviews (checked October 2026)",
-      "website": "https://mercadopublico.santamarta.gov.co/",
-      "photo": "https://images.unsplash.com/photo-1611854064186-d8dccbccb031?auto=format&fit=crop&w=1200&q=85",
-      "photos": [
-        "https://images.unsplash.com/photo-1611854064186-d8dccbccb031?auto=format&fit=crop&w=1200&q=85",
-        "https://images.unsplash.com/photo-1552912470-ee2e96439539?auto=format&fit=crop&w=1200&q=85",
-        "https://images.unsplash.com/photo-1603088549155-6ae9395b928f?auto=format&fit=crop&w=1200&q=85",
-        "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=85"
-      ]
-    },
-    {
-      "city": "Santa Marta",
-      "countryCode": "CO",
-      "countryName": "Colombia",
-      "verifiedOn": "2026-10-21",
-      "id": "arepa-huevo-la-industrial-santa-marta",
-      "name": "Arepa e'Huevo La Industrial – Donde Patricia",
-      "membershipTier": "bronze",
-      "address": "Carrera 11 #15-1, Santa Marta, Magdalena, Colombia",
-      "description": "Local favorite for crispy arepa de huevo, the Caribbean-coast classic of corn dough fried with an egg inside.",
-      "cuisine": "Arepa de huevo",
-      "features": [
-        "Caribbean classic",
-        "Made to order",
-        "Local favorite"
-      ],
-      "website": "https://www.facebook.com/p/Arepas-con-huevo-La-industrial-100063658345533/",
-      "photo": "https://images.unsplash.com/photo-1552912470-ee2e96439539?auto=format&fit=crop&w=1200&q=85"
-    },
-    {
-      "city": "Santa Marta",
-      "countryCode": "CO",
-      "countryName": "Colombia",
-      "verifiedOn": "2026-10-21",
-      "id": "juancho-cevicheria-santa-marta",
-      "name": "Juancho Cevichería",
-      "membershipTier": "bronze",
-      "address": "Carrera 3 #22-16, Santa Marta, Magdalena, Colombia",
-      "description": "Casual cevichería with Caribbean, Peruvian and Colombian seafood and takeaway service.",
-      "cuisine": "Ceviche, seafood cocktails",
-      "features": [
-        "Fresh ceviche",
-        "Takeaway",
-        "Budget-friendly"
-      ],
-      "rating": 4.3,
-      "ratingSource": "Google, 1,097 reviews (checked October 2026)",
-      "photo": "https://images.unsplash.com/photo-1603088549155-6ae9395b928f?auto=format&fit=crop&w=1200&q=85"
-    },
-    {
-      "city": "Santa Marta",
-      "countryCode": "CO",
-      "countryName": "Colombia",
-      "verifiedOn": "2026-10-21",
-      "id": "fritos-bryan-santa-marta",
-      "name": "Fritos Bryan",
-      "membershipTier": "bronze",
-      "address": "Calle 13 #7-912, Santa Marta, Magdalena, Colombia",
-      "description": "Neighborhood fritos stand for quick, cheap fried snacks.",
-      "cuisine": "Fritos, empanadas",
-      "features": [
-        "Fried snacks",
-        "Quick bite"
-      ],
-      "rating": 4.3,
-      "ratingSource": "Google, 261 reviews (checked October 2026)"
-    }
-  ]
+  "streetFood": []
 }
