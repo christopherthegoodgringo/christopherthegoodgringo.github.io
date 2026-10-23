@@ -108,7 +108,7 @@
       <button role="tab" data-tab="agents" aria-selected="false">Agent management</button>
       <button role="tab" data-tab="earnings" aria-selected="false" hidden>My earnings</button>
       <button role="tab" data-tab="agentadd" aria-selected="false" hidden>Add a business</button>
-      <button role="tab" data-tab="businesses" aria-selected="false">All listings</button>
+      <button role="tab" data-tab="businesses" aria-selected="false">Countries</button>
       <button role="tab" data-tab="prospects" aria-selected="false">Prospecting</button>
       <button role="tab" data-tab="claimemails" aria-selected="false">Claim Email Sequence</button>
       <button type="button" id="agCardTab" style="background:#d93b30;border-color:#d93b30;color:#fff" onclick="window.open('/agent-card.html','_blank','noopener')" hidden>Make my business card and flyer</button>
@@ -195,36 +195,31 @@
       </form>
       <div id="aaMsg"></div>
     </section>
-    <section class="panel" id="tab-businesses" hidden>
-      <h2>Shared Directory Manager</h2>
-      <p class="sub">Manage Hotels, Hostels, Restaurants, Bars and Street Vendors in one place. The country and town filters apply across all five directories. Edit a listing or its level, remove it from the site, or manage its owner.</p>
-      <div class="directory-quick-filters" role="group" aria-label="Quick directory filters">
-        <button class="btn light" type="button" data-directory-type="" aria-pressed="true">All directories</button>
-        <button class="btn light" type="button" data-directory-type="hotels">Hotels</button>
-        <button class="btn light" type="button" data-directory-type="hostels">Hostels</button>
-        <button class="btn light" type="button" data-directory-type="restaurants">Restaurants</button>
-        <button class="btn light" type="button" data-directory-type="bars">Bars</button>
-        <button class="btn light" type="button" data-directory-type="street-food">Street Vendors</button>
-        <button class="btn light" type="button" id="bizClearFilters">Clear filters</button>
-      </div>
+     <section class="panel" id="tab-businesses" hidden>
+      <h2>Country List</h2>
+      <p class="sub">The Admin directory view now shows countries only. Business listings and city filters are hidden here.</p>
       <div class="row">
-        <div><label for="bizSearch">Search listings</label><input id="bizSearch" type="search" placeholder="Name, address, city, owner or email" autocomplete="off"></div>
+        <div><label for="bizCountry">Countries</label><select id="bizCountry"><option value="">All countries</option></select></div>
       </div>
-      <div class="row">
-        <div><label for="bizCountry">Country</label><select id="bizCountry"><option value="">All countries</option></select></div>
-        <div><label for="bizCity">City</label><select id="bizCity"><option value="">All cities</option></select></div>
+      <div hidden aria-hidden="true">
+        <div class="directory-quick-filters" role="group" aria-label="Quick directory filters">
+          <button class="btn light" type="button" data-directory-type="" aria-pressed="true">All directories</button>
+          <button class="btn light" type="button" data-directory-type="hotels">Hotels</button>
+          <button class="btn light" type="button" data-directory-type="hostels">Hostels</button>
+          <button class="btn light" type="button" data-directory-type="restaurants">Restaurants</button>
+          <button class="btn light" type="button" data-directory-type="bars">Bars</button>
+          <button class="btn light" type="button" data-directory-type="street-food">Street Vendors</button>
+          <button class="btn light" type="button" id="bizClearFilters">Clear filters</button>
+        </div>
+        <input id="bizSearch" type="search">
+        <select id="bizCity"><option value="">All cities</option></select>
+        <select id="bizType"><option value="">All types</option></select>
+        <select id="bizTier"><option value="">All levels</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select>
+        <select id="bizShow"><option value="">Everything</option><option value="owned">With an owner</option><option value="unowned">Without an owner</option><option value="hidden">Removed from site</option><option value="owner-added">Added by owners</option></select>
+        <p id="bizCount" role="status" aria-live="polite"></p>
+        <div class="list" id="bizList" aria-label="Directory listings"></div>
+        <button type="button" id="bizMore" hidden>Show more</button>
       </div>
-      <div class="row">
-        <div><label for="bizType">Type</label><select id="bizType"><option value="">All types</option></select></div>
-        <div><label for="bizTier">Level</label><select id="bizTier"><option value="">All levels</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select></div>
-      </div>
-      <div class="row">
-        <div><label for="bizShow">Show</label><select id="bizShow"><option value="">Everything</option><option value="owned">With an owner</option><option value="unowned">Without an owner</option><option value="hidden">Removed from site</option><option value="owner-added">Added by owners</option></select></div>
-        <div></div>
-      </div>
-      <p class="meta" id="bizCount" role="status" aria-live="polite" aria-atomic="true" style="margin:12px 0 8px"></p>
-      <div class="list" id="bizList" aria-label="Directory listings"></div>
-      <div class="actions"><button class="btn light" type="button" id="bizMore" hidden>Show more</button></div>
     </section>
     <section class="panel" id="tab-prospects" hidden>
       <h2>Prospecting</h2>
