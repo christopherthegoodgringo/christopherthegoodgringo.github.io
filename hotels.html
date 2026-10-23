@@ -219,7 +219,7 @@ function render(){
 function renderShortcuts(){}
 document.getElementById('hotelSearch').addEventListener('submit',e=>{e.preventDefault();render()});
 const startSearchButton=document.querySelector('#hotelSearch button[type="submit"]');if(startSearchButton)startSearchButton.addEventListener('click',e=>{e.preventDefault();render();document.getElementById('resultsTitle').scrollIntoView({behavior:'smooth',block:'start'});});query.addEventListener&&query.addEventListener('input',render);countryFilter.addEventListener('change',()=>{cityFilter.value='';renderCityOptions();render();renderShortcuts()});cityFilter.addEventListener('change',render);
-fetch('/data/hotels.json?v=20261023-hotel-visible1', { cache: 'no-store' })
+fetch('/data/hotels.json?v=20261023-cartagena-tiers2', { cache: 'no-store' })
   .then(function (response) {
     if (!response.ok) throw new Error('Could not load hotel data');
     return response.json();
@@ -291,6 +291,34 @@ fetch('/data/hotels.json?v=20261023-hotel-visible1', { cache: 'no-store' })
     ensureUnclaimedHotel();
     renderCountryOptions();
     renderCityOptions();
+
+    // Honor destination query parameters after the hotel dataset and dropdown options
+    // are loaded. This keeps deep links (including Cartagena tier QA) in sync with
+    // the same country + city gating used by the normal Hotel Finder controls.
+    var destinationParams = new URLSearchParams(window.location.search);
+    var requestedCountry = String(destinationParams.get('country') || '').trim().toUpperCase();
+    var requestedCity = String(destinationParams.get('city') || '').trim();
+    if (requestedCountry) {
+      var countryOption = Array.from(countryFilter.options).find(function (option) {
+        return String(option.value || '').toUpperCase() === requestedCountry;
+      });
+      if (countryOption) {
+        countryFilter.value = countryOption.value;
+        renderCityOptions();
+        if (requestedCity) {
+          var cityOption = Array.from(cityFilter.options).find(function (option) {
+            return normalize(option.value) === normalize(requestedCity);
+          });
+          if (!cityOption && requestedCity) {
+            cityOption = document.createElement('option');
+            cityOption.value = requestedCity;
+            cityOption.textContent = requestedCity;
+            cityFilter.appendChild(cityOption);
+          }
+          if (cityOption) cityFilter.value = cityOption.value;
+        }
+      }
+    }
     render();
     setLanguage();
   })
