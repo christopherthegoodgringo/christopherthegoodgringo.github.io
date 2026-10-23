@@ -96,13 +96,13 @@
 
   <div id="dash" hidden>
     <div class="item-head" style="margin-bottom:14px"><p class="muted" id="who" style="margin:0"></p><div class="actions" style="margin-top:0"><button class="btn light" id="setpwBtn" type="button">Set or change password</button><button class="btn light" id="signout" type="button">Sign out</button></div></div>
-    <nav class="admin-main-tabs" aria-label="Admin sections">
-      <button type="button" data-main-tab="directory" aria-pressed="true">Directory Manager</button>
-      <button type="button" data-main-tab="agents" aria-pressed="false">Agents</button>
-      <button type="button" data-main-tab="communications" aria-pressed="false">Communications</button>
-      <button type="button" data-main-tab="overview" aria-pressed="false">Overview</button>
+    <nav class="admin-main-tabs tier-main-tabs" aria-label="Listing levels">
+      <button type="button" data-tier-filter="bronze" aria-pressed="true">Bronze</button>
+      <button type="button" data-tier-filter="silver" aria-pressed="false">Silver</button>
+      <button type="button" data-tier-filter="gold" aria-pressed="false">Gold</button>
+      <button type="button" data-tier-filter="platinum" aria-pressed="false">Platinum</button>
     </nav>
-    <div class="tabs" role="tablist" aria-label="Admin tools">
+    <div class="tabs" role="tablist" aria-label="Admin tools" style="display:none">
       <button role="tab" data-tab="claims" aria-selected="true">Claims <span id="nClaims"></span></button>
       <button role="tab" data-tab="stats" aria-selected="false">Statistics</button>
       <button role="tab" data-tab="agents" aria-selected="false">Agent management</button>
@@ -196,12 +196,12 @@
       <div id="aaMsg"></div>
     </section>
      <section class="panel" id="tab-businesses" hidden>
-      <h2>Country List</h2>
-      <p class="sub">The Admin directory view now shows countries only. Business listings and city filters are hidden here.</p>
+      <h2>Directory Manager</h2>
+      <p class="sub">Use the four level tabs above to view Bronze, Silver, Gold, or Platinum listings. We will rebuild the other admin tools later.</p>
       <div class="row">
         <div><label for="bizCountry">Countries</label><select id="bizCountry"><option value="">All countries</option></select></div>
       </div>
-      <div hidden aria-hidden="true">
+      <div>
         <div class="directory-quick-filters" role="group" aria-label="Quick directory filters">
           <button class="btn light" type="button" data-directory-type="" aria-pressed="true">All directories</button>
           <button class="btn light" type="button" data-directory-type="hotels">Hotels</button>
@@ -471,8 +471,16 @@
     var target = document.querySelector('.tabs [data-tab="' + wanted + '"]');
     if (target && !target.hidden) target.click();
   }
-  document.querySelectorAll('.admin-main-tabs [data-main-tab]').forEach(function (b) {
-    b.addEventListener('click', function () { chooseAdminSection(b.dataset.mainTab); });
+  document.querySelectorAll('.admin-main-tabs [data-tier-filter]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.admin-main-tabs [data-tier-filter]').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      $('bizTier').value = b.dataset.tierFilter;
+      $('bizTier').dispatchEvent(new Event('change', { bubbles: true }));
+      var directoryTab = document.querySelector('.tabs [data-tab="businesses"]');
+      if (directoryTab) directoryTab.click();
+      $('tab-businesses').hidden = false;
+      document.querySelectorAll('.admin-main-tabs [data-tier-filter]').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    });
   });
   document.querySelectorAll('.tabs [role=tab]').forEach(function (b) {
     b.addEventListener('click', function () {
