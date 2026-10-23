@@ -114,7 +114,7 @@
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
       var email = em.value.trim().toLowerCase(), name = nm.value.trim();
-      if (!/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(email)) { P.msg(notice, 'err', 'Enter a valid email address.'); return; }
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { P.msg(notice, 'err', 'Enter a valid email address.'); return; }
       add.disabled = true;
       sb.from('agent_recruitment_prospects').insert({ full_name: name || null, email: email, source: 'agent_portal', approval_status: 'pending', current_step: 0, next_send_at: null })
         .select('id').single().then(function (r) {
