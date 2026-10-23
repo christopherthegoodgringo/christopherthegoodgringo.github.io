@@ -1,42 +1,14 @@
 {
   "updatedAt": "2026-10-22",
-  "scope": "Independent restaurants in all 17 Latin American countries. Initial curated listings use publicly surfaced 2026 ratings; ratings can change and should be rechecked. Restaurant ratings are not used as a listing filter.",
+  "scope": "Independent restaurants across Latin America. Initial curated listings use publicly surfaced 2026 ratings; ratings can change and should be rechecked. Restaurant ratings are not used as a listing filter.",
   "countries": [
-    {
-      "code": "BZ",
-      "name": "Belize"
-    },
-    {
-      "code": "MX",
-      "name": "Mexico"
-    },
-    {
-      "code": "GT",
-      "name": "Guatemala"
-    },
-    {
-      "code": "HN",
-      "name": "Honduras"
-    },
-    {
-      "code": "SV",
-      "name": "El Salvador"
-    },
-    {
-      "code": "NI",
-      "name": "Nicaragua"
-    },
-    {
-      "code": "CR",
-      "name": "Costa Rica"
-    },
-    {
-      "code": "PA",
-      "name": "Panama"
-    },
     {
       "code": "AR",
       "name": "Argentina"
+    },
+    {
+      "code": "BZ",
+      "name": "Belize"
     },
     {
       "code": "BO",
@@ -51,8 +23,40 @@
       "name": "Colombia"
     },
     {
+      "code": "CR",
+      "name": "Costa Rica"
+    },
+    {
+      "code": "DO",
+      "name": "Dominican Republic"
+    },
+    {
       "code": "EC",
       "name": "Ecuador"
+    },
+    {
+      "code": "SV",
+      "name": "El Salvador"
+    },
+    {
+      "code": "GT",
+      "name": "Guatemala"
+    },
+    {
+      "code": "HN",
+      "name": "Honduras"
+    },
+    {
+      "code": "MX",
+      "name": "Mexico"
+    },
+    {
+      "code": "NI",
+      "name": "Nicaragua"
+    },
+    {
+      "code": "PA",
+      "name": "Panama"
     },
     {
       "code": "PY",
@@ -63,12 +67,12 @@
       "name": "Peru"
     },
     {
-      "code": "UY",
-      "name": "Uruguay"
+      "code": "US",
+      "name": "United States"
     },
     {
-      "code": "DO",
-      "name": "Dominican Republic"
+      "code": "UY",
+      "name": "Uruguay"
     }
   ],
   "restaurants": [
