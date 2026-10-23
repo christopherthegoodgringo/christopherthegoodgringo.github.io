@@ -818,8 +818,8 @@
       var tierDescriptions = {
         'not-claimed': 'Not Claimed: this business has no owner claim on record. It is published with Bronze-level fields and can be upgraded later.',
         bronze: 'Bronze: a basic free listing. Only the business name and location are needed; no contact or photo fields are required.',
-        silver: 'Silver: includes contact details and an optional verified public rating. Add only details that you have checked.',
-        gold: 'Gold: includes Silver details plus one main photo. Use a direct image URL that loads publicly.',
+        silver: 'Silver: includes contact details. Add only details that you have checked.',
+        gold: 'Gold: includes Silver contact details plus one main photo. Use a direct image URL that loads publicly.',
         platinum: 'Platinum: includes Gold details plus additional gallery photos. Put one direct, publicly accessible image URL on each line.'
       };
       fields.appendChild(el('p', { className: 'nab-tier-help' }, tierDescriptions[selected] || tierDescriptions.bronze));
@@ -833,10 +833,7 @@
         var wa = el('div'); addField(wa, 'nabWhatsapp', 'WhatsApp', { type: 'tel', maxLength: 60, placeholder: '+57 300 123 4567' }); addHelp(wa, 'Enter the WhatsApp number customers can message, including the country code. Leave blank if it is not available.'); contacts.appendChild(wa);
         var email = el('div'); addField(email, 'nabEmail', 'Business email', { type: 'email', maxLength: 254, placeholder: 'info@example.com' }); addHelp(email, 'Use a public business email address, not a personal address unless the business publishes it for customers.'); contacts.appendChild(email);
         fields.appendChild(contacts);
-        var ratingRow = el('div', { className: 'row' });
-        var rating = el('div'); addField(rating, 'nabRating', 'Verified rating (optional)', { type: 'number', min: '0', max: '5', step: '0.1', placeholder: '0–5' }); addHelp(rating, 'Enter a rating out of 5 only when you can verify it on the source linked beside it. Do not guess or convert a rating from another scale.'); ratingRow.appendChild(rating);
-        var ratingSource = el('div'); addField(ratingSource, 'nabRatingSource', 'Rating source URL (optional)', { type: 'url', placeholder: 'https://…' }); addHelp(ratingSource, 'Paste the public page where that exact rating is shown (for example, the business’s profile on the rating platform).'); ratingRow.appendChild(ratingSource);
-        fields.appendChild(ratingRow);
+
       }
       if (['gold','platinum'].indexOf(actualTier) >= 0) {
         var photoRow = el('div', { className: 'row' });
