@@ -201,6 +201,7 @@
         <button class="btn light" type="button" data-directory-type="restaurants">Restaurants</button>
         <button class="btn light" type="button" data-directory-type="bars">Bars</button>
         <button class="btn light" type="button" data-directory-type="street-food">Street Vendors</button>
+        <button class="btn light" type="button" id="bizClearFilters">Clear filters</button>
       </div>
       <div class="row">
         <div><label for="bizSearch">Search listings</label><input id="bizSearch" type="search" placeholder="Name, address, city, owner or email" autocomplete="off"></div>
@@ -745,6 +746,14 @@
     renderBusinesses();
   }); });
   $('bizSearch').addEventListener('input', function () { bizLimit = 30; renderBusinesses(); });
+  $('bizClearFilters').addEventListener('click', function () {
+    ['bizSearch', 'bizType', 'bizCountry', 'bizCity', 'bizTier', 'bizShow'].forEach(function (id) { $(id).value = ''; });
+    document.querySelectorAll('[data-directory-type]').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.dataset.directoryType === '' ? 'true' : 'false');
+    });
+    bizLimit = 30;
+    renderBusinesses();
+  });
   $('bizMore').addEventListener('click', function () { bizLimit += 30; renderBusinesses(); });
   function ownerOf(h) {
     return allClaims.find(function (c) { return c.listing_type === h.__type && c.listing_id === String(h.id || h.name) && c.status === 'approved'; });
