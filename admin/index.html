@@ -92,6 +92,7 @@
       <button role="tab" data-tab="agentadd" aria-selected="false" hidden>Add a business</button>
       <button role="tab" data-tab="businesses" aria-selected="false">Businesses</button>
       <button role="tab" data-tab="prospects" aria-selected="false">Prospecting</button>
+      <button role="tab" data-tab="claimemails" aria-selected="false">Claim Email Sequence</button>
       <button type="button" id="agCardTab" style="background:#d93b30;border-color:#d93b30;color:#fff" onclick="window.open('/agent-card.html','_blank','noopener')" hidden>Make my business card and flyer</button>
       
       <button role="tab" data-tab="members" aria-selected="false">Mailing list <span id="nMembers"></span></button>
@@ -231,6 +232,25 @@
       <p class="meta" id="prCount" style="margin:12px 0 8px"></p>
       <div class="list" id="prList"><p class="muted">Loading…</p></div>
       <div class="actions"><button class="btn light" type="button" id="prMore" hidden>Show more</button></div>
+    </section>
+    <section class="panel" id="tab-claimemails" hidden>
+      <h2>Claim Email Sequence</h2>
+      <p class="sub">Manage the five-message invitation sequence for businesses in the new prospect database. Only businesses with a publicly listed business email should be added. Public Bronze listings show only the business name and address.</p>
+      <div class="item" style="margin:0 0 16px">
+        <div class="item-head"><h3>Follow-up schedule</h3><span class="badge" style="display:inline-block;padding:5px 9px;border-radius:999px;background:#fff2c7;color:#684e00;font-size:12px;font-weight:800">Sending not connected</span></div>
+        <div class="list">
+          <div class="item"><strong>Day 1 — Initial invitation</strong><p class="meta">Introduce the free Bronze listing and include the unique claim link.</p></div>
+          <div class="item"><strong>Day 4 — Friendly reminder</strong><p class="meta">Remind the business to claim its listing; include its claim link.</p></div>
+          <div class="item"><strong>Day 8 — Listing details</strong><p class="meta">Explain how to claim and manage the listing; include its claim link.</p></div>
+          <div class="item"><strong>Day 15 — Second reminder</strong><p class="meta">A brief reminder with the same secure claim destination.</p></div>
+          <div class="item"><strong>Day 23 — Final follow-up</strong><p class="meta">A polite final reminder, then stop the sequence.</p></div>
+        </div>
+      </div>
+      <div class="item">
+        <h3>Automatic stop rules</h3>
+        <ul><li>Stop all scheduled emails as soon as the business successfully claims its listing.</li><li>Stop immediately when the recipient opts out.</li><li>Pause and flag bounced addresses.</li><li>After the fifth email, stop if there is no response.</li><li>Require a unique, secure claim token and verify business ownership before granting account access.</li></ul>
+      </div>
+      <p class="meta" style="margin-top:14px">This tab is now part of List Admin. The separate prospect page is not the admin interface. Automated delivery must remain off until the new private prospect table, secure claim links, email provider, and scheduled job are connected and tested. This tab does not send email yet.</p>
     </section>
     <section class="panel" id="tab-members" hidden>
       <h2>Mailing list</h2>
