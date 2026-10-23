@@ -186,9 +186,7 @@ let activeTierFilter='all';function isListingClaimed(h){if(!h||typeof h!=='objec
 }
 function render(){
  const code=countryCodeFromInput(countryFilter.value),city=cityFilter.value,q=normalize(query.value);
- results.innerHTML='';results.hidden=true;results.style.setProperty('display','none','important');results.classList.remove('is-visible');document.body.classList.remove('hotel-filters-ready');
- if(!code||!city){count.textContent='Choose a country and city to see hotels';empty.hidden=true;document.getElementById('resultsTitle').textContent='Choose a destination to see hotels';return;}
- document.body.classList.add('hotel-filters-ready');results.hidden=false;results.style.setProperty('display','grid','important');results.classList.add('is-visible');
+ results.innerHTML='';results.hidden=false;results.style.setProperty('display','grid','important');results.classList.add('is-visible');document.body.classList.add('hotel-filters-ready');
  const found=hotels.filter(h=>{const hCode=String(h.countryCode||h.country_code||'').trim().toUpperCase();const hCity=normalize(h.city);const countryMatches=!code||hCode===code;const cityMatches=!city||hCity===normalize(city);const queryMatches=!q||normalize([h.name,h.city,h.countryName,h.country,h.address,h.description,(h.amenities||[]).join(' '),(h.features||[]).join(' ')].join(' ')).includes(q);return listingMatchesTierFilter(h,activeTierFilter)&&countryMatches&&cityMatches&&queryMatches;});
  results.innerHTML='';const tierRank={platinum:4,gold:3,silver:2,bronze:1};
  found.sort((a,b)=>(tierRank[String(b.membershipTier||'bronze').toLowerCase()]||1)-(tierRank[String(a.membershipTier||'bronze').toLowerCase()]||1)||String(a.name).localeCompare(String(b.name)));
