@@ -15,8 +15,11 @@
     .banner:before{content:"";position:absolute;z-index:-1;inset:0;opacity:.16;background-image:linear-gradient(30deg,transparent 48%,rgba(255,255,255,.16) 49%,transparent 50%),linear-gradient(150deg,transparent 48%,rgba(255,255,255,.10) 49%,transparent 50%);background-size:74px 74px;mask-image:linear-gradient(90deg,transparent 12%,#000 100%)}
     .brand{display:inline-flex;align-items:center;justify-content:flex-start;max-width:min(520px,92%);min-height:72px;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
     .brand img{display:block;width:clamp(190px,27vw,330px);max-height:92px;height:auto;object-fit:contain;object-position:left center}
-    .preview-note{padding:22px clamp(18px,4vw,56px);color:#34483c;background:#fbf5e8}.preview-note h1{margin:0 0 8px;color:#103e2f;font-size:clamp(1.35rem,3vw,2rem)}.preview-note p{margin:0;max-width:720px;line-height:1.6}
-    @media(max-width:560px){.banner{min-height:220px;padding:16px}.brand{max-width:100%;min-height:58px}.brand img{width:min(74vw,270px)}}
+    .main-nav{display:flex;justify-content:center;align-items:center;gap:clamp(8px,2vw,28px);flex-wrap:wrap;padding:14px clamp(14px,3vw,36px);background:var(--deep-green);border-bottom:4px solid var(--gold)}
+    .main-nav a{display:inline-block;padding:8px 4px;color:var(--cream);font-family:var(--display);font-size:clamp(.88rem,1.4vw,1.02rem);font-weight:700;text-decoration:none;white-space:nowrap;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
+    .main-nav a:hover,.main-nav a:focus-visible{color:var(--gold);border-bottom-color:var(--gold);outline:none}
+    .preview-note{padding:22px clamp(18px,4vw,56px);color:#34483c;background:var(--cream)}.preview-note h1{margin:0 0 8px;color:var(--green);font-size:clamp(1.35rem,3vw,2rem)}.preview-note p{margin:0;max-width:720px;line-height:1.6}
+    @media(max-width:560px){.banner{min-height:220px;padding:16px}.brand{max-width:100%;min-height:58px}.brand img{width:min(74vw,270px)}.main-nav{gap:5px 14px;padding:12px 10px}.main-nav a{padding:6px 2px;font-size:.9rem}}
   </style>
 </head>
 <body>
@@ -25,9 +28,17 @@
       <img src="https://christopherthegoodgringo.com/assets/cgg-wordmark.svg?v=1" alt="Christopher the Good Gringo">
     </a>
   </header>
+  <nav class="main-nav" aria-label="Main navigation">
+    <a href="https://christopherthegoodgringo.com/">Home</a>
+    <a href="#hotel-finder">Hotel Finder</a>
+    <a href="#hostel-finder">Hostel Finder</a>
+    <a href="#restaurant-finder">Restaurant Finder</a>
+    <a href="#bar-finder">Bar Finder</a>
+    <a href="#street-food-finder">Street Food Finder</a>
+  </nav>
   <main class="preview-note">
     <h1>New website preview</h1>
-    <p>This is the separate scratch-build preview. Your existing website remains unchanged. We’ll build the new site here one piece at a time, starting with the banner.</p>
+    <p>This is the separate scratch-build preview. Your existing website remains unchanged. We’ll build the new site here one piece at a time, starting with the banner and navigation.</p>
   </main>
 </body>
 </html>
