@@ -806,6 +806,12 @@
       if (show === 'owner-added' && !h.ownerSubmitted) return false;
       return true;
     });
+    // Show established/current listings before sample placeholders, while keeping the chosen level filter.
+    rows.sort(function (a, b) {
+      var aSample = a.sample === true ? 1 : 0, bSample = b.sample === true ? 1 : 0;
+      if (aSample !== bSample) return aSample - bSample;
+      return String(a.name || '').localeCompare(String(b.name || ''));
+    });
     $('bizCount').textContent = rows.length + ' business' + (rows.length === 1 ? '' : 'es');
     box.replaceChildren();
     rows.slice(0, bizLimit).forEach(function (h) { box.appendChild(bizCard(h)); });
