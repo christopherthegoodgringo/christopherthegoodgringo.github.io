@@ -268,7 +268,11 @@
           <input type="hidden" id="bpId">
           <div class="row">
             <div><label for="bpName">Business name *</label><input id="bpName" required maxlength="200"></div>
-            <div><label for="bpCategory">Category *</label><select id="bpCategory" required><option value="hotel">Hotel</option><option value="hostel">Hostel</option><option value="restaurant">Restaurant</option><option value="bar">Bar</option><option value="street_food">Street food</option></select></div>
+            <div><label for="bpCategory">Finder category *</label><select id="bpCategory" required><option value="hotel">Hotel</option><option value="hostel">Hostel</option><option value="restaurant">Restaurant</option><option value="bar">Bar</option><option value="street_food">Street food</option></select></div>
+          </div>
+          <div class="row">
+            <div><label for="bpTier">Listing level *</label><select id="bpTier" required><option value="bronze">Bronze — Free</option><option value="silver">Silver</option><option value="gold">Gold</option><option value="platinum">Platinum</option></select></div>
+            <div><label for="bpDescription">Card description</label><textarea id="bpDescription" rows="2" maxlength="1500" style="width:100%" placeholder="Short description shown on the listing"></textarea></div>
           </div>
           <div class="row">
             <div><label for="bpCity">City *</label><input id="bpCity" required value="Santa Marta"></div>
@@ -284,11 +288,27 @@
           </div>
           <div class="row">
             <div><label for="bpWebsite">Website URL</label><input id="bpWebsite" type="url" placeholder="https://"></div>
+            <div><label for="bpWhatsapp">WhatsApp</label><input id="bpWhatsapp" type="tel" placeholder="+57 300 123 4567"></div>
+          </div>
+          <div class="row">
+            <div><label for="bpInstagram">Instagram URL</label><input id="bpInstagram" type="url" placeholder="https://instagram.com/"></div>
+            <div><label for="bpPhoto">Main photo URL</label><input id="bpPhoto" type="url" placeholder="https://"></div>
+          </div>
+          <div class="row">
+            <div><label for="bpHours">Hours</label><input id="bpHours" maxlength="300" placeholder="Opening hours"></div>
+            <div><label for="bpPriceRange">Price range</label><input id="bpPriceRange" maxlength="100" placeholder="e.g. $ · Mid-range"></div>
+          </div>
+          <div class="row">
+            <div><label for="bpFeatures">Features / highlights</label><input id="bpFeatures" maxlength="500" placeholder="Separate highlights with commas"></div>
+            <div><label for="bpRating">Rating (0–5)</label><input id="bpRating" type="number" min="0" max="5" step="0.1" placeholder="Only if verified"></div>
+          </div>
+          <div class="row">
+            <div><label for="bpRatingSource">Rating source URL</label><input id="bpRatingSource" type="url" placeholder="Link to rating source"></div>
             <div><label for="bpSource">Source URL (verification)</label><input id="bpSource" type="url" placeholder="Where the details were found"></div>
           </div>
           <div><label for="bpNotes">Internal research notes</label><textarea id="bpNotes" rows="2" style="width:100%"></textarea></div>
           <div class="actions"><button class="btn" type="submit" id="bpSave">Save prospect</button><button class="btn light" type="button" id="bpCancel" hidden>Cancel edit</button><button class="btn light" type="button" id="bpReload">Refresh prospects</button></div>
-          <p class="meta" id="bpStatus" aria-live="polite">Saving a prospect creates its public Bronze card. Contact email stays private; no email is sent.</p>
+          <p class="meta" id="bpStatus" aria-live="polite">Creates a listing at the selected level. Contact email stays private; no email is sent. Use verified business details and rating sources.</p>
         </form>
       </div>
       <div class="item">
@@ -547,7 +567,7 @@
   function bpEdit(id) {
     var r = bpRows.find(function (x) { return x.id === id; }); if (!r) return;
     bpSelected = id; $('bpId').value = id;
-    [['bpName','business_name'],['bpCategory','category'],['bpCity','city'],['bpCountry','country'],['bpEmail','contact_email'],['bpContact','contact_name'],['bpAddress','address'],['bpPhone','contact_phone'],['bpWebsite','website_url'],['bpSource','source_url'],['bpNotes','notes']].forEach(function (pair) { $(pair[0]).value = r[pair[1]] || ''; });
+    [['bpName','business_name'],['bpCategory','category'],['bpTier','listing_tier'],['bpDescription','description'],['bpCity','city'],['bpCountry','country'],['bpEmail','contact_email'],['bpContact','contact_name'],['bpAddress','address'],['bpPhone','contact_phone'],['bpWebsite','website_url'],['bpWhatsapp','whatsapp'],['bpInstagram','instagram'],['bpPhoto','photo_url'],['bpHours','hours'],['bpPriceRange','price_range'],['bpFeatures','features'],['bpRating','rating'],['bpRatingSource','rating_source_url'],['bpSource','source_url'],['bpNotes','notes']].forEach(function (pair) { $(pair[0]).value = r[pair[1]] || ''; });
     $('bpFormTitle').textContent = 'Edit prospect'; $('bpSave').textContent = 'Save changes'; $('bpCancel').hidden = false;
     $('bpStatus').textContent = 'Editing ' + r.business_name + '.';
     $('bpForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -567,11 +587,12 @@
   }
   $('bpForm').addEventListener('submit', async function (event) {
     event.preventDefault(); $('bpSave').disabled = true;
-    var prospect = { business_name: bpVal('bpName'), category: $('bpCategory').value, city: bpVal('bpCity'), country: bpVal('bpCountry'), contact_email: bpVal('bpEmail') || null, contact_name: bpVal('bpContact') || null, address: bpVal('bpAddress') || null, contact_phone: bpVal('bpPhone') || null, website_url: bpVal('bpWebsite') || null, source_url: bpVal('bpSource') || null, notes: bpVal('bpNotes') || null, listing_tier: 'bronze' };
+    var ratingText = bpVal('bpRating');
+    var prospect = { business_name: bpVal('bpName'), category: $('bpCategory').value, listing_tier: $('bpTier').value, description: bpVal('bpDescription') || null, city: bpVal('bpCity'), country: bpVal('bpCountry'), contact_email: bpVal('bpEmail') || null, contact_name: bpVal('bpContact') || null, address: bpVal('bpAddress') || null, contact_phone: bpVal('bpPhone') || null, website_url: bpVal('bpWebsite') || null, whatsapp: bpVal('bpWhatsapp') || null, instagram: bpVal('bpInstagram') || null, photo_url: bpVal('bpPhoto') || null, hours: bpVal('bpHours') || null, price_range: bpVal('bpPriceRange') || null, features: bpVal('bpFeatures') ? bpVal('bpFeatures').split(/\s*[,;·]\s*/).filter(Boolean).slice(0, 8) : null, rating: ratingText === '' ? null : Math.max(0, Math.min(5, Number(ratingText))), rating_source_url: bpVal('bpRatingSource') || null, source_url: bpVal('bpSource') || null, notes: bpVal('bpNotes') || null };
     try {
       var id = $('bpId').value;
       var result = await bpRequest(id ? 'update' : 'add', id ? { id: id, prospect: prospect } : { prospect: prospect });
-      bpSetStatus(id ? 'Prospect updated and its Bronze card refreshed. Contact email remains private; no email was sent.' : 'Prospect saved and Bronze card published to the directory. Contact email remains private; no email was sent.');
+      bpSetStatus(id ? 'Business details updated. Contact email remains private; no email was sent.' : 'Business saved. Contact email remains private; no email was sent.');
       bpReset(); await bpLoad();
     } catch (e) { bpSetStatus(e.message, true); }
     finally { $('bpSave').disabled = false; }
