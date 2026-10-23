@@ -19,7 +19,6 @@
     { title: 'Photo gallery', tier: 'platinum', note: 'Rotating photos on your Finder card and information page.', fields: [['photos', 'Gallery photos', 'gallery']] }
   ];
   var ADMIN_FIELDS = [['name', 'Business name'], ['city', 'City']];
-  var RATED_ADMIN_FIELDS = [['rating', 'Rating (0–5)', 'number'], ['ratingSource', 'Rating source']];
 
   function resize(file) {
     return new Promise(function (resolve, reject) {
@@ -127,10 +126,6 @@
       var sec = el('fieldset', { className: 'editor-section' }, el('legend', {}, 'Admin details'));
       ADMIN_FIELDS.forEach(function (f) { input(f[0], f[1], f[2]).forEach(function (n) { sec.appendChild(n); }); });
       form.appendChild(sec);
-      var ratedSec = el('fieldset', { className: 'editor-section' }, el('legend', {}, 'Rating (Silver and above)'));
-      RATED_ADMIN_FIELDS.forEach(function (f) { input(f[0], f[1], f[2]).forEach(function (n) { ratedSec.appendChild(n); }); });
-      form.appendChild(ratedSec);
-      sectionEls.push({ el: ratedSec, tier: 'silver' });
     }
 
     // Only the sections the level includes are shown. Owners never see higher-level sections;
