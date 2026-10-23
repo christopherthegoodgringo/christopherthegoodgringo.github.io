@@ -386,7 +386,7 @@
   document.querySelectorAll('[role=tab]').forEach(function (b) {
     b.addEventListener('click', function () {
       document.querySelectorAll('[role=tab]').forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
-      ['claims', 'stats', 'agents', 'earnings', 'agentadd', 'businesses', 'prospects', 'members', 'social', 'newbiz', 'edits', 'upgrades', 'passwords', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
+      ['claims', 'stats', 'agents', 'earnings', 'agentadd', 'businesses', 'prospects', 'claimemails', 'members', 'social', 'newbiz', 'edits', 'upgrades', 'passwords', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
       $('tab-passwords-form').hidden = b.dataset.tab !== 'passwords';
       if (b.dataset.tab === 'passwords' && !owners) loadOwners();
       if (b.dataset.tab === 'prospects') { if (!prospects) loadProspects(); else renderProspects(); if (!AGENT) loadMailer(); }
