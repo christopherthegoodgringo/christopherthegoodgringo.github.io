@@ -59,7 +59,7 @@
 
     function input(k, label, kind, ph) {
       var val = P.show(h[k]);
-      var node = kind === 'area' ? el('textarea', { name: k, value: val, maxLength: 1500, placeholder: ph || '' })
+      var node = (kind === 'area' || k === 'address') ? el('textarea', { name: k, value: val, maxLength: 1500, rows: k === 'address' ? 3 : 4, placeholder: ph || '' })
         : el('input', { name: k, value: val, maxLength: 300, placeholder: ph || '', type: kind === 'email' ? 'email' : kind === 'number' ? 'number' : 'text',
             inputMode: kind === 'url' ? 'url' : null, autocapitalize: (kind === 'url' || kind === 'email') ? 'off' : null,
             step: kind === 'number' ? '0.1' : null, min: kind === 'number' ? '0' : null, max: kind === 'number' ? '5' : null });
