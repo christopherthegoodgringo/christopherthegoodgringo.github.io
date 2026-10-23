@@ -99,12 +99,12 @@
   };
   var PLAN_TO_LEVEL = { premium: 'platinum', platinum: 'platinum', featured: 'gold', gold: 'gold', silver: 'silver', free: 'bronze', bronze: 'bronze' };
   function levelOf(h) {
-    // An explicit listing plan is the current card purchase/placement and must take
-    // precedence over an old default membershipTier (often "bronze").
-    var plan = String((h && h.listingPlan) || '').toLowerCase().trim();
-    if (PLAN_TO_LEVEL.hasOwnProperty(plan)) return PLAN_TO_LEVEL[plan];
+    // An admin's explicit membershipTier override is authoritative. Older listingPlan
+    // values can be stale (for example, "free") and must not undo a saved tier change.
     var t = String((h && h.membershipTier) || '').toLowerCase().trim();
     if (LEVEL_RANK.hasOwnProperty(t)) return t;
+    var plan = String((h && h.listingPlan) || '').toLowerCase().trim();
+    if (PLAN_TO_LEVEL.hasOwnProperty(plan)) return PLAN_TO_LEVEL[plan];
     return 'bronze';
   }
   var LEVEL_RANK = { bronze: 0, silver: 1, gold: 2, platinum: 3 };
