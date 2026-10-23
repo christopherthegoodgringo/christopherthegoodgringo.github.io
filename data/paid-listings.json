@@ -1,4 +1,23 @@
 {
-  "updatedAt": "2026-10-23",
-  "hostels": []
+  "updatedAt": "2026-10-22",
+  "hostels": [
+    {
+      "id": "cacao-hostel-santa-marta-sample",
+      "name": "Cacao Hostel",
+      "city": "Santa Marta",
+      "country": "Colombia",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "address": "Cra. 11 #17-49, Santa Marta, Magdalena, Colombia",
+      "phone": "+57 301 768 8641",
+      "website": "https://cacaohostel.com/",
+      "website_url": "https://cacaohostel.com/",
+      "hostelworld": "https://www.hostelworld.com/",
+      "hasWebsite": true,
+      "membershipTier": "gold",
+      "rating": 4.6,
+      "description": "A tropical hostel with an outdoor pool, courtyard, shared kitchen, coworking space, bar and restaurant, and tour support.",
+      "sample": true
+    }
+  ]
 }
