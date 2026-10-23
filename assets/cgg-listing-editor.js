@@ -58,6 +58,11 @@
 
     function input(k, label, kind, ph) {
       var val = P.show(h[k]);
+      if (k === 'streetAddress' || k === 'neighborhood' || k === 'addressCity' || k === 'department' || k === 'postalCode') {
+        var parts = P.show(h.address).split(',').map(function (part) { return part.trim(); }).filter(Boolean);
+        var idx = { streetAddress: 0, neighborhood: 1, addressCity: 2, department: 3, postalCode: 4 }[k];
+        val = parts[idx] || (k === 'addressCity' ? P.show(h.city) : '');
+      }
       var node = (kind === 'area' || k === 'address') ? el('textarea', { name: k, value: val, maxLength: 1500, rows: k === 'address' ? 3 : 4, placeholder: ph || '' })
         : el('input', { name: k, value: val, maxLength: 300, placeholder: ph || '', type: kind === 'email' ? 'email' : kind === 'number' ? 'number' : 'text',
             inputMode: kind === 'url' ? 'url' : null, autocapitalize: (kind === 'url' || kind === 'email') ? 'off' : null,
@@ -168,11 +173,19 @@
         var raw = inputs[k].value.trim();
         if (k === 'membershipTier') { if (raw !== tier) changes.membershipTier = raw; return; }
         if (raw === P.show(h[k]).trim()) return;
-        if (k === 'features') changes[k] = raw ? raw.split(/\s*[·,;]\s*/).filter(Boolean).slice(0, 8) : null;
+        if (k === 'streetAddress' || k === 'neighborhood' || k === 'addressCity' || k === 'department' || k === 'postalCode') { changes[k] = raw || null; }
+        else if (k === 'features') changes[k] = raw ? raw.split(/\s*[·,;]\s*/).filter(Boolean).slice(0, 8) : null;
         else if (k === 'website') changes[k] = P.normalizeUrl(raw) || null;
         else if (k === 'rating') changes[k] = raw === '' ? null : Math.max(0, Math.min(5, Number(raw)));
         else changes[k] = raw || null;
       });
+      var addressKeys = ['streetAddress', 'neighborhood', 'addressCity', 'department', 'postalCode'];
+      if (addressKeys.some(function (k) { return Object.prototype.hasOwnProperty.call(changes, k); })) {
+        var currentParts = {};
+        addressKeys.forEach(function (k) { currentParts[k] = Object.prototype.hasOwnProperty.call(changes, k) ? changes[k] : (inputs[k] ? inputs[k].value.trim() : ''); });
+        changes.address = addressKeys.map(function (k) { return currentParts[k]; }).filter(Boolean).join(', ') || null;
+        addressKeys.forEach(function (k) { delete changes[k]; });
+      }
       var level = admin ? inputs.membershipTier.value : tier;
       if (RANK[level] >= RANK.silver && (state.photo || '') !== (h.photo || '')) changes.photo = state.photo || null;
       var before = (Array.isArray(h.photos) ? h.photos : []).join('|');
