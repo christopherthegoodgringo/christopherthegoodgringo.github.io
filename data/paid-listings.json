@@ -12,12 +12,23 @@
       "phone": "+57 301 768 8641",
       "website": "https://cacaohostel.com/",
       "website_url": "https://cacaohostel.com/",
-      "hostelworld": "https://www.hostelworld.com/",
       "hasWebsite": true,
       "membershipTier": "gold",
       "rating": 4.6,
       "description": "A tropical hostel with an outdoor pool, courtyard, shared kitchen, coworking space, bar and restaurant, and tour support.",
-      "sample": true
+      "sample": true,
+      "ratingSource": "Publicly surfaced review listing; recheck before publication",
+      "priceRange": "$",
+      "category": "Tropical hostel",
+      "hours": "Reception hours should be confirmed with the hostel.",
+      "features": [
+        "Outdoor pool",
+        "Courtyard",
+        "Shared kitchen",
+        "Coworking space",
+        "Bar and restaurant",
+        "Tour support"
+      ]
     }
   ]
 }
