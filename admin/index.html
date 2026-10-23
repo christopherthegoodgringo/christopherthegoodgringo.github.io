@@ -213,7 +213,7 @@
         </div>
         <div class="row">
           <div><label for="nabName">Business name</label><input id="nabName" required maxlength="200" autocomplete="organization"></div>
-          <div><label for="nabCountry">Country</label><select id="nabCountry" required><option value="">Select country</option></select></div>
+          <div><label for="nabCountry">Country</label><input id="nabCountry" type="text" required maxlength="100" autocomplete="country-name" placeholder="Type country name"></div>
         </div>
         <div class="row">
           <div><label for="nabCity">City</label><input id="nabCity" required maxlength="120" autocomplete="address-level2"></div>
@@ -803,7 +803,6 @@
       'Dominican Republic':'DO','Ecuador':'EC','El Salvador':'SV','Guatemala':'GT','Honduras':'HN',
       'Mexico':'MX','Nicaragua':'NI','Panama':'PA','Paraguay':'PY','Peru':'PE','United States':'US','Uruguay':'UY'
     };
-    ALL_COUNTRIES.forEach(function (name) { country.appendChild(el('option', { value: name }, name)); });
 
     function addField(parent, id, label, props) {
       parent.appendChild(el('label', { attrs: { for: id } }, label));
@@ -872,7 +871,7 @@
 
       var data = {
         name: name, city: city, country: countryName, countryName: countryName,
-        countryCode: COUNTRIES[countryName] || '', membershipTier: actualTier,
+        countryCode: (COUNTRIES[countryName] || COUNTRIES[Object.keys(COUNTRIES).find(function (key) { return key.toLocaleLowerCase() === countryName.toLocaleLowerCase(); })] || ''), membershipTier: actualTier,
         verifiedOn: new Date().toISOString().slice(0, 10), sample: false
       };
       if (address) data.address = address;
