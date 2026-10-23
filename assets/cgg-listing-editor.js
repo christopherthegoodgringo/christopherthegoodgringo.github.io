@@ -1,6 +1,4 @@
-/* Full listing editor with photo uploads, used by the owner portal and the admin page.
-   Owners see what their level includes (locked items show what upgrading adds);
-   admins can change everything, including the level. */
+/* Full listing editor with tier-limited fields for owners and admins. */
 (function () {
   var P = window.CGGPortal, el = P.el, cfg = window.CGG_PORTAL;
   var RANK = { bronze: 0, silver: 1, gold: 2, platinum: 3 };
@@ -151,12 +149,14 @@
       form.appendChild(sec);
     });
     function applyLevel(t) { sectionEls.forEach(function (x) { x.el.hidden = RANK[t] < RANK[x.tier]; }); }
-    if (admin) { applyLevel(tier); inputs.membershipTier.addEventListener('change', function () { applyLevel(inputs.membershipTier.value); }); }
-    if (!admin && tier !== 'platinum' && opts.onUpgrade) {
-      var nextUp = tier === 'bronze' ? 'Silver adds a main photo, description and your own information page.' : 'Platinum adds a rotating photo gallery and the top spot.';
-      form.appendChild(el('p', { className: 'meta', style: 'margin:0 0 14px' }, 'Want more? ' + nextUp + ' ',
-        el('a', { href: '#', style: 'color:var(--green);font-weight:700', onclick: function (e) { e.preventDefault(); opts.onUpgrade(); } }, 'See upgrade options')));
+    if (admin) {
+      applyLevel(tier);
+      inputs.membershipTier.addEventListener('change', function () {
+        var nextTier = inputs.membershipTier.value;
+        sectionEls.forEach(function (x) { x.el.hidden = RANK[nextTier] < RANK[x.tier]; });
+      });
     }
+    // No upgrade prompts or locked higher-tier options inside the editor.
 
     var note = null;
     if (!admin) { form.appendChild(el('label', {}, 'Anything else we should know?')); note = el('textarea', { maxLength: 2000 }); form.appendChild(note); }
