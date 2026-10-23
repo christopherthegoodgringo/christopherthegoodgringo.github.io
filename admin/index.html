@@ -62,6 +62,18 @@
 .st-sub{margin:-4px 0 8px!important;font-size:.78rem}
 .st-note{background:#fff8df;border:1px solid #f0d58a;border-radius:12px;padding:12px 14px;margin:0 0 12px;color:#5b4a1c}
 .st-mine{display:flex;gap:8px;align-items:center;font-size:.88rem;color:var(--muted);margin-top:16px}.st-mine input{width:auto}
+.directory-quick-filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:7px;margin:10px 0}
+.directory-quick-filters button{min-width:0;min-height:40px;white-space:normal;line-height:1.2}
+.directory-quick-filters button:last-child{border-style:dashed}
+.directory-quick-filters button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.admin-main-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 10px}
+.admin-main-tabs button{border:1px solid var(--line);border-radius:12px;padding:12px 10px;background:#fff;color:var(--green);font:800 .94rem/1.2 inherit;font-family:inherit;cursor:pointer}
+.admin-main-tabs button[aria-pressed="true"]{background:var(--green);color:#fff;border-color:var(--gold);box-shadow:inset 0 -3px 0 var(--gold)}
+[data-directory-type][aria-pressed="true"]{background:var(--green);color:#fff;border-color:var(--gold);box-shadow:inset 0 -2px 0 var(--gold)}
+[data-directory-type]:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.tabs{display:flex;gap:7px;flex-wrap:wrap}
+.tabs [role="tab"]{font-size:.86rem}
+@media(max-width:620px){.admin-main-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-main-tabs button{padding:11px 7px;font-size:.86rem}}
 @media(max-width:560px){.st-grid{grid-template-columns:1fr}.st-chart svg{height:140px}}
 </style>
 </head>
@@ -84,21 +96,26 @@
 
   <div id="dash" hidden>
     <div class="item-head" style="margin-bottom:14px"><p class="muted" id="who" style="margin:0"></p><div class="actions" style="margin-top:0"><button class="btn light" id="setpwBtn" type="button">Set or change password</button><button class="btn light" id="signout" type="button">Sign out</button></div></div>
-    <div class="tabs" role="tablist">
+    <nav class="admin-main-tabs" aria-label="Admin sections">
+      <button type="button" data-main-tab="directory" aria-pressed="true">Directory Manager</button>
+      <button type="button" data-main-tab="agents" aria-pressed="false">Agents</button>
+      <button type="button" data-main-tab="communications" aria-pressed="false">Communications</button>
+      <button type="button" data-main-tab="overview" aria-pressed="false">Overview</button>
+    </nav>
+    <div class="tabs" role="tablist" aria-label="Admin tools">
       <button role="tab" data-tab="claims" aria-selected="true">Claims <span id="nClaims"></span></button>
       <button role="tab" data-tab="stats" aria-selected="false">Statistics</button>
-      <button role="tab" data-tab="agents" aria-selected="false">Agents</button>
+      <button role="tab" data-tab="agents" aria-selected="false">Agent management</button>
       <button role="tab" data-tab="earnings" aria-selected="false" hidden>My earnings</button>
       <button role="tab" data-tab="agentadd" aria-selected="false" hidden>Add a business</button>
-      <button role="tab" data-tab="businesses" aria-selected="false">Businesses</button>
+      <button role="tab" data-tab="businesses" aria-selected="false">All listings</button>
       <button role="tab" data-tab="prospects" aria-selected="false">Prospecting</button>
       <button role="tab" data-tab="claimemails" aria-selected="false">Claim Email Sequence</button>
       <button type="button" id="agCardTab" style="background:#d93b30;border-color:#d93b30;color:#fff" onclick="window.open('/agent-card.html','_blank','noopener')" hidden>Make my business card and flyer</button>
-      
       <button role="tab" data-tab="members" aria-selected="false">Mailing list <span id="nMembers"></span></button>
       <button role="tab" data-tab="social" aria-selected="false">Social media</button>
       <button role="tab" data-tab="newbiz" aria-selected="false">New businesses <span id="nNew"></span></button>
-      <button role="tab" data-tab="edits" aria-selected="false">Updates <span id="nEdits"></span></button>
+      <button role="tab" data-tab="edits" aria-selected="false">Listing updates <span id="nEdits"></span></button>
       <button role="tab" data-tab="upgrades" aria-selected="false">Upgrades <span id="nUpgrades"></span></button>
       <button role="tab" data-tab="passwords" aria-selected="false">Owners</button>
       <button role="tab" data-tab="history" aria-selected="false">History</button>
@@ -179,8 +196,20 @@
       <div id="aaMsg"></div>
     </section>
     <section class="panel" id="tab-businesses" hidden>
-      <h2>All businesses</h2>
-      <p class="sub">Every business on the site. Pick a country and city to narrow the list. Edit details or the level directly (your changes go live right away), remove a business from the site, or remove its owner.</p>
+      <h2>Shared Directory Manager</h2>
+      <p class="sub">Manage Hotels, Hostels, Restaurants, Bars and Street Vendors in one place. The country and town filters apply across all five directories. Edit a listing or its level, remove it from the site, or manage its owner.</p>
+      <div class="directory-quick-filters" role="group" aria-label="Quick directory filters">
+        <button class="btn light" type="button" data-directory-type="" aria-pressed="true">All directories</button>
+        <button class="btn light" type="button" data-directory-type="hotels">Hotels</button>
+        <button class="btn light" type="button" data-directory-type="hostels">Hostels</button>
+        <button class="btn light" type="button" data-directory-type="restaurants">Restaurants</button>
+        <button class="btn light" type="button" data-directory-type="bars">Bars</button>
+        <button class="btn light" type="button" data-directory-type="street-food">Street Vendors</button>
+        <button class="btn light" type="button" id="bizClearFilters">Clear filters</button>
+      </div>
+      <div class="row">
+        <div><label for="bizSearch">Search listings</label><input id="bizSearch" type="search" placeholder="Name, address, city, owner or email" autocomplete="off"></div>
+      </div>
       <div class="row">
         <div><label for="bizCountry">Country</label><select id="bizCountry"><option value="">All countries</option></select></div>
         <div><label for="bizCity">City</label><select id="bizCity"><option value="">All cities</option></select></div>
@@ -193,8 +222,8 @@
         <div><label for="bizShow">Show</label><select id="bizShow"><option value="">Everything</option><option value="owned">With an owner</option><option value="unowned">Without an owner</option><option value="hidden">Removed from site</option><option value="owner-added">Added by owners</option></select></div>
         <div></div>
       </div>
-      <p class="meta" id="bizCount" style="margin:12px 0 8px"></p>
-      <div class="list" id="bizList"></div>
+      <p class="meta" id="bizCount" role="status" aria-live="polite" aria-atomic="true" style="margin:12px 0 8px"></p>
+      <div class="list" id="bizList" aria-label="Directory listings"></div>
       <div class="actions"><button class="btn light" type="button" id="bizMore" hidden>Show more</button></div>
     </section>
     <section class="panel" id="tab-prospects" hidden>
@@ -428,9 +457,37 @@
   }
   $('setpwBtn').addEventListener('click', function () { P.mountSetPassword($('setpw'), { title: 'Set or change your password' }); });
   document.querySelectorAll('#signout, #denied button').forEach(function (b) { b.addEventListener('click', function () { sb.auth.signOut(); }); });
-  document.querySelectorAll('[role=tab]').forEach(function (b) {
+  var adminTabGroups = {
+    directory: ['claims', 'businesses', 'newbiz', 'edits', 'upgrades', 'passwords', 'history'],
+    agents: ['agents', 'agentadd', 'earnings'],
+    communications: ['prospects', 'claimemails', 'members', 'social'],
+    overview: ['stats']
+  };
+  function chooseAdminSection(section, preferredTab) {
+    var allowed = adminTabGroups[section] || adminTabGroups.directory;
+    document.querySelectorAll('.admin-main-tabs [data-main-tab]').forEach(function (x) {
+      x.setAttribute('aria-pressed', x.dataset.mainTab === section ? 'true' : 'false');
+    });
+    document.querySelectorAll('.tabs [role=tab]').forEach(function (x) {
+      if (x.hidden && ['earnings', 'agentadd'].indexOf(x.dataset.tab) >= 0) return;
+      x.hidden = allowed.indexOf(x.dataset.tab) < 0;
+    });
+    var wanted = preferredTab && allowed.indexOf(preferredTab) >= 0 ? preferredTab : allowed[0];
+    var target = document.querySelector('.tabs [data-tab="' + wanted + '"]');
+    if (target && !target.hidden) target.click();
+  }
+  document.querySelectorAll('.admin-main-tabs [data-main-tab]').forEach(function (b) {
+    b.addEventListener('click', function () { chooseAdminSection(b.dataset.mainTab); });
+  });
+  document.querySelectorAll('.tabs [role=tab]').forEach(function (b) {
     b.addEventListener('click', function () {
-      document.querySelectorAll('[role=tab]').forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
+      if (b.hidden) return;
+      var activeTab = b.dataset.tab;
+      var mainSection = Object.keys(adminTabGroups).find(function (section) { return adminTabGroups[section].indexOf(activeTab) >= 0; });
+      document.querySelectorAll('.admin-main-tabs [data-main-tab]').forEach(function (x) {
+        x.setAttribute('aria-pressed', x.dataset.mainTab === mainSection ? 'true' : 'false');
+      });
+      document.querySelectorAll('.tabs [role=tab]').forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
       ['claims', 'stats', 'agents', 'earnings', 'agentadd', 'businesses', 'prospects', 'claimemails', 'members', 'social', 'newbiz', 'edits', 'upgrades', 'passwords', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
       $('tab-passwords-form').hidden = b.dataset.tab !== 'passwords';
       if (b.dataset.tab === 'passwords' && !owners) loadOwners();
@@ -546,7 +603,7 @@
     $('signin').hidden = !!u; $('dash').hidden = true; $('denied').hidden = true;
     if (!u) return;
     sb.rpc('is_portal_admin').then(function (r) {
-      if (r.data === true) { window.CGGStats.adminSignedIn(); window.CGGAgents.loadAdmin(); $('dash').hidden = false; $('who').textContent = 'Signed in as ' + u.email; P.loadListings().then(function (l) { listings = l; refresh(); }); loadMembers(); if (location.hash === '#social' || location.hash === '#stats') { var st = document.querySelector('[data-tab=' + location.hash.slice(1) + ']'); if (st) st.click(); } }
+      if (r.data === true) { window.CGGStats.adminSignedIn(); window.CGGAgents.loadAdmin(); $('dash').hidden = false; $('who').textContent = 'Signed in as ' + u.email; P.loadListings().then(function (l) { listings = l; refresh(); }); loadMembers(); if (location.hash === '#social' || location.hash === '#stats') { var ht = location.hash.slice(1); chooseAdminSection(ht === 'stats' ? 'overview' : 'communications', ht); } else chooseAdminSection('directory', 'claims'); }
       else sb.from('agents').select('*').eq('user_id', u.id).eq('status', 'active').maybeSingle().then(function (a) {
         if (a.data) return agentMode(u, a.data);
         $('denied').hidden = false; $('deniedWho').textContent = u.email + ' is not set up as an admin.';
@@ -558,6 +615,7 @@
   var AGENT = null, TAKEN = {};
   function agentMode(u, a) {
     AGENT = a; window.CGGAgents.setMe(a);
+    var mainAdminTabs = document.querySelector('.admin-main-tabs'); if (mainAdminTabs) mainAdminTabs.hidden = true;
     $('heroTitle').textContent = 'Agent portal';
     $('heroText').textContent = 'Message businesses with your personal link, add new ones, and follow your earnings.';
     $('agCardTab').hidden = false; // Business card and flyer maker (agent-card.html), next to Prospecting.
@@ -649,7 +707,8 @@
 
   // ---------- All businesses ----------
   var allClaims = [], bizLimit = 30, editing = null;
-  Object.keys(cfg.typeLabels).forEach(function (t) { $('bizType').appendChild(el('option', { value: t }, cfg.typeLabels[t])); });
+  function directoryTypeLabel(type) { return type === 'street-food' ? 'Street Vendors' : (cfg.typeLabels[type] || type); }
+  Object.keys(cfg.typeLabels).forEach(function (t) { $('bizType').appendChild(el('option', { value: t }, directoryTypeLabel(t))); });
   $('bizCountry').addEventListener('change', function () { $('bizCity').value = ''; });
   $('prCountry').addEventListener('change', function () { $('prCity').value = ''; });
   // Country and City dropdowns: list the countries and cities of the businesses in view (with how many), keep the current choice.
@@ -673,7 +732,32 @@
     var city = $(prefix + 'City').value;
     return function (h) { return (!c || h.countryName === c) && (!city || h.city === city); };
   }
-  ['bizType', 'bizCountry', 'bizCity', 'bizTier', 'bizShow'].forEach(function (id) { $(id).addEventListener('change', function () { bizLimit = 30; renderBusinesses(); }); });
+  document.querySelectorAll('[data-directory-type]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      $('bizType').value = button.dataset.directoryType;
+      bizLimit = 30;
+      renderBusinesses();
+      document.querySelectorAll('[data-directory-type]').forEach(function (b) {
+        b.setAttribute('aria-pressed', b.dataset.directoryType === $('bizType').value ? 'true' : 'false');
+      });
+    });
+  });
+  ['bizType', 'bizCountry', 'bizCity', 'bizTier', 'bizShow'].forEach(function (id) { $(id).addEventListener('change', function () {
+    bizLimit = 30;
+    if (id === 'bizType') document.querySelectorAll('[data-directory-type]').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.dataset.directoryType === $('bizType').value ? 'true' : 'false');
+    });
+    renderBusinesses();
+  }); });
+  $('bizSearch').addEventListener('input', function () { bizLimit = 30; renderBusinesses(); });
+  $('bizClearFilters').addEventListener('click', function () {
+    ['bizSearch', 'bizType', 'bizCountry', 'bizCity', 'bizTier', 'bizShow'].forEach(function (id) { $(id).value = ''; });
+    document.querySelectorAll('[data-directory-type]').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.dataset.directoryType === '' ? 'true' : 'false');
+    });
+    bizLimit = 30;
+    renderBusinesses();
+  });
   $('bizMore').addEventListener('click', function () { bizLimit += 30; renderBusinesses(); });
   function ownerOf(h) {
     return allClaims.find(function (c) { return c.listing_type === h.__type && c.listing_id === String(h.id || h.name) && c.status === 'approved'; });
@@ -699,10 +783,18 @@
   function renderBusinesses() {
     var box = $('bizList'); if (!box) return;
     var t = $('bizType').value, tier = $('bizTier').value, show = $('bizShow').value;
-    var inPlace = placeFilter('biz', listings.filter(function (h) { return !t || h.__type === t; }));
+    var search = ($('bizSearch').value || '').trim().toLocaleLowerCase();
+    // Keep the location filters shared across all five directory types; the Type filter only narrows results.
+    var inPlace = placeFilter('biz', listings);
     var rows = listings.filter(function (h) {
       var o = ownerOf(h);
       if (!inPlace(h)) return false;
+      if (search) {
+        var searchable = [h.name, h.address, h.city, h.countryName, h.country_name, h.phone, h.contact_phone,
+          h.email, h.contact_email, h.website, h.website_url, h.whatsapp, h.owner_email, h.ownerEmail,
+          o && o.owner_email, o && o.contact_name].filter(Boolean).join(' ').toLocaleLowerCase();
+        if (searchable.indexOf(search) < 0) return false;
+      }
       if (t && h.__type !== t) return false;
       if (tier && P.tierOf(h) !== tier) return false;
       if (show === 'owned' && !o) return false;
@@ -722,7 +814,7 @@
     var out = el('div');
     var card = el('article', { className: 'item' + (h.hidden ? ' is-hidden' : ''), style: h.hidden ? 'opacity:.75;border-style:dashed' : '' },
       el('div', { className: 'item-head' }, el('h3', {}, h.name),
-        el('span', {}, el('span', { className: 'badge tier' }, tier), ' ', el('span', { className: 'badge pending' }, cfg.typeLabels[h.__type]),
+        el('span', {}, el('span', { className: 'badge tier' }, tier), ' ', el('span', { className: 'badge pending' }, directoryTypeLabel(h.__type)),
           h.hidden ? el('span', { className: 'badge rejected', style: 'margin-left:4px' }, 'Removed from site') : null,
           h.sample ? el('span', { className: 'badge pending', style: 'margin-left:4px' }, 'Sample') : null)),
       el('p', { className: 'meta' }, [h.city, h.countryName].filter(Boolean).join(', ') + (h.ownerSubmitted ? ' · Added by owner' : '') + ' · ' +
