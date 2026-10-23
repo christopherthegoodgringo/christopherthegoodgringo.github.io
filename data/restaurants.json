@@ -81,7 +81,7 @@
       "countryName": "Colombia",
       "address": "Cra. 3 #16-30, Comuna 2, Santa Marta, Magdalena, Colombia",
       "membershipTier": "bronze",
-      "sample": true
+      "sample": false
     }
   ]
 }
