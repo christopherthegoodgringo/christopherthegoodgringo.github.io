@@ -280,10 +280,10 @@ fetch('/data/hotels.json?v=20261023-fix3', { cache: 'no-store' })
   if(!country||!city)return;
   var entries=[];
   function fillCountries(){var selected=country.value;country.replaceChildren(new Option('All countries',''));countries.forEach(function(c){country.add(new Option(c[1],c[0]));});if(countries.some(function(c){return c[0]===selected;}))country.value=selected;}
-  function fillCities(){var selected=city.value,code=country.value;var names=Array.from(new Set(entries.filter(function(x){return x&&x.city&&(!code||String(x.countryCode||x.country_code||'').toUpperCase()===code);}).map(function(x){return String(x.city).trim();}).filter(Boolean))).sort(function(a,b){return a.localeCompare(b,'en');});city.replaceChildren(new Option('All cities',''));names.forEach(function(n){city.add(new Option(n,n));});if(names.some(function(n){return n.toLowerCase()===selected.toLowerCase();}))city.value=selected;}
+  function fillCities(){var selected=city.value,code=country.value;var names=Array.from(new Set(entries.filter(function(x){return x&&x.city&&(!code||String(x.countryCode||x.country_code||'').toUpperCase()===code);}).map(function(x){return String(x.city).trim();}).filter(Boolean))).sort(function(a,b){return a.localeCompare(b,'en');});city.replaceChildren(new Option('All cities',''));names.forEach(function(n){city.add(new Option(n,n));});if(names.some(function(n){return n.toLowerCase()===selected.toLowerCase();}))city.value=selected;else city.value='';}
   fillCountries();
-  city.replaceChildren(new Option('All cities',''),new Option('Santa Marta','Santa Marta'));
-  country.addEventListener('change',fillCities);
+  fillCities();
+  country.addEventListener('change',function(){fillCities();});
   Promise.all(["/data/hotels.json?dropdownfix=20261023a"].map(function(url){return fetch(url,{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});})).then(function(payloads){
     payloads.forEach(function(data){if(!data)return;var list=data.hotels;if(Array.isArray(list))entries=entries.concat(list);if(Array.isArray(data.paid))entries=entries.concat(data.paid);if(Array.isArray(data.hostels))entries=entries.concat(data.hostels);});
     entries=entries.filter(function(x){return true;});
