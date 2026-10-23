@@ -145,7 +145,9 @@ function listingCountryCode(h){const code=String(h&& (h.countryCode||h.country_c
 window.__platinumSlideshowTimers=window.__platinumSlideshowTimers||[];
 function clearPlatinumSlideshowTimers(){window.__platinumSlideshowTimers.forEach(t=>clearInterval(t));window.__platinumSlideshowTimers=[];}
 function addPlatinumSlideshow(card,h,primary,tier){
- const candidates=[...(Array.isArray(h.photos)?h.photos:[]),...(Array.isArray(h.photoUrls)?h.photoUrls:[]),...(Array.isArray(h.images)?h.images:[]),h.photo,primary].filter(u=>typeof u==='string'&&/^https?:\/\//i.test(u));
+ const casaPestaguaPhoto='https://www.casapestagua.com/wp-content/uploads/elementor/thumbs/home-intro_01-rnp48haacflocuogdk2m9jfz1w8qha7v2yqdex9yfk.webp';
+ const isCasaPestagua=String(h.name||'').trim().toLowerCase()==='casa pestagua';
+ const candidates=[...(Array.isArray(h.photos)?h.photos:[]),...(Array.isArray(h.photoUrls)?h.photoUrls:[]),...(Array.isArray(h.images)?h.images:[]),h.photo,primary,...(isCasaPestagua?[casaPestaguaPhoto]:[])].filter(u=>typeof u==='string'&&/^https?:\/\//i.test(u));
  const unique=[...new Set(candidates)];if(!unique.length)return;
  const isPlatinum=String(tier||h.membershipTier||'').toLowerCase()==='platinum'||String(h.listingPlan||'').toLowerCase()==='premium';
  const img=document.createElement('img');img.alt=(h.name||'Hotel listing')+' photo';img.loading='lazy';img.className='listing-photo'+(isPlatinum?' platinum-slideshow-image':'');img.referrerPolicy='no-referrer';card.appendChild(img);
