@@ -82,6 +82,8 @@ html[lang="es"]
 .hotel-card .rating-stars{color:#b67d0d;letter-spacing:.04em}
 .platinum-slideshow-image{transition:opacity .35s ease;object-fit:cover}
 @media(max-width:560px){.hotel-card .tier-ribbon{font-size:.65rem;padding:5px 7px}.hotel-card h3{min-height:0}}
+/* Fail-safe: suppress every hotel card until a country AND city are selected. */
+body:not(.hotel-filters-ready) .hotel-card{display:none!important}
 </style>
 
 
@@ -184,9 +186,9 @@ let activeTierFilter='all';function isListingClaimed(h){if(!h||typeof h!=='objec
 }
 function render(){
  const code=countryCodeFromInput(countryFilter.value),city=cityFilter.value,q=normalize(query.value);
- results.innerHTML='';results.hidden=true;results.style.setProperty('display','none','important');results.classList.remove('is-visible');
+ results.innerHTML='';results.hidden=true;results.style.setProperty('display','none','important');results.classList.remove('is-visible');document.body.classList.remove('hotel-filters-ready');
  if(!code||!city){count.textContent='Choose a country and city to see hotels';empty.hidden=true;document.getElementById('resultsTitle').textContent='Choose a destination to see hotels';return;}
- results.hidden=false;results.style.setProperty('display','grid','important');results.classList.add('is-visible');
+ document.body.classList.add('hotel-filters-ready');results.hidden=false;results.style.setProperty('display','grid','important');results.classList.add('is-visible');
  const found=hotels.filter(h=>listingMatchesTierFilter(h,activeTierFilter)&&(!code||String(h.countryCode||h.country_code||'').trim().toUpperCase()===code)&&(!city||normalize(h.city)===normalize(city))&&(!q||normalize([h.name,h.city,h.countryName,h.country,h.address,h.description,(h.amenities||[]).join(' ')].join(' ')).includes(q)));
  results.innerHTML='';const tierRank={platinum:4,gold:3,silver:2,bronze:1};
  found.sort((a,b)=>(tierRank[String(b.membershipTier||'bronze').toLowerCase()]||1)-(tierRank[String(a.membershipTier||'bronze').toLowerCase()]||1)||String(a.name).localeCompare(String(b.name)));
