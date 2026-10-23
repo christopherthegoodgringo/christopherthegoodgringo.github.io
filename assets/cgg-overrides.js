@@ -23,8 +23,7 @@
       var request = nativeFetch(url, { headers: { apikey: cfg.supabaseKey, Accept: 'application/json' }, cache: 'no-store' })
         .then(function (r) { return r.ok ? r.json() : []; })
         .catch(function () { return []; });
-      var timeout = new Promise(function (resolve) { setTimeout(function () { resolve([]); }, 1500); });
-      cache[type] = Promise.race([request, timeout]);
+      cache[type] = request;
     }
     return cache[type];
   }
@@ -37,8 +36,7 @@
       var request = nativeFetch(url, { headers: { apikey: cfg.supabaseKey, Accept: 'application/json' }, cache: 'no-store' })
         .then(function (r) { return r.ok ? r.json() : []; })
         .catch(function () { return []; });
-      var timeout = new Promise(function (resolve) { setTimeout(function () { resolve([]); }, 1500); });
-      newCache[type] = Promise.race([request, timeout]);
+      newCache[type] = request;
     }
     return newCache[type];
   }
