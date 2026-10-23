@@ -20,7 +20,7 @@
   function overridesFor(type) {
     if (!cache[type]) {
       var url = cfg.supabaseUrl + '/rest/v1/published_listing_overrides?select=listing_id,changes&listing_type=eq.' + encodeURIComponent(type);
-      var request = nativeFetch(url, { headers: { apikey: cfg.supabaseKey, Accept: 'application/json' }, cache: 'no-store' })
+      var request = nativeFetch(url, { headers: { apikey: cfg.supabaseKey, Authorization: 'Bearer ' + cfg.supabaseKey, Accept: 'application/json' }, cache: 'no-store' })
         .then(function (r) { return r.ok ? r.json() : []; })
         .catch(function () { return []; });
       cache[type] = request;
