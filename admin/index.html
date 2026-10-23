@@ -198,16 +198,31 @@
       <div id="aaMsg"></div>
     </section>
      <section class="panel" id="adminAddBusinessPanel" hidden>
-      <div class="item-head" style="align-items:center;gap:12px;flex-wrap:wrap"><div><h2 style="margin:0">Add a business</h2><p class="sub" style="margin:5px 0 0">Choose the listing level and enter only the details needed for that level.</p></div><button class="btn light" type="button" id="adminAddBusinessCancel">Back to listings</button></div>
+      <div class="item-head" style="align-items:center;gap:12px;flex-wrap:wrap">
+        <div><h2 style="margin:0">Add a business</h2><p class="sub" style="margin:5px 0 0">Choose a level. The form only shows the fields for that level. Publish to add the listing to the public Finder.</p></div>
+        <button class="btn light" type="button" id="adminAddBusinessCancel">Back to listings</button>
+      </div>
       <form id="adminAddBusinessForm">
-        <div class="row"><div><label for="nabTier">Listing level</label><select id="nabTier" required><option value="bronze">Bronze</option><option value="silver">Silver</option><option value="gold">Gold</option><option value="platinum">Platinum</option></select></div><div><label for="nabType">Business type</label><select id="nabType" required><option value="hotels">Hotel</option><option value="hostels">Hostel</option><option value="restaurants">Restaurant</option><option value="bars">Bar</option><option value="street-food">Street Food</option></select></div></div>
-        <div class="row"><div><label for="nabName">Business name</label><input id="nabName" required maxlength="200"></div><div><label for="nabCountry">Country</label><select id="nabCountry" required><option value="">Select country</option></select></div></div>
-        <div class="row"><div><label for="nabCity">City</label><input id="nabCity" required maxlength="120"></div><div><label for="nabAddress">Street address</label><input id="nabAddress" maxlength="300"></div></div>
-        <div class="row"><div><label for="nabWebsite">Official website</label><input id="nabWebsite" type="url" maxlength="500" placeholder="https://"></div><div><label for="nabPhone">Phone</label><input id="nabPhone" type="tel" maxlength="50"></div></div>
-        <div class="row"><div><label for="nabWhatsapp">WhatsApp</label><input id="nabWhatsapp" type="tel" maxlength="50"></div><div><label for="nabEmail">Email</label><input id="nabEmail" type="email" maxlength="254"></div></div>
-        <div id="nabLevelFields"></div><div id="nabFormNotice" class="st-note" role="status" aria-live="polite" hidden></div>
-        <div class="actions"><button class="btn" type="submit">Review business details</button><button class="btn light" type="reset">Clear form</button></div>
-      </form><div id="nabReview" hidden style="margin-top:16px"></div>
+        <div class="row">
+          <div><label for="nabTier">Level / status</label><select id="nabTier" required>
+            <option value="not-claimed">Not Claimed</option><option value="bronze">Bronze</option><option value="silver">Silver</option><option value="gold">Gold</option><option value="platinum">Platinum</option>
+          </select></div>
+          <div><label for="nabType">Business type</label><select id="nabType" required>
+            <option value="hotels">Hotel</option><option value="hostels">Hostel</option><option value="restaurants">Restaurant</option><option value="bars">Bar</option><option value="street-food">Street Food</option>
+          </select></div>
+        </div>
+        <div class="row">
+          <div><label for="nabName">Business name</label><input id="nabName" required maxlength="200" autocomplete="organization"></div>
+          <div><label for="nabCountry">Country</label><select id="nabCountry" required><option value="">Select country</option></select></div>
+        </div>
+        <div class="row">
+          <div><label for="nabCity">City</label><input id="nabCity" required maxlength="120" autocomplete="address-level2"></div>
+          <div><label for="nabAddress">Street address (optional)</label><input id="nabAddress" maxlength="300" autocomplete="street-address"></div>
+        </div>
+        <div id="nabLevelFields"></div>
+        <div id="nabFormNotice" class="st-note" role="status" aria-live="polite" hidden></div>
+        <div class="actions"><button class="btn" type="submit" id="nabPublish">Publish Listing</button><button class="btn light" type="reset">Clear form</button></div>
+      </form>
      </section>
      <section class="panel" id="tab-businesses" hidden>
       <div class="item-head" style="align-items:center;gap:12px;flex-wrap:wrap"><h2 style="margin:0">Current businesses</h2></div>
@@ -774,46 +789,145 @@
     var nameField = document.getElementById('nabName');
     if (nameField) nameField.focus({ preventScroll: true });
   }
-  // New admin form with tier-specific fields and a review summary.
+  // Standalone admin publisher. Not Claimed is a status; it publishes as a Bronze-level listing until upgraded.
   (function setupAdminAddBusinessForm() {
-    var form=document.getElementById('adminAddBusinessForm'), tier=document.getElementById('nabTier'), fields=document.getElementById('nabLevelFields'), country=document.getElementById('nabCountry'), notice=document.getElementById('nabFormNotice'), review=document.getElementById('nabReview');
-    var countries=(window.CGGPortalConfig&&window.CGGPortalConfig.countries)||window.CGG_COUNTRIES||[];
-    (Array.isArray(countries)?countries:[]).forEach(function(x){var v=typeof x==='string'?x:(x.name||x.label||x.value||'');if(v)country.appendChild(el('option',{value:v},v));});
-    function renderLevelFields(){
-      fields.replaceChildren();
-      var level=tier.value;
-      fields.appendChild(el('h3',{style:'margin:18px 0 8px'},level.charAt(0).toUpperCase()+level.slice(1)+' details'));
-      fields.appendChild(el('label',{attrs:{for:'nabDescription'}},'Short description'));
-      fields.appendChild(el('textarea',{id:'nabDescription',rows:3,maxLength:1500,placeholder:'A short, useful description'}));
-      if(['silver','gold','platinum'].indexOf(level)>=0){
-        fields.appendChild(el('div',{className:'row'},
-          el('div',{},el('label',{attrs:{for:'nabPhotos'}},'Photo URLs (one per line)'),el('textarea',{id:'nabPhotos',rows:3,maxLength:3000,placeholder:'https://…'})),
-          el('div',{},el('label',{attrs:{for:'nabFeatures'}},'Features / highlights'),el('textarea',{id:'nabFeatures',rows:3,maxLength:1200,placeholder:'Separate items with commas'}))));
-      }
-      if(['gold','platinum'].indexOf(level)>=0){
-        fields.appendChild(el('div',{className:'row'},
-          el('div',{},el('label',{attrs:{for:'nabHours'}},'Opening hours'),el('input',{id:'nabHours',maxLength:300,placeholder:'e.g. Daily 8 AM–10 PM'})),
-          el('div',{},el('label',{attrs:{for:'nabPrice'}},'Price range'),el('input',{id:'nabPrice',maxLength:100,placeholder:'e.g. $'}))));
-      }
-      if(level==='platinum'){
-        fields.appendChild(el('div',{className:'row'},
-          el('div',{},el('label',{attrs:{for:'nabBooking'}},'Verified booking / affiliate URL (optional)'),el('input',{id:'nabBooking',type:'url',maxLength:500,placeholder:'https://…'})),
-          el('div',{},el('label',{attrs:{for:'nabRating'}},'Verified rating (optional)'),el('input',{id:'nabRating',type:'number',min:'0',max:'5',step:'0.1',placeholder:'0–5'}))));
-      }
-      if(review)review.hidden=true;
+    var form = document.getElementById('adminAddBusinessForm');
+    var tier = document.getElementById('nabTier');
+    var type = document.getElementById('nabType');
+    var fields = document.getElementById('nabLevelFields');
+    var country = document.getElementById('nabCountry');
+    var notice = document.getElementById('nabFormNotice');
+    var publish = document.getElementById('nabPublish');
+    var COUNTRIES = {
+      'Argentina':'AR','Belize':'BZ','Bolivia':'BO','Chile':'CL','Colombia':'CO','Costa Rica':'CR',
+      'Dominican Republic':'DO','Ecuador':'EC','El Salvador':'SV','Guatemala':'GT','Honduras':'HN',
+      'Mexico':'MX','Nicaragua':'NI','Panama':'PA','Paraguay':'PY','Peru':'PE','United States':'US','Uruguay':'UY'
+    };
+    ALL_COUNTRIES.forEach(function (name) { country.appendChild(el('option', { value: name }, name)); });
+
+    function addField(parent, id, label, props) {
+      parent.appendChild(el('label', { attrs: { for: id } }, label));
+      parent.appendChild(el('input', Object.assign({ id: id, maxLength: 500 }, props || {})));
     }
-    tier.addEventListener('change',renderLevelFields);renderLevelFields();
-    document.getElementById('adminAddBusinessCancel').addEventListener('click',function(){document.getElementById('adminAddBusinessPanel').hidden=true;document.getElementById('tab-businesses').hidden=false;});
-    form.addEventListener('reset',function(){setTimeout(function(){renderLevelFields();notice.hidden=true;review.hidden=true;},0);});
-    form.addEventListener('submit',function(ev){
-      ev.preventDefault();if(!form.reportValidity())return;
-      notice.hidden=false;notice.textContent='Review only: the form is separate from Prospecting, but publishing is not connected yet. Nothing has been saved to the public directory.';
-      review.hidden=false;review.replaceChildren(el('h3',{},'Review business details'));
-      var rows=[['Level',tier.options[tier.selectedIndex].text],['Type',document.getElementById('nabType').selectedOptions[0].textContent],['Business',document.getElementById('nabName').value],['Country',country.value],['City',document.getElementById('nabCity').value],['Address',document.getElementById('nabAddress').value],['Website',document.getElementById('nabWebsite').value],['Phone',document.getElementById('nabPhone').value],['WhatsApp',document.getElementById('nabWhatsapp').value],['Email',document.getElementById('nabEmail').value]];
-      ['nabDescription','nabPhotos','nabFeatures','nabHours','nabPrice','nabBooking','nabRating'].forEach(function(id){var x=document.getElementById(id);if(x&&x.value.trim())rows.push([x.previousElementSibling?x.previousElementSibling.textContent:id,x.value.trim()]);});
-      var dl=el('dl',{style:'display:grid;grid-template-columns:minmax(110px,160px) 1fr;gap:8px;margin:10px 0'});
-      rows.forEach(function(pair){if(pair[1]){dl.appendChild(el('dt',{style:'font-weight:700'},pair[0]));dl.appendChild(el('dd',{style:'margin:0;overflow-wrap:anywhere;white-space:pre-wrap'},pair[1]));}});
-      review.appendChild(dl);
+    function renderLevelFields() {
+      fields.replaceChildren();
+      var selected = tier.value;
+      var actualTier = selected === 'not-claimed' ? 'bronze' : selected;
+      if (['silver','gold','platinum'].indexOf(actualTier) >= 0) {
+        fields.appendChild(el('h3', { style: 'margin:18px 0 8px' }, actualTier.charAt(0).toUpperCase() + actualTier.slice(1) + ' details'));
+        var contact = el('div', { className: 'row' });
+        var website = el('div'); addField(website, 'nabWebsite', 'Official website', { type: 'url', placeholder: 'https://…' }); contact.appendChild(website);
+        var phone = el('div'); addField(phone, 'nabPhone', 'Phone', { type: 'tel', maxLength: 60 }); contact.appendChild(phone);
+        fields.appendChild(contact);
+        var contacts = el('div', { className: 'row' });
+        var wa = el('div'); addField(wa, 'nabWhatsapp', 'WhatsApp', { type: 'tel', maxLength: 60 }); contacts.appendChild(wa);
+        var email = el('div'); addField(email, 'nabEmail', 'Business email', { type: 'email', maxLength: 254 }); contacts.appendChild(email);
+        fields.appendChild(contacts);
+        var ratingRow = el('div', { className: 'row' });
+        var rating = el('div'); addField(rating, 'nabRating', 'Verified rating (optional)', { type: 'number', min: '0', max: '5', step: '0.1', placeholder: '0–5' }); ratingRow.appendChild(rating);
+        var ratingSource = el('div'); addField(ratingSource, 'nabRatingSource', 'Rating source URL (optional)', { type: 'url', placeholder: 'https://…' }); ratingRow.appendChild(ratingSource);
+        fields.appendChild(ratingRow);
+      }
+      if (['gold','platinum'].indexOf(actualTier) >= 0) {
+        var photoRow = el('div', { className: 'row' });
+        var photo = el('div'); addField(photo, 'nabPhoto', 'Main photo URL', { type: 'url', placeholder: 'https://…' }); photoRow.appendChild(photo);
+        fields.appendChild(photoRow);
+      }
+      if (actualTier === 'platinum') {
+        fields.appendChild(el('label', { attrs: { for: 'nabPhotos' } }, 'Gallery photo URLs (one per line)'));
+        fields.appendChild(el('textarea', { id: 'nabPhotos', rows: 4, maxLength: 4000, placeholder: 'https://…\nhttps://…' }));
+      }
+    }
+    function message(kind, text) { P.msg(notice, kind, text); notice.hidden = false; }
+    function clearStatus() { notice.hidden = true; notice.replaceChildren(); }
+    tier.addEventListener('change', function () { renderLevelFields(); clearStatus(); });
+    type.addEventListener('change', clearStatus);
+    form.addEventListener('reset', function () {
+      window.setTimeout(function () { renderLevelFields(); clearStatus(); }, 0);
+    });
+    document.getElementById('adminAddBusinessCancel').addEventListener('click', function () {
+      document.getElementById('adminAddBusinessPanel').hidden = true;
+      document.getElementById('tab-businesses').hidden = false;
+      document.getElementById('tab-businesses').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    renderLevelFields();
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      if (!user || !user.id) return message('err', 'Your admin session is missing. Sign out and sign in again.');
+
+      var levelChoice = tier.value;
+      var actualTier = levelChoice === 'not-claimed' ? 'bronze' : levelChoice;
+      var kind = type.value;
+      var name = document.getElementById('nabName').value.trim();
+      var city = document.getElementById('nabCity').value.trim();
+      var countryName = country.value;
+      var address = document.getElementById('nabAddress').value.trim();
+      var norm = function (s) { return String(s || '').trim().toLocaleLowerCase(); };
+      var duplicate = listings.some(function (h) {
+        return h.__type === kind && norm(h.name) === norm(name) && norm(h.city) === norm(city);
+      });
+      if (duplicate) return message('err', 'A listing with this name and city already exists in this Finder. Check Current Businesses before publishing a duplicate.');
+
+      var data = {
+        name: name, city: city, country: countryName, countryName: countryName,
+        countryCode: COUNTRIES[countryName] || '', membershipTier: actualTier,
+        verifiedOn: new Date().toISOString().slice(0, 10), sample: false
+      };
+      if (address) data.address = address;
+
+      function value(id) { var node = document.getElementById(id); return node ? String(node.value || '').trim() : ''; }
+      function url(id) { var v = value(id); return v ? P.normalizeUrl(v) : ''; }
+      if (['silver','gold','platinum'].indexOf(actualTier) >= 0) {
+        var website = url('nabWebsite'), phone = value('nabPhone'), whatsapp = value('nabWhatsapp'), email = value('nabEmail');
+        var rating = value('nabRating'), ratingSource = url('nabRatingSource');
+        if (website) data.website = website;
+        if (phone) data.phone = phone;
+        if (whatsapp) data.whatsapp = whatsapp;
+        if (email) data.email = email;
+        if (rating !== '') data.rating = Math.max(0, Math.min(5, Number(rating)));
+        if (ratingSource) data.ratingSource = ratingSource;
+      }
+      if (['gold','platinum'].indexOf(actualTier) >= 0) {
+        var photo = url('nabPhoto');
+        if (photo) data.photo = photo;
+      }
+      if (actualTier === 'platinum') {
+        var photos = value('nabPhotos').split(/\r?\n/).map(function (x) { return P.normalizeUrl(x); }).filter(Boolean).slice(0, 8);
+        if (photos.length) data.photos = photos;
+      }
+      // Stable-looking, unique ID; the row is inserted into the live source read by every Finder.
+      var slug = (name + '-' + city).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 100);
+      var listingId = (slug || 'business') + '-' + Date.now().toString(36);
+      data.id = listingId;
+
+      publish.disabled = true;
+      publish.textContent = 'Publishing…';
+      clearStatus();
+      sb.from('published_new_listings').insert({
+        listing_type: kind, listing_id: listingId, data: data, approved_by: user.id
+      }).then(function (result) {
+        if (result.error) throw new Error(result.error.message || 'Could not publish listing.');
+        P._listings = null;
+        if (window.cggClearOverrideCache) window.cggClearOverrideCache();
+        return P.loadListings();
+      }).then(function (all) {
+        listings = all;
+        renderBusinesses();
+        message('ok', name + ' was published to the ' + cfg.typeLabels[kind] + ' Finder as ' + actualTier.charAt(0).toUpperCase() + actualTier.slice(1) + '. ' + (levelChoice === 'not-claimed' ? 'It is in Not Claimed until an owner claim is approved.' : 'It has no approved owner yet, so it also appears under Not Claimed.'));
+        var keepTier = tier.value, keepType = type.value;
+        form.reset();
+        tier.value = keepTier;
+        type.value = keepType;
+        renderLevelFields();
+        document.getElementById('nabName').focus({ preventScroll: true });
+      }).catch(function (error) {
+        message('err', 'Publish failed. Nothing was confirmed live: ' + (error.message || String(error)));
+      }).finally(function () {
+        publish.disabled = false;
+        publish.textContent = 'Publish Listing';
+      });
     });
   })();
   var quickAddBusiness = document.getElementById('quickAddBusiness');
