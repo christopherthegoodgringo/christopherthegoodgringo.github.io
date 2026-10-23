@@ -203,6 +203,9 @@
         <button class="btn light" type="button" data-directory-type="street-food">Street Vendors</button>
       </div>
       <div class="row">
+        <div><label for="bizSearch">Search listings</label><input id="bizSearch" type="search" placeholder="Name, address, city, owner or email" autocomplete="off"></div>
+      </div>
+      <div class="row">
         <div><label for="bizCountry">Country</label><select id="bizCountry"><option value="">All countries</option></select></div>
         <div><label for="bizCity">City</label><select id="bizCity"><option value="">All cities</option></select></div>
       </div>
@@ -741,6 +744,7 @@
     });
     renderBusinesses();
   }); });
+  $('bizSearch').addEventListener('input', function () { bizLimit = 30; renderBusinesses(); });
   $('bizMore').addEventListener('click', function () { bizLimit += 30; renderBusinesses(); });
   function ownerOf(h) {
     return allClaims.find(function (c) { return c.listing_type === h.__type && c.listing_id === String(h.id || h.name) && c.status === 'approved'; });
@@ -766,11 +770,17 @@
   function renderBusinesses() {
     var box = $('bizList'); if (!box) return;
     var t = $('bizType').value, tier = $('bizTier').value, show = $('bizShow').value;
+    var search = ($('bizSearch').value || '').trim().toLocaleLowerCase();
     // Keep the location filters shared across all five directory types; the Type filter only narrows results.
     var inPlace = placeFilter('biz', listings);
     var rows = listings.filter(function (h) {
       var o = ownerOf(h);
       if (!inPlace(h)) return false;
+      if (search) {
+        var searchable = [h.name, h.address, h.city, h.countryName, h.phone, h.email, h.website,
+          o && o.owner_email, o && o.contact_name].filter(Boolean).join(' ').toLocaleLowerCase();
+        if (searchable.indexOf(search) < 0) return false;
+      }
       if (t && h.__type !== t) return false;
       if (tier && P.tierOf(h) !== tier) return false;
       if (show === 'owned' && !o) return false;
