@@ -97,11 +97,15 @@
     gold: ['photo'],
     platinum: ['photos', 'photoUrls', 'images']
   };
-  var PLAN_TO_LEVEL = { premium: 'platinum', featured: 'gold', silver: 'silver', free: 'bronze' };
+  var PLAN_TO_LEVEL = { premium: 'platinum', platinum: 'platinum', featured: 'gold', gold: 'gold', silver: 'silver', free: 'bronze', bronze: 'bronze' };
   function levelOf(h) {
-    var t = String((h && h.membershipTier) || '').toLowerCase();
-    if (!LEVEL_RANK.hasOwnProperty(t)) t = PLAN_TO_LEVEL[String((h && h.listingPlan) || '').toLowerCase()] || 'bronze';
-    return t;
+    // An explicit listing plan is the current card purchase/placement and must take
+    // precedence over an old default membershipTier (often "bronze").
+    var plan = String((h && h.listingPlan) || '').toLowerCase().trim();
+    if (PLAN_TO_LEVEL.hasOwnProperty(plan)) return PLAN_TO_LEVEL[plan];
+    var t = String((h && h.membershipTier) || '').toLowerCase().trim();
+    if (LEVEL_RANK.hasOwnProperty(t)) return t;
+    return 'bronze';
   }
   var LEVEL_RANK = { bronze: 0, silver: 1, gold: 2, platinum: 3 };
   function firstPhoto(h) {
