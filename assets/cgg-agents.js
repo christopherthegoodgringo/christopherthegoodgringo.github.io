@@ -91,18 +91,35 @@
     return box;
   }
 
-  // Separate prospective-agent recruitment queue. Sending remains deliberately disabled.
+  // Separate prospective-agent recruitment queue; send only to prospects explicitly approved by an admin.
   function renderRecruitmentCampaign(list) {
     var box = el('article', { className: 'item' });
     box.appendChild(el('div', { className: 'item-head' },
       el('h3', {}, 'Prospective-Agent Recruitment Campaign'),
-      badge('pending', 'Email sending disabled')));
-    box.appendChild(el('p', { className: 'meta' }, 'Separate from registered-agent welcome emails. Add prospective agents here, review each contact, and approve them before the first email. The five-message sequence is saved, but this panel cannot activate or send the campaign.'));
+      badge('approved', 'Campaign enabled')));
+    box.appendChild(el('p', { className: 'meta' }, 'Separate from registered-agent welcome emails. Review each contact and approve it before sending. Use the button below to send the first saved Spanish email to approved, eligible prospects.'));
     var status = el('div', { className: 'ag-tiles' },
       tile('5', 'Saved email templates'),
       tile('1, 3, 6, 10, 15', 'Planned send days'),
       tile('Manual', 'Approval required'));
     box.appendChild(status);
+    var sendWrap = el('div', { className: 'actions', style: 'margin:12px 0' });
+    var sendBtn = el('button', { type: 'button', className: 'btn', onclick: function () {
+      if (!window.confirm('Send the first saved recruitment email to all approved, eligible prospects now?')) return;
+      sendBtn.disabled = true; sendBtn.textContent = 'Sending…';
+      sb.functions.invoke('agent-recruitment-mailer', { body: { action: 'send_first_email' } }).then(function (r) {
+        sendBtn.disabled = false; sendBtn.textContent = 'Send first email to approved prospects';
+        if (r.error) { P.msg(notice, 'err', r.error.message || 'The mailer request failed.'); return; }
+        var d = r.data || {};
+        if (d.error) { P.msg(notice, 'err', d.error); return; }
+        P.msg(notice, 'ok', d.message || ('Mailer finished. Sent: ' + (d.sent || 0) + (d.skipped ? '; skipped: ' + d.skipped : '')));
+        loadRecruitmentRows(rows, notice);
+      }).catch(function (err) {
+        sendBtn.disabled = false; sendBtn.textContent = 'Send first email to approved prospects';
+        P.msg(notice, 'err', err.message || 'The mailer request failed.');
+      });
+    } }, 'Send first email to approved prospects');
+    sendWrap.appendChild(sendBtn); box.appendChild(sendWrap);
     var form = el('form', { className: 'ag-edit', style: 'display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;margin:12px 0' });
     var nm = el('input', { attrs: { type: 'text', placeholder: 'Prospect name', maxlength: '120' } });
     var em = el('input', { attrs: { type: 'email', placeholder: 'Prospect email', required: 'required', maxlength: '254' } });
@@ -154,14 +171,14 @@
         var card = el('article', { className: 'item' },
           el('div', { className: 'item-head' }, el('strong', {}, data(p.full_name || p.email)), state),
           el('p', { className: 'meta ag-link' }, data(p.email), ' · Added ', day(p.created_at)),
-          el('p', { className: 'meta' }, 'Recruitment emails sent: ', data(p.current_step || 0), ' / 5. No emails are being sent while the campaign is disabled.'));
+          el('p', { className: 'meta' }, 'Recruitment emails sent: ', data(p.current_step || 0), ' / 5.'));
         if (!p.opted_out_at && !p.registered_agent_id && p.approval_status === 'pending') {
           var actions = el('div', { className: 'actions' });
           actions.appendChild(el('button', { type: 'button', className: 'btn', onclick: function (ev) {
             var b = ev.currentTarget; b.disabled = true;
             sb.from('agent_recruitment_prospects').update({ approval_status: 'approved', approved_at: new Date().toISOString(), next_send_at: null, updated_at: new Date().toISOString() }).eq('id', p.id).then(function (r) {
               if (r.error) { b.disabled = false; P.msg(notice, 'err', r.error.message); return; }
-              P.msg(notice, 'ok', 'Prospect approved. Sending remains disabled pending your separate activation authorization.'); loadRecruitmentRows(rows, notice);
+              P.msg(notice, 'ok', 'Prospect approved and eligible for the next send.'); loadRecruitmentRows(rows, notice);
             });
           } }, 'Approve prospect'));
           actions.appendChild(el('button', { type: 'button', className: 'btn light', onclick: function (ev) {
