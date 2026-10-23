@@ -234,23 +234,53 @@
       <div class="actions"><button class="btn light" type="button" id="prMore" hidden>Show more</button></div>
     </section>
     <section class="panel" id="tab-claimemails" hidden>
-      <h2>Claim Email Sequence</h2>
-      <p class="sub">Manage the five-message invitation sequence for businesses in the new prospect database. Only businesses with a publicly listed business email should be added. Public Bronze listings show only the business name and address.</p>
+      <h2>Business Prospects &amp; Claim Email Drafts</h2>
+      <p class="sub">Private prospect database for Santa Marta and future cities. Add businesses only when a public business email is available. Bronze public listings display only business name and address.</p>
       <div class="item" style="margin:0 0 16px">
-        <div class="item-head"><h3>Follow-up schedule</h3><span class="badge" style="display:inline-block;padding:5px 9px;border-radius:999px;background:#fff2c7;color:#684e00;font-size:12px;font-weight:800">Sending not connected</span></div>
-        <div class="list">
-          <div class="item"><strong>Day 1 — Initial invitation</strong><p class="meta">Introduce the free Bronze listing and include the unique claim link.</p></div>
-          <div class="item"><strong>Day 4 — Friendly reminder</strong><p class="meta">Remind the business to claim its listing; include its claim link.</p></div>
-          <div class="item"><strong>Day 8 — Listing details</strong><p class="meta">Explain how to claim and manage the listing; include its claim link.</p></div>
-          <div class="item"><strong>Day 15 — Second reminder</strong><p class="meta">A brief reminder with the same secure claim destination.</p></div>
-          <div class="item"><strong>Day 23 — Final follow-up</strong><p class="meta">A polite final reminder, then stop the sequence.</p></div>
-        </div>
+        <div class="item-head"><h3>Five-email schedule</h3><span class="badge" style="display:inline-block;padding:5px 9px;border-radius:999px;background:#fff2c7;color:#684e00;font-size:12px;font-weight:800">Sending disabled</span></div>
+        <p class="meta">Day 1 invitation · Day 4 reminder · Day 8 listing details · Day 15 reminder · Day 23 final follow-up. Stop on claim or opt-out; pause bounced addresses; stop after email five.</p>
+      </div>
+      <div class="item" style="margin-bottom:16px">
+        <h3 id="bpFormTitle">Add a business prospect</h3>
+        <form id="bpForm">
+          <input type="hidden" id="bpId">
+          <div class="row">
+            <div><label for="bpName">Business name *</label><input id="bpName" required maxlength="200"></div>
+            <div><label for="bpCategory">Category *</label><select id="bpCategory" required><option value="hotel">Hotel</option><option value="hostel">Hostel</option><option value="restaurant">Restaurant</option><option value="bar">Bar</option><option value="street_food">Street food</option></select></div>
+          </div>
+          <div class="row">
+            <div><label for="bpCity">City *</label><input id="bpCity" required value="Santa Marta"></div>
+            <div><label for="bpCountry">Country *</label><input id="bpCountry" required value="Colombia"></div>
+          </div>
+          <div class="row">
+            <div><label for="bpEmail">Public business email</label><input id="bpEmail" type="email" placeholder="Only if publicly listed"></div>
+            <div><label for="bpContact">Contact name (optional)</label><input id="bpContact"></div>
+          </div>
+          <div class="row">
+            <div><label for="bpAddress">Business address</label><input id="bpAddress"></div>
+            <div><label for="bpPhone">Business phone</label><input id="bpPhone"></div>
+          </div>
+          <div class="row">
+            <div><label for="bpWebsite">Website URL</label><input id="bpWebsite" type="url" placeholder="https://"></div>
+            <div><label for="bpSource">Source URL (verification)</label><input id="bpSource" type="url" placeholder="Where the details were found"></div>
+          </div>
+          <div><label for="bpNotes">Internal research notes</label><textarea id="bpNotes" rows="2" style="width:100%"></textarea></div>
+          <div class="actions"><button class="btn" type="submit" id="bpSave">Save prospect</button><button class="btn light" type="button" id="bpCancel" hidden>Cancel edit</button><button class="btn light" type="button" id="bpReload">Refresh prospects</button></div>
+          <p class="meta" id="bpStatus" aria-live="polite">No email will be sent from this form.</p>
+        </form>
       </div>
       <div class="item">
-        <h3>Automatic stop rules</h3>
-        <ul><li>Stop all scheduled emails as soon as the business successfully claims its listing.</li><li>Stop immediately when the recipient opts out.</li><li>Pause and flag bounced addresses.</li><li>After the fifth email, stop if there is no response.</li><li>Require a unique, secure claim token and verify business ownership before granting account access.</li></ul>
+        <div class="item-head"><h3>Saved prospects</h3><span class="meta" id="bpCount">Not loaded</span></div>
+        <div id="bpList"><p class="meta">Open this tab to load private prospects.</p></div>
       </div>
-      <p class="meta" style="margin-top:14px">This tab is now part of List Admin. The separate prospect page is not the admin interface. Automated delivery must remain off until the new private prospect table, secure claim links, email provider, and scheduled job are connected and tested. This tab does not send email yet.</p>
+      <div class="item" style="margin-top:16px">
+        <h3>Invitation draft preview</h3>
+        <p class="meta">Drafts stay here for review. This does not send email or schedule follow-ups.</p>
+        <label for="bpDraftSubject">Subject</label><input id="bpDraftSubject" style="width:100%">
+        <label for="bpDraftBody">Email body</label><textarea id="bpDraftBody" rows="9" style="width:100%"></textarea>
+        <div class="actions"><button class="btn" type="button" id="bpSaveDraft">Save draft to selected prospect</button><button class="btn light" type="button" id="bpCopyDraft">Copy draft</button></div>
+        <p class="meta" id="bpDraftStatus" aria-live="polite"></p>
+      </div>
     </section>
     <section class="panel" id="tab-members" hidden>
       <h2>Mailing list</h2>
@@ -389,6 +419,7 @@
       ['claims', 'stats', 'agents', 'earnings', 'agentadd', 'businesses', 'prospects', 'claimemails', 'members', 'social', 'newbiz', 'edits', 'upgrades', 'passwords', 'history'].forEach(function (t) { $('tab-' + t).hidden = t !== b.dataset.tab; });
       $('tab-passwords-form').hidden = b.dataset.tab !== 'passwords';
       if (b.dataset.tab === 'passwords' && !owners) loadOwners();
+      if (b.dataset.tab === 'claimemails') bpLoad();
       if (b.dataset.tab === 'prospects') { if (!prospects) loadProspects(); else renderProspects(); if (!AGENT) loadMailer(); }
       if (b.dataset.tab === 'members') { if (!members) loadMembers(); else renderMembers(); }
       if (b.dataset.tab === 'social') window.CGGSocial.show();
@@ -396,6 +427,96 @@
       if (b.dataset.tab === 'agents') window.CGGAgents.showAdmin();
       if (b.dataset.tab === 'earnings') window.CGGAgents.showEarnings();
     });
+  });
+
+
+  // Private business prospect workflow. Sending intentionally remains disabled.
+  var bpRows = [], bpSelected = null;
+  async function bpRequest(action, extra) {
+    var sessionResult = await sb.auth.getSession();
+    var session = sessionResult.data && sessionResult.data.session;
+    if (!session) throw new Error('Please sign in again.');
+    var base = (window.CGG_PORTAL && window.CGG_PORTAL.supabaseUrl) || '';
+    if (!base) throw new Error('Supabase URL configuration is missing.');
+    var response = await fetch(base.replace(/\\/$/, '') + '/functions/v1/cgg-business-prospects-admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': window.CGG_PORTAL.publishableKey || window.CGG_PORTAL.anonKey || '', 'Authorization': 'Bearer ' + session.access_token },
+      body: JSON.stringify(Object.assign({ action: action }, extra || {}))
+    });
+    var result = await response.json().catch(function () { return {}; });
+    if (!response.ok) throw new Error(result.error || ('Request failed (' + response.status + ')'));
+    return result;
+  }
+  function bpVal(id) { return $(id).value.trim(); }
+  function bpSetStatus(message, error) { $('bpStatus').textContent = message; $('bpStatus').style.color = error ? '#a12622' : ''; }
+  function bpReset() {
+    $('bpForm').reset(); $('bpId').value = ''; $('bpCity').value = 'Santa Marta'; $('bpCountry').value = 'Colombia';
+    $('bpFormTitle').textContent = 'Add a business prospect'; $('bpSave').textContent = 'Save prospect'; $('bpCancel').hidden = true;
+    bpSelected = null;
+  }
+  function bpEsc(value) { return String(value == null ? '' : value).replace(/[&<>"']/g, function (c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]); }); }
+  function bpRender() {
+    $('bpCount').textContent = bpRows.length + ' prospect' + (bpRows.length === 1 ? '' : 's');
+    if (!bpRows.length) { $('bpList').innerHTML = '<p class="meta">No prospects yet. Add a business above to start the new database.</p>'; return; }
+    $('bpList').innerHTML = bpRows.map(function (r) {
+      return '<div class="item" style="margin:10px 0"><div class="item-head"><strong>' + bpEsc(r.business_name) + '</strong><span class="badge">' + bpEsc(r.invitation_status || 'not_drafted') + '</span></div><p class="meta">' + bpEsc(r.category) + ' · ' + bpEsc(r.city) + ', ' + bpEsc(r.country) + (r.address ? ' · ' + bpEsc(r.address) : '') + '</p><p class="meta">' + bpEsc(r.contact_email || 'No public email recorded') + '</p><div class="actions"><button class="btn light" type="button" data-bp-edit="' + bpEsc(r.id) + '">Edit</button><button class="btn light" type="button" data-bp-draft="' + bpEsc(r.id) + '">Create invitation draft</button><button class="btn light" type="button" data-bp-delete="' + bpEsc(r.id) + '">Delete</button></div></div>';
+    }).join('');
+    $('bpList').querySelectorAll('[data-bp-edit]').forEach(function (b) { b.addEventListener('click', function () { bpEdit(b.dataset.bpEdit); }); });
+    $('bpList').querySelectorAll('[data-bp-draft]').forEach(function (b) { b.addEventListener('click', function () { bpMakeDraft(b.dataset.bpDraft); }); });
+    $('bpList').querySelectorAll('[data-bp-delete]').forEach(function (b) { b.addEventListener('click', function () { bpDelete(b.dataset.bpDelete); }); });
+  }
+  async function bpLoad() {
+    $('bpReload').disabled = true; $('bpCount').textContent = 'Loading…';
+    try { var result = await bpRequest('list'); bpRows = result.prospects || []; bpRender(); bpSetStatus('Private prospect list loaded. Sending is disabled.'); }
+    catch (e) { $('bpCount').textContent = 'Could not load'; bpSetStatus(e.message, true); }
+    finally { $('bpReload').disabled = false; }
+  }
+  function bpEdit(id) {
+    var r = bpRows.find(function (x) { return x.id === id; }); if (!r) return;
+    bpSelected = id; $('bpId').value = id;
+    [['bpName','business_name'],['bpCategory','category'],['bpCity','city'],['bpCountry','country'],['bpEmail','contact_email'],['bpContact','contact_name'],['bpAddress','address'],['bpPhone','contact_phone'],['bpWebsite','website_url'],['bpSource','source_url'],['bpNotes','notes']].forEach(function (pair) { $(pair[0]).value = r[pair[1]] || ''; });
+    $('bpFormTitle').textContent = 'Edit prospect'; $('bpSave').textContent = 'Save changes'; $('bpCancel').hidden = false;
+    $('bpStatus').textContent = 'Editing ' + r.business_name + '.';
+    $('bpForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  async function bpDelete(id) {
+    var r = bpRows.find(function (x) { return x.id === id; }); if (!r || !confirm('Delete prospect "' + r.business_name + '"? This cannot be undone.')) return;
+    try { await bpRequest('delete', { id: id }); await bpLoad(); bpSetStatus('Prospect deleted. No email was sent.'); }
+    catch (e) { bpSetStatus(e.message, true); }
+  }
+  function bpMakeDraft(id) {
+    var r = bpRows.find(function (x) { return x.id === id; }); if (!r) return;
+    bpSelected = id;
+    $('bpDraftSubject').value = 'Your free listing on Christopher the Good Gringo';
+    $('bpDraftBody').value = 'Hello' + (r.contact_name ? ' ' + r.contact_name : '') + ',\\n\\nWe are building Christopher the Good Gringo, a directory highlighting independent businesses across Latin America. We have prepared a basic Bronze listing for ' + r.business_name + ' in ' + r.city + ', Colombia.\\n\\nThe free Bronze listing displays your business name and address. You can review the listing and request ownership verification before making any changes.\\n\\nIf you would like to learn more, reply to this email and we will share the next steps.\\n\\nBest regards,\\nChristopher\\nChristopher the Good Gringo';
+    $('bpDraftStatus').textContent = 'Draft created for ' + r.business_name + '. Review and edit before use; not sent.';
+    $('bpDraftSubject').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  $('bpForm').addEventListener('submit', async function (event) {
+    event.preventDefault(); $('bpSave').disabled = true;
+    var prospect = { business_name: bpVal('bpName'), category: $('bpCategory').value, city: bpVal('bpCity'), country: bpVal('bpCountry'), contact_email: bpVal('bpEmail') || null, contact_name: bpVal('bpContact') || null, address: bpVal('bpAddress') || null, contact_phone: bpVal('bpPhone') || null, website_url: bpVal('bpWebsite') || null, source_url: bpVal('bpSource') || null, notes: bpVal('bpNotes') || null, listing_tier: 'bronze' };
+    try {
+      var id = $('bpId').value;
+      var result = await bpRequest(id ? 'update' : 'add', id ? { id: id, prospect: prospect } : { prospect: prospect });
+      if (result.prospect && !result.prospect.contact_email) bpSetStatus('Saved, but add only if you later verify a publicly listed business email.');
+      else bpSetStatus('Prospect saved. No email was sent.');
+      bpReset(); await bpLoad();
+    } catch (e) { bpSetStatus(e.message, true); }
+    finally { $('bpSave').disabled = false; }
+  });
+  $('bpCancel').addEventListener('click', function () { bpReset(); bpSetStatus('Edit cancelled.'); });
+  $('bpReload').addEventListener('click', bpLoad);
+  $('bpSaveDraft').addEventListener('click', async function () {
+    if (!bpSelected) { $('bpDraftStatus').textContent = 'Choose Create invitation draft on a saved prospect first.'; return; }
+    try {
+      var r = bpRows.find(function (x) { return x.id === bpSelected; }); if (!r) throw new Error('Selected prospect not found.');
+      var updated = Object.assign({}, r, { invitation_subject: $('bpDraftSubject').value, invitation_body: $('bpDraftBody').value, invitation_status: 'draft_ready' });
+      await bpRequest('update', { id: bpSelected, prospect: updated }); $('bpDraftStatus').textContent = 'Draft saved. It has not been sent.'; await bpLoad();
+    } catch (e) { $('bpDraftStatus').textContent = e.message; }
+  });
+  $('bpCopyDraft').addEventListener('click', async function () {
+    try { await navigator.clipboard.writeText('Subject: ' + $('bpDraftSubject').value + '\\n\\n' + $('bpDraftBody').value); $('bpDraftStatus').textContent = 'Draft copied. It has not been sent.'; }
+    catch (_) { $('bpDraftStatus').textContent = 'Copy was blocked by the browser; select the draft text and copy it manually.'; }
   });
 
   sb.auth.onAuthStateChange(function (event, s) {
