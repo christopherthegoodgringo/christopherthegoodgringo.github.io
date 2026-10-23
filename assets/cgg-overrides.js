@@ -116,11 +116,12 @@
     var level = levelOf(h), rank = LEVEL_RANK[level];
     var keep = LEVEL_FIELDS.bronze.slice();
     if (rank >= LEVEL_RANK.silver) keep = keep.concat(LEVEL_FIELDS.silver);
+    if (rank >= LEVEL_RANK.gold) keep = keep.concat(LEVEL_FIELDS.gold);
     if (rank >= LEVEL_RANK.platinum) keep = keep.concat(LEVEL_FIELDS.platinum);
     var out = {};
     keep.forEach(function (k) { if (h[k] !== undefined) out[k] = h[k]; });
-    // Silver and Gold get one main photo, even if the listing only has a photo list.
-    if (rank >= LEVEL_RANK.silver && rank < LEVEL_RANK.platinum && !out.photo) {
+    // Gold gets one main photo, even if the listing only has a photo list.
+    if (rank >= LEVEL_RANK.gold && rank < LEVEL_RANK.platinum && !out.photo) {
       var p = firstPhoto(h);
       if (p) out.photo = p;
     }
