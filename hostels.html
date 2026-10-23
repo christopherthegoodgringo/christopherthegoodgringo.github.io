@@ -149,6 +149,7 @@ document.getElementById('resultsTitle').textContent=titleText;
 }
 function renderShortcuts(){if(!shortcuts)return;shortcuts.innerHTML='';[...countries].sort((a,b)=>(false?(countryNamesEs[a.code]||a.name):a.name).localeCompare(false?(countryNamesEs[b.code]||b.name):b.name,false?'es':'en')).forEach(c=>{const b=document.createElement('button');b.className='city';b.setAttribute('aria-pressed',countryCodeFromInput(countryFilter.value)===c.code?'true':'false');b.textContent=false?(countryNamesEs[c.code]||c.name):c.name;const small=document.createElement('small');const n=dedupe(hostels.concat(paid).filter(h=>h.countryCode===c.code)).length;small.textContent=n+(false?' hostales':' hostels');b.appendChild(small);b.addEventListener('click',()=>{shownLimit=PAGE_SIZE;countryFilter.value=c.code;cityFilter.value='';renderCityOptions();render();renderShortcuts();document.getElementById('searchTitle').scrollIntoView({behavior:'smooth',block:'start'})});shortcuts.appendChild(b)})}
 document.getElementById('hotelSearch').addEventListener('submit',e=>{e.preventDefault();shownLimit=PAGE_SIZE;render();});
+const startSearchButton=document.querySelector('#hotelSearch button[type="submit"]');if(startSearchButton)startSearchButton.addEventListener('click',e=>{e.preventDefault();shownLimit=PAGE_SIZE;render();document.getElementById('resultsTitle').scrollIntoView({behavior:'smooth',block:'start'});});
 loadMore.addEventListener('click',()=>{shownLimit+=PAGE_SIZE;render()});
 countryFilter.addEventListener('change',()=>{shownLimit=PAGE_SIZE;cityFilter.value='';renderCityOptions();render();renderShortcuts();});cityFilter.addEventListener('change',()=>{shownLimit=PAGE_SIZE;render();});
 query.addEventListener&&query.addEventListener('input',()=>{shownLimit=PAGE_SIZE;render()});
@@ -187,25 +188,5 @@ article.hotel-card h3{white-space:normal!important;overflow:visible!important;te
 </style>
 <script src="/assets/cgg-hero-slideshow.js?v=2" data-slides="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&amp;fit=crop&amp;w=1200&amp;q=85|Hostel common room and bunk beds in Latin America;;https://images.unsplash.com/photo-1709805619372-40de3f158e83?auto=format&amp;fit=crop&amp;w=1200&amp;q=80|Hostel dorm room with bunk beds next to a window;;https://images.unsplash.com/photo-1636917754428-60ece5e521df?auto=format&amp;fit=crop&amp;w=1200&amp;q=80|Bunk bed in a bright room with many windows;;https://images.unsplash.com/photo-1768289269971-6171457bed13?auto=format&amp;fit=crop&amp;w=1200&amp;q=80|Hostel dorm with sunlight streaming in;;https://images.unsplash.com/photo-1781415980730-bfcf192e38bc?auto=format&amp;fit=crop&amp;w=1200&amp;q=80|Clean, well-lit room with neatly made beds"></script>
 <script src="/assets/cgg-join.js?v=20261022b" defer></script>
-
-<!-- Independent dropdown recovery: keeps filters populated if directory scripts fail. -->
-<script id="cgg-dropdown-recovery-hostels">
-(function(){
-  var countries=[["AR","Argentina"],["BZ","Belize"],["BO","Bolivia"],["CL","Chile"],["CO","Colombia"],["CR","Costa Rica"],["DO","Dominican Republic"],["EC","Ecuador"],["SV","El Salvador"],["GT","Guatemala"],["HN","Honduras"],["MX","Mexico"],["NI","Nicaragua"],["PA","Panama"],["PY","Paraguay"],["PE","Peru"],["UY","Uruguay"],["US","United States"]];
-  var country=document.getElementById('countryFilter'), city=document.getElementById('cityFilter');
-  if(!country||!city)return;
-  var entries=[];
-  function fillCountries(){var selected=country.value;country.replaceChildren(new Option('All countries',''));countries.forEach(function(c){country.add(new Option(c[1],c[0]));});if(countries.some(function(c){return c[0]===selected;}))country.value=selected;}
-  function fillCities(){var selected=city.value,code=country.value;var names=Array.from(new Set(entries.filter(function(x){return x&&x.city&&(!code||String(x.countryCode||x.country_code||'').toUpperCase()===code);}).map(function(x){return String(x.city).trim();}).filter(Boolean))).sort(function(a,b){return a.localeCompare(b,'en');});city.replaceChildren(new Option('All cities',''));names.forEach(function(n){city.add(new Option(n,n));});if(names.some(function(n){return n.toLowerCase()===selected.toLowerCase();}))city.value=selected;else city.value='';}
-  fillCountries();
-  fillCities();
-  country.addEventListener('change',function(){fillCities();});
-  Promise.all(["/data/hostels-clean.json?dropdownfix=20261023a","/data/paid-listings.json?dropdownfix=20261023a"].map(function(url){return fetch(url,{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});})).then(function(payloads){
-    payloads.forEach(function(data){if(!data)return;var list=data.hostels;if(Array.isArray(list))entries=entries.concat(list);if(Array.isArray(data.paid))entries=entries.concat(data.paid);if(Array.isArray(data.hostels))entries=entries.concat(data.hostels);});
-    entries=entries.filter(function(x){return (x.hasHostelworld||/hostelworld\\.com/i.test(x.website||'')||/hostelworld\\.com/i.test(x.bookingUrl||'')||/hostelworld\\.com/i.test(x.hostelworld||''));});
-    fillCities();
-  }).catch(function(){fillCities();});
-})();
-</script>
 </body>
 </html>
