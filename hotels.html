@@ -189,7 +189,7 @@ function render(){
  results.innerHTML='';results.hidden=true;results.style.setProperty('display','none','important');results.classList.remove('is-visible');document.body.classList.remove('hotel-filters-ready');
  if(!code||!city){count.textContent='Choose a country and city to see hotels';empty.hidden=true;document.getElementById('resultsTitle').textContent='Choose a destination to see hotels';return;}
  document.body.classList.add('hotel-filters-ready');results.hidden=false;results.style.setProperty('display','grid','important');results.classList.add('is-visible');
- const found=hotels.filter(h=>listingMatchesTierFilter(h,activeTierFilter)&&(!code||String(h.countryCode||h.country_code||'').trim().toUpperCase()===code)&&(!city||normalize(h.city)===normalize(city))&&(!q||normalize([h.name,h.city,h.countryName,h.country,h.address,h.description,(h.amenities||[]).join(' ')].join(' ')).includes(q)));
+ const found=hotels.filter(h=>{const hCode=String(h.countryCode||h.country_code||'').trim().toUpperCase();const hCity=normalize(h.city);const countryMatches=!code||hCode===code;const cityMatches=!city||hCity===normalize(city);const queryMatches=!q||normalize([h.name,h.city,h.countryName,h.country,h.address,h.description,(h.amenities||[]).join(' '),(h.features||[]).join(' ')].join(' ')).includes(q);return listingMatchesTierFilter(h,activeTierFilter)&&countryMatches&&cityMatches&&queryMatches;});
  results.innerHTML='';const tierRank={platinum:4,gold:3,silver:2,bronze:1};
  found.sort((a,b)=>(tierRank[String(b.membershipTier||'bronze').toLowerCase()]||1)-(tierRank[String(a.membershipTier||'bronze').toLowerCase()]||1)||String(a.name).localeCompare(String(b.name)));
  found.forEach(h=>{
@@ -219,7 +219,7 @@ function render(){
 function renderShortcuts(){}
 document.getElementById('hotelSearch').addEventListener('submit',e=>{e.preventDefault();render()});
 const startSearchButton=document.querySelector('#hotelSearch button[type="submit"]');if(startSearchButton)startSearchButton.addEventListener('click',e=>{e.preventDefault();render();document.getElementById('resultsTitle').scrollIntoView({behavior:'smooth',block:'start'});});query.addEventListener&&query.addEventListener('input',render);countryFilter.addEventListener('change',()=>{cityFilter.value='';renderCityOptions();render();renderShortcuts()});cityFilter.addEventListener('change',render);
-fetch('/data/hotels.json?v=20261023-cartagena-tiers3', { cache: 'no-store' })
+fetch('/data/hotels.json?v=20261023-cartagena-tiers4', { cache: 'no-store' })
   .then(function (response) {
     if (!response.ok) throw new Error('Could not load hotel data');
     return response.json();
