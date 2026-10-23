@@ -118,6 +118,7 @@
       return wrap;
     }
 
+    var sectionEls = [];
     if (admin) {
       var lvl = el('select', { name: 'membershipTier' });
       ['platinum', 'gold', 'silver', 'bronze'].forEach(function (t) { lvl.appendChild(el('option', { value: t, selected: tier === t }, NAMES[t])); });
@@ -136,7 +137,6 @@
 
     // Only the sections the level includes are shown. Owners never see higher-level sections;
     // admins see the sections for the level picked in the editor, updating as it changes.
-    var sectionEls = [];
     SECTIONS.forEach(function (s) {
       if (!admin && RANK[tier] < RANK[s.tier]) return;
       var sec = el('fieldset', { className: 'editor-section' }, el('legend', {}, s.title));
