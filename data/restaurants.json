@@ -80,16 +80,7 @@
       "countryCode": "CO",
       "countryName": "Colombia",
       "address": "Cra. 3 #16-30, Comuna 2, Santa Marta, Magdalena, Colombia",
-      "phone": "+57 301 715 5870",
-      "email": "lamartgastronomica@gmail.com",
-      "website": "https://lamart.menux.live/",
-      "website_url": "https://lamart.menux.live/",
-      "hasWebsite": true,
       "membershipTier": "bronze",
-      "rating": 4.5,
-      "priceRange": "$$–$$$",
-      "cuisine": "Caribbean, seafood, Colombian",
-      "description": "Caribbean and seafood-focused dining in Santa Marta’s historic center, with ceviches, fresh fish, shrimp dishes and creative coastal cuisine.",
       "sample": true
     }
   ]
