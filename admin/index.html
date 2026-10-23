@@ -196,29 +196,25 @@
       <div id="aaMsg"></div>
     </section>
      <section class="panel" id="tab-businesses" hidden>
-      <h2>Directory Manager</h2>
-      <p class="sub">Use the four level tabs above to view Bronze, Silver, Gold, or Platinum listings. We will rebuild the other admin tools later.</p>
-      <div class="row">
-        <div><label for="bizCountry">Countries</label><select id="bizCountry"><option value="">All countries</option></select></div>
-      </div>
-      <div>
-        <div class="directory-quick-filters" role="group" aria-label="Quick directory filters">
-          <button class="btn light" type="button" data-directory-type="" aria-pressed="true">All directories</button>
-          <button class="btn light" type="button" data-directory-type="hotels">Hotels</button>
-          <button class="btn light" type="button" data-directory-type="hostels">Hostels</button>
-          <button class="btn light" type="button" data-directory-type="restaurants">Restaurants</button>
-          <button class="btn light" type="button" data-directory-type="bars">Bars</button>
-          <button class="btn light" type="button" data-directory-type="street-food">Street Vendors</button>
-          <button class="btn light" type="button" id="bizClearFilters">Clear filters</button>
-        </div>
+      <h2>Current businesses</h2>
+      <p class="sub">Choose a level above to see the businesses currently listed at that level.</p>
+      <div id="bizCount" role="status" aria-live="polite"></div>
+      <div class="list" id="bizList" aria-label="Current business listings"></div>
+      <button type="button" id="bizMore" hidden>Show more</button>
+      <div hidden aria-hidden="true">
+        <select id="bizCountry"><option value="">All countries</option></select>
+        <button type="button" data-directory-type="" aria-pressed="true">All directories</button>
+        <button type="button" data-directory-type="hotels" aria-pressed="false">Hotels</button>
+        <button type="button" data-directory-type="hostels" aria-pressed="false">Hostels</button>
+        <button type="button" data-directory-type="restaurants" aria-pressed="false">Restaurants</button>
+        <button type="button" data-directory-type="bars" aria-pressed="false">Bars</button>
+        <button type="button" data-directory-type="street-food" aria-pressed="false">Street Vendors</button>
+        <button type="button" id="bizClearFilters">Clear filters</button>
         <input id="bizSearch" type="search">
         <select id="bizCity"><option value="">All cities</option></select>
         <select id="bizType"><option value="">All types</option></select>
         <select id="bizTier"><option value="">All levels</option><option value="bronze">Bronze</option><option value="silver">Silver</option><option value="gold">Gold</option><option value="platinum">Platinum</option></select>
         <select id="bizShow"><option value="">Everything</option><option value="owned">With an owner</option><option value="unowned">Without an owner</option><option value="hidden">Removed from site</option><option value="owner-added">Added by owners</option></select>
-        <p id="bizCount" role="status" aria-live="polite"></p>
-        <div class="list" id="bizList" aria-label="Directory listings"></div>
-        <button type="button" id="bizMore" hidden>Show more</button>
       </div>
     </section>
     <section class="panel" id="tab-prospects" hidden>
