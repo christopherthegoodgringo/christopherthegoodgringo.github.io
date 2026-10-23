@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-23",
-  "scope": "Internal QA dataset. Buenos Aires sample restaurant cards test Not Claimed plus Bronze, Silver, Gold, and Platinum display tiers. QA sample entries are not real business listings and must be removed or replaced before public launch.",
+  "scope": "Curated restaurant directory. Only verified real businesses should be listed; membership tiers and claim status are internal directory fields and must not imply a business has purchased a paid listing.",
   "countries": [
     {
       "code": "AR",
@@ -86,81 +86,6 @@
       "address": "Cra. 3 #16-30, Comuna 2, Santa Marta, Magdalena, Colombia",
       "membershipTier": "bronze",
       "sample": false
-    },
-    {
-      "id": "qa-buenos-aires-not-claimed",
-      "name": "QA Test Restaurant — Not Claimed",
-      "city": "Buenos Aires",
-      "country": "Argentina",
-      "countryCode": "AR",
-      "countryName": "Argentina",
-      "address": "Palermo, Buenos Aires, Argentina",
-      "membershipTier": "bronze",
-      "claimStatus": "unclaimed",
-      "sample": true,
-      "description": "Internal directory QA sample. Not a real business listing.",
-      "cuisine": "QA sample",
-      "priceRange": "$$"
-    },
-    {
-      "id": "qa-buenos-aires-bronze",
-      "name": "QA Test Restaurant — Bronze",
-      "city": "Buenos Aires",
-      "country": "Argentina",
-      "countryCode": "AR",
-      "countryName": "Argentina",
-      "address": "Recoleta, Buenos Aires, Argentina",
-      "membershipTier": "bronze",
-      "claimStatus": "claimed",
-      "sample": true,
-      "description": "Internal directory QA sample. Not a real business listing.",
-      "cuisine": "QA sample",
-      "priceRange": "$$"
-    },
-    {
-      "id": "qa-buenos-aires-silver",
-      "name": "QA Test Restaurant — Silver",
-      "city": "Buenos Aires",
-      "country": "Argentina",
-      "countryCode": "AR",
-      "countryName": "Argentina",
-      "address": "San Telmo, Buenos Aires, Argentina",
-      "membershipTier": "silver",
-      "claimStatus": "claimed",
-      "sample": true,
-      "description": "Internal directory QA sample. Not a real business listing.",
-      "cuisine": "QA sample",
-      "priceRange": "$$"
-    },
-    {
-      "id": "qa-buenos-aires-gold",
-      "name": "QA Test Restaurant — Gold",
-      "city": "Buenos Aires",
-      "country": "Argentina",
-      "countryCode": "AR",
-      "countryName": "Argentina",
-      "address": "Puerto Madero, Buenos Aires, Argentina",
-      "membershipTier": "gold",
-      "claimStatus": "claimed",
-      "sample": true,
-      "description": "Internal directory QA sample. Not a real business listing.",
-      "cuisine": "QA sample",
-      "priceRange": "$$$"
-    },
-    {
-      "id": "qa-buenos-aires-platinum",
-      "name": "QA Test Restaurant — Platinum",
-      "city": "Buenos Aires",
-      "country": "Argentina",
-      "countryCode": "AR",
-      "countryName": "Argentina",
-      "address": "Villa Crespo, Buenos Aires, Argentina",
-      "membershipTier": "platinum",
-      "claimStatus": "claimed",
-      "sample": true,
-      "description": "Internal directory QA sample. Not a real business listing.",
-      "cuisine": "QA sample",
-      "priceRange": "$$$"
     }
   ]
 }
