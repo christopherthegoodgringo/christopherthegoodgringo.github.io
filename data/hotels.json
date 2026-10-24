@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-23",
-  "scope": "Cartagena test dataset: sample tier assignments are for internal card/detail-page QA only and do not indicate that any hotel purchased or endorsed a paid listing. Confirm business details and replace the Platinum sample imagery with property-approved photos before public launch. Official websites are supplied where verified; no affiliate links added without approval/tracking verification.",
+  "scope": "Pilot additions for Tunja and Santa Marta. Newly added entries are free, unclaimed listings with official websites; no paid placement or rating is implied. Verify details periodically.",
   "countries": [
     {
       "code": "AR",
@@ -251,6 +251,78 @@
         "https://images.unsplash.com/photo-1563911302283-d2bc129e7570?auto=format&fit=crop&w=1400&q=85"
       ],
       "photo": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1400&q=85"
+    },
+    {
+      "id": "hotel-boutique-casa-carolina-santa-marta",
+      "name": "Hotel Boutique Casa Carolina",
+      "city": "Santa Marta",
+      "country": "Colombia",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "address": "Calle 12 #3-40, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "phone": "+57 320 519 9288",
+      "website": "https://www.hotelcasacarolina.com/en/hotel-casa-carolina/",
+      "hasWebsite": true,
+      "membershipTier": "free",
+      "claimStatus": "unclaimed",
+      "claimed": false,
+      "sample": false,
+      "description": "Family-owned boutique hotel in Santa Marta’s historic center, with pools, rooftop terraces, spa services and on-site dining.",
+      "category": "Boutique hotel"
+    },
+    {
+      "id": "hotel-boyaca-plaza-tunja",
+      "name": "Hotel Boyacá Plaza",
+      "city": "Tunja",
+      "country": "Colombia",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "address": "Calle 18 #11-22, Tunja, Boyacá, Colombia",
+      "phone": "+57 318 548 4820",
+      "website": "https://hotelboyacaplaza.co/",
+      "hasWebsite": true,
+      "membershipTier": "free",
+      "claimStatus": "unclaimed",
+      "claimed": false,
+      "sample": false,
+      "description": "Centrally located hotel in Tunja, near Plaza de Bolívar, with a restaurant, parking, Wi-Fi and event facilities.",
+      "category": "Hotel"
+    },
+    {
+      "id": "casa-loma-hotel-spa-tunja",
+      "name": "Casa Loma Hotel & Spa",
+      "city": "Tunja",
+      "country": "Colombia",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "address": "Carrera 2 Este #23-27, Tunja, Boyacá, Colombia",
+      "phone": "+57 312 388 4556",
+      "website": "https://casalomatunja.com/",
+      "hasWebsite": true,
+      "membershipTier": "free",
+      "claimStatus": "unclaimed",
+      "claimed": false,
+      "sample": false,
+      "description": "Family-run hotel in Tunja offering guest rooms, breakfast, Wi-Fi and suite options.",
+      "category": "Hotel"
+    },
+    {
+      "id": "hotel-girasol-tunja",
+      "name": "Hotel Girasol Tunja",
+      "city": "Tunja",
+      "country": "Colombia",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "address": "Carrera 7 #17-10, Tunja, Boyacá, Colombia",
+      "phone": "+57 320 399 1380",
+      "website": "https://www.hgirasoltunja.com/",
+      "hasWebsite": true,
+      "membershipTier": "free",
+      "claimStatus": "unclaimed",
+      "claimed": false,
+      "sample": false,
+      "description": "Hotel in central Tunja offering guest rooms, room service and event facilities.",
+      "category": "Hotel"
     }
   ]
 }
