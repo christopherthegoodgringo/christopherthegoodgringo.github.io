@@ -1,5 +1,40 @@
 {
   "updatedAt": "2026-10-23",
-  "scope": "Hostels listed on Hostelworld, added at Bronze (name, city, country and Hostelworld link). Directory location coverage is expanding across Latin America and the United States.",
-  "hostels": []
+  "scope": "Curated starter inventory for Tunja and Santa Marta. Entries are free, unclaimed listings and use verified Hostelworld listing links. No paid placement is implied.",
+  "hostels": [
+    {
+      "id": "la-guaca-hostel-santa-marta",
+      "name": "La Guaca Hostel",
+      "city": "Santa Marta",
+      "country": "Colombia",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "address": "Cra. 8 #27-75, Barrio Bavaria, Santa Marta, Colombia",
+      "website": "https://www.hostelworld.com/hostels/p/85499/la-guaca-hostel-santa-marta/",
+      "website_url": "https://www.hostelworld.com/hostels/p/85499/la-guaca-hostel-santa-marta/",
+      "hostelworld": "https://www.hostelworld.com/hostels/p/85499/la-guaca-hostel-santa-marta/",
+      "membershipTier": "free",
+      "claimStatus": "unclaimed",
+      "claimed": false,
+      "sample": false,
+      "description": "Hostel in a remodeled mansion near Santa Marta’s historic center."
+    },
+    {
+      "id": "playa-del-ritmo-santa-marta",
+      "name": "Playa del Ritmo Beach Hostel & Bar",
+      "city": "Santa Marta",
+      "country": "Colombia",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "address": "Cabo Tortuga, Santa Marta, Magdalena, Colombia",
+      "website": "https://www.hostelworld.com/hostels/south-america/colombia/santa-marta/",
+      "website_url": "https://www.hostelworld.com/hostels/south-america/colombia/santa-marta/",
+      "hostelworld": "https://www.hostelworld.com/hostels/south-america/colombia/santa-marta/",
+      "membershipTier": "free",
+      "claimStatus": "unclaimed",
+      "claimed": false,
+      "sample": false,
+      "description": "Beachfront hostel in the Cabo Tortuga area, near Santa Marta’s airport."
+    }
+  ]
 }
