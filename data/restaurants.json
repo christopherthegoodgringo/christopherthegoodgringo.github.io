@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-23",
-  "scope": "Curated restaurant directory. Casa Sáenz Botánico is a real Buenos Aires restaurant and is marked not claimed. Tier values are internal directory display assignments, not claims that a business purchased a paid listing.",
+  "scope": "Directory inventory includes verified official websites or active OpenTable links. Newly added Santa Marta restaurant entry is unclaimed and free; no paid placement or rating is implied.",
   "countries": [
     {
       "code": "AR",
@@ -161,6 +161,23 @@
       "ratingSource": "Public business listing; recheck before publication",
       "priceRange": "$$$$",
       "description": "Upscale restaurant known for dry-aged Argentine beef, brasserie dishes, seafood, and regional wines."
+    },
+    {
+      "id": "elis-restaurant-casa-carolina-santa-marta",
+      "name": "Eli’s Restaurant at Casa Carolina",
+      "city": "Santa Marta",
+      "country": "Colombia",
+      "countryCode": "CO",
+      "countryName": "Colombia",
+      "address": "Calle 12 #3-40, Centro Histórico, Santa Marta, Magdalena, Colombia",
+      "website": "https://www.hotelcasacarolina.com/en/",
+      "membershipTier": "free",
+      "claimStatus": "unclaimed",
+      "claimed": false,
+      "sample": false,
+      "cuisine": "Fusion cuisine with local ingredients",
+      "description": "On-site restaurant at Hotel Boutique Casa Carolina, described by the hotel as serving fusion cuisine in a historic colonial setting.",
+      "category": "Restaurant"
     }
   ]
 }
